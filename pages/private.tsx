@@ -3,13 +3,14 @@ import { use } from "react";
 
 export default function Private() {
 	const { data: session } = useSession();
+	console.log(session);
 
 	if (session) {
 		// Logged In
 
 		return (
 			<>
-				Signed in as {session.user.email}
+				Signed in as {session.user.name}
 				<br />
 				<button onClick={() => signOut()}>Sign out</button>
 			</>
