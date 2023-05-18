@@ -1,8 +1,13 @@
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 // import Main from "@/components/sections/Main/Main";
 
 export default function Home() {
+	// Login Session
+	const { data: session } = useSession();
+
 	const [users, setUsers] = useState(null);
 
 	useEffect(() => {
@@ -48,6 +53,9 @@ export default function Home() {
 						  })
 						: "Loading..."}
 				</p>
+				<Link href="/private">Private page</Link>
+				<br />
+				<Link href="/profile">Profile</Link>
 			</main>
 		</>
 	);
