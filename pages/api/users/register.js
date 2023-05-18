@@ -9,10 +9,10 @@ export default async function handler(req, res) {
 
 	try {
 		const user = await User.create({
-			username: "zaack",
-			password: "password",
-			name: "Zack",
-			email: "zack@zack.zac",
+			username: req.body.username,
+			password: req.body.password,
+			name: req.body.name,
+			email: req.body.email,
 		});
 		res.status(201).json({ success: true, data: user });
 	} catch (error) {
