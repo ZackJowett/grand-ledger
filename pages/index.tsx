@@ -55,6 +55,8 @@ export default function Home() {
 				</p>
 				<Link href="/private">Private page</Link>
 				<br />
+				<Link href="/debts">Debts</Link>
+				<br />
 				<Link href="/profile">Profile</Link>
 			</main>
 		</>
