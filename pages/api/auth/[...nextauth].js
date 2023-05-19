@@ -82,6 +82,22 @@ export const authOptions = {
 			},
 		}),
 	],
+	callbacks: {
+		async jwt({ token, user }) {
+			if (user?.username) {
+				token.username = user.username;
+			}
+			if (user?._id) {
+				token.id = user._id;
+			}
+			return token;
+		},
+		async session({ session, token }) {
+			session.user.username = token.username;
+			session.user.id = token.id;
+			return session;
+		},
+	},
 	secret: process.env.NEXT_PUBLIC_SECRET,
 };
 
