@@ -53,7 +53,7 @@ export default function Debts() {
 			{debts ? (
 				debts.map((debt, index) => {
 					return (
-						<div id={index}>
+						<div key={index}>
 							<hr />
 							<p>
 								Creditor:{" "}
