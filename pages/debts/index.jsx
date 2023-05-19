@@ -7,12 +7,15 @@ export default function Debts() {
 
 	// Get debts from database
 	const [debts, setDebts] = useState(null);
+	const [users, setUsers] = useState(null);
+	const [filter, setFilter] = useState(null); // "all" || "open" || "closed"
+	const [totalUnreceived, setTotalUnreceived] = useState(null);
 
 	// Get all debts associated with logged in user
 	useEffect(() => {
 		if (!session) return;
 
-		fetch(`/api/debts/${session.user.id}`)
+		fetch(`/api/debts?debtor=${session.user.id}`)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -24,7 +27,36 @@ export default function Debts() {
 					);
 				}
 			});
+
+		fetch("/api/users")
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					setUsers(data.data);
+				} else {
+					console.log(data.message);
+					alert(
+						"Error fetching users. Check console for details or contact admin."
+					);
+				}
+			});
 	}, [session]);
+
+	useEffect(() => {
+		if (!debts) return;
+
+		let total = 0;
+
+		// Get total amount unreceived
+		debts.forEach((debt) => {
+			if (!debt.closed) {
+				total += debt.amount;
+				console.log(total);
+			}
+		});
+
+		setTotalUnreceived(total.toFixed(2));
+	}, [debts]);
 
 	// Not logged in
 	if (!session) {
@@ -37,35 +69,66 @@ export default function Debts() {
 		);
 	}
 
+	// Filter debts
+	const handleFilterSelect = (e) => {
+		setFilter(e.target.value);
+	};
+
+	const getName = (id) => {
+		if (!users) return;
+		const user = users.find((user) => user._id == id);
+		if (!user) return;
+		return user.name;
+	};
+
+	const filterDebt = (debt) => {
+		if (!filter) return true;
+		if (filter == "all") return true;
+		if (filter == "open" && !debt.closed) return true;
+		if (filter == "closed" && debt.closed) return true;
+	};
+
 	// Logged in
 	return (
 		<>
 			<h1>Debts</h1>
-			<p>
-				A debt is as amount of money someone owes you, or you owe
-				someone
-			</p>
-			{session.user.username}
+			<p>A debt is the amount of money you owe someone</p>
+			<p>You can settle multiple debts to the same person at once</p>
 			<br />
 			<Link href="/debts/create">New Debt</Link>
-			{/* {debts ? JSON.stringify(debts) : <p>Loading...</p>} */}
+			<br />
+			<h3>
+				Total Amount:{" $"}
+				{totalUnreceived !== null ? totalUnreceived : "Calculating..."}
+			</h3>
+
+			{/* Select Debt filter */}
+			<select onChange={handleFilterSelect}>
+				<option value="all">All</option>
+				<option value="person">Person</option>
+				<option value="open">Open</option>
+				<option value="closed">Closed</option>
+			</select>
 
 			{debts ? (
 				debts.map((debt, index) => {
+					// Filter debts
+					if (!filterDebt(debt)) return;
+
 					return (
 						<div key={index}>
 							<hr />
+							<p>Creditor: {getName(debt.creditor)}</p>
 							<p>
-								Creditor:{" "}
-								{debt.creditor == session.user.id
+								Debtor:{" "}
+								{debt.debtor == session.user.id
 									? "You"
-									: debt.creditor}
+									: debt.debtor}
 							</p>
-							<p>Debtor: {debt.debtor}</p>
-							<p>Amount: {debt.amount.$numberDecimal}</p>
+							<p>Amount: ${debt.amount} AUD</p>
 							<p>Description: {debt.description}</p>
 							<p>Status: {debt.closed ? "Closed" : "Open"}</p>
-							<p>Date Created: {debt.dateCreated}</p>
+							<p>Date Created: {formatDate(debt.dateCreated)}</p>
 						</div>
 					);
 				})
@@ -74,4 +137,15 @@ export default function Debts() {
 			)}
 		</>
 	);
+}
+
+function formatDate(date) {
+	const dateObject = new Date(date);
+	const formattedDate = new Intl.DateTimeFormat("en-GB", {
+		dateStyle: "full",
+		timeStyle: "short",
+		timeZone: "Australia/Sydney",
+		hourCycle: "h12",
+	}).format(dateObject);
+	return formattedDate;
 }
