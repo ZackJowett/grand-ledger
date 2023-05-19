@@ -1,26 +1,57 @@
 import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function Create() {
 	const { data: session } = useSession();
 
+	// States
+	const [createAs, setCreateAs] = useState("creditor");
+	const [users, setUsers] = useState(null);
+
 	// User not logged in
-	if (!session) {
-		return (
-			<>
-				<h1>Debts</h1>
-				<p>You are not logged in</p>
-				<button onClick={() => signIn()}>Sign in</button>
-			</>
-		);
-	}
+	// if (!session) {
+	// 	return (
+	// 		<>
+	// 			<h1>Debts</h1>
+	// 			<p>You are not logged in</p>
+	// 			<button onClick={() => signIn()}>Sign in</button>
+	// 		</>
+	// 	);
+	// }
 
 	// User logged in
+	// Get user options in same group
+	useEffect(() => {
+		if (!session) return;
+
+		fetch(`/api/users`)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					console.log(data.data);
+					setUsers(data.data);
+				} else {
+					console.log(data.message);
+					alert(
+						"Error fetching users. Check console for details or contact admin."
+					);
+				}
+			});
+	}, [session]);
 
 	// Create new debt
 	const handleRegister = async (e) => {
 		e.preventDefault();
-		const creditor = session.user.username;
-		const debtor = e.target.debtor.value;
+
+		let creditor = session.user.id;
+		let debtor = e.target.otherParty.value;
+
+		if (createAs == "debtor") {
+			creditor = e.target.otherParty.value;
+			debtor = session.user.id;
+			console.log("created as debtor");
+		}
+
 		const amount = e.target.amount.value;
 		const description = e.target.description.value;
 
@@ -42,12 +73,42 @@ export default function Create() {
 		console.log(data);
 	};
 
+	const handleSelect = (e) => {
+		setCreateAs(e.target.value);
+	};
+
 	return (
 		<>
 			<h1>Create new debt</h1>
+
+			<p>Create as: </p>
+			<select name="creditor" id="creditor" onChange={handleSelect}>
+				<option value="creditor">
+					Creditor (someone owes you money)
+				</option>
+				<option value="debtor">Debtor (you owe money)</option>
+			</select>
+
 			<form onSubmit={handleRegister}>
-				<label htmlFor="debtor">Debtor (Who owes you money)</label>
-				<input type="text" name="debtor" id="debtor" />
+				<label htmlFor="otherParty">
+					{createAs == "creditor"
+						? "Debtor (Who owes you money?)"
+						: "Creditor (Who do you owe money to?)"}
+				</label>
+				<select name="otherParty" id="otherParty" disabled={!users}>
+					{users ? (
+						users.map((user) => {
+							if (user._id != session.user.id)
+								return (
+									<option value={user._id}>
+										{user.name}
+									</option>
+								);
+						})
+					) : (
+						<option>Loading...</option>
+					)}
+				</select>
 
 				<label htmlFor="password">amount</label>
 				<input
