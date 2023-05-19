@@ -8,14 +8,6 @@ export default function Home() {
 	// Login Session
 	const { data: session } = useSession();
 
-	const [users, setUsers] = useState(null);
-
-	useEffect(() => {
-		fetch("/api/users")
-			.then((res) => res.json())
-			.then((data) => setUsers(data));
-	}, [users]);
-
 	return (
 		<>
 			<Head>
@@ -45,14 +37,7 @@ export default function Home() {
 				<link rel="manifest" href="/favicon/site.webmanifest" />
 			</Head>
 			<main>
-				<h1>Title</h1>
-				<p>
-					{users
-						? users.data.map((user) => {
-								return user.username;
-						  })
-						: "Loading..."}
-				</p>
+				<h1>Grand Ledger</h1>
 				<Link href="/private">Private page</Link>
 				<br />
 				<Link href="/debts">Debts</Link>
