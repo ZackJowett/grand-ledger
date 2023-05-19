@@ -11,6 +11,7 @@ export default function Profile() {
 					<p>You are logged in</p>
 					<p>Name: {session.user.name}</p>
 					<p>Email: {session.user.email}</p>
+					<p>Username: {session.user.username}</p>
 					<button onClick={() => signOut()}>Sign out</button>
 				</>
 			) : (
