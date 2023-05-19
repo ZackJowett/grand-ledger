@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/api/hello.js", "pages/debts/debts.jsx", "pages/profile.jsx"  ],
+, "pages/api/hello.js", "pages/debts/debts.jsx", "pages/profile.jsx", "pages/unreceived-payments/index.jsx"  ],
   "exclude": [
     "node_modules"
   ]
