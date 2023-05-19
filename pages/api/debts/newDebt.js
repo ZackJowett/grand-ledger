@@ -7,13 +7,9 @@ export default async function handler(req, res) {
 	await dbConnect();
 
 	try {
-		const debtor = await fetch(
-			`http://localhost:3000/api/users/user1`
-		).then((res) => res.json().then((data) => data.user));
-
 		const debt = await Debt.create({
-			creditor: req.body.userId,
-			debtor: debtor._id,
+			creditor: req.body.creditor,
+			debtor: req.body.debtor,
 			amount: req.body.amount,
 			description: req.body.description,
 		});
