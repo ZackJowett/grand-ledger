@@ -42,6 +42,8 @@ export default function Home() {
 				<br />
 				<Link href="/debts">Debts</Link>
 				<br />
+				<Link href="/unreceived-payments">Unreceived Payments</Link>
+				<br />
 				<Link href="/profile">Profile</Link>
 			</main>
 		</>
