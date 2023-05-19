@@ -1,5 +1,5 @@
-import dbConnect from "/lib/mongodb";
-import User from "/lib/models/user";
+import dbConnect from "/utils/mongodb";
+import User from "/utils/models/user";
 
 export default async function handler(req, res) {
 	await dbConnect();

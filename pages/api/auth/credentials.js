@@ -1,4 +1,4 @@
-import dbConnect from "/lib/mongodb";
+import dbConnect from "/utils/mongodb";
 
 export default async function handler(req, res) {
 	// Connect to database
