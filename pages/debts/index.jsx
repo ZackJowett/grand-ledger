@@ -96,6 +96,7 @@ export default function Debts() {
 	return (
 		<>
 			<h1>Debts</h1>
+			<Link href="/">Home</Link>
 			<p>A debt is the amount of money you owe someone</p>
 			<p>You can settle multiple debts to the same person at once</p>
 			<br />

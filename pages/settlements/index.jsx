@@ -64,6 +64,7 @@ export default function Settlements() {
 	return (
 		<div>
 			<h1>Settlements</h1>
+			<Link href="/">Home</Link>
 			<p>Settlements are closures of multiple debts to the same person</p>
 			<p>
 				Whoever owes the most to the other person will be the settler in

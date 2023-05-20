@@ -79,6 +79,7 @@ export default function UnreceivedPayments() {
 	return (
 		<>
 			<h1>Unreceived Payments</h1>
+			<Link href="/">Home</Link>
 			<p>
 				An <strong>unreceived payment</strong> is an debt someone has to
 				you and is how much they owe you

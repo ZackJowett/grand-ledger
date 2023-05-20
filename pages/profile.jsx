@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Profile() {
 	const { data: session } = useSession();
@@ -6,6 +7,7 @@ export default function Profile() {
 	return (
 		<>
 			<h1>Profile</h1>
+			<Link href="/">Home</Link>
 			{session ? (
 				<>
 					<p>You are logged in</p>
