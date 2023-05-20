@@ -7,8 +7,10 @@ export default function Debts() {
 
 	// Get debts from database
 	const [debts, setDebts] = useState(null);
+	// const [openDebts, setOpenDebts] = useState(null); // debts.filter(debt => !debt.closed)
+	// const [closedDebts, setClosedDebts] = useState(null);
 	const [users, setUsers] = useState(null);
-	const [filter, setFilter] = useState(null); // "all" || "open" || "closed"
+	const [filter, setFilter] = useState("open"); // "all" || "open" || "closed"
 	const [totalUnreceived, setTotalUnreceived] = useState(null);
 
 	// Get all debts associated with logged in user
@@ -51,9 +53,11 @@ export default function Debts() {
 		debts.forEach((debt) => {
 			if (!debt.closed) {
 				total += debt.amount;
-				console.log(total);
 			}
 		});
+
+		// setOpenDebts(debts.filter((debt) => !debt.closed));
+		// setClosedDebts(debts.filter((debt) => debt.closed));
 
 		setTotalUnreceived(total.toFixed(2));
 	}, [debts]);
@@ -104,10 +108,9 @@ export default function Debts() {
 
 			{/* Select Debt filter */}
 			<select onChange={handleFilterSelect}>
-				<option value="all">All</option>
-				<option value="person">Person</option>
 				<option value="open">Open</option>
 				<option value="closed">Closed</option>
+				<option value="all">All</option>
 			</select>
 
 			{debts ? (
