@@ -8,12 +8,19 @@ const { Schema } = mongoose;
 // When a settlement is created it is not closed. The other party must accept the settlement
 // When a settlement is closed, the debts are closed and the settlement is closed
 const settlementSchema = new Schema({
+	number: { type: Number, default: 0, incrementing: true },
 	settler: mongoose.Types.ObjectId,
 	settlee: mongoose.Types.ObjectId,
 	debts: [mongoose.Types.ObjectId],
-	netAmount: mongoose.Types.Decimal128,
-	closed: Boolean,
+	netAmount: Number,
+	status: {
+		type: String,
+		enum: ["open", "closed", "pending"],
+		default: "pending",
+	},
+	description: { type: String, default: "" },
 	dateCreated: { type: Date, default: Date.now },
+	dateClosed: { type: Date, default: null },
 });
 
 module.exports =
