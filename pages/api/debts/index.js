@@ -5,31 +5,76 @@ export default async function handler(req, res) {
 	await dbConnect();
 
 	try {
-		let debts = null;
+		let query = {};
+		let sortedDebts = null;
 
-		// Get all debts with creditor as the requested id
-		// Sort by date created in descending order
-		if (req.query.debtor) {
-			await Debt.find({ debtor: req.query.debtor })
-				.sort({ dateCreated: "descending" })
-				.then((res) => {
-					console.log("Result : ", res);
-					debts = res;
-				})
-				.catch((err) => console.log(err));
+		if (req.query.userId1 && req.query.userId2) {
+			// get all debts between two parties
 
-			res.status(200).json({ success: true, data: debts });
+			if (req.query.closed) {
+				query = {
+					$or: [
+						{
+							creditor: req.query.userId1,
+							debtor: req.query.userId2,
+						},
+						{
+							creditor: req.query.userId2,
+							debtor: req.query.userId1,
+						},
+					],
+				};
+			} else {
+				query = {
+					$and: [
+						{
+							$or: [
+								{
+									creditor: req.query.userId1,
+									debtor: req.query.userId2,
+								},
+								{
+									creditor: req.query.userId2,
+									debtor: req.query.userId1,
+								},
+							],
+							closed: req.query.closed,
+						},
+					],
+				};
+			}
+		} else if (req.query.debtor && req.query.creditor) {
+			// get specific creditor and debtor debt between two parties
+			query = { debtor: req.query.debtor, creditor: req.query.creditor };
+		} else if (req.query.debtor) {
+			// Get all debts with debtor as the requested id
+			// Sort by date created in descending order
+			query = { debtor: req.query.debtor };
 		} else if (req.query.creditor) {
-			await Debt.find({ creditor: req.query.creditor })
-				.sort({ dateCreated: "descending" })
-				.then((res) => {
-					console.log("Result : ", res);
-					debts = res;
-				})
-				.catch((err) => console.log(err));
-
-			res.status(200).json({ success: true, data: debts });
+			// Get all debts with creditor as the requested id
+			// Sort by date created in descending order
+			query = { creditor: req.query.creditor };
+		} else {
+			throw new Error("Invalid query parameters");
 		}
+
+		// Add status to query if it exists
+		if (req.query.closed) {
+			query.closed = req.query.closed;
+		}
+		console.log(query);
+
+		// Find debts with query
+		// then sort by date created in descending order
+		const debts = await Debt.find(query)
+			.sort({ dateCreated: "descending" })
+			.then((res) => {
+				console.log("Result : ", res);
+				sortedDebts = res;
+			})
+			.catch((err) => console.log(err));
+		// Return sorted debts
+		res.status(200).json({ success: true, data: sortedDebts });
 	} catch (error) {
 		console.log("ERROR", error);
 		res.status(400).json({ success: false });
