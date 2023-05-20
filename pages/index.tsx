@@ -38,9 +38,9 @@ export default function Home() {
 			</Head>
 			<main>
 				<h1>Grand Ledger</h1>
-				<Link href="/private">Private page</Link>
-				<br />
 				<Link href="/debts">Debts</Link>
+				<br />
+				<Link href="/settlements">Settlements</Link>
 				<br />
 				<Link href="/unreceived-payments">Unreceived Payments</Link>
 				<br />
