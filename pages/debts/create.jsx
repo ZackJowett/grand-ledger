@@ -97,10 +97,10 @@ export default function Create() {
 				</label>
 				<select name="otherParty" id="otherParty" disabled={!users}>
 					{users ? (
-						users.map((user) => {
+						users.map((user, index) => {
 							if (user._id != session.user.id)
 								return (
-									<option value={user._id}>
+									<option value={user._id} key={index}>
 										{user.name}
 									</option>
 								);
