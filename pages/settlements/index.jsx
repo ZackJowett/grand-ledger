@@ -70,9 +70,9 @@ export default function Settlements() {
 				the settlement and must pay the net and close it
 			</p>
 			<p>
-				It is then pending and won't appear in any calculations. The
-				other person then must approve/deny the settlement for it to be
-				fully closed or open again
+				It is then pending and won&apos;t appear in any calculations.
+				The other person then must approve/deny the settlement for it to
+				be fully closed or open again
 			</p>
 			<Link href="/settlements/create">Create Settlement</Link>
 			<br />
