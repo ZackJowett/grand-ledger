@@ -1,6 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { formatDate, getName } from "/utils/helpers";
 
 export default function UnreceivedPayments() {
 	const { data: session } = useSession();
@@ -68,13 +69,6 @@ export default function UnreceivedPayments() {
 		);
 	}
 
-	const getName = (id) => {
-		if (!users) return;
-		const user = users.find((user) => user._id == id);
-		if (!user) return;
-		return user.name;
-	};
-
 	// Logged in
 	return (
 		<>
@@ -99,11 +93,11 @@ export default function UnreceivedPayments() {
 							<hr />
 							<p>
 								Creditor:{" "}
-								{debt.creditor == session.user.id
-									? "You"
-									: debt.debtor}
+								{getName(debt.creditor, users, session)}
 							</p>
-							<p>Debtor: {getName(debt.debtor)}</p>
+							<p>
+								Debtor: {getName(debt.debtor, users, session)}
+							</p>
 							<p>Amount: ${debt.amount} AUD</p>
 							<p>Description: {debt.description}</p>
 							<p>Status: {debt.closed ? "Closed" : "Open"}</p>
@@ -116,15 +110,4 @@ export default function UnreceivedPayments() {
 			)}
 		</>
 	);
-}
-
-function formatDate(date) {
-	const dateObject = new Date(date);
-	const formattedDate = new Intl.DateTimeFormat("en-GB", {
-		dateStyle: "full",
-		timeStyle: "short",
-		timeZone: "Australia/Sydney",
-		hourCycle: "h12",
-	}).format(dateObject);
-	return formattedDate;
 }

@@ -1,5 +1,6 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { formatDate, getName } from "/utils/helpers";
 
 export default function Create() {
 	const { data: session } = useSession();
@@ -106,18 +107,6 @@ export default function Create() {
 		let user = users.find((user) => user._id == id);
 
 		setSelectedParty(user);
-	};
-
-	const getName = (id) => {
-		if (!users) return;
-
-		if (id == session.user.id) return session.user.name;
-
-		const user = users.find((user) => user._id == id);
-
-		if (!user) return;
-
-		return user.name;
 	};
 
 	// Get Totals
@@ -239,8 +228,14 @@ export default function Create() {
 							return (
 								<div key={index}>
 									<hr />
-									<p>Creditor: {getName(debt.creditor)}</p>
-									<p>Debtor: {getName(debt.debtor)}</p>
+									<p>
+										Creditor:{" "}
+										{getName(debt.creditor, users, session)}
+									</p>
+									<p>
+										Debtor:{" "}
+										{getName(debt.debtor, users, session)}
+									</p>
 									<p>Amount: ${debt.amount} AUD</p>
 									<p>Description: {debt.description}</p>
 									<p>
@@ -261,15 +256,4 @@ export default function Create() {
 			)}
 		</>
 	);
-}
-
-function formatDate(date) {
-	const dateObject = new Date(date);
-	const formattedDate = new Intl.DateTimeFormat("en-GB", {
-		dateStyle: "full",
-		timeStyle: "short",
-		timeZone: "Australia/Sydney",
-		hourCycle: "h12",
-	}).format(dateObject);
-	return formattedDate;
 }
