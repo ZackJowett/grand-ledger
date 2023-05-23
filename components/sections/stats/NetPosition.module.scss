@@ -1,0 +1,26 @@
+.totalDebt,
+.totalUnreceived {
+	margin-top: 1rem;
+}
+
+.totalDebt h1,
+.negative h1 {
+	color: var(--red);
+}
+
+.totalUnreceived h1,
+.positive h1 {
+	color: var(--green);
+}
+
+.card {
+	background-color: var(--dark) !important;
+}
+
+.netPosition {
+	margin-bottom: 0.5rem;
+}
+
+.hr {
+	margin: 2.5rem 0 1.5rem 0;
+}
