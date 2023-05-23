@@ -4,12 +4,12 @@ import Link from "next/link";
 import { getName } from "/utils/helpers";
 import { getAllUsers } from "/utils/data/users";
 import { getAllSettlements } from "/utils/data/settlements";
-import Settlement from "../../components/settlement/Settlement";
-import InfoBanner from "../../components/banner/InfoBanner";
-import Button from "../../components/button/Button";
+import Settlement from "/components/settlement/Settlement";
+import InfoBanner from "/components/banner/InfoBanner";
+import Button from "/components/button/Button";
 import styles from "public/styles/pages/Settlements.module.scss";
-import Layout from "../../components/layouts/Layout";
-import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
+import Layout from "/components/layouts/Layout";
+import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
 
 export default function Settlements() {
 	// Session
