@@ -1,0 +1,43 @@
+@use "public/styles/mixins.scss" as *;
+
+.link,
+.submit {
+	@include flex;
+	width: 100%;
+
+	text-align: center;
+
+	padding: 0.5rem 0.5rem;
+
+	@include border($radius: 100px, $size: 2px, $color: var(--button));
+
+	color: var(--text);
+	background-color: var(--button);
+
+	&:hover {
+		cursor: pointer;
+		transform: scale(1.01);
+		transition: transform 0.05s ease-in-out;
+
+		@include shadow();
+	}
+
+	&.dark {
+		border-color: var(--button);
+		// background-color: var(--primary);
+		color: var(--button);
+	}
+}
+
+.disabled {
+	border-color: var(--subtext);
+	color: var(--subtext);
+	background-color: var(--dark);
+
+	&:hover {
+		cursor: default;
+		transform: none;
+		transition: none;
+		box-shadow: none;
+	}
+}
