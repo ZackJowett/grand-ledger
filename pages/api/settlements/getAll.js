@@ -7,11 +7,8 @@ export default async function handler(req, res) {
 	try {
 		let settlements = null;
 
-		// Get all debts with creditor as the requested id
-		// Sort by date created in descending order
-		await Settlement.find({
-			$or: [{ settler: req.query.userId }, { settlee: req.query.userId }],
-		})
+		// Get all settlements
+		await Settlement.find({})
 			.sort({ dateCreated: "descending" })
 			.then((res) => {
 				console.log("Result : ", res);
