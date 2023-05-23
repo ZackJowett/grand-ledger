@@ -20,7 +20,9 @@ export default function ClickableCard({
 	return (
 		<Link
 			href={href}
-			className={`${styles.card} ${className ? className : ""} `}>
+			className={`${styles.card} ${styles.clickable} ${
+				className ? className : ""
+			} `}>
 			<div className={styles.header}>
 				<div className={styles.titleWrapper}>
 					<p className={styles.pretitle}>{pretitle}</p>
