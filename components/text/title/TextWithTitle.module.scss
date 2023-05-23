@@ -1,0 +1,62 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex();
+
+	&.reverse {
+		flex-direction: column-reverse;
+	}
+}
+
+.text {
+	margin-top: 3px;
+	color: var(--subtext);
+}
+
+// Color presets with selected options
+$default: var(--secondary);
+
+@mixin font-border($color: $default) {
+	-webkit-text-stroke: 2px $color; /* width and color */
+}
+
+.first > span {
+	display: inline-block;
+
+	color: var(--primary);
+	@include font-border();
+}
+
+.first > span:hover {
+	cursor: pointer;
+}
+
+.current {
+	color: $default !important;
+}
+
+.title,
+.text {
+	width: 100%;
+}
+
+// Only for TextWithButton.tsx
+.buttonWrapper {
+	width: 100%;
+	text-align: left;
+	@include flex(row, space-between);
+
+	margin-top: 0.25rem;
+
+	.title {
+		flex: 2;
+	}
+
+	.button {
+		flex: 1;
+	}
+
+	@include border($color: transparent, $radius: 100px);
+	background-color: var(--grey);
+	padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+}
