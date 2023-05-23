@@ -60,6 +60,25 @@ $globalRadius: 55px;
 	border-radius: $radius;
 }
 
+// Uniform scale amount
+@mixin scale($amount: 1.01, $speed: 0.1s) {
+	transition: all $speed ease-in-out;
+	-webkit-transition: all $speed ease-in-out;
+	-moz-transition: all $speed ease-in-out;
+	-ms-transition: all $speed ease-in-out;
+	-o-transition: all $speed ease-in-out;
+
+	&:hover {
+		transform: scale($amount);
+		-webkit-transform: scale($amount);
+		-moz-transform: scale($amount);
+		-ms-transform: scale($amount);
+		-o-transform: scale($amount);
+
+		border-color: var(--subtext);
+	}
+}
+
 // Custom screen size
 @mixin screen($size) {
 	@media screen and (max-width: $size) {
