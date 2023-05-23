@@ -1,0 +1,27 @@
+@use "public/styles/mixins.scss" as *;
+
+.date {
+	width: 100%;
+	text-align: right;
+}
+
+.amount,
+.desc,
+.date {
+	margin-top: 0.5rem;
+}
+
+.button {
+	margin-top: 1.8rem;
+}
+
+.date,
+.note {
+	color: var(--subtext);
+}
+
+.note {
+	width: 100%;
+	text-align: center;
+	margin-top: 1rem;
+}
