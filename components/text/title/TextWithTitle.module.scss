@@ -47,6 +47,7 @@ $default: var(--secondary);
 	@include flex(row, space-between);
 
 	margin-top: 0.25rem;
+	height: 3rem;
 
 	.title {
 		flex: 2;
@@ -54,6 +55,7 @@ $default: var(--secondary);
 
 	.button {
 		flex: 1;
+		height: 100%;
 	}
 
 	@include border($color: transparent, $radius: 100px);
