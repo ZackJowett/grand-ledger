@@ -9,6 +9,9 @@ import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 export async function getStaticPaths() {
 	try {
 		const debts = await getAllDebts();
+
+		if (!debts) return { paths: [], fallback: false };
+
 		return {
 			paths: debts.map((debt) => ({
 				params: { debt: debt._id },
@@ -22,6 +25,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+	if (!params.debt) return { props: { debt: null } };
 	const debt = await getOneDebt(params.debt);
 
 	return {
@@ -41,6 +45,7 @@ export default function Debt({ debt }) {
 		);
 	}
 
+	if (!debt) return null;
 	return (
 		<Layout>
 			<h1>Debt</h1>
