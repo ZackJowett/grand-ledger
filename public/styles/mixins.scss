@@ -1,0 +1,98 @@
+@mixin flex(
+	$direction: column,
+	$justify-content: center,
+	$align-items: center,
+	$flex-wrap: nowrap
+) {
+	display: flex;
+	align-items: $align-items;
+	justify-content: $justify-content;
+	flex-direction: $direction;
+	flex-wrap: $flex-wrap;
+}
+
+// Centering an element
+@mixin center($top: 50%, $left: 50%, $translate: translate(-50%, -50%)) {
+	top: $top;
+	left: $left;
+	transform: $translate;
+}
+
+// Responsive media queries
+$mobile-breakpoint: 768px;
+$desktop-breakpoint: 992px;
+$desktop-large-breakpoint: 1200px;
+
+@mixin mobile-only() {
+	@media screen and (max-width: $mobile-breakpoint) {
+		@content;
+	}
+}
+
+@mixin desktop-only() {
+	@media screen and (min-width: $mobile-breakpoint) and (max-width: $desktop-breakpoint) {
+		@content;
+	}
+}
+
+@mixin desktop-up() {
+	@media screen and (min-width: calc($mobile-breakpoint + 1px)) {
+		@content;
+	}
+}
+
+@mixin desktop-large-up() {
+	@media screen and (min-width: $desktop-breakpoint) {
+		@content;
+	}
+}
+
+// Shadow / Border
+@mixin shadow($x: 0px, $y: 5px, $blur: 0.5, $spread: 10px) {
+	box-shadow: rgba(0, 0, 0, $blur) $x $y $spread;
+}
+
+// Radius levels
+$globalRadius: 55px;
+
+@mixin border($radius: 15px, $size: 2px, $color: var(--secondary)) {
+	border: $size solid $color;
+	border-radius: $radius;
+}
+
+// Custom screen size
+@mixin screen($size) {
+	@media screen and (max-width: $size) {
+		@content;
+	}
+}
+
+// Buttons
+@mixin primaryButton() {
+	background-color: var(--secondary);
+	border-color: var(--secondary);
+	color: var(--primary);
+}
+
+@mixin secondaryButton() {
+	background-color: var(--primary);
+	border-color: var(--secondary);
+	color: var(--secondary);
+}
+
+@mixin slide-in() {
+	transform: translateX(-100%);
+	-webkit-transform: translateX(-100%);
+	animation: slide-in 0.3s ease-in-out forwards;
+
+	@keyframes slide-in {
+		0% {
+			transform: translateX(-100%);
+			-webkit-transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(0);
+			-webkit-transform: translateX(0);
+		}
+	}
+}
