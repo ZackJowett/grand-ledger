@@ -1,0 +1,173 @@
+@use "public/styles/mixins.scss" as *;
+
+.hamburgerButton {
+	left: 25px;
+}
+
+.exitCross {
+	position: absolute;
+	right: 1.8rem;
+	top: 1.8rem;
+}
+
+.hamburgerButton,
+.exitCross {
+	position: absolute;
+	color: var(--text);
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.exitCross {
+	z-index: 2;
+}
+
+.logo {
+	width: 60%;
+	max-width: 250px;
+	flex: 1;
+}
+
+.navWrapper {
+	display: none;
+	position: absolute;
+	width: 80vw;
+	max-width: 500px;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	z-index: 1;
+
+	min-width: 300px;
+
+	background-color: rgb(51, 51, 51, 0.5);
+	backdrop-filter: blur(20px);
+
+	box-shadow: rgba(0, 0, 0, 0.6) 5px 0px 10px;
+
+	&.open {
+		// includes display: flex
+		@include flex();
+	}
+
+	@include slide-in();
+}
+
+.nav {
+	width: 100%;
+	height: 80%;
+	// padding-top: 5%;
+
+	@include flex(column, space-between);
+}
+
+.title {
+	font-size: 2rem;
+}
+
+.navLinkContainer {
+	flex: 3;
+	position: relative;
+	height: 50vh;
+	width: 100%;
+
+	@include flex(column, space-evenly);
+}
+
+.navItem {
+	width: 90%;
+	max-width: 400px;
+
+	text-align: center;
+
+	// Align icon and text
+	display: flex;
+	align-items: center;
+	justify-content: left;
+
+	font-size: 3vh;
+	text-decoration: none;
+	color: var(--text);
+	padding: 1rem;
+
+	border: rgba(0, 0, 0, 00) solid 2px;
+	border-radius: 10px;
+
+	&.current {
+		// background-color: rgb(58, 58, 58);
+	}
+
+	&:hover {
+		background-color: rgba(92, 92, 92, 0.5);
+	}
+}
+
+.navItem.highlight {
+	// background-color: var(--blue);
+	color: var(--blue);
+	border-color: var(--blue);
+	h2 {
+		color: var(--blue);
+	}
+
+	&:hover {
+		background-color: rgba(92, 92, 92, 0.5);
+	}
+}
+
+.navItemIcon,
+.navItemIconCurrent {
+	margin-right: 5vw;
+	font-weight: 600;
+}
+
+.navCloseOutside {
+	z-index: 0;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+
+	background-color: transparent;
+
+	// Animations
+	// -webkit-transition: background-color 2s ease; /* webkit prefix */
+	// transition: background-color 2s ease;
+
+	&.open {
+		display: block;
+		// background-color: rgba(0, 0, 0, 0.6);
+	}
+}
+
+.bottomIcons {
+	@include flex(row, space-evenly);
+	width: 100%;
+}
+
+.navIcon {
+	$size: 75px;
+
+	@include flex();
+	@include border($color: transparent);
+
+	height: $size;
+	width: $size;
+
+	background-color: rgba(78, 78, 78, 0.3);
+	backdrop-filter: blur(10px);
+	padding: 1rem;
+
+	svg {
+		height: $size;
+		width: $size;
+	}
+
+	&:hover {
+		background-color: rgba(92, 92, 92, 0.5);
+		backdrop-filter: blur(5px);
+	}
+}
