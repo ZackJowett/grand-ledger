@@ -4,8 +4,10 @@ import TextWithTitle from "/components/text/title/TextWithTitle";
 import { getName, formatDate } from "/utils/helpers";
 import Money from "/components/text/money/Money";
 import { useStore } from "react-redux";
+import { useSession } from "next-auth/react";
 
-export default function Debt({ debt, session, className }) {
+export default function Debt({ debt, className }) {
+	const { data: session } = useSession();
 	const state = useStore().getState();
 	const users = state.userList.users;
 
@@ -28,14 +30,14 @@ export default function Debt({ debt, session, className }) {
 				reverse
 				className={styles.amount}
 			/>
-			<TextWithTitle
+			{/* <TextWithTitle
 				title={shortDesc}
 				text="Description"
 				align="left"
 				reverse
 				small
 				className={styles.desc}
-			/>
+			/> */}
 
 			<p className={styles.date}>Opened {formatDate(debt.dateCreated)}</p>
 		</ClickableCard>

@@ -49,14 +49,14 @@ export default function Settlement({ settlement, globals, className }) {
 					reverse
 					className={styles.amount}
 				/>
-				<TextWithTitle
+				{/* <TextWithTitle
 					title={shortDesc}
 					text="Description"
 					align="left"
 					reverse
 					small
 					className={styles.desc}
-				/>
+				/> */}
 				<p className={styles.date}>
 					Opened {formatDate(settlement.dateCreated)}
 				</p>
