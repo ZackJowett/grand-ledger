@@ -1,13 +1,14 @@
 import Link from "next/link";
 import styles from "./Card.module.scss";
 
-export default function Clickable({
+export default function ClickableCard({
 	pretitle,
 	title,
 	subtitle,
 	badge,
 	children,
 	href,
+	className,
 }) {
 	const badgeColor =
 		badge == "Open"
@@ -17,7 +18,9 @@ export default function Clickable({
 			: styles.closed;
 
 	return (
-		<Link href={href} className={`${styles.card}`}>
+		<Link
+			href={href}
+			className={`${styles.card} ${className ? className : ""} `}>
 			<div className={styles.header}>
 				<div className={styles.titleWrapper}>
 					<p className={styles.pretitle}>{pretitle}</p>
