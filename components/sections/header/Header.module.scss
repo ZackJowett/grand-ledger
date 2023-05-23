@@ -1,0 +1,9 @@
+@use "public/styles/mixins.scss" as *;
+
+.header {
+	position: sticky;
+	background-color: var(--dark);
+	height: 100px;
+
+	@include flex(row, space-evenly);
+}
