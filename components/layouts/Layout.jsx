@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import styles from "./layout.module.scss";
+import styles from "./Layout.module.scss";
 import Header from "../sections/header/Header";
 
 export default function Layout({ children }) {
