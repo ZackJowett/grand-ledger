@@ -1,6 +1,10 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { formatDate, getName } from "/utils/helpers";
+import { getAllUsers } from "/utils/data/users";
+import { getAllBetweenTwoUsers } from "/utils/data/debts";
+import Layout from "../../components/layouts/Layout";
+import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 
 export default function Create() {
 	const { data: session } = useSession();
@@ -16,19 +20,9 @@ export default function Create() {
 	useEffect(() => {
 		if (!session) return;
 
-		fetch(`/api/users`)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					console.log(data.data);
-					setUsers(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching users. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllUsers().then((data) => {
+			data ? setUsers(data) : console.log("Error fetching data");
+		});
 	}, [session]);
 
 	useEffect(() => {
@@ -47,31 +41,26 @@ export default function Create() {
 
 		// Fetch all closed debts between user and selected party
 		// api endpoint with queries returns if user is creditor or debtor
-		fetch(
-			`/api/debts?userId1=${session.user.id}&userId2=${selectedParty._id}&closed=false`
-		)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					console.log(data.data);
-					setDebts(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching users. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllBetweenTwoUsers(session.user.id, selectedParty._id, false).then(
+			(data) => {
+				// only include debts that are not closed
+				data
+					? setDebts(
+							data.filter((debt) => {
+								return debt.closed == false;
+							})
+					  )
+					: console.log("Error fetching data");
+			}
+		);
 	}, [session, users, selectedParty]);
 
 	// User not logged in
 	if (!session) {
 		return (
-			<>
-				<h1>Settlements</h1>
-				<p>You are not logged in</p>
-				<button onClick={() => signIn()}>Sign in</button>
-			</>
+			<Layout>
+				<LoggedOut />
+			</Layout>
 		);
 	}
 
@@ -127,7 +116,7 @@ export default function Create() {
 	}
 
 	return (
-		<>
+		<Layout>
 			<h1>Create new settlement</h1>
 
 			{debts && debts.length == 0 ? (
@@ -254,6 +243,6 @@ export default function Create() {
 					)}
 				</div>
 			)}
-		</>
+		</Layout>
 	);
 }

@@ -1,6 +1,15 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getName } from "/utils/helpers";
+import { getAllUsers } from "/utils/data/users";
+import { getAllSettlements } from "/utils/data/settlements";
+import Settlement from "../../components/settlement/Settlement";
+import InfoBanner from "../../components/banner/InfoBanner";
+import Button from "../../components/button/Button";
+import styles from "public/styles/pages/Settlements.module.scss";
+import Layout from "../../components/layouts/Layout";
+import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 
 export default function Settlements() {
 	// Session
@@ -15,136 +24,62 @@ export default function Settlements() {
 	useEffect(() => {
 		if (!session) return;
 
-		fetch(`/api/settlements/getAll?userId=${session.user.id}`)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					setSettlements(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching settlements. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllSettlements(session.user.id).then((data) => {
+			data ? setSettlements(data) : console.log("Error fetching data");
+		});
 
 		// Get user information regarding settlements
-		fetch(`/api/users`)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					setUsers(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching users. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllUsers().then((data) => {
+			data ? setUsers(data) : console.log("Error fetching data");
+		});
 	}, [session]);
 
 	// User not logged in
 	if (!session) {
 		return (
-			<>
-				<h1>Settlements</h1>
-				<p>You are not logged in</p>
-				<button onClick={() => signIn()}>Sign in</button>
-			</>
+			<Layout>
+				<LoggedOut />
+			</Layout>
 		);
 	}
 
-	const getUserName = (id) => {
-		if (!users) return;
-		const user = users.find((user) => user._id == id);
-		if (!user) return;
-		return user.name;
-	};
-
 	return (
-		<div>
-			<h1>Settlements</h1>
-			<Link href="/">Home</Link>
-			<p>Settlements are closures of multiple debts to the same person</p>
-			<p>
-				Whoever owes the most to the other person will be the settler in
-				the settlement and must pay the net and close it
-			</p>
-			<p>
-				It is then pending and won&apos;t appear in any calculations.
-				The other person then must approve/deny the settlement for it to
-				be fully closed or open again
-			</p>
-			<Link href="/settlements/create">Create Settlement</Link>
-			<br />
+		<Layout>
+			<InfoBanner title="What is a settlement?">
+				<p>
+					Settlements are <strong>CLOSURES OF MULTIPLE DEBTS</strong>{" "}
+					to the same person.
+				</p>
+				<br />
+				<p>
+					Whoever <strong>OWES THE MOST</strong> must{" "}
+					<strong>CREATE IT</strong>.
+				</p>
+				<br />
+				<p>
+					A new settlement is <strong>PENDING</strong> until the other
+					person approves it.
+				</p>
+			</InfoBanner>
+
+			<h1 className={styles.title}>Settlements</h1>
+			<Button
+				title="Create Settlement"
+				href="/settlements/create"
+				className={styles.newSettlement}
+			/>
 			{settlements
 				? settlements.map((settlement, index) => {
-						if (settlement.settler == session.user.id) {
-							// Settler is logged in user
-							const settleeName = getUserName(settlement.settlee);
-
-							return (
-								<>
-									<div key={index}>
-										<p>
-											Settlement Number:{" "}
-											{settlement.number}
-										</p>
-										<p>Settler: You</p>
-										<p>Settlee: {settleeName}</p>
-										<p>Amount: ${settlement.netAmount}</p>
-
-										<p>
-											Status:{" "}
-											{settlement.status == "pending"
-												? `Pending (Waiting on ${settleeName})`
-												: settlement.status == "open"
-												? "Open"
-												: settlement.status == "closed"
-												? "Closed"
-												: ""}
-										</p>
-										<p>
-											Date Created:{" "}
-											{formatDate(settlement.dateCreated)}
-										</p>
-									</div>
-								</>
-							);
-						}
-
-						// Settlee is logged in user
-						const settlerName = getUserName(settlement.settler);
 						return (
-							<>
-								<div key={index}>
-									<p>
-										Settlement Number: {settlement.number}
-									</p>
-									<p>Settler: {settlerName}</p>
-									<p>Settlee: You</p>
-									<p>Amount: ${settlement.netAmount}</p>
-
-									<p>
-										Status:{" "}
-										{settlement.status == "pending"
-											? `Pending (Waiting on ${settlerName})`
-											: settlement.status == "open"
-											? "Open"
-											: settlement.status == "closed"
-											? "Closed"
-											: ""}
-									</p>
-									<p>
-										Date Created:{" "}
-										{formatDate(settlement.dateCreated)}
-									</p>
-								</div>
-							</>
+							<Settlement
+								key={index}
+								settlement={settlement}
+								globals={{ users: users, session: session }}
+							/>
 						);
 				  })
 				: "Loading settlements..."}
-		</div>
+		</Layout>
 	);
 }
 

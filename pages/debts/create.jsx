@@ -1,5 +1,8 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { getAllUsers } from "/utils/data/users";
+import Layout from "../../components/layouts/Layout";
+import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 
 export default function Create() {
 	const { data: session } = useSession();
@@ -8,36 +11,24 @@ export default function Create() {
 	const [createAs, setCreateAs] = useState("creditor");
 	const [users, setUsers] = useState(null);
 
-	// User not logged in
-	// if (!session) {
-	// 	return (
-	// 		<>
-	// 			<h1>Debts</h1>
-	// 			<p>You are not logged in</p>
-	// 			<button onClick={() => signIn()}>Sign in</button>
-	// 		</>
-	// 	);
-	// }
-
 	// User logged in
 	// Get user options in same group
 	useEffect(() => {
 		if (!session) return;
 
-		fetch(`/api/users`)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					console.log(data.data);
-					setUsers(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching users. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllUsers().then((data) => {
+			data ? setUsers(data) : console.log("Error fetching data");
+		});
 	}, [session]);
+
+	// User not logged in
+	if (!session) {
+		return (
+			<Layout>
+				<LoggedOut />
+			</Layout>
+		);
+	}
 
 	// Create new debt
 	const handleRegister = async (e) => {
@@ -78,7 +69,7 @@ export default function Create() {
 	};
 
 	return (
-		<>
+		<Layout>
 			<h1>Create new debt</h1>
 
 			<p>Create as: </p>
@@ -129,6 +120,6 @@ export default function Create() {
 
 				<button type="submit">Confirm New Debt</button>
 			</form>
-		</>
+		</Layout>
 	);
 }

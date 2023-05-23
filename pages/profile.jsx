@@ -1,13 +1,13 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import Layout from "../components/layouts/Layout";
+import LoggedOut from "../components/sections/login/loggedOut/LoggedOut";
 
 export default function Profile() {
 	const { data: session } = useSession();
 
 	return (
-		<>
-			<h1>Profile</h1>
-			<Link href="/">Home</Link>
+		<Layout>
 			{session ? (
 				<>
 					<p>You are logged in</p>
@@ -17,11 +17,8 @@ export default function Profile() {
 					<button onClick={() => signOut()}>Sign out</button>
 				</>
 			) : (
-				<>
-					<p>You are not logged in</p>
-					<button onClick={() => signIn()}>Sign in</button>
-				</>
+				<LoggedOut />
 			)}
-		</>
+		</Layout>
 	);
 }

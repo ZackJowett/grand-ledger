@@ -1,6 +1,11 @@
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getAllForDebtor } from "/utils/data/debts";
+import { getAllUsers } from "/utils/data/users";
+import Debt from "/components/debt/Debt";
+import Layout from "../../components/layouts/Layout";
+import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 
 export default function Debts() {
 	const { data: session } = useSession();
@@ -17,33 +22,16 @@ export default function Debts() {
 	useEffect(() => {
 		if (!session) return;
 
-		fetch(`/api/debts?debtor=${session.user.id}`)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					setDebts(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching debts. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllForDebtor(session.user.id).then((data) => {
+			data ? setDebts(data) : console.log("Error fetching data");
+		});
 
-		fetch("/api/users")
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					setUsers(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching users. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllUsers().then((data) => {
+			data ? setUsers(data) : console.log("Error fetching data");
+		});
 	}, [session]);
 
+	// Calculate total debt amount (excluding closed debts)
 	useEffect(() => {
 		if (!debts) return;
 
@@ -65,24 +53,15 @@ export default function Debts() {
 	// Not logged in
 	if (!session) {
 		return (
-			<>
-				<h1>Debts</h1>
-				<p>You are not logged in</p>
-				<button onClick={() => signIn()}>Sign in</button>
-			</>
+			<Layout>
+				<LoggedOut />
+			</Layout>
 		);
 	}
 
 	// Filter debts
 	const handleFilterSelect = (e) => {
 		setFilter(e.target.value);
-	};
-
-	const getName = (id) => {
-		if (!users) return;
-		const user = users.find((user) => user._id == id);
-		if (!user) return;
-		return user.name;
 	};
 
 	const filterDebt = (debt) => {
@@ -94,16 +73,18 @@ export default function Debts() {
 
 	// Logged in
 	return (
-		<>
+		<Layout>
 			<h1>Debts</h1>
-			<Link href="/">Home</Link>
 			<p>A debt is the amount of money you owe someone</p>
-			<p>You can settle multiple debts to the same person at once</p>
+			<p>
+				You can settle multiple debts to the same person at once{" "}
+				<Link href="/settlements/create">here</Link>
+			</p>
 			<br />
 			<Link href="/debts/create">New Debt</Link>
 			<br />
 			<h3>
-				Total Amount:{" $"}
+				Total Amount (Open):{" $"}
 				{totalUnreceived !== null ? totalUnreceived : "Calculating..."}
 			</h3>
 
@@ -120,36 +101,16 @@ export default function Debts() {
 					if (!filterDebt(debt)) return;
 
 					return (
-						<div key={index}>
-							<hr />
-							<p>Creditor: {getName(debt.creditor)}</p>
-							<p>
-								Debtor:{" "}
-								{debt.debtor == session.user.id
-									? "You"
-									: debt.debtor}
-							</p>
-							<p>Amount: ${debt.amount} AUD</p>
-							<p>Description: {debt.description}</p>
-							<p>Status: {debt.closed ? "Closed" : "Open"}</p>
-							<p>Date Created: {formatDate(debt.dateCreated)}</p>
-						</div>
+						<Debt
+							key={index}
+							debt={debt}
+							globals={{ session: session, users: users }}
+						/>
 					);
 				})
 			) : (
 				<p>Loading...</p>
 			)}
-		</>
+		</Layout>
 	);
-}
-
-function formatDate(date) {
-	const dateObject = new Date(date);
-	const formattedDate = new Intl.DateTimeFormat("en-GB", {
-		dateStyle: "full",
-		timeStyle: "short",
-		timeZone: "Australia/Sydney",
-		hourCycle: "h12",
-	}).format(dateObject);
-	return formattedDate;
 }

@@ -2,6 +2,10 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatDate, getName } from "/utils/helpers";
+import { getAllForCreditor } from "/utils/data/debts";
+import { getAllUsers } from "/utils/data/users";
+import Layout from "../../components/layouts/Layout";
+import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 
 export default function UnreceivedPayments() {
 	const { data: session } = useSession();
@@ -15,31 +19,13 @@ export default function UnreceivedPayments() {
 	useEffect(() => {
 		if (!session) return;
 
-		fetch(`/api/debts?creditor=${session.user.id}`)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					setDebts(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching debts. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllForCreditor(session.user.id).then((data) => {
+			data ? setDebts(data) : console.log("Error fetching data");
+		});
 
-		fetch("/api/users")
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					setUsers(data.data);
-				} else {
-					console.log(data.message);
-					alert(
-						"Error fetching users. Check console for details or contact admin."
-					);
-				}
-			});
+		getAllUsers().then((data) => {
+			data ? setUsers(data) : console.log("Error fetching data");
+		});
 	}, [session]);
 
 	useEffect(() => {
@@ -61,19 +47,16 @@ export default function UnreceivedPayments() {
 	// Not logged in
 	if (!session) {
 		return (
-			<>
-				<h1>Debts</h1>
-				<p>You are not logged in</p>
-				<button onClick={() => signIn()}>Sign in</button>
-			</>
+			<Layout>
+				<LoggedOut />
+			</Layout>
 		);
 	}
 
 	// Logged in
 	return (
-		<>
+		<Layout>
 			<h1>Unreceived Payments</h1>
-			<Link href="/">Home</Link>
 			<p>
 				An <strong>unreceived payment</strong> is an debt someone has to
 				you and is how much they owe you
@@ -87,6 +70,7 @@ export default function UnreceivedPayments() {
 			{debts ? (
 				debts.map((debt, index) => {
 					// Filter debts
+					if (debt.closed) return null;
 
 					return (
 						<div key={index}>
@@ -108,6 +92,6 @@ export default function UnreceivedPayments() {
 			) : (
 				<p>Loading...</p>
 			)}
-		</>
+		</Layout>
 	);
 }
