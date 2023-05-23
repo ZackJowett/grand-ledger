@@ -11,7 +11,6 @@ export default async function handler(req, res) {
 		await Settlement.find({ _id: req.query.id })
 			.sort({ dateCreated: "descending" })
 			.then((res) => {
-				console.log("Result : ", res);
 				settlements = res;
 			})
 			.catch((err) => console.log(err));

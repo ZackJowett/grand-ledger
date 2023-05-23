@@ -23,7 +23,6 @@ export default function NetPosition() {
 	}, [session]);
 
 	if (!session) return;
-	console.log(session);
 
 	return (
 		<Card title={`Hello, ${session.user.name}`} subtitle={dailyFact} dark>

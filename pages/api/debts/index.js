@@ -72,7 +72,6 @@ export default async function handler(req, res) {
 			// don't need to add when its two parties
 			query.closed = req.query.closed;
 		}
-		console.log(query);
 
 		// Find debts with query
 		// then sort by date created in descending order

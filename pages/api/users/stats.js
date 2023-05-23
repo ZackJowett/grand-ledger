@@ -68,7 +68,6 @@ export default async function handler(req, res) {
 
 		// ----- DEBTS ----- \\
 		debts.forEach((debt) => {
-			// console.log(debt);
 			// Increment created as debtor or creditor statistics
 			if (debt.creditor == req.query.id) {
 				// User is creditor
@@ -105,7 +104,6 @@ export default async function handler(req, res) {
 			}
 		});
 
-		console.log(statistics);
 		res.status(200).json({ success: true, data: statistics });
 	} catch (error) {
 		res.status(400).json({ success: false });

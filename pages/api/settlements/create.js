@@ -24,8 +24,6 @@ export default async function handler(req, res) {
 				{ closed: true },
 				{ new: true }
 			);
-
-			console.log(debt);
 		}
 
 		res.status(200).json({ success: true, data: settlement });

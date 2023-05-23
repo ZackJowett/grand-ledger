@@ -14,7 +14,6 @@ export default async function handler(req, res) {
 		})
 			.sort({ dateCreated: "descending" })
 			.then((res) => {
-				console.log("Result : ", res);
 				settlements = res;
 			})
 			.catch((err) => console.log(err));
