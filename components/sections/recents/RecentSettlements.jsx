@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Settlement from "/components/settlement/Settlement";
 import TextButton from "/components/button/text/TextButton";
 
-export default function RecentSettlements() {
+export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
 
 	const [settlements, setSettlements] = useState(null);
@@ -41,7 +41,11 @@ export default function RecentSettlements() {
 	};
 
 	return (
-		<Card title="Recent Settlements" subtitle="Updated: [TIME]" dark>
+		<Card
+			title="Recent Settlements"
+			subtitle="Updated: [TIME]"
+			dark
+			className={className}>
 			{settlements && users
 				? settlements.map((settlement, index) => {
 						if (index >= showAmount) return;

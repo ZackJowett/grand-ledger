@@ -1,30 +1,25 @@
-import styles from "./RecentSettlements.module.scss";
+import styles from "./RecentDebts.module.scss";
 import Card from "/components/card/Card";
 import { useSession } from "next-auth/react";
 import { getAllForDebtor } from "/utils/data/debts";
-import { getAllUsers } from "/utils/data/users";
 import { useEffect, useState } from "react";
 import Debt from "/components/debt/Debt";
 import TextButton from "/components/button/text/TextButton";
+// import { useStore } from "react-redux";
 
-export default function RecentSettlements() {
+export default function RecentDebts({ className }) {
 	const { data: session } = useSession();
 
 	const [debts, setDebts] = useState(null);
-	const [users, setUsers] = useState(null); // [user
 	const [showAmount, setShowAmount] = useState(3); // Number to show
 
 	useEffect(() => {
 		if (!session) return;
 
 		getAllForDebtor(session.user.id).then((data) => {
-			data ? setDebts(data) : console.log("Error fetching settlements");
+			data ? setDebts(data) : console.log("Error fetching debts");
 			// Time fetched
 			//....
-		});
-
-		getAllUsers(session.user.id).then((data) => {
-			data ? setUsers(data) : console.log("Error fetching users");
 		});
 	}, [session]);
 
@@ -39,23 +34,27 @@ export default function RecentSettlements() {
 	};
 
 	return (
-		<Card title="Recent Debts" subtitle="Updated: [TIME]" dark>
-			{debts && users
+		<Card
+			title="Recent Debts"
+			subtitle="Updated: [TIME]"
+			dark
+			className={`${className} ${styles.wrapper}`}>
+			{debts
 				? debts.map((debt, index) => {
 						if (index >= showAmount) return;
 						return (
 							<Debt
 								key={index}
 								debt={debt}
-								globals={{ users: users, session: session }}
+								session={session}
 								className={styles.debt}
 							/>
 						);
 				  })
 				: "Loading..."}
 
-			{/* Show / Hide view more settlements button */}
-			{/* Links to all settlements when max reached */}
+			{/* Show / Hide view more devts button */}
+			{/* Links to all deebts when max reached */}
 			{debts && showAmount != debts.length ? (
 				<TextButton title="View More" onClick={handleViewMore} />
 			) : (
