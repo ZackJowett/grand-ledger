@@ -1,0 +1,18 @@
+@use "public/styles/mixins.scss" as *;
+
+.buttonWrapper {
+	width: 100%;
+	padding: 1rem;
+
+	.newDebt {
+		height: 3rem;
+	}
+}
+
+.settlement {
+	@include border;
+}
+
+.card {
+	background-color: var(--dark) !important;
+}
