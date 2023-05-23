@@ -45,6 +45,7 @@ export default function RecentSettlements() {
 						if (index >= showAmount) return;
 						return (
 							<Debt
+								key={index}
 								debt={debt}
 								globals={{ users: users, session: session }}
 								className={styles.debt}

@@ -47,6 +47,7 @@ export default function RecentSettlements() {
 						if (index >= showAmount) return;
 						return (
 							<Settlement
+								key={index}
 								settlement={settlement}
 								globals={{ users: users, session: session }}
 								className={styles.settlement}
