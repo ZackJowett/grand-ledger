@@ -1,0 +1,16 @@
+@use "public/styles/mixins.scss" as *;
+
+.date {
+	width: 100%;
+	text-align: right;
+}
+
+.amount,
+.desc,
+.date {
+	margin-top: 0.5rem;
+}
+
+.date {
+	color: var(--subtext);
+}
