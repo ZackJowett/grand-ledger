@@ -11,16 +11,20 @@ export default async function handler(req, res) {
 		if (req.query.userId1 && req.query.userId2) {
 			// get all debts between two parties
 
-			if (req.query.closed) {
+			if (req.query.closed == null) {
 				query = {
-					$or: [
+					$and: [
 						{
-							creditor: req.query.userId1,
-							debtor: req.query.userId2,
-						},
-						{
-							creditor: req.query.userId2,
-							debtor: req.query.userId1,
+							$or: [
+								{
+									creditor: req.query.userId1,
+									debtor: req.query.userId2,
+								},
+								{
+									creditor: req.query.userId2,
+									debtor: req.query.userId1,
+								},
+							],
 						},
 					],
 				};
@@ -38,8 +42,8 @@ export default async function handler(req, res) {
 									debtor: req.query.userId1,
 								},
 							],
-							closed: req.query.closed,
 						},
+						{ closed: req.query.closed ? true : false },
 					],
 				};
 			}
@@ -54,22 +58,27 @@ export default async function handler(req, res) {
 			// Get all debts with creditor as the requested id
 			// Sort by date created in descending order
 			query = { creditor: req.query.creditor };
+		} else if (req.query.id) {
+			// Get specific debt with id
+
+			query = { _id: req.query.id };
 		} else {
-			throw new Error("Invalid query parameters");
+			// get all debts
+			query = {};
 		}
 
 		// Add status to query if it exists
-		if (req.query.closed) {
+		if (req.query.closed && !req.query.userId1 && !req.query.userId2) {
+			// don't need to add when its two parties
 			query.closed = req.query.closed;
 		}
 		console.log(query);
 
 		// Find debts with query
 		// then sort by date created in descending order
-		const debts = await Debt.find(query)
+		await Debt.find(query)
 			.sort({ dateCreated: "descending" })
 			.then((res) => {
-				console.log("Result : ", res);
 				sortedDebts = res;
 			})
 			.catch((err) => console.log(err));
