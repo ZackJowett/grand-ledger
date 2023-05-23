@@ -1,0 +1,12 @@
+@use "public/styles/mixins.scss" as *;
+
+.banner {
+	width: 100%;
+	padding: 1rem;
+
+	background-color: var(--darkgrey);
+}
+
+.titleWrapper {
+	margin-bottom: 1rem;
+}
