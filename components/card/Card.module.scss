@@ -1,0 +1,46 @@
+@use "public/styles/mixins.scss" as *;
+
+.card {
+	display: block;
+
+	padding: 1rem;
+	margin: 1rem 1rem;
+
+	background-color: var(--grey);
+
+	@include border($color: transparent);
+}
+
+.header {
+	@include flex(row, space-between);
+	align-items: flex-start;
+}
+
+.subtitle,
+.pretitle {
+	color: var(--subtext);
+}
+
+.badge {
+	background-color: var(--red);
+	color: var(--text);
+	padding: 0 0.5rem;
+
+	@include border($color: transparent);
+
+	&.open {
+		background-color: var(--green);
+	}
+
+	&.pending {
+		background-color: var(--orange);
+	}
+
+	&.closed {
+		background-color: var(--red);
+	}
+}
+
+.dark {
+	background-color: var(--dark);
+}
