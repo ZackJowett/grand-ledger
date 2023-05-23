@@ -1,4 +1,4 @@
-// api/users.js
+// api/users/egister.js
 
 import dbConnect from "/utils/mongodb";
 import User from "/utils/models/user";
