@@ -67,6 +67,12 @@ $globalRadius: 55px;
 	}
 }
 
+@mixin screen-up($size) {
+	@media screen and (min-width: $size) {
+		@content;
+	}
+}
+
 // Buttons
 @mixin primaryButton() {
 	background-color: var(--secondary);
