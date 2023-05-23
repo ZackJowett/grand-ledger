@@ -7,7 +7,7 @@
 	// margin: 1rem 1rem;
 	// max-width: var(--maxWidth);
 
-	background-color: var(--grey);
+	background-color: var(--background);
 
 	@include border($color: transparent);
 }
@@ -43,5 +43,11 @@
 }
 
 .dark {
-	background-color: var(--dark);
+	background-color: var(--backgroundDark);
+}
+
+.clickable {
+	cursor: pointer;
+
+	@include scale;
 }

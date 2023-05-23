@@ -32,7 +32,7 @@
 .disabled {
 	border-color: var(--subtext);
 	color: var(--subtext);
-	background-color: var(--dark);
+	background-color: var(--backgroundDark);
 
 	&:hover {
 		cursor: default;

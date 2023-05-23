@@ -11,34 +11,37 @@
 // -----------------------------------------------------------------------------
 
 :root {
-	--primary: #242424;
-	--secondary: #e0e0e0;
+	--primary: var(--blue);
 
-	--background: var(--primary);
+	--background: #242424;
+	--backgroundDark: #1b1b1b;
+	--backgroundLight: #2a2a2a;
+	--backgroundMain: #000;
+
+	--secondary: #e0e0e0;
 
 	--heading: var(--secondary);
 	--text: var(--secondary);
 	--subtext: #777;
 
-	--button: #2581b3;
+	--button: var(--blue);
 
 	--red: #ca5555;
 	--orange: #c57e22;
 	--yellow: #fffd68;
 	--green: #61a767;
-	--blue: #3ea5ce;
+	--blue: #2581b3;
 
-	--grey: #2a2a2a;
-	--darkgrey: #333;
+	// --grey: #2a2a2a;
+	// --darkgrey: #333;
 
-	--dark: #1b1b1b;
+	// --dark: #1b1b1b;
 
 	--maxWidth: 600px;
 	--minWidth: 300px;
 }
 
 #__next {
-	background-color: var(--primary);
 }
 
 html,
