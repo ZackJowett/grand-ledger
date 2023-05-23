@@ -8,6 +8,7 @@ export default function Logo() {
 			className={styles.image}
 			height={500}
 			width={500}
+			alt="Logo"
 		/>
 	);
 }
