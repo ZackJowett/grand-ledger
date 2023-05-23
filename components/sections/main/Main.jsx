@@ -4,31 +4,30 @@ import Button from "../../button/Button";
 import NetPosition from "../../sections/stats/NetPosition";
 import RecentSettlements from "../../sections/recents/RecentSettlements";
 import RecentDebts from "../../sections/recents/RecentDebts";
-import LoggedOut from "../login/loggedOut/LoggedOut";
+import { useStore } from "react-redux";
 
 export default function Main() {
 	const { data: session } = useSession();
 
-	if (!session) {
-		return <LoggedOut />;
-	}
+	// const state = useStore().getState();
 
 	return (
-		<>
-			<NetPosition />
+		<div className={styles.main}>
+			<div className={styles.overview}>
+				<NetPosition />
 
-			<div className={styles.buttonWrapper}>
-				<Button
-					title="CREATE NEW DEBT"
-					href="/debts/create"
-					className={styles.newDebt}
-				/>
+				<div className={styles.buttonWrapper}>
+					<Button
+						title="CREATE NEW DEBT"
+						href="/debts/create"
+						className={styles.newDebt}
+					/>
+				</div>
 			</div>
 
-			<RecentSettlements />
-
-			<RecentDebts />
+			<RecentSettlements className={styles.settlements} />
+			<RecentDebts className={styles.debts} />
 			<br />
-		</>
+		</div>
 	);
 }

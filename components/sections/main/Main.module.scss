@@ -1,18 +1,41 @@
 @use "public/styles/mixins.scss" as *;
 
+$breakpoint: 1200px;
+
+.main {
+	@include flex(column, center);
+	flex-wrap: nowrap;
+
+	@include screen-up($breakpoint) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	max-width: 1500px;
+	margin: 1rem auto;
+}
+
+.overview,
+.settlements,
+.debts {
+	width: 85vw;
+	max-width: var(--maxWidth);
+	min-width: var(--minWidth);
+	flex: 1;
+
+	margin: 1rem 0;
+
+	@include screen-up($breakpoint) {
+		margin: 0 0.5rem;
+	}
+}
+
 .buttonWrapper {
 	width: 100%;
 	padding: 1rem;
 
 	.newDebt {
 		height: 3rem;
+		max-width: var(--maxWidth);
 	}
-}
-
-.settlement {
-	@include border;
-}
-
-.card {
-	background-color: var(--dark) !important;
 }
