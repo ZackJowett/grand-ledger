@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { getRootURL } from "/utils/helpers";
 
 export const authOptions = {
 	// Configure one or more authentication providers
@@ -35,50 +36,49 @@ export const authOptions = {
 				// (i.e., the request IP address)
 
 				// Get root url based on environment
-				const env = process.env.NODE_ENV;
-				let root_url = "";
-				if (env == "development") {
-					root_url = "http://localhost:3000/";
-				} else if (env == "production") {
-					root_url = "https://grand-ledger.vercel.app/";
-				}
+				try {
+					let root_url = getRootURL();
 
-				// Fetch user data from api
-				let userData = await fetch(
-					root_url + "api/users/" + credentials.username
-				).then((res) => res.json());
+					// Fetch user data from api
+					let userData = await fetch(
+						root_url + "api/users/" + credentials.username
+					).then((res) => res.json());
 
-				// Check user was returned
-				if (!userData.success) {
+					// Check user was returned
+					if (!userData.success) {
+						return null;
+					}
+
+					// Get specific user details
+					const storedUser = userData.user;
+
+					// Check password match
+					if (storedUser.password != credentials.password) {
+						return null;
+					}
+
+					// bcrypt.compare(
+					// 	credentials.password,
+					// 	storedUser.password,
+					// 	function (err, result) {
+					// 		if (result == true) {
+					// 			console.log("It matches!");
+					// 		} else {
+					// 			console.log("Invalid password!");
+					// 		}
+					// 	}
+					// );
+
+					// If no error and we have user data, return it
+					if (storedUser) {
+						return storedUser;
+					}
+					// Return null if user data could not be retrieved
+					return null;
+				} catch (error) {
+					console.log(error);
 					return null;
 				}
-
-				// Get specific user details
-				const storedUser = userData.user;
-
-				// Check password match
-				if (storedUser.password != credentials.password) {
-					return null;
-				}
-
-				// bcrypt.compare(
-				// 	credentials.password,
-				// 	storedUser.password,
-				// 	function (err, result) {
-				// 		if (result == true) {
-				// 			console.log("It matches!");
-				// 		} else {
-				// 			console.log("Invalid password!");
-				// 		}
-				// 	}
-				// );
-
-				// If no error and we have user data, return it
-				if (storedUser) {
-					return storedUser;
-				}
-				// Return null if user data could not be retrieved
-				return null;
 			},
 		}),
 	],
