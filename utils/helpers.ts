@@ -5,7 +5,7 @@
 function formatDate(date) {
 	const dateObject = new Date(date);
 	const formattedDate = new Intl.DateTimeFormat("en-GB", {
-		dateStyle: "full",
+		dateStyle: "medium",
 		timeStyle: "short",
 		timeZone: "Australia/Sydney",
 		hourCycle: "h12",
@@ -33,4 +33,26 @@ const getName = (id, users, session) => {
 	return user.name;
 };
 
-module.exports = { formatDate, getName };
+// Fetches data from custom API, checks success and returns JSON object with data
+async function quickFetch(url) {
+	const data = fetch(url)
+		.then((res) => res.json())
+		.then((data) => {
+			if (!data.success) {
+				console.log("Error in quickFetch()");
+				return;
+			}
+			return data.data;
+		});
+	return data;
+}
+
+function getRootURL() {
+	if (process.env.NODE_ENV == "development") {
+		return "http://localhost:3000/";
+	} else if (process.env.NODE_ENV == "production") {
+		return "https://grand-ledger.vercel.app/";
+	}
+}
+
+module.exports = { formatDate, getName, quickFetch, getRootURL };
