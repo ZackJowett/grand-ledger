@@ -6,6 +6,7 @@ import { getAllUsers } from "/utils/data/users";
 import { useEffect, useState } from "react";
 import Settlement from "/components/settlement/Settlement";
 import TextButton from "/components/button/text/TextButton";
+import { CardPlaceholder } from "/components/placeholders/Placeholders";
 
 export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
@@ -30,7 +31,7 @@ export default function RecentSettlements({ className }) {
 		});
 	}, [session]);
 
-	if (!session || !settlements) return;
+	if (!session) return;
 
 	const handleViewMore = () => {
 		if (settlements.length - showAmount < 3) {
@@ -46,19 +47,25 @@ export default function RecentSettlements({ className }) {
 			subtitle="Updated: [TIME]"
 			dark
 			className={className}>
-			{settlements && users
-				? settlements.map((settlement, index) => {
-						if (index >= showAmount) return;
-						return (
-							<Settlement
-								key={index}
-								settlement={settlement}
-								globals={{ users: users, session: session }}
-								className={styles.settlement}
-							/>
-						);
-				  })
-				: "Loading..."}
+			{settlements && users ? (
+				settlements.map((settlement, index) => {
+					if (index >= showAmount) return;
+					return (
+						<Settlement
+							key={index}
+							settlement={settlement}
+							globals={{ users: users, session: session }}
+							className={styles.settlement}
+						/>
+					);
+				})
+			) : (
+				<>
+					<CardPlaceholder />
+					<CardPlaceholder />
+					<CardPlaceholder />
+				</>
+			)}
 
 			{/* Show / Hide view more settlements button */}
 			{/* Links to all settlements when max reached */}
