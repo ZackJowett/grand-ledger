@@ -39,6 +39,7 @@ export default function RecentDebts({ className }) {
 		<Card
 			title="Recent Debts"
 			subtitle="Updated: [TIME]"
+			link="/debts"
 			dark
 			className={`${className} ${styles.wrapper}`}>
 			{debts ? (

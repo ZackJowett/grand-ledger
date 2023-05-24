@@ -45,6 +45,7 @@ export default function RecentSettlements({ className }) {
 		<Card
 			title="Recent Settlements"
 			subtitle="Updated: [TIME]"
+			link="/settlements"
 			dark
 			className={className}>
 			{settlements && users ? (
