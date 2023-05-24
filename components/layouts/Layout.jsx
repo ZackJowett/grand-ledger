@@ -2,6 +2,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import styles from "./Layout.module.scss";
 import Header from "../sections/header/Header";
+import MobileNav from "../sections/nav/MobileNav";
+import DesktopNav from "../sections/nav/DesktopNav";
 
 export default function Layout({ children, className }) {
 	const router = useRouter();
@@ -36,8 +38,17 @@ export default function Layout({ children, className }) {
 				<link rel="manifest" href="/favicon/site.webmanifest" />
 			</Head>
 			<Header currentRoute={currentRoute} />
-			<main className={`${styles.content} ${className ? className : ""}`}>
-				{children}
+			<main className={styles.main}>
+				<DesktopNav
+					currentRoute={currentRoute}
+					className={styles.desktopNav}
+				/>
+				<section
+					className={`${styles.content} ${
+						className ? className : ""
+					}`}>
+					{children}
+				</section>
 			</main>
 			{/* <Footer /> */}
 		</>

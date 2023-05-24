@@ -5,7 +5,7 @@ import { FaHandshake, FaHandHolding } from "react-icons/fa";
 import { IoWarning } from "react-icons/io5";
 import { TiArrowForward } from "react-icons/ti";
 import { MdSpaceDashboard, MdGroups, MdSettings } from "react-icons/md";
-import styles from "./Hamburger.module.scss";
+import styles from "./MobileNav.module.scss";
 // import Logo from "../../logo/Logo";
 // import SocialsList from "@/components/icons/socialsList";
 

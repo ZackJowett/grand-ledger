@@ -3,7 +3,7 @@
 .header {
 	position: sticky;
 	background-color: var(--backgroundDark);
-	height: 100px;
+	height: var(--headerHeight);
 
 	@include flex(row, space-evenly);
 }

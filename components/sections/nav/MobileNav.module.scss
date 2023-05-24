@@ -2,6 +2,10 @@
 
 .hamburgerButton {
 	left: 25px;
+
+	@include desktop-up {
+		display: none;
+	}
 }
 
 .exitCross {
@@ -31,7 +35,7 @@
 
 .navWrapper {
 	display: none;
-	position: absolute;
+	position: fixed;
 	width: 80vw;
 	max-width: 500px;
 	height: 100vh;
@@ -49,6 +53,13 @@
 	&.open {
 		// includes display: flex
 		@include flex();
+	}
+
+	@include desktop-up {
+		display: none;
+		&.open {
+			display: none;
+		}
 	}
 
 	@include slide-in();
@@ -86,7 +97,7 @@
 	align-items: center;
 	justify-content: left;
 
-	font-size: 3vh;
+	font-size: 5vw;
 	text-decoration: none;
 	color: var(--text);
 	padding: 1rem;
@@ -95,11 +106,33 @@
 	border-radius: 10px;
 
 	&.current {
-		// background-color: rgb(58, 58, 58);
+		background-color: rgba(92, 92, 92, 0.5);
+
+		&:hover {
+			cursor: default;
+		}
 	}
 
 	&:hover {
 		background-color: rgba(92, 92, 92, 0.5);
+	}
+
+	h2 {
+		font-size: 5vw;
+	}
+
+	@include screen(400px) {
+		font-size: 1rem;
+		h2 {
+			font-size: 1rem;
+		}
+	}
+
+	@include screen-up(550px) {
+		font-size: 1.5rem;
+		h2 {
+			font-size: 1.5rem;
+		}
 	}
 }
 
@@ -118,7 +151,7 @@
 
 .navItemIcon,
 .navItemIconCurrent {
-	margin-right: 5vw;
+	margin-right: 1rem;
 	font-weight: 600;
 }
 

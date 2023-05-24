@@ -1,4 +1,4 @@
-import HamburgerMenu from "../hamburgerMenu/Hamburger";
+import Nav from "../nav/MobileNav";
 import styles from "./Header.module.scss";
 import Link from "next/link";
 
@@ -8,7 +8,7 @@ export default function Header({ currentRoute }) {
 			<Link href="/">
 				<h1>Grand Ledger</h1>
 			</Link>
-			<HamburgerMenu currentRoute={currentRoute} />
+			<Nav currentRoute={currentRoute} />
 		</header>
 	);
 }
