@@ -31,10 +31,11 @@ export async function getAllSettlements(id = null) {
 	try {
 		if (id == null) {
 			return await quickFetch(`${getRootURL()}api/settlements/getAll`);
+		} else {
+			return await quickFetch(
+				`${getRootURL()}api/settlements/getByUsers?id=${id}`
+			);
 		}
-		return await quickFetch(
-			`${getRootURL()}api/settlements/getByUsers?id=${id}`
-		);
 	} catch (error) {
 		console.log(error);
 		return null;
