@@ -58,7 +58,7 @@ export default function Settlement({ settlement }) {
 
 	useEffect(() => {
 		getSettlementDebts(settlement._id).then((res) => setDebts(res));
-	}, []);
+	}, [settlement._id]);
 
 	// Not logged in
 	if (!session) {
