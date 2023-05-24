@@ -6,6 +6,7 @@ import TextWithButton from "/components/text/title/TextWithButton";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import { useSession } from "next-auth/react";
 import styles from "./NetPosition.module.scss";
+import { NetPositionPlaceholder } from "/components/placeholders/Placeholders";
 
 export default function NetPosition() {
 	const { data: session } = useSession();
@@ -62,7 +63,7 @@ export default function NetPosition() {
 					/>
 				</>
 			) : (
-				<p>Loading...</p>
+				<NetPositionPlaceholder />
 			)}
 		</Card>
 	);
