@@ -5,6 +5,7 @@ import { getAllForDebtor } from "/utils/data/debts";
 import { useEffect, useState } from "react";
 import Debt from "/components/debt/Debt";
 import TextButton from "/components/button/text/TextButton";
+import { CardPlaceholder } from "/components/placeholders/Placeholders";
 // import { useStore } from "react-redux";
 
 export default function RecentDebts({ className }) {
@@ -23,7 +24,8 @@ export default function RecentDebts({ className }) {
 		});
 	}, [session]);
 
-	if (!session || !debts) return;
+	// No session data yet
+	if (!session) return;
 
 	const handleViewMore = () => {
 		if (debts.length - showAmount < 3) {
@@ -39,19 +41,25 @@ export default function RecentDebts({ className }) {
 			subtitle="Updated: [TIME]"
 			dark
 			className={`${className} ${styles.wrapper}`}>
-			{debts
-				? debts.map((debt, index) => {
-						if (index >= showAmount) return;
-						return (
-							<Debt
-								key={index}
-								debt={debt}
-								session={session}
-								className={styles.debt}
-							/>
-						);
-				  })
-				: "Loading..."}
+			{debts ? (
+				debts.map((debt, index) => {
+					if (index >= showAmount) return;
+					return (
+						<Debt
+							key={index}
+							debt={debt}
+							session={session}
+							className={styles.debt}
+						/>
+					);
+				})
+			) : (
+				<>
+					<CardPlaceholder />
+					<CardPlaceholder />
+					<CardPlaceholder />
+				</>
+			)}
 
 			{/* Show / Hide view more devts button */}
 			{/* Links to all deebts when max reached */}
