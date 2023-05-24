@@ -5,7 +5,8 @@
 
 	padding: 1rem;
 	// margin: 1rem 1rem;
-	// max-width: var(--maxWidth);
+	max-width: var(--maxWidth);
+	width: 100%;
 
 	background-color: var(--background);
 
@@ -43,6 +44,7 @@
 }
 
 .dark {
+	max-width: var(--maxWidth);
 	background-color: var(--backgroundDark);
 }
 
@@ -50,4 +52,8 @@
 	cursor: pointer;
 
 	@include scale;
+}
+
+.children {
+	width: 100%;
 }
