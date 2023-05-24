@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import styles from "./Layout.module.scss";
 import Header from "../sections/header/Header";
 
-export default function Layout({ children }) {
+export default function Layout({ children, className }) {
 	const router = useRouter();
 	const currentRoute = router.pathname;
 
@@ -36,7 +36,9 @@ export default function Layout({ children }) {
 				<link rel="manifest" href="/favicon/site.webmanifest" />
 			</Head>
 			<Header currentRoute={currentRoute} />
-			<main className={styles.content}>{children}</main>
+			<main className={`${styles.content} ${className ? className : ""}`}>
+				{children}
+			</main>
 			{/* <Footer /> */}
 		</>
 	);
