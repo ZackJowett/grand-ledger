@@ -1,0 +1,10 @@
+@use "public/styles/mixins.scss" as *;
+
+.detailsCard {
+	@include flex(column, flex-start, felx-start);
+	gap: 1rem;
+}
+.details {
+	@include flex(column, flex-start, felx-start);
+	gap: 0.5rem;
+}

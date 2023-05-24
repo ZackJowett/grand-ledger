@@ -1,0 +1,29 @@
+@use "public/styles/mixins.scss" as *;
+
+.totalsWrapper {
+	@include flex(row, space-between);
+	width: 100%;
+}
+
+.textWithTitle {
+	width: 45%;
+	margin-top: 1rem;
+}
+
+.debt {
+	color: var(--red);
+}
+
+.unreceived {
+	color: var(--green);
+}
+
+.hr {
+	margin: 2rem 5rem;
+}
+
+.total {
+	max-width: 15rem;
+	margin: auto;
+	margin-top: 2rem;
+}

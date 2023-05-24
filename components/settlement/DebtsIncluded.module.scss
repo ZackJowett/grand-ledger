@@ -1,0 +1,8 @@
+@use "public/styles/mixins.scss" as *;
+
+.debts {
+	margin-top: 1rem;
+	@include flex(column, flex-start, flex-start);
+	width: 100%;
+	gap: 1rem;
+}
