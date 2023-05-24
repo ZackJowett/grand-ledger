@@ -1,6 +1,7 @@
 .newSettlement {
 	margin: 1.5rem auto;
 	width: 90%;
+	max-width: var(--maxWidth);
 }
 
 .title {
@@ -16,7 +17,6 @@
 
 .settlements {
 	margin: auto;
-	max-width: 800px;
 
 	.settlement {
 		margin-top: 2rem;
