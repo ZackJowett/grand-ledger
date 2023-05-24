@@ -1,0 +1,22 @@
+@use "public/styles/mixins.scss" as *;
+
+.badge {
+	background-color: var(--red);
+	color: var(--text);
+	padding: 0 0.5rem;
+	width: fit-content;
+
+	@include border($color: transparent);
+
+	&.open {
+		background-color: var(--green);
+	}
+
+	&.pending {
+		background-color: var(--orange);
+	}
+
+	&.closed {
+		background-color: var(--red);
+	}
+}
