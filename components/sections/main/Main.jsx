@@ -5,11 +5,18 @@ import NetPosition from "../../sections/stats/NetPosition";
 import RecentSettlements from "../../sections/recents/RecentSettlements";
 import RecentDebts from "../../sections/recents/RecentDebts";
 import { useStore } from "react-redux";
+import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
+import Layout from "/components/layouts/Layout";
 
 export default function Main() {
 	const { data: session } = useSession();
 
 	// const state = useStore().getState();
+
+	// User not logged in
+	if (!session) {
+		return <LoggedOut />;
+	}
 
 	return (
 		<div className={styles.main}>
