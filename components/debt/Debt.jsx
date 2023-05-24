@@ -24,6 +24,7 @@ export default function Debt({ debt, className }) {
 			href={`/debts/${debt._id}`}
 			className={`${className ? className : ""}`}>
 			<TextWithTitle
+				pretitle="Debt"
 				title={<Money amount={debt.amount} />}
 				text="Amount"
 				align="left"
