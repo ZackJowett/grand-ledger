@@ -68,3 +68,7 @@ $default: var(--secondary);
 
 	@include scale(1.025);
 }
+
+.background {
+	background-color: var(--background);
+}
