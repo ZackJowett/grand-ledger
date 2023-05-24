@@ -12,7 +12,7 @@ $breakpoint: 1200px;
 	}
 
 	max-width: 1500px;
-	margin: 1rem auto;
+	margin: 1rem 1rem;
 }
 
 .overview,
@@ -28,6 +28,10 @@ $breakpoint: 1200px;
 	@include screen-up($breakpoint) {
 		margin: 0 0.5rem;
 	}
+}
+
+.overview {
+	width: 100%;
 }
 
 .buttonWrapper {
