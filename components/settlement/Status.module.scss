@@ -1,0 +1,94 @@
+@use "public/styles/mixins.scss" as *;
+
+.pendingWaiting {
+	margin-top: 2rem;
+}
+
+.resubmitFormWrapper {
+	@include flex;
+	width: 100%;
+}
+
+.warningWrapper {
+	@include flex(column, flex-start, flex-start);
+	gap: 0.75rem;
+
+	margin: 1rem 0 2rem 2rem;
+
+	width: 100%;
+
+	.warning {
+		color: var(--red);
+	}
+
+	.warningIcon {
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 0.5rem;
+	}
+}
+
+.resubmitForm {
+	width: 100%;
+}
+
+.nudgeForm,
+.reviewForm {
+	@include flex(column, flex-start, flex-start);
+}
+
+.reviewForm {
+	gap: 1.25rem;
+
+	margin-top: 1rem;
+
+	input {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
+
+.submitWrapper {
+	width: 100%;
+	@include flex;
+}
+
+.submitTitle {
+	width: 100%;
+	margin-bottom: 1rem;
+}
+
+.approveButton,
+.rejectButton {
+	width: 90%;
+}
+
+.rejectButton,
+.nudgeButton {
+	margin-top: 1.5rem;
+	background-color: transparent;
+	border-color: var(--subtext);
+	color: var(--subtext);
+}
+
+.rejectButton {
+	&:hover {
+		border-color: var(--red);
+		color: var(--red);
+	}
+}
+
+.nudgeButton {
+	&:hover {
+		border-color: var(--blue);
+		color: var(--blue);
+	}
+}
+
+.underButtonText {
+	width: 100%;
+	text-align: center;
+	color: var(--subtext);
+	font-size: 0.8rem;
+	margin-top: 0.5rem;
+}
