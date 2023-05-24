@@ -10,6 +10,7 @@ import Button from "/components/button/Button";
 import styles from "public/styles/pages/Settlements.module.scss";
 import Layout from "/components/layouts/Layout";
 import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
+import Card from "/components/card/Card";
 
 export default function Settlements() {
 	// Session
@@ -45,7 +46,7 @@ export default function Settlements() {
 
 	return (
 		<Layout>
-			<InfoBanner title="What is a settlement?">
+			{/* <InfoBanner title="What is a settlement?">
 				<p>
 					Settlements are <strong>CLOSURES OF MULTIPLE DEBTS</strong>{" "}
 					to the same person.
@@ -60,25 +61,28 @@ export default function Settlements() {
 					A new settlement is <strong>PENDING</strong> until the other
 					person approves it.
 				</p>
-			</InfoBanner>
+			</InfoBanner> */}
 
-			<h1 className={styles.title}>Settlements</h1>
+			{/* <h1 className={styles.title}>Settlements</h1> */}
 			<Button
 				title="Create Settlement"
 				href="/settlements/create"
 				className={styles.newSettlement}
 			/>
-			{settlements
-				? settlements.map((settlement, index) => {
-						return (
-							<Settlement
-								key={index}
-								settlement={settlement}
-								globals={{ users: users, session: session }}
-							/>
-						);
-				  })
-				: "Loading settlements..."}
+			<Card dark title="Settlements" className={styles.settlements}>
+				{settlements
+					? settlements.map((settlement, index) => {
+							return (
+								<Settlement
+									key={index}
+									settlement={settlement}
+									globals={{ users: users, session: session }}
+									className={styles.settlement}
+								/>
+							);
+					  })
+					: "Loading settlements..."}
+			</Card>
 		</Layout>
 	);
 }
