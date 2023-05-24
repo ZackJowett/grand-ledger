@@ -7,6 +7,7 @@ interface Props {
 	align?: "left" | "center" | "right";
 	small?: boolean;
 	large?: boolean;
+	tiny?: boolean;
 	reverse?: boolean;
 }
 
@@ -16,6 +17,7 @@ export default function TextWithTitle({
 	text,
 	align = "center",
 	small,
+	tiny,
 	large,
 	reverse,
 }: Props) {
@@ -29,6 +31,8 @@ export default function TextWithTitle({
 				<h4 className={styles.title}>{title}</h4>
 			) : large ? (
 				<h1 className={styles.title}>{title}</h1>
+			) : tiny ? (
+				<p className={styles.title}>{title}</p>
 			) : (
 				<h2 className={styles.title}>{title}</h2>
 			)}
