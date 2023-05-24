@@ -32,6 +32,7 @@ export default function Settlement({ settlement, globals, className }) {
 	return (
 		<ClickableCard
 			href={`/settlements/${settlement._id}`}
+			pretitle="Settlement"
 			title={settleWith}
 			badge={
 				settlement.status == "open"
@@ -49,14 +50,6 @@ export default function Settlement({ settlement, globals, className }) {
 					reverse
 					className={styles.amount}
 				/>
-				{/* <TextWithTitle
-					title={shortDesc}
-					text="Description"
-					align="left"
-					reverse
-					small
-					className={styles.desc}
-				/> */}
 				<p className={styles.date}>
 					Opened {formatDate(settlement.dateCreated)}
 				</p>
@@ -68,6 +61,7 @@ export default function Settlement({ settlement, globals, className }) {
 
 function settlementAction(settlement, session, users) {
 	const settleeName = getName(settlement.settlee, users, session);
+	const settlerName = getName(settlement.settler, users, session);
 
 	if (settlement.status == "open") {
 		// Settlement is open (rejected by someone)
@@ -77,8 +71,8 @@ function settlementAction(settlement, session, users) {
 				<>
 					<hr className={styles.hr} />
 					<Button
-						title={`WAIT FOR ${settleeName.toUpperCase()} TO RESUBMIT`}
-						link={`/settlements${settlement._id}`}
+						title={`WAITING FOR ${settlerName.toUpperCase()} TO RESUBMIT`}
+						link={`/settlements/${settlement._id}`}
 						className={styles.button}
 						disabled
 					/>
@@ -95,7 +89,7 @@ function settlementAction(settlement, session, users) {
 					<Button
 						title="SUBMIT SETTLEMENT AGAIN"
 						className={styles.button}
-						href="/"
+						href={`/settlements/${settlement._id}`}
 					/>
 					<p className={styles.note}>
 						Settlement was rejected by {settleeName}.
@@ -121,7 +115,7 @@ function settlementAction(settlement, session, users) {
 					<hr className={styles.hr} />
 					<Button
 						title="REVIEW TO CLOSE"
-						link={`/settlements${settlement._id}`}
+						link={`/settlements/${settlement._id}`}
 						className={styles.button}
 					/>
 				</>
