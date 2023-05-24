@@ -1,3 +1,25 @@
+@use "public/styles/mixins.scss" as *;
+
 .sign {
 	font-size: 1.5rem;
+}
+
+.money {
+	font-size: 2rem;
+
+	&.small {
+		& > .sign {
+			font-size: 1.2rem;
+		}
+		font-size: 1.5rem;
+	}
+}
+
+.background {
+	display: block;
+	margin-top: 0.25rem;
+	background-color: var(--background);
+	padding: 0.25rem;
+
+	@include border($color: var(--background), $radius: 8px);
 }
