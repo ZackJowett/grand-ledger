@@ -10,25 +10,22 @@ export default async function handler(req, res) {
 
 		if (req.query.userId1 && req.query.userId2) {
 			// get all debts between two parties
-
-			if (req.query.closed == null) {
+			if (req.query.status == null) {
+				// Not getting closed debts
 				query = {
-					$and: [
+					$or: [
 						{
-							$or: [
-								{
-									creditor: req.query.userId1,
-									debtor: req.query.userId2,
-								},
-								{
-									creditor: req.query.userId2,
-									debtor: req.query.userId1,
-								},
-							],
+							creditor: req.query.userId1,
+							debtor: req.query.userId2,
+						},
+						{
+							creditor: req.query.userId2,
+							debtor: req.query.userId1,
 						},
 					],
 				};
 			} else {
+				// Getting debt with specified status
 				query = {
 					$and: [
 						{
@@ -43,7 +40,7 @@ export default async function handler(req, res) {
 								},
 							],
 						},
-						{ closed: req.query.closed ? true : false },
+						{ status: req.query.status },
 					],
 				};
 			}
@@ -68,9 +65,9 @@ export default async function handler(req, res) {
 		}
 
 		// Add status to query if it exists
-		if (req.query.closed && !req.query.userId1 && !req.query.userId2) {
+		if (req.query.status && !req.query.userId1 && !req.query.userId2) {
 			// don't need to add when its two parties
-			query.closed = req.query.closed;
+			query.status = req.query.status;
 		}
 
 		// Find debts with query
@@ -81,6 +78,7 @@ export default async function handler(req, res) {
 				sortedDebts = res;
 			})
 			.catch((err) => console.log(err));
+
 		// Return sorted debts
 		res.status(200).json({ success: true, data: sortedDebts });
 	} catch (error) {
