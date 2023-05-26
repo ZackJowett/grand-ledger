@@ -1,0 +1,40 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	width: 100%;
+	@include flex;
+	gap: 1rem;
+	padding-top: 2rem;
+}
+
+.create {
+	margin: 1rem auto;
+	width: 90%;
+	max-width: calc(var(--maxWidth) - 4rem);
+}
+
+.title {
+	margin: auto 0.5rem;
+	margin-top: 1.5rem;
+	text-align: left;
+}
+
+.hr {
+	width: 95%;
+	margin: 1rem auto;
+}
+
+.cards {
+	margin-top: 1rem;
+	@include flex;
+	gap: 1rem;
+}
+
+.link {
+	text-decoration: underline;
+
+	&:hover {
+		cursor: pointer;
+		color: var(--primary);
+	}
+}
