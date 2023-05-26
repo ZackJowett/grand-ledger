@@ -1,11 +1,16 @@
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { formatDate, getName } from "/utils/helpers";
 import { getAllForCreditor } from "/utils/data/debts";
 import { getAllUsers } from "/utils/data/users";
 import Layout from "../../components/layouts/Layout";
 import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
+import Debt from "components/debt/Debt";
+import styles from "../../public/styles/pages/Debts.module.scss";
+import Card from "components/card/Card";
+import TextWithTitle from "components/text/title/TextWithTitle";
+import Button from "components/button/Button";
+import { filterDebts } from "/utils/helpers";
+import { CardPlaceholder } from "components/placeholders/Placeholders";
 
 export default function UnreceivedPayments() {
 	const { data: session } = useSession();
@@ -14,6 +19,7 @@ export default function UnreceivedPayments() {
 	const [debts, setDebts] = useState(null);
 	const [users, setUsers] = useState(null);
 	const [totalUnreceived, setTotalUnreceived] = useState(null);
+	const [filter, setFilter] = useState("outstanding"); // "all" || "open" || "closed"
 
 	// Get all debts associated with logged in user
 	useEffect(() => {
@@ -31,17 +37,18 @@ export default function UnreceivedPayments() {
 	useEffect(() => {
 		if (!debts) return;
 
-		let total = 0;
+		let totalOpen = 0;
+		let totalPending = 0;
+		let totalClosed = 0;
 
 		// Get total amount unreceived
 		debts.forEach((debt) => {
-			if (!debt.closed) {
-				total += debt.amount;
-				console.log(total);
+			if (debt.status == "outstanding") {
+				totalOpen += debt.amount;
 			}
 		});
 
-		setTotalUnreceived(total.toFixed(2));
+		setTotalUnreceived(totalOpen.toFixed(2));
 	}, [debts]);
 
 	// Not logged in
@@ -53,45 +60,72 @@ export default function UnreceivedPayments() {
 		);
 	}
 
+	const handleFilterSelect = (e) => {
+		setFilter(e.target.value);
+	};
+
 	// Logged in
 	return (
 		<Layout>
-			<h1>Unreceived Payments</h1>
-			<p>
-				An <strong>unreceived payment</strong> is an debt someone has to
-				you and is how much they owe you
-			</p>
-			<p>These have not yet been closed</p>
-			<h3>
-				Total Amount:{" $"}
-				{totalUnreceived !== null ? totalUnreceived : "Calculating..."}
-			</h3>
+			<section className={styles.wrapper}>
+				<Card dark>
+					<TextWithTitle
+						title="Unreceived Payments"
+						text="Debts someone owes you"
+						align="left"
+					/>
+				</Card>
+				<Card dark>
+					<h3>
+						Total Amount (Unreceived):{" $"}
+						{totalUnreceived !== null
+							? totalUnreceived
+							: "Calculating..."}
+					</h3>
+				</Card>
+				<Button
+					title="Create Debt"
+					href="/debts/create"
+					className={styles.create}
+				/>
+				<Card
+					dark
+					title="Unreceived debts"
+					className={styles.debtsWrapper}>
+					<hr className={styles.hr} />
+					<select onChange={handleFilterSelect}>
+						<option value="outstanding">Unreceived</option>
+						<option value="pending">Pending</option>
+						<option value="closed">Closed</option>
+						<option value="all">All</option>
+					</select>
+					<div className={styles.cards}>
+						{debts ? (
+							debts.map((debt, index) => {
+								if (!filterDebts(debt, filter)) return;
 
-			{debts ? (
-				debts.map((debt, index) => {
-					// Filter debts
-					if (debt.closed) return null;
-
-					return (
-						<div key={index}>
-							<hr />
-							<p>
-								Creditor:{" "}
-								{getName(debt.creditor, users, session)}
-							</p>
-							<p>
-								Debtor: {getName(debt.debtor, users, session)}
-							</p>
-							<p>Amount: ${debt.amount} AUD</p>
-							<p>Description: {debt.description}</p>
-							<p>Status: {debt.closed ? "Closed" : "Open"}</p>
-							<p>Date Created: {formatDate(debt.dateCreated)}</p>
-						</div>
-					);
-				})
-			) : (
-				<p>Loading...</p>
-			)}
+								return (
+									<Debt
+										key={index}
+										debt={debt}
+										globals={{
+											session: session,
+											users: users,
+										}}
+										unreceived
+									/>
+								);
+							})
+						) : (
+							<>
+								<CardPlaceholder />
+								<CardPlaceholder />
+								<CardPlaceholder />
+							</>
+						)}
+					</div>
+				</Card>
+			</section>
 		</Layout>
 	);
 }
