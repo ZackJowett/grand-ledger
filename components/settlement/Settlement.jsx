@@ -36,7 +36,7 @@ export default function Settlement({ settlement, globals, className }) {
 			title={settleWith}
 			badge={
 				settlement.status == "open"
-					? "Open"
+					? "Reopened"
 					: settlement.status == "pending"
 					? "Pending"
 					: "Closed"

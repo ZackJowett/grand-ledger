@@ -17,11 +17,11 @@ export default async function handler(req, res) {
 			description: req.body.description ? req.body.description : "",
 		});
 
-		// Change status of debts to closed
+		// Change status of debts to pending
 		for (let i = 0; i < req.body.debts.length; i++) {
-			const debt = await Debt.findOneAndUpdate(
-				{ _id: req.body.debts[i]._id, closed: false },
-				{ closed: true },
+			await Debt.findOneAndUpdate(
+				{ _id: req.body.debts[i]._id },
+				{ status: "pending" },
 				{ new: true }
 			);
 		}

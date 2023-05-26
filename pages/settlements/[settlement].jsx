@@ -85,7 +85,7 @@ export default function Settlement({ settlement }) {
 			? "Pending"
 			: settlement.status == "closed"
 			? "Closed"
-			: "Open";
+			: "Reopened";
 
 	let stats = null;
 

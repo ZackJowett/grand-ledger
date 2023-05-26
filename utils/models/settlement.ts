@@ -15,10 +15,12 @@ const settlementSchema = new Schema({
 	netAmount: Number,
 	status: {
 		type: String,
-		enum: ["open", "closed", "pending"],
+		enum: ["pending", "closed", "reopened"],
 		default: "pending",
 	},
 	description: { type: String, default: "" },
+	rejectionDescription: { type: String, default: "" },
+	rejectionDate: { type: Date, default: null },
 	dateCreated: { type: Date, default: Date.now },
 	dateClosed: { type: Date, default: null },
 });

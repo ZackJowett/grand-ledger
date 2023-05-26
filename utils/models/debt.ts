@@ -6,8 +6,13 @@ const debtSchema = new Schema({
 	debtor: mongoose.Types.ObjectId,
 	amount: Number,
 	description: String,
-	closed: { type: Boolean, default: false },
+	status: {
+		type: String,
+		enum: ["outstanding", "pending", "closed"],
+		default: "outstanding",
+	},
 	dateCreated: { type: Date, default: Date.now },
+	dateClosed: { type: Date, default: null },
 });
 
 module.exports = mongoose.models.Debt || mongoose.model("Debt", debtSchema);

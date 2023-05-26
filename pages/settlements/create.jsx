@@ -28,7 +28,7 @@ export default function Create() {
 	useEffect(() => {
 		if (!session || !users) return;
 
-		// Set default selected party that is not the uyser
+		// Set default selected party that is not the user
 		if (selectedParty == null) {
 			if (users[0]._id != session.user.id) {
 				setSelectedParty(users[0]);
@@ -37,17 +37,17 @@ export default function Create() {
 			}
 		}
 
-		if (!selectedParty) return;
+		if (!selectedParty) return; // Verify selected party is set to a user
 
 		// Fetch all closed debts between user and selected party
 		// api endpoint with queries returns if user is creditor or debtor
 		getAllBetweenTwoUsers(session.user.id, selectedParty._id, false).then(
 			(data) => {
-				// only include debts that are not closed
+				// Return only outstanding debts
 				data
 					? setDebts(
 							data.filter((debt) => {
-								return debt.closed == false;
+								return debt.status == "outstanding";
 							})
 					  )
 					: console.log("Error fetching data");
