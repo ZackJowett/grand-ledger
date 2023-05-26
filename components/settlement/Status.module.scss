@@ -32,20 +32,8 @@
 	width: 100%;
 }
 
-.nudgeForm,
-.reviewForm {
+.nudgeForm {
 	@include flex(column, flex-start, flex-start);
-}
-
-.reviewForm {
-	gap: 1.25rem;
-
-	margin-top: 1rem;
-
-	input {
-		margin-left: 1rem;
-		margin-right: 1rem;
-	}
 }
 
 .submitWrapper {
@@ -58,24 +46,11 @@
 	margin-bottom: 1rem;
 }
 
-.approveButton,
-.rejectButton {
-	width: 90%;
-}
-
-.rejectButton,
 .nudgeButton {
 	margin-top: 1.5rem;
 	background-color: transparent;
 	border-color: var(--subtext);
 	color: var(--subtext);
-}
-
-.rejectButton {
-	&:hover {
-		border-color: var(--red);
-		color: var(--red);
-	}
 }
 
 .nudgeButton {
