@@ -11,10 +11,12 @@ export default function ClickableCard({
 	className,
 }) {
 	const badgeColor =
-		badge == "Open"
+		badge == "Outstanding" || badge == "Unreceived"
 			? styles.open
 			: badge == "Pending"
 			? styles.pending
+			: badge == "Reopened"
+			? styles.open
 			: styles.closed;
 
 	return (
