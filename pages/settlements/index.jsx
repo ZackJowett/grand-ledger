@@ -23,7 +23,7 @@ export default function Settlements() {
 	// User logged in
 	// States
 	const [settlements, setSettlements] = useState(null);
-	const [filter, setFilter] = useState("pending"); // "all" || "open" || "closed"
+	const [filter, setFilter] = useState("all"); // "all" || "open" || "closed"
 
 	// Get settlements
 	useEffect(() => {
@@ -49,22 +49,6 @@ export default function Settlements() {
 
 	return (
 		<Layout>
-			{/* <InfoBanner title="What is a settlement?">
-				<p>
-					Settlements are <strong>CLOSURES OF MULTIPLE DEBTS</strong>{" "}
-					to the same person.
-				</p>
-				<br />
-				<p>
-					Whoever <strong>OWES THE MOST</strong> must{" "}
-					<strong>CREATE IT</strong>.
-				</p>
-				<br />
-				<p>
-					A new settlement is <strong>PENDING</strong> until the other
-					person approves it.
-				</p>
-			</InfoBanner> */}
 			<section className={styles.wrapper}>
 				<Card dark>
 					<TextWithTitle
@@ -96,7 +80,9 @@ export default function Settlements() {
 						<option value="pending">Pending</option>
 						<option value="reopened">Reopened</option>
 						<option value="closed">Closed</option>
-						<option value="all">All</option>
+						<option value="all" selected="selected">
+							All
+						</option>{" "}
 					</select>
 					<div className={styles.cards}>
 						{settlements ? (
