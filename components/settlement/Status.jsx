@@ -9,7 +9,7 @@ export default function Status({ settlement, otherPartyName }) {
 	const { data: session } = useSession();
 
 	// Settlement is open
-	if (settlement.status == "open") {
+	if (settlement.status == "reopened") {
 		if (settlement.settler == session.user.id) {
 			// User is settler, therefore need to resubmit
 			return (
@@ -22,20 +22,22 @@ export default function Status({ settlement, otherPartyName }) {
 						<div className={styles.warningWrapper}>
 							<p className={styles.warning}>
 								<IoWarning className={styles.warningIcon} />{" "}
-								Ensure you sent the right amount
-							</p>
-							<p className={styles.warning}>
-								<IoWarning className={styles.warningIcon} />{" "}
 								Contact {otherPartyName} for reasoning
 							</p>
+							<TextWithTitle
+								title="Reasoning"
+								subtitle={settlement.rejectionDescription}
+								tiny
+							/>
 						</div>
+
 						<form
 							onSubmit={handleResubmitForm}
 							className={styles.resubmitForm}>
 							<Button title="RESUBMIT" submit />
 							<p className={styles.underButtonText}>
-								<strong>Reject</strong> Settlement and ask{" "}
-								{otherPartyName} to resubmit
+								<strong>Resubmit</strong> Settlement to{" "}
+								{otherPartyName} - ensure you've fixed issues
 							</p>
 						</form>
 					</div>
