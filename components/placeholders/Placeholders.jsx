@@ -30,7 +30,7 @@ export function CardPlaceholder() {
 			viewBox="0 0 400 200"
 			backgroundColor="#242424"
 			foregroundColor="#333">
-			<rect x="0" y="10" rx="5" ry="5" width="100%" height="180" />
+			<rect x="0" y="10" rx="20" ry="20" width="100%" height="180" />
 		</ContentLoader>
 	);
 }
