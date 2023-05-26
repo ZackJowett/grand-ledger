@@ -24,7 +24,7 @@ export default function Debt({ debt, className, unreceived = false }) {
 	return (
 		<ClickableCard
 			title={debtWith}
-			pretitle="Debt"
+			pretitle="Debt with"
 			badge={getStatus(debt.status, unreceived)}
 			href={`/debts/${debt._id}`}
 			className={`${className ? className : ""}`}>
