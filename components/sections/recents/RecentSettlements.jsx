@@ -70,9 +70,7 @@ export default function RecentSettlements({ className }) {
 
 			{/* Show / Hide view more settlements button */}
 			{/* Links to all settlements when max reached */}
-			{settlements &&
-			showAmount != settlements.length &&
-			showAmount < settlements.length ? (
+			{settlements && showAmount != settlements.length ? (
 				<TextButton title="View More" onClick={handleViewMore} />
 			) : (
 				<TextButton title="Go to Settlements" link="/settlements" />

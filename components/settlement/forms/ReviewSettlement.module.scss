@@ -1,0 +1,47 @@
+@use "public/styles/mixins.scss" as *;
+
+.reviewForm {
+	@include flex(column, flex-start, flex-start);
+	gap: 1.25rem;
+
+	margin-top: 1rem;
+
+	input {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+}
+
+.submitWrapper {
+	width: 100%;
+	@include flex;
+}
+
+.approveButton,
+.rejectButton {
+	width: 90%;
+}
+
+.rejectButton {
+	margin-top: 1.5rem;
+	background-color: transparent;
+	border-color: var(--subtext);
+	color: var(--subtext);
+
+	&:hover {
+		border-color: var(--red);
+		color: var(--red);
+	}
+}
+
+.underButtonText {
+	width: 100%;
+	text-align: center;
+	color: var(--subtext);
+	font-size: 0.8rem;
+	margin-top: 0.5rem;
+}
+
+.warning {
+	color: var(--red);
+}
