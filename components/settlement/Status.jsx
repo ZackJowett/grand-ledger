@@ -29,7 +29,7 @@ export default function Status({ settlement, otherPartyName }) {
 								Ensure you paid the correct amount
 							</p>
 							<TextWithTitle
-								title={`${otherPartyName}'s Reasoning`}
+								title={`${otherPartyName}&apos;s Reasoning`}
 								text={settlement.reopenedReason}
 								tiny
 								align="left"
