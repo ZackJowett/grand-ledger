@@ -9,7 +9,7 @@
 	@include border($color: transparent);
 
 	&.open {
-		background-color: var(--green);
+		background-color: var(--red);
 	}
 
 	&.pending {
@@ -17,6 +17,6 @@
 	}
 
 	&.closed {
-		background-color: var(--red);
+		background-color: var(--green);
 	}
 }
