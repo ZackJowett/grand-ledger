@@ -4,7 +4,10 @@ export default function Badge({ title = "", color = "open", className }) {
 	return (
 		<div
 			className={`${styles.badge} ${
-				color == "open"
+				color == "reopened" ||
+				color == "open" ||
+				color == "unreceived" ||
+				color == "outstanding"
 					? styles.open
 					: color == "pending"
 					? styles.pending
