@@ -1,6 +1,6 @@
 @use "public/styles/mixins.scss" as *;
 
-$width: 400px;
+$width: 200px;
 
 @mixin currentlySelected {
 	&.current {
@@ -21,24 +21,28 @@ $width: 400px;
 .nav {
 	height: calc(100vh - var(--headerHeight));
 	background-color: var(--backgroundDark);
-	width: $width;
+	width: 15vw;
+	max-width: 300px;
 	min-width: $width;
+
+	position: -webkit-sticky;
+	position: sticky;
+	top: var(--headerHeight);
 }
 
 .navLinkContainer {
 	@include flex;
 	justify-content: flex-start;
 	gap: 3rem;
-	top: 0;
-	height: auto;
 	height: 100%;
-	position: sticky;
+	position: relative;
 }
 
 .navItem {
-	$size: 1.5rem;
+	$size: 1rem;
 
-	width: 90%;
+	// Center div
+	width: 95%;
 	margin-left: 5%;
 	margin-right: 5%;
 
@@ -50,8 +54,6 @@ $width: 400px;
 	display: flex;
 	align-items: center;
 	justify-content: left;
-
-	@include flex(row, left, center);
 
 	font-size: $size;
 	padding: 1rem;
@@ -66,9 +68,14 @@ $width: 400px;
 	}
 
 	h2 {
-		font-size: $size;
+		font-size: 1vw;
 	}
 
+	@include screen-up(2000px) {
+		h2 {
+			font-size: 1.5rem;
+		}
+	}
 	// transition: all 2s ease-in-out;
 }
 
@@ -91,17 +98,21 @@ $width: 400px;
 	}
 
 	@include currentlySelected;
+
+	&.current {
+		border-right: none;
+	}
 }
 
 .bottomIcons {
 	@include flex(row, space-evenly);
-	position: absolute;
+	// position: absolute;
 	bottom: 1rem;
 	width: 100%;
 }
 
 .navIcon {
-	$size: 75px;
+	$size: 50px;
 
 	@include flex();
 	@include border($color: transparent);
@@ -109,7 +120,7 @@ $width: 400px;
 	height: $size;
 	width: $size;
 
-	padding: 1rem;
+	padding: 0.75rem;
 
 	svg {
 		height: $size;

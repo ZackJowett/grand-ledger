@@ -56,7 +56,7 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						) : (
 							<IoWarning className={styles.navItemIcon} />
 						)}
-						<h2>Outstanding Debts</h2>
+						<h2>Debts</h2>
 					</Link>
 					<Link
 						href="/unreceived-payments"
@@ -72,7 +72,7 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						) : (
 							<FaHandHolding className={styles.navItemIcon} />
 						)}
-						<h2>Unreceived Payments</h2>
+						<h2>Unreceived</h2>
 					</Link>
 					<Link
 						href="/settlements"
