@@ -1,7 +1,16 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	width: 100%;
+	@include flex;
+	gap: 1rem;
+	padding-top: 2rem;
+}
+
 .newSettlement {
-	margin: 1.5rem auto;
+	margin: 1rem auto;
 	width: 90%;
-	max-width: var(--maxWidth);
+	max-width: calc(var(--maxWidth) - 4rem);
 }
 
 .title {
