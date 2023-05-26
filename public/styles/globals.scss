@@ -141,7 +141,7 @@ img {
 
 hr {
 	border-color: var(--subtext);
-	// margin: 1.5rem 0;
+	// margin: 1rem 0;
 }
 
 // FORMS
@@ -173,4 +173,22 @@ textarea {
 
 	// preserve line breaks
 	white-space: pre-wrap;
+}
+
+select {
+	width: 10rem;
+	padding: 0.5rem;
+
+	background-color: var(--primary);
+	color: var(--text);
+
+	@include border($color: var(--primary), $radius: 100px);
+
+	&:hover,
+	&:focus {
+		cursor: pointer;
+		@include shadow;
+		transform: scale(1.02);
+		transition: transform 0.05s ease-in-out;
+	}
 }
