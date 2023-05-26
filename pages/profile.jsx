@@ -1,5 +1,4 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import Layout from "../components/layouts/Layout";
 import LoggedOut from "../components/sections/login/loggedOut/LoggedOut";
 
