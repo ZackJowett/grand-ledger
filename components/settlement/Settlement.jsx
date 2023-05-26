@@ -35,7 +35,7 @@ export default function Settlement({ settlement, globals, className }) {
 			pretitle="Settlement"
 			title={settleWith}
 			badge={
-				settlement.status == "open"
+				settlement.status == "reopened"
 					? "Reopened"
 					: settlement.status == "pending"
 					? "Pending"
@@ -63,7 +63,7 @@ function settlementAction(settlement, session, users) {
 	const settleeName = getName(settlement.settlee, users, session);
 	const settlerName = getName(settlement.settler, users, session);
 
-	if (settlement.status == "open") {
+	if (settlement.status == "reopened") {
 		// Settlement is open (rejected by someone)
 		if (settlement.settler != session.user.id) {
 			// Rejector was logged in user since only settlees can reject a settlement
