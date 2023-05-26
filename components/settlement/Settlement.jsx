@@ -32,7 +32,7 @@ export default function Settlement({ settlement, globals, className }) {
 	return (
 		<ClickableCard
 			href={`/settlements/${settlement._id}`}
-			pretitle="Settlement"
+			pretitle="Settlement with"
 			title={settleWith}
 			badge={
 				settlement.status == "reopened"
@@ -92,9 +92,9 @@ function settlementAction(settlement, session, users) {
 			return (
 				<>
 					<p className={styles.date}>
-						Rejected{" "}
-						{settlement.dateRejected &&
-							formatDate(settlement.dateRejected)}
+						Rejected
+						{settlement.dateReopened &&
+							formatDate(settlement.dateReopened)}
 					</p>
 					<hr className={styles.hr} />
 					<Button
