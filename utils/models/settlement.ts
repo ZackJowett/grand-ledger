@@ -19,8 +19,8 @@ const settlementSchema = new Schema({
 		default: "pending",
 	},
 	description: { type: String, default: "" },
-	rejectionDescription: { type: String, default: "" },
-	dateRejected: { type: Date, default: null },
+	reopenedReason: { type: String, default: "" },
+	dateReopened: { type: Date, default: null },
 	dateCreated: { type: Date, default: Date.now },
 	dateClosed: { type: Date, default: null },
 });
