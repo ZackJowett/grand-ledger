@@ -47,7 +47,8 @@ export default function Status({ settlement, otherPartyName }) {
 							/>
 							<p className={styles.underButtonText}>
 								<strong>Resubmit</strong> Settlement to{" "}
-								{otherPartyName} - ensure you've fixed issues
+								{otherPartyName} - ensure you&apos;ve fixed
+								issues
 							</p>
 						</form>
 					</div>
