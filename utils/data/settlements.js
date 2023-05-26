@@ -41,3 +41,57 @@ export async function getAllSettlements(id = null) {
 		return null;
 	}
 }
+
+// CLOSE SETTLEMENT: /api/settlements/close
+// Returns all debts contained a specific settlement
+export async function closeSettlement(id) {
+	try {
+		const response = await fetch(
+			`${getRootURL()}api/settlements/close?id=${id}`,
+			{
+				method: "POST",
+			}
+		);
+		return json;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
+
+// REJECT SETTLEMENT: /api/settlements/close
+// Returns all debts contained a specific settlement
+export async function reopenSettlement(id, reason) {
+	try {
+		const response = await fetch(
+			`${getRootURL()}api/settlements/reopen?id=${id}`,
+			{
+				method: "POST",
+				body: JSON.stringify({ reason: reason }),
+			}
+		);
+		const json = response.json();
+		return json;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
+
+// REJECT SETTLEMENT: /api/settlements/close
+// Returns all debts contained a specific settlement
+export async function resubmitSettlement(id) {
+	try {
+		const response = await fetch(
+			`${getRootURL()}api/settlements/resubmit?id=${id}`,
+			{
+				method: "POST",
+			}
+		);
+		const json = response.json();
+		return json;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
