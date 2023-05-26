@@ -6,4 +6,9 @@
 	height: var(--headerHeight);
 
 	@include flex(row, space-evenly);
+
+	@include desktop-up {
+		justify-content: flex-start;
+		padding-left: 1rem;
+	}
 }
