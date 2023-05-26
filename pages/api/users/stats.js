@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 			settlements: {
 				asSettler: 0,
 				asSettlee: 0,
-				open: 0,
+				reopened: 0,
 				pending: 0,
 				closed: 0,
 				totalSettled: 0,
@@ -23,8 +23,10 @@ export default async function handler(req, res) {
 			debts: {
 				asCreditor: 0,
 				asDebtor: 0,
-				open: 0,
+				oustanding: 0,
+				pending: 0,
 				closed: 0,
+				totalPending: 0,
 				totalPaid: 0,
 				totalReceived: 0,
 			},
@@ -54,8 +56,8 @@ export default async function handler(req, res) {
 			}
 
 			// Increment open, pending, closed statistics
-			if (settlement.status == "open") {
-				statistics.settlements.open++;
+			if (settlement.status == "reopened") {
+				statistics.settlements.reopened++;
 			} else if (settlement.status == "pending") {
 				statistics.settlements.pending++;
 			} else {
@@ -78,9 +80,9 @@ export default async function handler(req, res) {
 			}
 
 			// Increment open, closed statistics
-			if (debt.closed === false) {
+			if (debt.status == "oustanding") {
 				// Debt is open
-				statistics.debts.open++;
+				statistics.debts.oustanding++;
 
 				// Increment total debt
 				if (debt.debtor == req.query.id) {
@@ -91,6 +93,10 @@ export default async function handler(req, res) {
 					statistics.current.unreceived += debt.amount;
 					statistics.current.net += debt.amount; // Net position
 				}
+			} else if (debt.status == "pending") {
+				// Debt is pending
+				statistics.debts.pending++;
+				statistics.debts.totalPending += debt.amount;
 			} else {
 				// Debt is closed
 				statistics.debts.closed++;
