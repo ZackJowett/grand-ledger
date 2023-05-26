@@ -12,6 +12,7 @@ export default function RecentDebts({ className }) {
 	const { data: session } = useSession();
 
 	const [debts, setDebts] = useState(null);
+	const [timeFetched, setTimeFetched] = useState(null); // [user
 	const [showAmount, setShowAmount] = useState(3); // Number to show
 
 	useEffect(() => {
@@ -23,6 +24,11 @@ export default function RecentDebts({ className }) {
 			//....
 		});
 	}, [session]);
+
+	useEffect(() => {
+		// Set time fetched
+		setTimeFetched(new Date().toLocaleTimeString());
+	}, [debts]);
 
 	// No session data yet
 	if (!session) return;
@@ -38,7 +44,7 @@ export default function RecentDebts({ className }) {
 	return (
 		<Card
 			title="Recent Debts"
-			subtitle="Updated: [TIME]"
+			subtitle={`Updated: ${timeFetched ? timeFetched : "..."}`}
 			link="/debts"
 			dark
 			className={`${className} ${styles.wrapper}`}>
@@ -64,7 +70,9 @@ export default function RecentDebts({ className }) {
 
 			{/* Show / Hide view more devts button */}
 			{/* Links to all deebts when max reached */}
-			{debts && showAmount != debts.length ? (
+			{debts &&
+			showAmount != debts.length &&
+			showAmount < debts.length ? (
 				<TextButton title="View More" onClick={handleViewMore} />
 			) : (
 				<TextButton title="Go to Debts" link="/debts" />
