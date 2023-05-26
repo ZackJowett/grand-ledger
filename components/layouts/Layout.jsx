@@ -4,10 +4,21 @@ import styles from "./Layout.module.scss";
 import Header from "../sections/header/Header";
 import MobileNav from "../sections/nav/MobileNav";
 import DesktopNav from "../sections/nav/DesktopNav";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../../store/actions/userAction";
 
 export default function Layout({ children, className }) {
 	const router = useRouter();
 	const currentRoute = router.pathname;
+
+	// Load in Redux Store
+	const dispatch = useDispatch();
+	useSelector((state) => state.userList);
+
+	useEffect(() => {
+		dispatch(getUsers());
+	}, [dispatch]);
 
 	return (
 		<>
