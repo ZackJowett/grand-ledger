@@ -4,6 +4,7 @@ import { getAllUsers } from "../../utils/data/users";
 export const getUsers = () => async (dispatch) => {
 	try {
 		const data = await getAllUsers();
+		console.log("GETTING USERS");
 
 		dispatch({
 			type: GET_USERS,
