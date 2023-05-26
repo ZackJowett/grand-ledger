@@ -55,4 +55,35 @@ function getRootURL() {
 	}
 }
 
-module.exports = { formatDate, getName, quickFetch, getRootURL };
+// Filters debts
+const filterDebts = (debt, filter) => {
+	if (!filter) return true;
+	if (filter == "all") return true;
+	if (filter == "outstanding" && debt.status == "outstanding") return true;
+	if (filter == "pending" && debt.status == "pending") return true;
+	if (filter == "closed" && debt.status == "closed") return true;
+
+	// No match found
+	return false;
+};
+
+// Filters Settlements
+const filterSettlements = (settlement, filter) => {
+	if (!filter) return true;
+	if (filter == "all") return true;
+	if (filter == "pending" && settlement.status == "pending") return true;
+	if (filter == "reopened" && settlement.status == "reopened") return true;
+	if (filter == "closed" && settlement.status == "closed") return true;
+
+	// No match found
+	return false;
+};
+
+module.exports = {
+	formatDate,
+	getName,
+	quickFetch,
+	getRootURL,
+	filterDebts,
+	filterSettlements,
+};
