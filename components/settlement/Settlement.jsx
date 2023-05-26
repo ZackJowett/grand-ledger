@@ -51,8 +51,11 @@ export default function Settlement({ settlement, globals, className }) {
 					className={styles.amount}
 				/>
 				<p className={styles.date}>
-					Opened {formatDate(settlement.dateCreated)}
+					{settlement.status == "closed"
+						? `Closed ${formatDate(settlement.dateClosed)}`
+						: `Opened ${formatDate(settlement.dateCreated)}`}
 				</p>
+
 				{settlementAction(settlement, globals.session, globals.users)}
 			</Link>
 		</ClickableCard>
@@ -69,6 +72,9 @@ function settlementAction(settlement, session, users) {
 			// Rejector was logged in user since only settlees can reject a settlement
 			return (
 				<>
+					<p className={styles.date}>
+						Rejected {formatDate(settlement.dateRejected)}
+					</p>
 					<hr className={styles.hr} />
 					<Button
 						title={`WAITING FOR ${settlerName.toUpperCase()} TO RESUBMIT`}
@@ -85,6 +91,11 @@ function settlementAction(settlement, session, users) {
 			// Rejector was not logged in user
 			return (
 				<>
+					<p className={styles.date}>
+						Rejected{" "}
+						{settlement.dateRejected &&
+							formatDate(settlement.dateRejected)}
+					</p>
 					<hr className={styles.hr} />
 					<Button
 						title="SUBMIT SETTLEMENT AGAIN"
