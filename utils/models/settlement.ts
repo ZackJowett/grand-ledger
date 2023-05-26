@@ -20,7 +20,7 @@ const settlementSchema = new Schema({
 	},
 	description: { type: String, default: "" },
 	rejectionDescription: { type: String, default: "" },
-	rejectionDate: { type: Date, default: null },
+	dateRejected: { type: Date, default: null },
 	dateCreated: { type: Date, default: Date.now },
 	dateClosed: { type: Date, default: null },
 });
