@@ -1,0 +1,5 @@
+@use "public/styles/mixins.scss" as *;
+
+.section {
+	@include mainSection;
+}
