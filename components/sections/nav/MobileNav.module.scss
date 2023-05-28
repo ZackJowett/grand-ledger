@@ -179,10 +179,11 @@
 .bottomIcons {
 	@include flex(row, space-evenly);
 	width: 100%;
+	bottom: 0;
 }
 
 .navIcon {
-	$size: 75px;
+	$size: 50px;
 
 	@include flex();
 	@include border($color: transparent);
@@ -192,7 +193,7 @@
 
 	background-color: rgba(78, 78, 78, 0.3);
 	backdrop-filter: blur(10px);
-	padding: 1rem;
+	padding: 0.75rem;
 
 	svg {
 		height: $size;
