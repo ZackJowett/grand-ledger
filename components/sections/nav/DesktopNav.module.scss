@@ -11,10 +11,10 @@ $width: 200px;
 			background-color: var(--background);
 		}
 
-		width: 95%;
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		margin-right: 0;
+		// width: 95%;
+		// border-top-right-radius: 0;
+		// border-bottom-right-radius: 0;
+		// margin-right: 0;
 	}
 }
 
@@ -76,6 +76,13 @@ $width: 200px;
 			font-size: 1.5rem;
 		}
 	}
+
+	@include desktop-up {
+		h2 {
+			font-size: 0.8rem;
+		}
+	}
+
 	// transition: all 2s ease-in-out;
 }
 
@@ -98,10 +105,6 @@ $width: 200px;
 	}
 
 	@include currentlySelected;
-
-	&.current {
-		border-right: none;
-	}
 }
 
 .bottomIcons {
