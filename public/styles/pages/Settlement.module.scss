@@ -1,11 +1,7 @@
 @use "public/styles/mixins.scss" as *;
 
 .flexWrapper {
-	width: 100%;
-	padding: 1rem;
-	height: auto;
-	@include flex(column, flex-start, center);
-	gap: 1rem;
+	@include mainSection;
 }
 
 .header {
