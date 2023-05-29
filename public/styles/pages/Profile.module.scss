@@ -3,3 +3,40 @@
 .section {
 	@include mainSection;
 }
+
+.detailsWrapper,
+.details {
+	padding: 0;
+}
+
+.details {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-auto-rows: 1fr;
+	gap: 1rem;
+	width: 100%;
+
+	.welcome {
+		@include flex(column, flex-start, center);
+		gap: 1rem;
+
+		grid-column: 1 / 2;
+		grid-row: 1 / 2;
+
+		.welcomeCard {
+			width: 100%;
+		}
+	}
+
+	.userDetails {
+		@include flex(column, flex-start, center);
+		height: 100%;
+
+		grid-column: 2 / 5;
+		grid-row: 1 / 2;
+	}
+}
+
+.signOut {
+	max-width: var(--maxWidth);
+}
