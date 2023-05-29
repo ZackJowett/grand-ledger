@@ -4,11 +4,17 @@ interface Props {
 	title: string;
 	link?: string;
 	onClick?: Function;
+	className: string;
 }
 
-export default function TextButton({ title, link = "", onClick }: Props) {
+export default function TextButton({
+	title,
+	link = "",
+	onClick,
+	className,
+}: Props) {
 	return (
-		<div className={styles.wrapper}>
+		<div className={`${styles.wrapper} ${className ? className : ""}`}>
 			{link ? (
 				<a href={link} className={styles.text}>
 					{title}
