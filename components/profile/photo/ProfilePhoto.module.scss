@@ -1,0 +1,13 @@
+@use "public/styles/mixins" as *;
+
+.wrapper {
+	$size: 100px;
+
+	text-align: center;
+	width: fit-content;
+
+	svg {
+		height: $size;
+		width: $size;
+	}
+}

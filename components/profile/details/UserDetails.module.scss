@@ -1,0 +1,12 @@
+@use "public/styles/mixins" as *;
+
+.details {
+	@include flex(column, flex-start, flex-start);
+	gap: 1rem;
+	width: 100%;
+}
+
+.change {
+	margin: 0.5rem 0 0 0;
+	text-align: left;
+}
