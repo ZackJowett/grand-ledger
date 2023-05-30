@@ -1,0 +1,24 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include mainSection;
+}
+
+.header {
+	text-align: left;
+	width: 100%;
+	max-width: var(--maxWidth);
+}
+
+.badge {
+	margin-top: 0.5rem;
+}
+
+.hr {
+	width: 80%;
+	max-width: calc(var(--maxWidth) - 10rem);
+}
+
+.debt {
+	color: var(--red);
+}
