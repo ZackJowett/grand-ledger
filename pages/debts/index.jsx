@@ -116,6 +116,13 @@ export default function Debts() {
 						<option value="all">All</option>
 					</select>
 					<div className={styles.cards}>
+						{debts && debts.length == 0 && (
+							<p className={styles.noDebts}>
+								{`You have no ${
+									filter != "all" ? filter : ""
+								} debts. Well done!`}
+							</p>
+						)}
 						{debts ? (
 							debts.map((debt, index) => {
 								if (!filterDebts(debt, filter)) return;

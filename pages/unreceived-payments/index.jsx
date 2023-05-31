@@ -100,6 +100,15 @@ export default function UnreceivedPayments() {
 						<option value="all">All</option>
 					</select>
 					<div className={styles.cards}>
+						{debts && debts.length == 0 && (
+							<p className={styles.noDebts}>
+								{`There are no ${
+									filter != "outstanding" && filter != "all"
+										? filter
+										: ""
+								} unreceived debts`}
+							</p>
+						)}
 						{debts ? (
 							debts.map((debt, index) => {
 								if (!filterDebts(debt, filter)) return;

@@ -85,6 +85,13 @@ export default function Settlements() {
 						</option>{" "}
 					</select>
 					<div className={styles.cards}>
+						{settlements && settlements.length == 0 && (
+							<p className={styles.noSettlements}>
+								{`You have no ${
+									filter != "all" ? filter : ""
+								} settlements`}
+							</p>
+						)}
 						{settlements ? (
 							settlements.map((settlement, index) => {
 								if (!filterSettlements(settlement, filter))
