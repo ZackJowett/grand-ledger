@@ -11,6 +11,7 @@ const debtSchema = new Schema({
 		enum: ["outstanding", "pending", "closed"],
 		default: "outstanding",
 	},
+	settlement: { type: mongoose.Types.ObjectId, default: null },
 	dateCreated: { type: Date, default: Date.now },
 	dateClosed: { type: Date, default: null },
 });

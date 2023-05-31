@@ -116,8 +116,6 @@ export default function Settlement({ settlement }) {
 					otherPartyName={otherPartyName}
 				/>
 
-				<hr className={styles.hr} />
-
 				<Overview stats={stats} otherPartyName={otherPartyName} />
 
 				<Details

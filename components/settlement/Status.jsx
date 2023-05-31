@@ -17,85 +17,59 @@ export default function Status({ settlement, otherPartyName }) {
 		if (settlement.settler == session.user.id) {
 			// User is settler, therefore need to resubmit
 			return (
-				<Card
-					title="Status"
-					subtitle={`${otherPartyName} rejected your settlement`}
-					dark
-					className={styles.statusCard}>
-					<div className={styles.resubmitFormWrapper}>
-						<div className={styles.warningWrapper}>
-							<p className={styles.warning}>
-								<IoWarning className={styles.warningIcon} />
-								Ensure you paid the correct amount
-							</p>
-							<TextWithTitle
-								title={`${otherPartyName}&apos;s Reasoning`}
-								text={settlement.reopenedReason}
-								tiny
-								align="left"
-							/>
-						</div>
+				<>
+					<Card
+						title="Status"
+						subtitle={`${otherPartyName} rejected your settlement`}
+						dark
+						className={styles.statusCard}>
+						<div className={styles.resubmitFormWrapper}>
+							<div className={styles.warningWrapper}>
+								<p className={styles.warning}>
+									<IoWarning className={styles.warningIcon} />
+									Ensure you paid the correct amount
+								</p>
+								<TextWithTitle
+									title={`${otherPartyName}&apos;s Reasoning`}
+									text={settlement.reopenedReason}
+									tiny
+									align="left"
+								/>
+							</div>
 
-						<form
-							onSubmit={handleResubmitForm}
-							className={styles.resubmitForm}>
-							<Button
-								title="RESUBMIT"
-								onClick={() =>
-									resubmitSettlement(settlement._id)
-								}
-							/>
-							<p className={styles.underButtonText}>
-								<strong>Resubmit</strong> Settlement to{" "}
-								{otherPartyName} - ensure you&apos;ve fixed
-								issues
-							</p>
-						</form>
-					</div>
-				</Card>
+							<form
+								onSubmit={handleResubmitForm}
+								className={styles.resubmitForm}>
+								<Button
+									title="RESUBMIT"
+									onClick={() =>
+										resubmitSettlement(settlement._id)
+									}
+								/>
+								<p className={styles.underButtonText}>
+									<strong>Resubmit</strong> Settlement to{" "}
+									{otherPartyName} - ensure you&apos;ve fixed
+									issues
+								</p>
+							</form>
+						</div>
+					</Card>
+					<hr className={styles.hr} />
+				</>
 			);
 		}
 
 		// User is settlee, they are waiting for resubmission
 
 		return (
-			<Card
-				title="Status"
-				subtitle="You rejected this settlement"
-				dark
-				className={styles.statusCard}>
-				<TextWithTitle
-					title={`Waiting on ${otherPartyName} to resubmit`}
-					align="left"
-					className={styles.pendingWaiting}
-					tiny
-				/>
-				<form onSubmit={handleNudgeForm} className={styles.nudgeForm}>
-					<Button
-						title="NUDGE"
-						className={styles.nudgeButton}
-						submit
-					/>
-					<p className={styles.underButtonText}>
-						Send a gentle reminder to {otherPartyName}
-					</p>
-				</form>
-			</Card>
-		);
-	}
-
-	// Settlement is pending
-	if (settlement.status == "pending") {
-		if (settlement.settler == session.user.id) {
-			// User is settler, therefore waiting for other party to approve
-			return (
+			<>
 				<Card
 					title="Status"
-					subtitle="There is nothing else to do"
+					subtitle="You rejected this settlement"
 					dark
 					className={styles.statusCard}>
 					<TextWithTitle
-						title={`Waiting on ${otherPartyName}`}
+						title={`Waiting on ${otherPartyName} to resubmit`}
 						align="left"
 						className={styles.pendingWaiting}
 						tiny
@@ -109,20 +83,60 @@ export default function Status({ settlement, otherPartyName }) {
 							submit
 						/>
 						<p className={styles.underButtonText}>
-							<strong>Reject</strong> Settlement and ask{" "}
-							{otherPartyName} to resubmit
+							Send a gentle reminder to {otherPartyName}
 						</p>
 					</form>
 				</Card>
+				<hr className={styles.hr} />
+			</>
+		);
+	}
+
+	// Settlement is pending
+	if (settlement.status == "pending") {
+		if (settlement.settler == session.user.id) {
+			// User is settler, therefore waiting for other party to approve
+			return (
+				<>
+					<Card
+						title="Status"
+						subtitle="There is nothing else to do"
+						dark
+						className={styles.statusCard}>
+						<TextWithTitle
+							title={`Waiting on ${otherPartyName}`}
+							align="left"
+							className={styles.pendingWaiting}
+							tiny
+						/>
+						<form
+							onSubmit={handleNudgeForm}
+							className={styles.nudgeForm}>
+							<Button
+								title="NUDGE"
+								className={styles.nudgeButton}
+								submit
+							/>
+							<p className={styles.underButtonText}>
+								<strong>Reject</strong> Settlement and ask{" "}
+								{otherPartyName} to resubmit
+							</p>
+						</form>
+					</Card>
+					<hr className={styles.hr} />
+				</>
 			);
 		}
 
 		// User is settlee, they must revice the settlement
 		return (
-			<ReviewSettlement
-				settlement={settlement}
-				otherPartyName={otherPartyName}
-			/>
+			<>
+				<ReviewSettlement
+					settlement={settlement}
+					otherPartyName={otherPartyName}
+				/>
+				<hr className={styles.hr} />
+			</>
 		);
 	}
 
