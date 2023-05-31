@@ -25,42 +25,65 @@ export default function NetPosition() {
 
 	if (!session) return;
 
+	console.log(stats);
+
 	return (
 		<Card title={`Hello, ${session.user.name}`} subtitle={dailyFact} dark>
 			{stats ? (
 				<>
-					<TextWithButton
-						text="Total Debt"
-						title={<Money amount={stats.current.debt} />}
-						buttonTitle="PAY NOW"
-						link="/settlements/create"
-						align="left"
-						reverse
-						large
-						className={styles.totalDebt}
-					/>
-					<TextWithButton
-						text="Total Unreceived"
-						title={<Money amount={stats.current.unreceived} />}
-						buttonTitle="VIEW"
-						link="/unreceived-payments"
-						align="left"
-						reverse
-						large
-						className={styles.totalUnreceived}
-					/>
-					<hr className={styles.hr} />
-					<TextWithTitle
-						title={<Money amount={stats.current.net} includeSign />}
-						text="Net Position"
-						large
-						className={`${
-							stats.current.net >= 0
-								? styles.positive
-								: styles.negative
-						} ${styles.netPosition}
+					{stats.current.net > 0 && (
+						<>
+							<TextWithButton
+								text="Total Debt"
+								title={<Money amount={stats.current.debt} />}
+								buttonTitle="PAY NOW"
+								link="/settlements/create"
+								align="left"
+								reverse
+								large
+								className={styles.totalDebt}
+							/>
+							<TextWithButton
+								text="Total Unreceived"
+								title={
+									<Money amount={stats.current.unreceived} />
+								}
+								buttonTitle="VIEW"
+								link="/unreceived-payments"
+								align="left"
+								reverse
+								large
+								className={styles.totalUnreceived}
+							/>
+							<hr className={styles.hr} />
+							<TextWithTitle
+								title={
+									<Money
+										amount={stats.current.net}
+										includeSign
+									/>
+								}
+								text="Net Position"
+								large
+								className={`${
+									stats.current.net >= 0
+										? styles.positive
+										: styles.negative
+								} ${styles.netPosition}
 						`}
-					/>
+							/>
+						</>
+					)}
+
+					{stats.current.net == 0 && (
+						<TextWithTitle
+							title={
+								"No outstanding debts or unreceived payments"
+							}
+							className={styles.noDebts}
+							small
+						/>
+					)}
 				</>
 			) : (
 				<NetPositionPlaceholder />

@@ -80,7 +80,7 @@ export default async function handler(req, res) {
 			}
 
 			// Increment open, closed statistics
-			if (debt.status == "oustanding") {
+			if (debt.status == "outstanding") {
 				// Debt is open
 				statistics.debts.oustanding++;
 
