@@ -14,7 +14,10 @@ export default async function handler(req, res) {
 		for (let i = 0; i < settlement.debts.length; i++) {
 			await Debt.findOneAndUpdate(
 				{ _id: settlement.debts[i]._id },
-				{ status: "closed" },
+				{
+					status: "closed",
+					dateClosed: Date.now(),
+				},
 				{ new: true }
 			);
 		}
