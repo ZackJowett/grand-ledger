@@ -176,7 +176,7 @@ textarea {
 }
 
 select {
-	width: 10rem;
+	min-width: 10rem;
 	padding: 0.5rem;
 
 	background-color: var(--primary);
@@ -190,5 +190,18 @@ select {
 		@include shadow;
 		transform: scale(1.02);
 		transition: transform 0.05s ease-in-out;
+	}
+}
+
+input {
+	width: 100%;
+	padding: 0.5rem;
+	padding-left: 0.8rem;
+	@include border($radius: 100px, $color: transparent);
+	background-color: var(--background);
+	color: var(--text);
+
+	&:focus {
+		border-color: var(--primary);
 	}
 }

@@ -3,6 +3,7 @@ import Debt from "components/debt/Debt";
 import styles from "./DebtsIncluded.module.scss";
 import { useSession } from "next-auth/react";
 import { useStore } from "react-redux";
+import { CardPlaceholder } from "components/placeholders/Placeholders";
 
 export default function DebtsIncluded({ debts, stats }) {
 	const { data: session } = useSession();
@@ -29,7 +30,10 @@ export default function DebtsIncluded({ debts, stats }) {
 						);
 					})
 				) : (
-					<p>Loading...</p>
+					<>
+						<CardPlaceholder />
+						<CardPlaceholder />
+					</>
 				)}
 			</div>
 		</Card>

@@ -1,0 +1,57 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, flex-start, flex-start);
+	gap: 2rem;
+}
+
+.wrapper,
+.headerWrapper,
+.inputSection,
+.amountInput,
+.createAs {
+	width: 100%;
+}
+
+.header {
+	@include flex(row, space-between);
+}
+
+.exitCross {
+	$size: 30px;
+
+	height: $size;
+	width: $size;
+
+	color: var(--subtext);
+
+	&:hover {
+		cursor: pointer;
+		color: var(--primary);
+
+		@include scale(1.2);
+	}
+}
+
+.inputSection {
+	@include flex(column, flex-start, flex-start);
+	gap: 0.5rem;
+}
+
+.createAs {
+	@include flex(row, flex-start, center);
+
+	p {
+		margin-left: 1rem;
+		color: var(--subtext);
+	}
+}
+
+.amountInput {
+	@include flex(row, flex-start, center);
+	gap: 0.5rem;
+
+	.amount {
+		max-width: 8rem;
+	}
+}

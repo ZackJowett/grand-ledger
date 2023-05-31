@@ -1,0 +1,33 @@
+@use "public/styles/mixins.scss" as *;
+
+.card {
+	padding: 0;
+}
+
+.title {
+	margin-top: 1rem;
+}
+
+.buttons {
+	@include flex(row);
+	gap: 1rem;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+.button {
+	@include flex(row);
+
+	gap: 0.5rem;
+
+	svg {
+		$size: 20px;
+
+		height: $size;
+		width: $size;
+	}
+}
+
+.hr {
+	width: 100%;
+}

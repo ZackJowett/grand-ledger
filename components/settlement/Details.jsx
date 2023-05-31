@@ -29,29 +29,12 @@ export default function Details({ settlement, otherPartyName }) {
 					reverse
 					tiny
 				/>
-				<TextWithTitle
+				{/* <TextWithTitle
 					text="Proof of payment"
 					align="left"
 					reverse
 					tiny
-				/>
-				<TextWithTitle
-					text="Opened"
-					title={formatDate(settlement.dateCreated)}
-					align="right"
-					reverse
-					tiny
-				/>
-
-				{settlement.dateClosed && (
-					<TextWithTitle
-						text="Closed"
-						title={formatDate(settlement.dateClosed)}
-						align="right"
-						reverse
-						tiny
-					/>
-				)}
+				/> */}
 			</div>
 		</Card>
 	);

@@ -14,6 +14,8 @@ import { getSettlementDebts } from "utils/data/settlements";
 import Overview from "components/settlement/Overview";
 import DebtsIncluded from "components/settlement/DebtsIncluded";
 import Status from "components/settlement/Status";
+import Card from "components/card/Card";
+import { formatDate } from "utils/helpers";
 
 // Get all debts associated with logged in user and export as path options
 // for next.js router
@@ -124,6 +126,38 @@ export default function Settlement({ settlement }) {
 				/>
 
 				<DebtsIncluded debts={debts} stats={stats} />
+
+				<Card title="Timeline" dark>
+					<div className={styles.dates}>
+						<TextWithTitle
+							text="Opened"
+							title={formatDate(settlement.dateCreated)}
+							align="left"
+							reverse
+							tiny
+						/>
+
+						{settlement.dateReopened && (
+							<TextWithTitle
+								text="Rejected"
+								title={formatDate(settlement.dateReopened)}
+								align="left"
+								reverse
+								tiny
+							/>
+						)}
+
+						{settlement.dateClosed && (
+							<TextWithTitle
+								text="Closed"
+								title={formatDate(settlement.dateClosed)}
+								align="left"
+								reverse
+								tiny
+							/>
+						)}
+					</div>
+				</Card>
 			</section>
 		</Layout>
 	);

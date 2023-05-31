@@ -1,10 +1,11 @@
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { formatDate, getName } from "/utils/helpers";
-import { getAllUsers } from "/utils/data/users";
 import { getAllBetweenTwoUsers } from "/utils/data/debts";
-import Layout from "../../components/layouts/Layout";
-import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
+import Layout from "components/layouts/Layout";
+import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
+import styles from "public/styles/pages/CreateSettlement.module.scss";
+import TextWithTitle from "/components/text/title/TextWithTitle";
+import { useStore } from "react-redux";
 
 export default function Create() {
 	const { data: session } = useSession();
@@ -14,16 +15,7 @@ export default function Create() {
 	const [users, setUsers] = useState(null);
 	const [debts, setDebts] = useState(null);
 	const [selectedParty, setSelectedParty] = useState(null);
-
-	// User logged in
-	// Get user options in same group
-	useEffect(() => {
-		if (!session) return;
-
-		getAllUsers().then((data) => {
-			data ? setUsers(data) : console.log("Error fetching data");
-		});
-	}, [session]);
+	const state = useStore().getState();
 
 	useEffect(() => {
 		if (!session || !users) return;
@@ -117,7 +109,22 @@ export default function Create() {
 
 	return (
 		<Layout>
-			<h1>Create new settlement</h1>
+			<section className={styles.wrapper}>
+				<TextWithTitle
+					title={`Create Settlement`}
+					text=""
+					className={styles.header}
+					align="left"
+					large
+				/>
+
+				{/* <AddDebt /> */}
+
+				{/* <DebtList /> */}
+
+				{/* <SubmitDebts /> */}
+			</section>
+			{/* <h1>Create new settlement</h1>
 
 			{debts && debts.length == 0 ? (
 				<>
@@ -242,7 +249,7 @@ export default function Create() {
 						<p>Loading...</p>
 					)}
 				</div>
-			)}
+			)} */}
 		</Layout>
 	);
 }
