@@ -1,0 +1,40 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(row, center, center);
+	padding: 0.2rem 1rem;
+
+	@include border($radius: 100px, $color: var(--subtext));
+	color: var(--subtext);
+
+	font-size: 0.8rem;
+
+	&:hover {
+		cursor: pointer;
+		border-color: var(--primary);
+		color: var(--primary);
+	}
+}
+
+.icon {
+	$size: 20px;
+
+	@include flex(row, center, center);
+	height: 100%;
+	margin-right: 0.5rem;
+
+	svg {
+		height: $size;
+		width: $size;
+	}
+}
+
+.active {
+	border-color: var(--primary);
+	background-color: var(--primary);
+	color: var(--text);
+
+	&:hover {
+		color: var(--background);
+	}
+}

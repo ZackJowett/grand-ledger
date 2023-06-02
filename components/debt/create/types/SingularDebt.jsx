@@ -5,9 +5,8 @@ import { RxCross2 } from "react-icons/rx";
 import { useStore } from "react-redux";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Button from "components/button/Button";
 
-export default function SingularDebt({ debts, index, setDebts }) {
+export default function SingularDebt({ debt, debts, setDebts, removeDebt }) {
 	const { data: session } = useSession();
 	const state = useStore().getState();
 	const users = state.userList.users;
@@ -15,37 +14,51 @@ export default function SingularDebt({ debts, index, setDebts }) {
 	useEffect(() => {}, [debts]);
 
 	function updateCreateAs(e) {
-		let newDebt = [...debts]; // Copy debts state to new variable
-		newDebt[index].createAs = e.target.value; // Update createAs value
-		setDebts(newDebt); // Set debts state
+		setDebts(
+			debts.filter((currentDebt) => {
+				if (currentDebt.id === debt.id) {
+					currentDebt.createAs = e.target.value;
+					return currentDebt;
+				}
+				return currentDebt;
+			})
+		); // Set debts state
 	}
 
 	function updateOtherParty(e) {
-		let newDebt = [...debts]; // Copy debts state to new variable
-		newDebt[index].otherParty = e.target.value; // Update createAs value
-		setDebts(newDebt); // Set debts state
+		setDebts(
+			debts.filter((currentDebt) => {
+				if (currentDebt.id === debt.id) {
+					currentDebt.otherParty = e.target.value;
+					return currentDebt;
+				}
+				return currentDebt;
+			})
+		); // Set debts state
 	}
 
 	function updateAmount(e) {
-		let newDebt = [...debts]; // Copy debts state to new variable
-		newDebt[index].amount = e.target.value; // Update createAs value
-		setDebts(newDebt); // Set debts state
+		setDebts(
+			debts.filter((currentDebt) => {
+				if (currentDebt.id === debt.id) {
+					currentDebt.amount = Number(e.target.value);
+					return currentDebt;
+				}
+				return currentDebt;
+			})
+		); // Set debts state
 	}
 
 	function updateDescription(e) {
-		let newDebt = [...debts]; // Copy debts state to new variable
-		newDebt[index].description = e.target.value; // Update createAs value
-		setDebts(newDebt); // Set debts state
-	}
-
-	function removeDebt() {
-		let newDebts = [...debts]; // Copy debts state to new variable
-		newDebts.forEach((debt, index) => console.log(`Debt: ${index}`, debt));
-		console.log("Index: ", index);
-		console.log("Debt: ", newDebts[index]);
-		console.log("Spliced: ", newDebts.splice(index, 1));
-		let splicedArray = newDebts.splice(index, 1); // Remove debt from array
-		setDebts(splicedArray); // Set debts state
+		setDebts(
+			debts.filter((currentDebt) => {
+				if (currentDebt.id === debt.id) {
+					currentDebt.description = e.target.value;
+					return currentDebt;
+				}
+				return currentDebt;
+			})
+		); // Set debts state
 	}
 
 	return (
@@ -57,7 +70,10 @@ export default function SingularDebt({ debts, index, setDebts }) {
 						<TextWithTitle title="Singular Debt" align="left" />
 						<RxCross2
 							className={styles.exitCross}
-							onClick={() => removeDebt()}
+							onClick={() => {
+								console.log(`removing id: ${debt.id}`);
+								removeDebt(debt.id);
+							}}
 						/>
 					</div>
 					<TextWithTitle
@@ -78,9 +94,9 @@ export default function SingularDebt({ debts, index, setDebts }) {
 							<option value="debtor">Debtor</option>
 						</select>
 						<p>
-							{/* {localDebt.createAs == "creditor"
+							{debt.createAs == "creditor"
 								? "(Someone owes you money)"
-								: "(You owe someone money)"} */}
+								: "(You owe someone money)"}
 						</p>
 					</div>
 				</div>

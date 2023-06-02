@@ -1,0 +1,65 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(row, space-between, center);
+	gap: 2rem;
+	width: 100%;
+	min-height: 2.5rem;
+}
+
+.checkbox {
+	@include flex(row, flex-start, center);
+	label {
+		padding-left: 1rem;
+		white-space: nowrap;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	input:hover,
+	label:hover,
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.amount {
+	@include flex(row, flex-start, center);
+	color: var(--subtext);
+	@include border($radius: 100px, $color: transparent);
+	padding: 0.25rem 0.5rem;
+
+	input {
+		margin: auto 0.5rem;
+		width: 6rem;
+		color: var(--subtext);
+
+		&:focus {
+			color: var(--text);
+		}
+	}
+}
+
+.amount.disabled {
+	input {
+		background-color: var(--transparent);
+		padding: 0;
+		margin: 0 0 0 0.25rem;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--background);
+	}
+}
+
+.hr {
+	width: 90%;
+	margin: 0rem auto;
+}

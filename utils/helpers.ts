@@ -79,6 +79,21 @@ const filterSettlements = (settlement, filter) => {
 	return false;
 };
 
+// Distributes amount evenly across piles
+// a pile is like one person in a group
+const distributeAmount = (amount, piles) => {
+	console.log("SPLITTING BETWEEN ", piles);
+	var m = amount * 100,
+		n = m % piles,
+		v = Math.floor(m / piles) / 100,
+		w = Math.floor(m / piles + 1) / 100;
+
+	for (var i = 0, out = new Array(piles); i < piles; ++i) {
+		out[i] = i < n ? w : v;
+	}
+	return out;
+};
+
 module.exports = {
 	formatDate,
 	getName,
@@ -86,4 +101,5 @@ module.exports = {
 	getRootURL,
 	filterDebts,
 	filterSettlements,
+	distributeAmount,
 };

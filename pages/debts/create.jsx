@@ -10,14 +10,17 @@ import SubmitDebts from "components/debt/create/form/SubmitDebts";
 import DebtList from "components/debt/create/DebtList";
 import SingularDebt from "components/debt/create/types/SingularDebt";
 import Button from "components/button/Button";
+import { set } from "mongoose";
 
 // Classes
 function SingleDebt(
+	id,
 	createAs = "creditor",
 	otherParty = "",
 	amount = 0,
 	description = ""
 ) {
+	this.id = id;
 	this.type = "single";
 	this.createAs = createAs;
 	this.otherParty = otherParty;
@@ -25,10 +28,11 @@ function SingleDebt(
 	this.description = description;
 }
 
-function MultiDebt(amount, selectedPeople, description) {
+function MultiDebt(id, total = 0, parties = [], description = "") {
+	this.id = id;
 	this.type = "multi";
-	this.amount = amount;
-	this.selectedPeople = selectedPeople;
+	this.total = total;
+	this.parties = parties;
 	this.description = description;
 }
 
@@ -39,7 +43,7 @@ export default function Create() {
 	const [createAs, setCreateAs] = useState("creditor");
 	const [users, setUsers] = useState(null);
 	const [debts, setDebts] = useState([]);
-	// const debts = [];
+	var [idCount, setIdCount] = useState(0);
 
 	// User logged in
 	// Get user options in same group
@@ -50,12 +54,6 @@ export default function Create() {
 			data ? setUsers(data) : console.log("Error fetching data");
 		});
 	}, [session]);
-
-	// Add initial debt
-	useEffect(() => {
-		setDebts((debts) => [...debts, new SingleDebt()]);
-	}, []);
-	// debts.push(new SingleDebt());
 
 	useEffect(() => {
 		console.log(debts);
@@ -111,17 +109,15 @@ export default function Create() {
 	// ----------- Add debt to list ---------------- \\
 	// Single debt
 	function addSingle() {
-		setDebts([...debts, new SingleDebt()]);
+		setDebts([new SingleDebt(idCount), ...debts]);
+		setIdCount(idCount + 1);
 	}
 
 	// Multi Debt
 	function addMulti() {
-		// debts.push(new MultiDebt());
+		setDebts([new MultiDebt(idCount), ...debts]);
+		setIdCount(idCount + 1);
 	}
-
-	// setInterval(() => {
-	// 	console.log(debts[0]);
-	// }, 1000);
 
 	return (
 		<Layout>
