@@ -51,14 +51,14 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						}`}>
 						{currentRoute === "/debts" ? (
 							<IoWarning
-								className={`${styles.iconCurrent} ${styles.red}`}
+								className={`${styles.iconCurrent} ${styles.debts}`}
 							/>
 						) : (
 							<IoWarning
-								className={`${styles.icon} ${styles.red}`}
+								className={`${styles.icon} ${styles.debts}`}
 							/>
 						)}
-						<h2>Debts</h2>
+						<h2 className={styles.debts}>Debts</h2>
 					</Link>
 
 					<Link
@@ -70,14 +70,14 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						}`}>
 						{currentRoute === "/unreceived-payments" ? (
 							<FaHandHolding
-								className={`${styles.iconCurrent} ${styles.green}`}
+								className={`${styles.iconCurrent} ${styles.unreceived}`}
 							/>
 						) : (
 							<FaHandHolding
-								className={`${styles.icon} ${styles.green}`}
+								className={`${styles.icon} ${styles.unreceived}`}
 							/>
 						)}
-						<h2>Unreceived</h2>
+						<h2 className={styles.unreceived}>Unreceived</h2>
 					</Link>
 
 					<Link
@@ -88,11 +88,15 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								: ""
 						}`}>
 						{currentRoute === "/settlements" ? (
-							<FaHandshake className={styles.iconCurrent} />
+							<FaHandshake
+								className={`${styles.iconCurrent} ${styles.settlements}`}
+							/>
 						) : (
-							<FaHandshake className={styles.icon} />
+							<FaHandshake
+								className={`${styles.icon} ${styles.settlements}`}
+							/>
 						)}
-						<h2>Settlements</h2>
+						<h2 className={styles.settlements}>Settlements</h2>
 					</Link>
 
 					<hr className={styles.hr} />

@@ -153,10 +153,14 @@ $width: 200px;
 	}
 }
 
-.red {
+.debts {
 	color: var(--red);
 }
 
-.green {
+.unreceived {
 	color: var(--green);
+}
+
+.settlements {
+	color: var(--text);
 }
