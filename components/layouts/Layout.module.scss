@@ -22,7 +22,7 @@
 
 	background-color: var(--background);
 
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 @include mobile-only {
