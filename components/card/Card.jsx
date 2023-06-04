@@ -53,7 +53,7 @@ export default function Card({
 				</div>
 			)}
 
-			<div className={styles.children}>{children}</div>
+			{children}
 		</section>
 	);
 }
