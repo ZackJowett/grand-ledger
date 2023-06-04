@@ -51,7 +51,7 @@ export default function Layout({ children, className }) {
 
 			<main className={styles.main}>
 				<Header currentRoute={currentRoute} />
-				<div className={styles.content}>
+				<div className={styles.contentWrapper}>
 					<DesktopNav
 						currentRoute={currentRoute}
 						className={styles.desktopNav}
