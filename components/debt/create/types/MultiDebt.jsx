@@ -34,7 +34,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 		);
 
 		recalculateAmounts();
-	}, [total]);
+	}, [total, debt]);
 
 	useEffect(() => {
 		// Update parties when usersSelected is updated
@@ -290,8 +290,9 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 					</div>
 					{!totalMatchesSum() && (
 						<p className={styles.warning}>
-							Warning: Total doesn't add up with the individual
-							amounts. Only individual amounts will be saved.
+							Warning: Total doesn&apos;t add up with the
+							individual amounts. Only individual amounts will be
+							saved.
 						</p>
 					)}
 				</div>

@@ -30,7 +30,7 @@ export default function SelectUser({
 				setAmount(Number(userSelected.amount));
 			}
 		}
-	}, [editingUser]);
+	}, [editingUser, user, userSelected]);
 
 	function handleEdit() {
 		if (editingUser === user._id) return;
