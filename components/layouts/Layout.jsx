@@ -48,18 +48,21 @@ export default function Layout({ children, className }) {
 				/>
 				<link rel="manifest" href="/favicon/site.webmanifest" />
 			</Head>
-			<Header currentRoute={currentRoute} />
+
 			<main className={styles.main}>
-				<DesktopNav
-					currentRoute={currentRoute}
-					className={styles.desktopNav}
-				/>
-				<section
-					className={`${styles.content} ${
-						className ? className : ""
-					}`}>
-					{children}
-				</section>
+				<Header currentRoute={currentRoute} />
+				<div className={styles.content}>
+					<DesktopNav
+						currentRoute={currentRoute}
+						className={styles.desktopNav}
+					/>
+					<section
+						className={`${styles.children} ${
+							className ? className : ""
+						}`}>
+						{children}
+					</section>
+				</div>
 			</main>
 			{/* <Footer /> */}
 		</>

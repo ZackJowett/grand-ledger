@@ -1,7 +1,6 @@
 @use "public/styles/mixins.scss" as *;
 
 .header {
-	position: sticky;
 	background-color: var(--backgroundDark);
 	height: var(--headerHeight);
 

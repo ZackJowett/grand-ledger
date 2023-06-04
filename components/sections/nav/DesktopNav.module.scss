@@ -18,19 +18,15 @@ $width: 200px;
 	}
 }
 
-.nav {
+.wrapper {
 	height: calc(100vh - var(--headerHeight));
 	background-color: var(--backgroundDark);
 	width: 15vw;
 	max-width: 300px;
 	min-width: $width;
-
-	position: -webkit-sticky;
-	position: sticky;
-	top: var(--headerHeight);
 }
 
-.navLinkContainer {
+.linksWrapper {
 	@include flex;
 	justify-content: flex-start;
 	gap: 3rem;
@@ -38,7 +34,7 @@ $width: 200px;
 	position: relative;
 }
 
-.navItem {
+.link {
 	$size: 1rem;
 
 	// Center div
@@ -86,13 +82,13 @@ $width: 200px;
 	// transition: all 2s ease-in-out;
 }
 
-.navItemIcon,
-.navItemIconCurrent {
+.icon,
+.iconCurrent {
 	margin-right: 1rem;
 	font-weight: 600;
 }
 
-.navItem.highlight {
+.link.highlight {
 	// background-color: var(--blue);
 	color: var(--blue);
 	border-color: var(--blue);

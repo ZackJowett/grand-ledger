@@ -12,84 +12,82 @@ import styles from "./DesktopNav.module.scss";
 export default function HamburgerMenu({ currentRoute, className }) {
 	return (
 		<>
-			<nav className={`${styles.nav} ${className ? className : ""}`}>
+			<nav className={`${styles.wrapper} ${className ? className : ""}`}>
 				{/* <Logo className={styles.logo} /> */}
-				<div className={styles.navLinkContainer}>
+
+				<div className={styles.linksWrapper}>
 					<Link
 						href="/"
-						className={`${styles.navItem} ${
+						className={`${styles.link} ${
 							currentRoute === "/" ? styles.current : ""
 						}`}>
 						{currentRoute === "/" ? (
-							<MdSpaceDashboard
-								className={styles.navItemIconCurrent}
-							/>
+							<MdSpaceDashboard className={styles.iconCurrent} />
 						) : (
-							<MdSpaceDashboard className={styles.navItemIcon} />
+							<MdSpaceDashboard className={styles.icon} />
 						)}
 						<h2>Dashboard</h2>
 					</Link>
+
 					{/* <RoundedBar length="90%" margin="2rem" /> */}
 					<Link
 						href="/settlements/create"
-						className={`${styles.navItem} ${styles.highlight} ${
+						className={`${styles.link} ${styles.highlight} ${
 							currentRoute === "/settlements/create"
 								? styles.current
 								: ""
 						}`}>
 						{currentRoute === "/settlements/create" ? (
-							<TiArrowForward
-								className={styles.navItemIconCurrent}
-							/>
+							<TiArrowForward className={styles.iconCurrent} />
 						) : (
-							<TiArrowForward className={styles.navItemIcon} />
+							<TiArrowForward className={styles.icon} />
 						)}
 						<h2>Make Payment</h2>
 					</Link>
+
 					<Link
 						href="/debts"
-						className={`${styles.navItem} ${
+						className={`${styles.link} ${
 							currentRoute === "/debts" ? styles.current : ""
 						}`}>
 						{currentRoute === "/debts" ? (
-							<IoWarning className={styles.navItemIconCurrent} />
+							<IoWarning className={styles.iconCurrent} />
 						) : (
-							<IoWarning className={styles.navItemIcon} />
+							<IoWarning className={styles.icon} />
 						)}
 						<h2>Debts</h2>
 					</Link>
+
 					<Link
 						href="/unreceived-payments"
-						className={`${styles.navItem} ${
+						className={`${styles.link} ${
 							currentRoute === "/unreceived-payments"
 								? styles.current
 								: ""
 						}`}>
 						{currentRoute === "/unreceived-payments" ? (
-							<FaHandHolding
-								className={styles.navItemIconCurrent}
-							/>
+							<FaHandHolding className={styles.iconCurrent} />
 						) : (
-							<FaHandHolding className={styles.navItemIcon} />
+							<FaHandHolding className={styles.icon} />
 						)}
 						<h2>Unreceived</h2>
 					</Link>
+
 					<Link
 						href="/settlements"
-						className={`${styles.navItem} ${
+						className={`${styles.link} ${
 							currentRoute === "/settlements"
 								? styles.current
 								: ""
 						}`}>
 						{currentRoute === "/settlements" ? (
-							<FaHandshake
-								className={styles.navItemIconCurrent}
-							/>
+							<FaHandshake className={styles.iconCurrent} />
 						) : (
-							<FaHandshake className={styles.navItemIcon} />
+							<FaHandshake className={styles.icon} />
 						)}
 						<h2>Settlements</h2>
 					</Link>
+
 					<div className={styles.bottomIcons}>
 						<Link
 							href="/profile"
