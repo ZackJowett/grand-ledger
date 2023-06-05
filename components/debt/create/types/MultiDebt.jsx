@@ -231,6 +231,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 
 		// Split total evenly between usersSelected
 		const evenAmount = distributeAmount(debt.total, usersSelected.length);
+		console.log(debt.total, evenAmount);
 		setUsersSelected(
 			usersSelected.map((user, index) => {
 				return {
@@ -243,11 +244,13 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 
 	// Check if total amount of usersSelected is equal to debt.total
 	function totalMatchesSum() {
+		if (usersSelected.length < 1) return true;
+
 		const amountSum = usersSelected.reduce((acc, user) => {
 			return acc + user.amount;
 		}, 0);
 
-		return amountSum === total;
+		return amountSum == total;
 	}
 
 	return (
@@ -281,7 +284,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 							name="amount"
 							id="amount"
 							min="0"
-							step="1"
+							step=".01"
 							placeholder="0.00"
 							value={total > 0 ? total : ""}
 							onChange={(e) => setTotal(e.target.value)}
@@ -330,7 +333,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 						})}
 					</div>
 					<TextWithTitle
-						text="Hint: Click to edit individual amounts"
+						text="Hint: Click amounts to edit"
 						align="right"
 						className={styles.hint}
 						tiny
