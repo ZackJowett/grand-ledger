@@ -16,10 +16,13 @@
 
 	&:hover {
 		cursor: pointer;
-		transform: scale(1.01);
-		transition: transform 0.05s ease-in-out;
 
-		@include shadow();
+		border-color: var(--primary);
+		background-color: transparent;
+
+		// @include shadow();
+		// transform: scale(1.02);
+		// transition: transform 0.05s ease-in-out;
 	}
 
 	&.dark {
