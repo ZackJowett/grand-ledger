@@ -4,6 +4,7 @@ import { IoWarning } from "react-icons/io5";
 import { TiArrowForward } from "react-icons/ti";
 import { MdSpaceDashboard, MdGroups, MdSettings } from "react-icons/md";
 import { BsPersonFill } from "react-icons/bs";
+import { FiPlusSquare } from "react-icons/fi";
 import styles from "./DesktopNav.module.scss";
 // import Logo from "../../logo/Logo";
 // import SocialsList from "@/components/icons/socialsList";
@@ -28,10 +29,26 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						<h2>Dashboard</h2>
 					</Link>
 
-					{/* <RoundedBar length="90%" margin="2rem" /> */}
+					{/* <hr className={styles.hr} /> */}
+
+					<Link
+						href="/debts/create"
+						className={`${styles.link} ${styles.createDebt} ${
+							currentRoute === "/debts/create"
+								? styles.current
+								: ""
+						}`}>
+						{currentRoute === "/debts/create" ? (
+							<FiPlusSquare className={styles.iconCurrent} />
+						) : (
+							<FiPlusSquare className={styles.icon} />
+						)}
+						<h2>Create Debt</h2>
+					</Link>
+
 					<Link
 						href="/settlements/create"
-						className={`${styles.link} ${styles.highlight} ${
+						className={`${styles.link} ${styles.createSettlement} ${
 							currentRoute === "/settlements/create"
 								? styles.current
 								: ""
@@ -43,6 +60,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						)}
 						<h2>Pay Someone</h2>
 					</Link>
+
+					<hr className={styles.hr} />
 
 					<Link
 						href="/debts"

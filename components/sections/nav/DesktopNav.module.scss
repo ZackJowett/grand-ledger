@@ -29,7 +29,7 @@ $width: 200px;
 .linksWrapper {
 	@include flex;
 	justify-content: flex-start;
-	gap: 3rem;
+	gap: 1rem;
 	height: 100%;
 	position: relative;
 }
@@ -52,7 +52,7 @@ $width: 200px;
 	justify-content: left;
 
 	font-size: $size;
-	padding: 1rem;
+	padding: 0.5rem 1rem;
 
 	border: rgba(0, 0, 0, 00) solid 2px;
 	border-radius: 10px;
@@ -75,7 +75,7 @@ $width: 200px;
 
 	@include desktop-up {
 		h2 {
-			font-size: 0.8rem;
+			font-size: 0.9rem;
 		}
 	}
 
@@ -84,23 +84,13 @@ $width: 200px;
 
 .icon,
 .iconCurrent {
+	$size: 20px;
+
+	height: $size;
+	width: $size;
+
 	margin-right: 1rem;
 	font-weight: 600;
-}
-
-.link.highlight {
-	// background-color: var(--blue);
-	color: var(--primary);
-	border-color: var(--primary);
-	h2 {
-		color: var(--primary);
-	}
-
-	&:hover {
-		background-color: rgba(92, 92, 92, 0.5);
-	}
-
-	@include currentlySelected;
 }
 
 .bottomIcons {
@@ -139,8 +129,34 @@ $width: 200px;
 
 .hr {
 	width: 60%;
-	border-color: var(--backgroundDark);
-	margin: 0;
+	border-color: rgba(85, 85, 85, 0.5);
+	margin: 0.25rem;
+}
+
+.createSettlement,
+.createDebt {
+	.icon {
+		color: var(--primary);
+	}
+}
+
+.createDebt {
+	// border-color: var(--primary);
+}
+
+.createSettlement {
+}
+
+.debts.icon {
+	color: var(--red);
+}
+
+.unreceived.icon {
+	color: var(--green);
+}
+
+.settlements {
+	color: var(--text);
 }
 
 .signature {
@@ -151,16 +167,4 @@ $width: 200px;
 	&:hover {
 		color: var(--primary);
 	}
-}
-
-.debts {
-	color: var(--red);
-}
-
-.unreceived {
-	color: var(--green);
-}
-
-.settlements {
-	color: var(--text);
 }
