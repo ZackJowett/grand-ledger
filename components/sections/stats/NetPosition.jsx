@@ -75,9 +75,7 @@ export default function NetPosition() {
 
 					{stats.current.net == 0 && (
 						<TextWithTitle
-							title={
-								"No outstanding debts or unreceived payments"
-							}
+							text={"No outstanding debts or unreceived payments"}
 							className={styles.noDebts}
 							small
 						/>
