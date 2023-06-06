@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 		for (let i = 0; i < req.body.debts.length; i++) {
 			await Debt.findOneAndUpdate(
 				{ _id: req.body.debts[i]._id },
-				{ status: "pending", settlementClosedIn: settlement._id },
+				{ status: "pending", settlement: settlement._id },
 				{ new: true }
 			);
 		}

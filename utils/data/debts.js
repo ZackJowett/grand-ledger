@@ -5,7 +5,12 @@ import { quickFetch, getRootURL } from "/utils/helpers";
 // Returns a single debt object with the given id
 export async function getOneDebt(id) {
 	try {
-		return await quickFetch(`${getRootURL()}api/debts?id=${id}`);
+		let data = null;
+		await quickFetch(`${getRootURL()}api/debts?id=${id}`).then((res) => {
+			data = res[0];
+		});
+
+		return data;
 	} catch (error) {
 		console.log(error);
 		return null;
