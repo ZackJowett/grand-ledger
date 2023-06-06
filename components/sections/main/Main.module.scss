@@ -17,22 +17,27 @@ $breakpoint: 1200px;
 	margin: 1rem;
 }
 
-.overview,
-.settlements,
-.debts {
+.welcome {
+	padding: 0 !important;
+}
+
+.overview {
 	width: 100%;
 	max-width: var(--maxWidth);
 	min-width: var(--minWidth);
-	flex: 1;
 
 	@include screen-up($breakpoint) {
 		margin: 0 0.5rem;
 	}
 }
 
+.overview {
+	@include flex(column, $gap: 1rem);
+}
+
 .buttonWrapper {
 	width: 100%;
-	padding: 1rem;
+	padding: 0 1rem;
 
 	.newDebt {
 		height: 3rem;

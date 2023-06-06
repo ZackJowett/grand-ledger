@@ -4,12 +4,14 @@ import Button from "../../button/Button";
 import NetPosition from "../../sections/stats/NetPosition";
 import RecentSettlements from "../../sections/recents/RecentSettlements";
 import RecentDebts from "../../sections/recents/RecentDebts";
-import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
+import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
+import Card from "components/card/Card";
+import Link from "next/link";
 
 export default function Main() {
 	const { data: session } = useSession();
 
-	// const state = useStore().getState();
+	const dailyFact = "The current world population is 7.8 billion";
 
 	// User not logged in
 	if (!session) {
@@ -19,6 +21,14 @@ export default function Main() {
 	return (
 		<div className={styles.main}>
 			<div className={styles.overview}>
+				<Card
+					title={
+						<Link href="/profile">Hello, {session.user.name}</Link>
+					}
+					subtitle={dailyFact}
+					className={styles.welcome}
+				/>
+
 				<NetPosition />
 
 				<div className={styles.buttonWrapper}>

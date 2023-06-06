@@ -13,8 +13,6 @@ export default function NetPosition() {
 
 	const [stats, setStats] = useState(null);
 
-	const dailyFact = "The current world population is 7.8 billion";
-
 	useEffect(() => {
 		if (!session) return;
 
@@ -28,7 +26,7 @@ export default function NetPosition() {
 	console.log(stats);
 
 	return (
-		<Card title={`Hello, ${session.user.name}`} subtitle={dailyFact} dark>
+		<Card title="Overview" dark>
 			{stats ? (
 				<>
 					{stats.current.net > 0 && (
