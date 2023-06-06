@@ -125,6 +125,14 @@ export async function postDebts(debts, userId) {
 				}
 			}
 		}
+		// Check each response of promise to see if success: true
+		// If not, return error
+		for (let i = 0; i < promises.length; i++) {
+			const currentResponse = await promises[i].json();
+			if (!currentResponse.success) {
+				throw new Error("Error posting debts");
+			}
+		}
 
 		return { success: true, data: await Promise.all(promises) };
 	} catch (error) {
