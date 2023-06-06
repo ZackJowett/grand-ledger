@@ -2,13 +2,15 @@
 	$direction: column,
 	$justify-content: center,
 	$align-items: center,
-	$flex-wrap: nowrap
+	$flex-wrap: nowrap,
+	$gap: 0
 ) {
 	display: flex;
 	align-items: $align-items;
 	justify-content: $justify-content;
 	flex-direction: $direction;
 	flex-wrap: $flex-wrap;
+	gap: $gap;
 }
 
 // Centering an element

@@ -3,7 +3,7 @@
 $breakpoint: 1200px;
 
 .main {
-	@include flex(column, center);
+	@include flex(column, center, $gap: 2rem);
 	flex-wrap: nowrap;
 
 	@include screen-up($breakpoint) {
@@ -14,7 +14,7 @@ $breakpoint: 1200px;
 	width: 100%;
 
 	max-width: 1500px;
-	margin: 1rem 1rem;
+	margin: 1rem;
 }
 
 .overview,
@@ -24,8 +24,6 @@ $breakpoint: 1200px;
 	max-width: var(--maxWidth);
 	min-width: var(--minWidth);
 	flex: 1;
-
-	margin: 1rem 0;
 
 	@include screen-up($breakpoint) {
 		margin: 0 0.5rem;
