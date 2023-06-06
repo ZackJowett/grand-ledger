@@ -284,7 +284,6 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 	return (
 		<Card dark>
 			<section className={styles.wrapper}>
-				{debt.id}
 				{/* Header */}
 				<div className={styles.headerWrapper}>
 					<div className={styles.header}>

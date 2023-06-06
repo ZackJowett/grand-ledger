@@ -1,6 +1,8 @@
 import Button from "components/button/Button";
 import { postDebts } from "utils/data/debts";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+import styles from "./SubmitDebts.module.scss";
 
 export default function SubmitDebts({
 	debts,
@@ -10,6 +12,8 @@ export default function SubmitDebts({
 	setDebts,
 }) {
 	const { data: session } = useSession();
+
+	const [confirmSubmission, setConfirmSubmission] = useState(false);
 
 	function handleSubmit() {
 		// Set states
@@ -35,5 +39,27 @@ export default function SubmitDebts({
 		});
 	}
 
-	return <Button title="Submit All" onClick={handleSubmit} />;
+	if (confirmSubmission) {
+		return (
+			<div className={styles.wrapper}>
+				<p>Are you sure?</p>
+				<div className={styles.confirmButtons}>
+					<Button
+						title="Confirm"
+						onClick={handleSubmit}
+						className={styles.yes}
+					/>
+					<Button
+						title="Cancel"
+						onClick={() => setConfirmSubmission(false)}
+						className={styles.no}
+					/>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<Button title="Submit All" onClick={() => setConfirmSubmission(true)} />
+	);
 }

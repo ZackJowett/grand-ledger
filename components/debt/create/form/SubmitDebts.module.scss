@@ -1,0 +1,33 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	width: 100%;
+	text-align: center;
+
+	p {
+		margin-bottom: 1rem;
+	}
+}
+
+.confirmButtons {
+	@include flex(row, space-between, center, $gap: 1rem);
+	width: 100%;
+
+	.yes {
+		background-color: var(--green);
+		border-color: var(--green);
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
+
+	.no {
+		background-color: var(--red);
+		border-color: var(--red);
+
+		&:hover {
+			background-color: transparent;
+		}
+	}
+}

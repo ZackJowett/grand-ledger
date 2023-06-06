@@ -8,7 +8,8 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import AddDebt from "components/debt/create/form/AddDebt";
 import SubmitDebts from "components/debt/create/form/SubmitDebts";
 import DebtList from "components/debt/create/DebtList";
-import Button from "components/button/Button";
+import Spinner from "components/placeholders/spinner/Spinner";
+import TextButton from "components/button/text/TextButton";
 
 // Classes
 function SingleDebt(
@@ -138,21 +139,55 @@ export default function Create() {
 					large
 				/>
 
-				<AddDebt
-					numDebts={debts.length}
-					addSingle={addSingle}
-					addMulti={addMulti}
-				/>
+				{submitting ? (
+					<Spinner title="Creating debts..." />
+				) : (
+					<>
+						{submitError && (
+							<p className={styles.error}>
+								There was an error creating the debts. Please
+								try again or contact admin.
+							</p>
+						)}
+						{submitSuccess && (
+							<p className={styles.success}>
+								Successfully created debts.
+								<br />
+								<TextButton
+									title="View Debts"
+									link="/debts"
+									className={styles.link}
+								/>{" "}
+								<br />
+								<TextButton
+									title="View payments owed to you"
+									link="/unreceived-payments"
+									className={styles.link}
+								/>{" "}
+							</p>
+						)}
+						<AddDebt
+							numDebts={debts.length}
+							addSingle={addSingle}
+							addMulti={addMulti}
+						/>
 
-				<DebtList debts={debts} setDebts={setDebts} />
+						<DebtList debts={debts} setDebts={setDebts} />
 
-				<SubmitDebts
-					debts={debts}
-					setDebts={setDebts}
-					setSubmitting={setSubmitting}
-					setSubmitError={setSubmitError}
-					setSubmitSuccess={setSubmitSuccess}
-				/>
+						{debts.length > 0 && (
+							<>
+								<hr className={styles.hr} />
+								<SubmitDebts
+									debts={debts}
+									setDebts={setDebts}
+									setSubmitting={setSubmitting}
+									setSubmitError={setSubmitError}
+									setSubmitSuccess={setSubmitSuccess}
+								/>
+							</>
+						)}
+					</>
+				)}
 			</section>
 		</Layout>
 	);
