@@ -6,16 +6,17 @@ import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
 import styles from "public/styles/pages/CreateSettlement.module.scss";
 import TextWithTitle from "/components/text/title/TextWithTitle";
 import { useStore } from "react-redux";
+import { getName, formatDate } from "/utils/helpers";
 
 export default function Create() {
 	const { data: session } = useSession();
 
 	// States
 	const [createAs, setCreateAs] = useState("creditor");
-	const [users, setUsers] = useState(null);
 	const [debts, setDebts] = useState(null);
 	const [selectedParty, setSelectedParty] = useState(null);
 	const state = useStore().getState();
+	const users = state.userList.users;
 
 	useEffect(() => {
 		if (!session || !users) return;
@@ -124,7 +125,7 @@ export default function Create() {
 
 				{/* <SubmitDebts /> */}
 			</section>
-			{/* <h1>Create new settlement</h1>
+			<h1>Create new settlement</h1>
 
 			{debts && debts.length == 0 ? (
 				<>
@@ -249,7 +250,7 @@ export default function Create() {
 						<p>Loading...</p>
 					)}
 				</div>
-			)} */}
+			)}
 		</Layout>
 	);
 }
