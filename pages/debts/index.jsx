@@ -76,14 +76,13 @@ export default function Debts() {
 	return (
 		<Layout>
 			<section className={styles.wrapper}>
-				<Card dark>
+				<div className={styles.heading}>
 					<TextWithTitle
 						title="Debts"
 						text="A debt is the amount of money you owe someone"
 						align="left"
 					/>
-					<br />
-					<p>
+					<p className={styles.callToSettle}>
 						You can settle multiple debts to the same person at once{" "}
 						<Link
 							href="/settlements/create"
@@ -91,7 +90,7 @@ export default function Debts() {
 							here
 						</Link>
 					</p>
-				</Card>
+				</div>
 				<Card dark>
 					<h3>
 						Total Amount (Outstanding):

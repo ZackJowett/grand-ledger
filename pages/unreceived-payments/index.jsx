@@ -68,13 +68,12 @@ export default function UnreceivedPayments() {
 	return (
 		<Layout>
 			<section className={styles.wrapper}>
-				<Card dark>
-					<TextWithTitle
-						title="Unreceived Payments"
-						text="Debts someone owes you"
-						align="left"
-					/>
-				</Card>
+				<TextWithTitle
+					title="Unreceived Payments"
+					text="Debts someone owes you"
+					align="left"
+					className={styles.heading}
+				/>
 				<Card dark>
 					<h3>
 						Total Amount (Unreceived):{" $"}

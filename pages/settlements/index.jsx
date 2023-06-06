@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getAllSettlements } from "/utils/data/settlements";
 import Settlement from "/components/settlement/Settlement";
 import Button from "/components/button/Button";
-import styles from "public/styles/pages/Debts.module.scss";
+import styles from "public/styles/pages/Settlements.module.scss";
 import Layout from "/components/layouts/Layout";
 import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
 import Card from "/components/card/Card";
@@ -50,14 +50,14 @@ export default function Settlements() {
 	return (
 		<Layout>
 			<section className={styles.wrapper}>
-				<Card dark>
+				<div className={styles.heading}>
 					<TextWithTitle
 						title="Settlements"
 						text="An offer to close multiple debts to the same person"
 						align="left"
 					/>
-					<br />
-					<p>
+
+					<p className={styles.callToSettle}>
 						You can settle multiple debts to the same person at once{" "}
 						<Link
 							href="/settlements/create"
@@ -65,7 +65,7 @@ export default function Settlements() {
 							here
 						</Link>
 					</p>
-				</Card>
+				</div>
 				<Card dark>
 					<h3>Totals</h3>
 				</Card>
@@ -75,8 +75,8 @@ export default function Settlements() {
 					className={styles.create}
 				/>
 				<Card dark title="Settlements">
-					<hr />
-					<select onChange={handleFilterSelect}>
+					<hr className={styles.hr} />
+					<select onChange={handleFilterSelect} class>
 						<option value="pending">Pending</option>
 						<option value="reopened">Reopened</option>
 						<option value="closed">Closed</option>
