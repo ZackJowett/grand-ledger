@@ -8,8 +8,7 @@ export default async function handler(req, res) {
 		let settlements = null;
 
 		// Get specific settlement by id
-		await Settlement.find({ _id: req.query.id })
-			.sort({ dateCreated: "descending" })
+		await Settlement.findOne({ _id: req.query.id })
 			.then((res) => {
 				settlements = res;
 			})
