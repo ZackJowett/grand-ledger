@@ -40,8 +40,8 @@ export default function Main() {
 				</div>
 			</div>
 
-			<RecentSettlements className={styles.settlements} />
-			<RecentDebts className={styles.debts} />
+			<RecentSettlements />
+			<RecentDebts />
 			<br />
 		</div>
 	);
