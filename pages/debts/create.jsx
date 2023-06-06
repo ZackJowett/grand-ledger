@@ -70,44 +70,6 @@ export default function Create() {
 		);
 	}
 
-	// ----------- Handle submission ---------------- \\
-	const handleRegister = async (e) => {
-		e.preventDefault();
-
-		let creditor = session.user.id;
-		let debtor = e.target.otherParty.value;
-
-		if (createAs == "debtor") {
-			creditor = e.target.otherParty.value;
-			debtor = session.user.id;
-			console.log("created as debtor");
-		}
-
-		const amount = e.target.amount.value;
-		const description = e.target.description.value;
-
-		const res = await fetch("/api/debts/newDebt", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				creditor,
-				debtor,
-				amount,
-				description,
-				userId: session.user.id,
-			}),
-		});
-
-		const data = await res.json();
-		console.log(data);
-	};
-
-	const handleSelect = (e) => {
-		setCreateAs(e.target.value);
-	};
-
 	// ----------- Add debt to list ---------------- \\
 	// Single debt
 	function addSingle() {
@@ -174,7 +136,7 @@ export default function Create() {
 
 						<DebtList debts={debts} setDebts={setDebts} />
 
-						{debts.length > 0 && (
+						{debts.length > 0 ? (
 							<>
 								<hr className={styles.hr} />
 								<SubmitDebts
@@ -185,6 +147,10 @@ export default function Create() {
 									setSubmitSuccess={setSubmitSuccess}
 								/>
 							</>
+						) : (
+							<p className={styles.startHint}>
+								Choose an option above to start
+							</p>
 						)}
 					</>
 				)}
