@@ -21,7 +21,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 	const { data: session } = useSession();
 	const state = useStore().getState();
 	const users = state.userList.users;
-	const [usersSelected, setUsersSelected] = useState([]);
+	const [usersSelected, setUsersSelected] = useState(debt.parties);
 	const [editingUser, setEditingUser] = useState(null);
 	const [splitEvenly, setSplitEvenly] = useState(true);
 	const [total, setTotal] = useState(debt.total);
@@ -32,6 +32,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
 					currentDebt.total = Number(total);
+
 					return currentDebt;
 				}
 				return currentDebt;
@@ -43,26 +44,31 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 
 	useEffect(() => {
 		// Update parties when usersSelected is updated
+		console.log(`ID: ${debt.id}`);
 		setDebts(
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
 					currentDebt.parties = usersSelected;
+					console.log(`CHANGED SOMETHING FOR ${debt.id}`);
+
 					return currentDebt;
 				}
 				return currentDebt;
 			})
 		);
+
+		console.log(debts);
 	}, [usersSelected]);
 
 	// Select user will add a user to the usersSelected array when their
 	// checkbox is selected
 	// Automatically adjust amounts between totals when a user is added
-	function handleSelectUser(e) {
+	function handleSelectUser(e, debtId) {
 		if (e.target.checked) {
 			const amountSum = usersSelected.reduce((acc, user) => {
 				return acc + user.amount;
 			}, 0);
-			console.log(`AmountSum ${amountSum}`);
+			console.log(`Selected user in debt ${debt.id}`);
 
 			if (amountSum == debt.total) {
 				// Amount is equal to total
@@ -278,6 +284,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 	return (
 		<Card dark>
 			<section className={styles.wrapper}>
+				{debt.id}
 				{/* Header */}
 				<div className={styles.headerWrapper}>
 					<div className={styles.header}>
@@ -285,7 +292,6 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 						<RxCross2
 							className={styles.exitCross}
 							onClick={() => {
-								console.log(`removing id: ${debt.id}`);
 								removeDebt(debt.id);
 							}}
 						/>
@@ -299,20 +305,30 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 				{/* Amount */}
 				<div className={styles.inputSection}>
 					<TextWithTitle title="Total Amount" align="left" small />
-					<div className={styles.totalAmount}>
-						$
-						<input
-							type="number"
-							name="amount"
-							id="amount"
-							min="0"
-							step=".01"
-							placeholder="0.00"
-							value={total > 0 ? total : ""}
-							onChange={handleSetTotal}
+					<div className={styles.total}>
+						<div className={styles.totalInput}>
+							$
+							<input
+								type="number"
+								name="amount"
+								id="amount"
+								min="0"
+								step=".01"
+								placeholder="0.00"
+								value={total > 0 ? total : ""}
+								onChange={handleSetTotal}
+							/>
+							AUD
+						</div>
+						<Toggle
+							title={"Split Evenly"}
+							icon={<MdSafetyDivider />}
+							active={splitEvenly}
+							onClick={handleSplitEvenly}
+							className={styles.splitEvenly}
 						/>
-						AUD
 					</div>
+
 					{!totalMatchesSum() && (
 						<p className={styles.warning}>
 							Total doesn&apos;t add up with the individual
@@ -329,17 +345,13 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 							align="left"
 							small
 						/>
-						<Toggle
-							title={"Split Evenly"}
-							icon={<MdSafetyDivider />}
-							active={splitEvenly}
-							onClick={handleSplitEvenly}
-						/>
 					</div>
-					<div className={styles.parties}>
+					<div className={styles.parties} key={debt.id}>
 						{users.map((user, index) => {
 							return (
 								<SelectUser
+									key={`${debt._id}-${index}`}
+									id={`${debt._id}-${index}`}
 									user={user}
 									debt={debt}
 									total={total}
@@ -348,7 +360,6 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 									editingUser={editingUser}
 									setEditingUser={setEditingUser}
 									recalculateTotal={recalculateTotal}
-									key={index}
 								/>
 							);
 						})}

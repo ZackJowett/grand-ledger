@@ -1,6 +1,5 @@
 import dbConnect from "/utils/mongodb";
 import Debt from "/utils/models/debt";
-import { useSession } from "next-auth/react";
 
 export default async function handler(req, res) {
 	// Connect to database (connection is likely cached if not first time)

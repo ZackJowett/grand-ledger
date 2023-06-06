@@ -21,11 +21,13 @@ export default function SubmitDebts({
 			if (!data.success) {
 				// Error submitting
 				setSubmitError(data.error);
+				setSubmitSuccess(false);
 				setSubmitting(false);
 			} else {
 				// Success submitting
 				setDebts([]);
 				setSubmitSuccess(true);
+				setSubmitError(false);
 				setSubmitting(false);
 
 				console.log("Success submitting", data);

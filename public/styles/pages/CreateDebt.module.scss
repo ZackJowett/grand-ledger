@@ -9,3 +9,16 @@
 	width: 100%;
 	max-width: var(--maxWidth);
 }
+
+.error,
+.success {
+	width: 100%;
+}
+
+.error {
+	color: var(--red);
+}
+
+.success {
+	color: var(--green);
+}

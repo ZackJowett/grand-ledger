@@ -46,10 +46,27 @@
 	gap: 1rem;
 }
 
-.totalAmount {
-	@include flex(row, flex-start, center);
-	input {
-		margin: auto 0.5rem;
+.total {
+	@include flex(row, space-between, center, $gap: 2rem);
+	width: 100%;
+
+	.totalInput {
+		@include flex(row, flex-start, center, $gap: 0.5rem);
+		width: 100%;
+	}
+
+	.splitEvenly {
+		width: 15rem;
+	}
+
+	@include screen(500px) {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+
+		.splitEvenly {
+			width: 50%;
+		}
 	}
 }
 

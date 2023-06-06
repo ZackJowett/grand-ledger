@@ -10,6 +10,7 @@ export default function SelectUser({
 	editingUser,
 	setEditingUser,
 	recalculateTotal,
+	debt,
 }) {
 	const { data: session } = useSession();
 
@@ -21,7 +22,13 @@ export default function SelectUser({
 	useEffect(() => {
 		if (!userSelected) return;
 		setAmount(userSelected.amount);
+
+		console.log(`USER SELECTED IN ${debt.id}`);
 	}, [userSelected]);
+
+	useEffect(() => {
+		console.log(`AMOUNT CHANGED IN DEBT ${debt.id}`);
+	}, [amount]);
 
 	// Reset amount when editingUser changes
 	useEffect(() => {
@@ -54,12 +61,12 @@ export default function SelectUser({
 				<div className={styles.checkbox}>
 					<input
 						type="checkbox"
-						id={`checkbox-${user._id}`}
-						name={`checkbox-${user._id}`}
+						id={`checkbox-${debt.id}-${user._id}`}
+						name={`checkbox-${debt.id}-${user._id}`}
 						value={user._id}
-						onChange={(e) => handleSelectUser(e)}
+						onChange={(e) => handleSelectUser(e, debt.id)}
 					/>
-					<label htmlFor={`checkbox-${user._id}`}>
+					<label htmlFor={`checkbox-${debt.id}-${user._id}`}>
 						{user._id == session.user.id
 							? "Include Myself"
 							: user.name}
