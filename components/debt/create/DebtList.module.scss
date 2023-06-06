@@ -1,0 +1,18 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, center, center, $gap: 1rem);
+	width: 100%;
+
+	@include screen-up(2000px) {
+		flex-direction: row;
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
+}
+
+.single,
+.multi {
+	max-width: var(--maxWidth);
+	height: 100%;
+}
