@@ -53,7 +53,7 @@ export default function RecentSettlements({ className }) {
 			subtitle={`Updated: ${timeFetched}`}
 			link="/settlements"
 			dark
-			className={className}>
+			className={`${className} ${styles.wrapper}`}>
 			{settlements && users ? (
 				settlements.map((settlement, index) => {
 					if (index >= showAmount) return;
@@ -79,9 +79,17 @@ export default function RecentSettlements({ className }) {
 			{settlements &&
 			showAmount != settlements.length &&
 			showAmount < settlements.length ? (
-				<TextButton title="View More" onClick={handleViewMore} />
+				<TextButton
+					title="View More"
+					onClick={handleViewMore}
+					className={styles.viewMore}
+				/>
 			) : (
-				<TextButton title="Go to Settlements" link="/settlements" />
+				<TextButton
+					title="Go to Settlements"
+					link="/settlements"
+					className={styles.viewMore}
+				/>
 			)}
 		</Card>
 	);

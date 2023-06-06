@@ -1,7 +1,10 @@
-.card {
-	background-color: var(--dark) !important;
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, flex-start, flex-start, $gap: 1rem);
 }
 
-.settlement {
-	margin-top: 1rem;
+.viewMore {
+	display: inline-block;
+	margin: 0.5rem 0 0 0;
 }

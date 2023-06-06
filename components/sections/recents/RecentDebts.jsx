@@ -71,9 +71,17 @@ export default function RecentDebts({ className }) {
 			{debts &&
 			showAmount != debts.length &&
 			showAmount < debts.length ? (
-				<TextButton title="View More" onClick={handleViewMore} />
+				<TextButton
+					title="View More"
+					onClick={handleViewMore}
+					className={styles.viewMore}
+				/>
 			) : (
-				<TextButton title="Go to Debts" link="/debts" />
+				<TextButton
+					title="Go to Debts"
+					link="/debts"
+					className={styles.viewMore}
+				/>
 			)}
 		</Card>
 	);
