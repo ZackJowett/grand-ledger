@@ -10,37 +10,29 @@ $width: 200px;
 			cursor: default;
 			background-color: var(--background);
 		}
-
-		// width: 95%;
-		// border-top-right-radius: 0;
-		// border-bottom-right-radius: 0;
-		// margin-right: 0;
 	}
 }
 
 .wrapper {
 	height: calc(100vh - var(--headerHeight));
 	background-color: var(--backgroundDark);
-	width: 15vw;
-	max-width: 300px;
-	min-width: $width;
+	width: 250px;
 }
 
 .linksWrapper {
-	@include flex;
+	@include flex($gap: 1rem);
 	justify-content: flex-start;
-	gap: 1rem;
 	height: 100%;
 	position: relative;
+	width: 95%;
+	margin: auto;
 }
 
 .link {
 	$size: 1rem;
 
 	// Center div
-	width: 95%;
-	margin-left: 5%;
-	margin-right: 5%;
+	width: 100%;
 
 	max-width: 400px;
 
@@ -94,20 +86,19 @@ $width: 200px;
 }
 
 .bottomIcons {
-	@include flex(row, space-evenly);
-	// position: absolute;
-	bottom: 1rem;
+	@include flex(row, space-evenly, $gap: 0);
 	width: 100%;
 }
 
-.navIcon {
+.bottomIcon {
 	$size: 45px;
 
-	@include flex();
+	@include flex($gap: 0);
 	@include border($color: transparent);
 
 	height: $size;
 	width: $size;
+	color: var(--subtext);
 
 	padding: 0.6rem;
 
@@ -133,30 +124,52 @@ $width: 200px;
 	margin: 0.25rem;
 }
 
-.createSettlement,
+// Dashboard link
+.dashboard {
+	.icon,
+	.iconCurrent {
+		color: var(--text);
+	}
+}
+
+// Create debt link
 .createDebt {
-	.icon {
+	.icon,
+	.iconCurrent {
 		color: var(--primary);
 	}
 }
 
-.createDebt {
-	// border-color: var(--primary);
-}
-
+// Create settlements link
 .createSettlement {
+	.icon,
+	.iconCurrent {
+		color: var(--primary);
+	}
 }
 
-.debts.icon {
-	color: var(--red);
+// Debts link
+.debts {
+	.icon,
+	.iconCurrent {
+		color: var(--red);
+	}
 }
 
-.unreceived.icon {
-	color: var(--green);
+// Unreceived Payment link
+.unreceived {
+	.icon,
+	.iconCurrent {
+		color: var(--green);
+	}
 }
 
+// Settlements link
 .settlements {
-	color: var(--text);
+	.icon,
+	.iconCurrent {
+		color: var(--yellow);
+	}
 }
 
 .signature {
