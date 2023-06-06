@@ -1,30 +1,47 @@
 @use "public/styles/mixins.scss" as *;
 
 .wrapper {
-	@include mainSection;
+	width: 100%;
+	@include flex;
+	gap: 1rem;
+
+	padding: 1rem;
+	position: relative;
 }
 
-.newSettlement {
-	margin: 1rem auto;
+.heading {
+	text-align: left;
+	width: 100%;
+	max-width: var(--maxWidth);
+	margin-bottom: 1rem;
+
+	.callToSettle {
+		margin-top: 0.5rem;
+	}
+}
+
+.create {
+	margin: 0.5rem auto;
 	width: 90%;
 	max-width: calc(var(--maxWidth) - 4rem);
 }
 
-.title {
-	margin: auto 0.5rem;
-	margin-top: 1.5rem;
-	text-align: left;
-}
-
 .hr {
 	width: 95%;
-	margin: auto;
+	margin: 1rem auto;
 }
 
-.settlements {
-	margin: auto;
+.cards {
+	margin-top: 1rem;
+	@include flex;
+	gap: 1rem;
+}
 
-	.settlement {
-		margin-top: 2rem;
+.link {
+	text-decoration: underline;
+
+	&:hover {
+		cursor: pointer;
+		color: var(--primary);
 	}
 }

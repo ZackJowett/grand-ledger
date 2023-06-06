@@ -8,8 +8,19 @@
 	padding: 1rem;
 }
 
+.heading {
+	text-align: left;
+	width: 100%;
+	max-width: var(--maxWidth);
+	margin-bottom: 1rem;
+
+	.callToSettle {
+		margin-top: 0.5rem;
+	}
+}
+
 .create {
-	margin: 1rem auto;
+	margin: 0.5rem auto;
 	width: 90%;
 	max-width: calc(var(--maxWidth) - 4rem);
 }
