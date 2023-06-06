@@ -4,10 +4,8 @@
 @use "public/styles/mixins.scss" as *;
 @import "public/styles/reset.scss";
 // @import url("https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&family=Ubuntu+Mono:ital,wght@0,700;1,400&display=swap");
-// @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
-
-// -----------------------------------------------------------------------------
-// SCSS VARIABLES
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Roboto:wght@400&display=swap"); // SCSS VARIABLES
 // -----------------------------------------------------------------------------
 
 :root {
@@ -69,12 +67,13 @@ h5,
 h6,
 a,
 label {
-	// font-family: "Ubuntu Mono", monospace;
 	color: var(--heading);
+	font-family: "Roboto", sans-serif;
 }
 
 h1 {
 	font-size: 2rem;
+	font-family: "Libre Baskerville", serif;
 }
 
 h2 {
