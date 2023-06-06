@@ -9,8 +9,6 @@ import { get } from "http";
 import SelectUser from "./SelectUser";
 import { distributeAmount } from "utils/helpers";
 import Toggle from "components/button/toggle/Toggle";
-import { MdSafetyDivider } from "react-icons/md";
-import { set } from "mongoose";
 
 Number.prototype.countDecimals = function () {
 	if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
@@ -321,7 +319,6 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 						</div>
 						<Toggle
 							title={"Split Evenly"}
-							icon={<MdSafetyDivider />}
 							active={splitEvenly}
 							onClick={handleSplitEvenly}
 							className={styles.splitEvenly}

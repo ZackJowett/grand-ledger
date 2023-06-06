@@ -1,8 +1,11 @@
 @use "public/styles/mixins.scss" as *;
 
 .wrapper {
-	@include flex(row, center, center);
-	padding: 0.2rem 1rem;
+	@include flex(row, space-between, center);
+	padding: 0.2rem 1rem 0.2rem 0.7rem;
+	position: relative;
+
+	min-width: 8rem;
 
 	@include border($radius: 100px, $color: var(--subtext));
 	color: var(--subtext);
@@ -11,8 +14,6 @@
 
 	&:hover {
 		cursor: pointer;
-		border-color: var(--primary);
-		color: var(--primary);
 	}
 }
 
@@ -20,7 +21,6 @@
 	$size: 20px;
 
 	@include flex(row, center, center);
-	height: 100%;
 	margin-right: 0.5rem;
 
 	svg {
@@ -29,12 +29,18 @@
 	}
 }
 
+.title {
+	width: 100%;
+	color: var(--subtext);
+	text-align: center;
+}
+
 .active {
 	border-color: var(--primary);
 	background-color: var(--primary);
 	color: var(--text);
 
-	&:hover {
-		color: var(--background);
+	.title {
+		color: var(--text);
 	}
 }
