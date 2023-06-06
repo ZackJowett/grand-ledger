@@ -4,13 +4,14 @@
 	text-align: center;
 
 	margin: 1rem auto;
+	display: inline;
 }
 
 .text {
 	cursor: pointer;
 	text-decoration: underline;
 
-	color: var(--subtext);
+	color: inherit;
 
 	&:hover {
 		color: var(--primary);
