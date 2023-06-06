@@ -14,6 +14,7 @@ export default function RecentSettlements({ className }) {
 	const [settlements, setSettlements] = useState(null);
 	const [users, setUsers] = useState(null); // [user
 	const [showAmount, setShowAmount] = useState(3); // Number to show
+	const [timeFetched, setTimeFetched] = useState(null);
 
 	useEffect(() => {
 		if (!session) return;
@@ -31,6 +32,11 @@ export default function RecentSettlements({ className }) {
 		});
 	}, [session]);
 
+	useEffect(() => {
+		// Set time fetched
+		setTimeFetched(new Date().toLocaleTimeString());
+	}, [settlements]);
+
 	if (!session) return;
 
 	const handleViewMore = () => {
@@ -44,7 +50,7 @@ export default function RecentSettlements({ className }) {
 	return (
 		<Card
 			title="Recent Settlements"
-			subtitle="Updated: [TIME]"
+			subtitle={`Updated: ${timeFetched}`}
 			link="/settlements"
 			dark
 			className={className}>
