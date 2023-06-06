@@ -10,11 +10,11 @@ export default function DebtList({ debts, setDebts }) {
 		); // Set debts state
 	}
 
-	return debts.map((debt) => {
+	return debts.map((debt, index) => {
 		if (debt.type === "single") {
 			return (
 				<SingularDebt
-					key={debt.id}
+					key={index}
 					debt={debt}
 					debts={debts}
 					setDebts={setDebts}
@@ -24,7 +24,7 @@ export default function DebtList({ debts, setDebts }) {
 		} else if (debt.type === "multi") {
 			return (
 				<MultiDebt
-					key={debt.id}
+					key={index}
 					debt={debt}
 					debts={debts}
 					setDebts={setDebts}
