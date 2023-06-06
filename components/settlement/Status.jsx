@@ -118,8 +118,7 @@ export default function Status({ settlement, otherPartyName }) {
 								submit
 							/>
 							<p className={styles.underButtonText}>
-								<strong>Reject</strong> Settlement and ask{" "}
-								{otherPartyName} to resubmit
+								Send a gentle reminder to {otherPartyName}
 							</p>
 						</form>
 					</Card>
@@ -128,7 +127,7 @@ export default function Status({ settlement, otherPartyName }) {
 			);
 		}
 
-		// User is settlee, they must revice the settlement
+		// User is settlee, they must review the settlement
 		return (
 			<>
 				<ReviewSettlement

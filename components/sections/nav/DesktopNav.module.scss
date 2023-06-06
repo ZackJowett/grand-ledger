@@ -16,7 +16,7 @@ $width: 200px;
 .wrapper {
 	height: calc(100vh - var(--headerHeight));
 	background-color: var(--backgroundDark);
-	width: 250px;
+	width: var(--desktopNavWidth);
 }
 
 .linksWrapper {

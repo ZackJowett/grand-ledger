@@ -60,6 +60,11 @@ export default function SubmitDebts({
 	}
 
 	return (
-		<Button title="Submit All" onClick={() => setConfirmSubmission(true)} />
+		<div className={styles.wrapper}>
+			<Button
+				title="Submit All"
+				onClick={() => setConfirmSubmission(true)}
+			/>
+		</div>
 	);
 }

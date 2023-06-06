@@ -42,6 +42,7 @@
 	--minWidth: 300px;
 
 	--headerHeight: 100px;
+	--desktopNavWidth: 250px;
 }
 
 #__next {
@@ -140,6 +141,7 @@ img {
 
 hr {
 	border-color: var(--subtext);
+	color: var(--subtext);
 	// margin: 1rem 0;
 }
 

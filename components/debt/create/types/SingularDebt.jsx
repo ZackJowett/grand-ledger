@@ -6,7 +6,13 @@ import { useStore } from "react-redux";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-export default function SingularDebt({ debt, debts, setDebts, removeDebt }) {
+export default function SingularDebt({
+	debt,
+	debts,
+	setDebts,
+	removeDebt,
+	className,
+}) {
 	const { data: session } = useSession();
 	const state = useStore().getState();
 	const users = state.userList.users;
@@ -76,7 +82,7 @@ export default function SingularDebt({ debt, debts, setDebts, removeDebt }) {
 	}
 
 	return (
-		<Card dark>
+		<Card dark className={className ? className : ""}>
 			<section className={styles.wrapper}>
 				{/* Header */}
 				<div className={styles.headerWrapper}>

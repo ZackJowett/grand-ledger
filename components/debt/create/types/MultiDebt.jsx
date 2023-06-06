@@ -15,7 +15,13 @@ Number.prototype.countDecimals = function () {
 	return this.toString().split(".")[1].length || 0;
 };
 
-export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
+export default function MultiDebt({
+	debt,
+	debts,
+	setDebts,
+	removeDebt,
+	className,
+}) {
 	const { data: session } = useSession();
 	const state = useStore().getState();
 	const users = state.userList.users;
@@ -280,7 +286,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 	}
 
 	return (
-		<Card dark>
+		<Card dark className={className ? className : ""}>
 			<section className={styles.wrapper}>
 				{/* Header */}
 				<div className={styles.headerWrapper}>

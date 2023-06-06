@@ -3,6 +3,7 @@
 .wrapper {
 	width: 100%;
 	text-align: center;
+	max-width: var(--maxWidth);
 
 	p {
 		margin-bottom: 1rem;
