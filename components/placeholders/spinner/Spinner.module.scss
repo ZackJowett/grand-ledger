@@ -3,6 +3,7 @@
 .wrapper {
 	@include flex(column, center, center);
 	gap: 0.5rem;
+	margin: auto;
 }
 
 .title {
