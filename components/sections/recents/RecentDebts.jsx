@@ -20,8 +20,6 @@ export default function RecentDebts({ className }) {
 
 		getAllForDebtor(session.user.id).then((data) => {
 			data ? setDebts(data) : console.log("Error fetching debts");
-			// Time fetched
-			//....
 		});
 	}, [session]);
 
