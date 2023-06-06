@@ -1,0 +1,56 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, center, center);
+	gap: 0.5rem;
+}
+
+.title {
+	color: var(--subtext);
+}
+
+.spinner1,
+.spinner2,
+.spinner3 {
+	animation: spin 2.4s linear infinite;
+	fill: var(--subtext);
+}
+.spinner1 {
+	animation-delay: -2.4s;
+}
+.spinner2 {
+	animation-delay: -1.6s;
+}
+.spinner3 {
+	animation-delay: -0.8s;
+}
+@keyframes spin {
+	8.33% {
+		x: 13px;
+		y: 1px;
+	}
+	25% {
+		x: 13px;
+		y: 1px;
+	}
+	33.3% {
+		x: 13px;
+		y: 13px;
+	}
+	50% {
+		x: 13px;
+		y: 13px;
+	}
+	58.33% {
+		x: 1px;
+		y: 13px;
+	}
+	75% {
+		x: 1px;
+		y: 13px;
+	}
+	83.33% {
+		x: 1px;
+		y: 1px;
+	}
+}
