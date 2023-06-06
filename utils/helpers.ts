@@ -84,9 +84,7 @@ const filterSettlements = (settlement, filter) => {
 // Splits whole values evenly then distributes remainder evenly across piles
 // by adding 0.01 at a time
 const distributeAmount = (amount, piles) => {
-	console.log("------ NEW DISTRIBUTION ------");
-	console.log(`SPLITTING BETWEEN ${amount} between ${piles} piles`);
-	if (piles == 1) return [amount]; // if only one pile, no need to split
+	if (piles < 2) return [amount]; // if only one pile, no need to split
 
 	// Split amount into piles excluding remainders
 	const split = Math.floor((amount / piles) * 100) / 100; // round down to 2 decimal places
@@ -112,8 +110,6 @@ const distributeAmount = (amount, piles) => {
 		amounts[i] = Math.round(amount * 100) / 100;
 	});
 
-	// return array of split amounts in one line
-	console.log(remainder);
 	return amounts;
 };
 
