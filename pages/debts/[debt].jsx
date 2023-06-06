@@ -12,39 +12,23 @@ import { useStore } from "react-redux";
 import Money from "components/text/money/Money";
 import Button from "components/button/Button";
 import { formatDate } from "utils/helpers";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Spinner from "components/placeholders/spinner/Spinner";
 
-// Get all debts associated with logged in user and export as path options
-// for next.js router
-export async function getStaticPaths() {
-	try {
-		const debts = await getAllDebts();
-
-		if (!debts) return { paths: [], fallback: false };
-
-		return {
-			paths: debts.map((debt) => ({
-				params: { debt: debt._id },
-			})),
-			fallback: false,
-		};
-	} catch (error) {
-		console.log(error);
-		return { paths: [], fallback: false };
-	}
-}
-
-export async function getStaticProps({ params }) {
-	if (!params.debt) return { props: { debt: null } };
-	const debt = await getOneDebt(params.debt);
-
-	return {
-		props: { debt: debt[0] },
-	};
-}
-
-export default function Debt({ debt }) {
+export default function Debt() {
 	const { data: session } = useSession();
 	const state = useStore().getState();
+	const [debt, setDebt] = useState(null);
+	const router = useRouter(); // Dynamically get debt from route
+
+	// Get debt from database
+	useEffect(() => {
+		if (!session) return;
+		getOneDebt(router.query.debt).then((data) => {
+			data ? setDebt(data) : console.log("Error fetching debt");
+		});
+	}, [session]);
 
 	// Not logged in
 	if (!session) {
@@ -55,21 +39,27 @@ export default function Debt({ debt }) {
 		);
 	}
 
-	// Get if user is desbtor or creditor
-	const isDebtor = debt.debtor == session.user.id;
-	const isClosed = debt.status == "closed";
+	// Wait for debt to load
+	// useEffect refreshes component when debt is loaded
+	let isDebtor, isClosed, otherParty, otherPartyName, status;
 
-	// Get name of other party (not logged in user)
-	const otherParty = isDebtor ? debt.creditor : debt.debtor;
-	const otherPartyName = getName(otherParty, state.userList.users, session);
+	if (debt) {
+		// Get if user is desbtor or creditor
+		isDebtor = debt.debtor == session.user.id;
+		isClosed = debt.status == "closed";
 
-	// Get status of debt
-	const status =
-		debt.status == "pending"
-			? "Pending"
-			: debt.status == "closed"
-			? "Closed"
-			: "Outstanding";
+		// Get name of other party (not logged in user)
+		otherParty = isDebtor ? debt.creditor : debt.debtor;
+		otherPartyName = getName(otherParty, state.userList.users, session);
+
+		// Get status of debt
+		status =
+			debt.status == "pending"
+				? "Pending"
+				: debt.status == "closed"
+				? "Closed"
+				: "Outstanding";
+	}
 
 	// Helper functions
 	function getAmountDescriptor() {
@@ -91,7 +81,14 @@ export default function Debt({ debt }) {
 		}
 	}
 
-	if (!debt) return null;
+	if (!debt) {
+		return (
+			<Layout>
+				<Spinner title="Fetching debt..." />
+			</Layout>
+		);
+	}
+
 	return (
 		<Layout>
 			<section className={styles.wrapper}>

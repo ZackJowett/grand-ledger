@@ -16,37 +16,26 @@ import DebtsIncluded from "components/settlement/DebtsIncluded";
 import Status from "components/settlement/Status";
 import Card from "components/card/Card";
 import { formatDate } from "utils/helpers";
+import { useRouter } from "next/router";
+import Spinner from "components/placeholders/spinner/Spinner";
 
-// Get all debts associated with logged in user and export as path options
-// for next.js router
-export async function getStaticPaths() {
-	try {
-		const settlements = await getAllSettlements();
-		return {
-			paths: settlements.map((settlement) => ({
-				params: { settlement: settlement._id },
-			})),
-			fallback: false,
-		};
-	} catch (error) {
-		console.log(error);
-		return { paths: [], fallback: false };
-	}
-}
-
-export async function getStaticProps({ params }) {
-	const settlement = await getSettlementByID(params.settlement);
-
-	return {
-		props: { settlement: settlement[0] },
-	};
-}
-
-export default function Settlement({ settlement }) {
+export default function Settlement() {
 	const { data: session } = useSession();
+	const router = useRouter();
 
 	// --------- States --------- \\
+	const [settlement, setSettlement] = useState();
 	const [debts, setDebts] = useState([]);
+
+	// Get debt from database
+	useEffect(() => {
+		if (!session) return;
+		getSettlementByID(router.query.settlement).then((data) => {
+			data
+				? setSettlement(data)
+				: console.log("Error fetching settlement");
+		});
+	}, [session]);
 
 	// Get Redux State
 	const dispatch = useDispatch();
@@ -59,8 +48,9 @@ export default function Settlement({ settlement }) {
 	// --------- Effects --------- \\
 
 	useEffect(() => {
+		if (!settlement) return;
 		getSettlementDebts(settlement._id).then((res) => setDebts(res));
-	}, [settlement._id]);
+	}, [settlement]);
 
 	// Not logged in
 	if (!session) {
@@ -75,24 +65,37 @@ export default function Settlement({ settlement }) {
 
 	// --------- Variables --------- \\
 
-	// Get name of other party (not logged in user)
-	const otherParty =
-		settlement.settler == session.user.id
-			? settlement.settlee
-			: settlement.settler;
+	let otherParty, otherPartyName, status, stats;
 
-	const otherPartyName = getName(otherParty, state.userList.users, session);
-	const status =
-		settlement.status == "pending"
-			? "Pending"
-			: settlement.status == "closed"
-			? "Closed"
-			: "Reopened";
+	if (settlement) {
+		// Get name of other party (not logged in user)
+		otherParty =
+			settlement.settler == session.user.id
+				? settlement.settlee
+				: settlement.settler;
 
-	let stats = null;
+		otherPartyName = getName(otherParty, state.userList.users, session);
+		status =
+			settlement.status == "pending"
+				? "Pending"
+				: settlement.status == "closed"
+				? "Closed"
+				: "Reopened";
+
+		stats = null;
+	}
 
 	if (debts) {
 		stats = calculateDebtStats(debts, session);
+	}
+
+	// Wait for settlement to be fetched
+	if (!settlement) {
+		return (
+			<Layout>
+				<Spinner title="Fetching settlement..." />
+			</Layout>
+		);
 	}
 
 	return (
