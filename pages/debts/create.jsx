@@ -1,4 +1,4 @@
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "/utils/data/users";
 import Layout from "components/layouts/Layout";
@@ -8,9 +8,7 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import AddDebt from "components/debt/create/form/AddDebt";
 import SubmitDebts from "components/debt/create/form/SubmitDebts";
 import DebtList from "components/debt/create/DebtList";
-import SingularDebt from "components/debt/create/types/SingularDebt";
 import Button from "components/button/Button";
-import { set } from "mongoose";
 
 // Classes
 function SingleDebt(
@@ -43,6 +41,9 @@ export default function Create() {
 	const [createAs, setCreateAs] = useState("creditor");
 	const [users, setUsers] = useState(null);
 	const [debts, setDebts] = useState([]);
+	const [submitting, setSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState(null);
+	const [submitSuccess, setSubmitSuccess] = useState(null);
 	var [idCount, setIdCount] = useState(0);
 
 	// User logged in
@@ -109,7 +110,14 @@ export default function Create() {
 	// ----------- Add debt to list ---------------- \\
 	// Single debt
 	function addSingle() {
-		setDebts([new SingleDebt(idCount), ...debts]);
+		// Get default other party that is not the user
+		let otherParty =
+			users[0]._id == session.user.id ? users[1]._id : users[0]._id;
+
+		let newDebt = new SingleDebt(idCount);
+		newDebt.otherParty = otherParty;
+
+		setDebts([newDebt, ...debts]);
 		setIdCount(idCount + 1);
 	}
 
@@ -130,67 +138,22 @@ export default function Create() {
 					large
 				/>
 
-				<AddDebt addSingle={addSingle} addMulti={addMulti} />
+				<AddDebt
+					numDebts={debts.length}
+					addSingle={addSingle}
+					addMulti={addMulti}
+				/>
 
 				<DebtList debts={debts} setDebts={setDebts} />
-				<Button
-					title="CHECK DEBTS"
-					onClick={() => console.log("Debts", debts)}
-				/>
 
-				{/* <SubmitDebts /> */}
+				<SubmitDebts
+					debts={debts}
+					setDebts={setDebts}
+					setSubmitting={setSubmitting}
+					setSubmitError={setSubmitError}
+					setSubmitSuccess={setSubmitSuccess}
+				/>
 			</section>
-
-			{/* <h1>Create new debt</h1>
-
-			<p>Create as: </p>
-			<select name="creditor" id="creditor" onChange={handleSelect}>
-				<option value="creditor">
-					Creditor (someone owes you money)
-				</option>
-				<option value="debtor">Debtor (you owe money)</option>
-			</select>
-
-			<form onSubmit={handleRegister}>
-				<label htmlFor="otherParty">
-					{createAs == "creditor"
-						? "Debtor (Who owes you money?)"
-						: "Creditor (Who do you owe money to?)"}
-				</label>
-				<select name="otherParty" id="otherParty" disabled={!users}>
-					{users ? (
-						users.map((user, index) => {
-							if (user._id != session.user.id)
-								return (
-									<option value={user._id} key={index}>
-										{user.name}
-									</option>
-								);
-						})
-					) : (
-						<option>Loading...</option>
-					)}
-				</select>
-
-				<label htmlFor="password">amount</label>
-				<input
-					type="number"
-					name="amount"
-					id="amount"
-					min="0"
-					step=".01"
-				/>
-
-				<label htmlFor="Description">Description</label>
-				<input
-					type="textarea"
-					name="description"
-					id="description"
-					required
-				/>
-
-				<button type="submit">Confirm New Debt</button>
-			</form> */}
 		</Layout>
 	);
 }

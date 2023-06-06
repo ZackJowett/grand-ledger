@@ -81,17 +81,40 @@ const filterSettlements = (settlement, filter) => {
 
 // Distributes amount evenly across piles
 // a pile is like one person in a group
+// Splits whole values evenly then distributes remainder evenly across piles
+// by adding 0.01 at a time
 const distributeAmount = (amount, piles) => {
-	console.log("SPLITTING BETWEEN ", piles);
-	var m = amount * 100,
-		n = m % piles,
-		v = Math.floor(m / piles) / 100,
-		w = Math.floor(m / piles + 1) / 100;
+	console.log("------ NEW DISTRIBUTION ------");
+	console.log(`SPLITTING BETWEEN ${amount} between ${piles} piles`);
+	if (piles == 1) return [amount]; // if only one pile, no need to split
 
-	for (var i = 0, out = new Array(piles); i < piles; ++i) {
-		out[i] = i < n ? w : v;
+	// Split amount into piles excluding remainders
+	const split = Math.floor((amount / piles) * 100) / 100; // round down to 2 decimal places
+
+	// Fill array with split amounts
+	const amounts = Array(piles).fill(split);
+
+	// get remainder amount rounded to closest 2 decimal places
+	let remainder = Math.round((amount - split * piles) * 100) / 100;
+
+	// Split remainder evenly across piles adding 0.01 at a time
+	while (remainder > 0) {
+		for (let i = 0; i < piles; i++) {
+			if (remainder > 0) {
+				amounts[i] += 0.01;
+				remainder -= 0.01;
+			}
+		}
 	}
-	return out;
+
+	// Remove floating point errors
+	amounts.forEach((amount, i) => {
+		amounts[i] = Math.round(amount * 100) / 100;
+	});
+
+	// return array of split amounts in one line
+	console.log(remainder);
+	return amounts;
 };
 
 module.exports = {

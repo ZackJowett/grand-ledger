@@ -12,6 +12,11 @@ import Toggle from "components/button/toggle/Toggle";
 import { MdSafetyDivider } from "react-icons/md";
 import { set } from "mongoose";
 
+Number.prototype.countDecimals = function () {
+	if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
+	return this.toString().split(".")[1].length || 0;
+};
+
 export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 	const { data: session } = useSession();
 	const state = useStore().getState();
@@ -167,6 +172,18 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 		}
 	}
 
+	function handleSetTotal(e) {
+		// Set total amount of debt
+		let amount = Number(e.target.value);
+
+		// Limit to only two decimal places
+		if (amount.countDecimals() > 2) {
+			amount = amount.toFixed(2);
+		}
+
+		setTotal(amount);
+	}
+
 	function userIsSelected(id) {
 		return usersSelected.find((user) => user.id === id);
 	}
@@ -181,9 +198,8 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 			return acc + user.amount;
 		}, 0);
 
-		console.log(typeof amountSum);
 		// Set debt.total to amountSum
-		setTotal(amountSum);
+		setTotal(amountSum.toFixed(2));
 	}
 
 	function recalculateAmounts() {
@@ -202,17 +218,6 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 					};
 				})
 			);
-		} else {
-			// Split total based on ratio between usersSelected
-			// const ratioAmount = distributeAmount(debt.total, usersSelected.length);
-			// setUsersSelected(
-			//     usersSelected.map((user, index) => {
-			//         return {
-			//             ...user,
-			//             amount: ratioAmount[index] * user.ratio,
-			//         };
-			//     })
-			// );
 		}
 	}
 
@@ -245,12 +250,29 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 	// Check if total amount of usersSelected is equal to debt.total
 	function totalMatchesSum() {
 		if (usersSelected.length < 1) return true;
+		if (splitEvenly) return true; // If split evenly, total will always match sum
 
-		const amountSum = usersSelected.reduce((acc, user) => {
-			return acc + user.amount;
-		}, 0);
+		const amountSum = usersSelected
+			.reduce((acc, user) => {
+				return acc + user.amount;
+			}, 0)
+			.toFixed(2);
+
+		console.log(`${amountSum} vs ${total}`);
 
 		return amountSum == total;
+	}
+
+	function updateDescription(e) {
+		setDebts(
+			debts.filter((currentDebt) => {
+				if (currentDebt.id === debt.id) {
+					currentDebt.description = e.target.value;
+					return currentDebt;
+				}
+				return currentDebt;
+			})
+		); // Set debts state
 	}
 
 	return (
@@ -287,15 +309,14 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 							step=".01"
 							placeholder="0.00"
 							value={total > 0 ? total : ""}
-							onChange={(e) => setTotal(e.target.value)}
+							onChange={handleSetTotal}
 						/>
 						AUD
 					</div>
 					{!totalMatchesSum() && (
 						<p className={styles.warning}>
-							Warning: Total doesn&apos;t add up with the
-							individual amounts. Only individual amounts will be
-							saved.
+							Total doesn&apos;t add up with the individual
+							amounts. Only individual amounts will be saved.
 						</p>
 					)}
 				</div>
@@ -346,7 +367,7 @@ export default function MultiDebt({ debt, debts, setDebts, removeDebt }) {
 					<input
 						type="text"
 						placeholder="This is for..."
-						onChange={(e) => updateDescription(e)}
+						onChange={updateDescription}
 					/>
 				</div>
 
