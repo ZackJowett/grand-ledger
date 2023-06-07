@@ -67,6 +67,10 @@ export async function reopenSettlement(id, reason) {
 			`${getRootURL()}api/settlements/reopen?id=${id}`,
 			{
 				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+
 				body: JSON.stringify({ reason: reason }),
 			}
 		);
