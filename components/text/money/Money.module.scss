@@ -23,3 +23,11 @@
 
 	@include border($color: var(--background), $radius: 8px);
 }
+
+.negative {
+	color: var(--red);
+}
+
+.positive {
+	color: var(--green);
+}

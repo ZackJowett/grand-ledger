@@ -6,12 +6,18 @@ export default function Money({
 	includeSign = false,
 	background = false,
 	small = false,
+	notColoured = false,
 }) {
+	// Set classes
+	let classes = `${styles.money}`;
+	if (className) classes += ` ${className}`;
+	if (background) classes += ` ${styles.background}`;
+	if (small) classes += ` ${styles.small}`;
+	if (!notColoured)
+		classes += ` ${amount < 0 ? styles.negative : styles.positive}`;
+
 	return (
-		<span
-			className={`${className ? className : ""} ${styles.money} ${
-				background ? styles.background : ""
-			} ${small ? styles.small : ""} `}>
+		<span className={classes}>
 			<span className={styles.sign}>$</span>{" "}
 			{includeSign ? (amount < 0 ? "-" : "+") : ""}
 			{Math.abs(amount).toFixed(2).toLocaleString("en-US")}
