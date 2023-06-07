@@ -4,6 +4,7 @@ import styles from "./SelectUser.module.scss";
 import { useSession } from "next-auth/react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
+import Select from "components/forms/Select";
 
 export default function SelectUser({
 	users,
@@ -14,10 +15,21 @@ export default function SelectUser({
 }) {
 	const { data: session } = useSession();
 
-	function handleSelectParty(e) {
-		const selectedUser = users.find((user) => user._id == e.target.value);
+	function handleSelectParty(selectedOption) {
+		const selectedUser = users.find(
+			(user) => user._id == selectedOption.value
+		);
 		setSelectedUser(selectedUser);
 	}
+
+	const options = users
+		.map((user) => {
+			if (user._id == session.user.id) return;
+			return { value: user._id, label: user.name };
+		})
+		.filter((item) => item);
+
+	console.log(options);
 
 	return (
 		<section className={styles.wrapper}>
@@ -30,21 +42,19 @@ export default function SelectUser({
 				<Spinner title="Loading users..." />
 			) : (
 				<Card dark>
-					<select
-						name="otherParty"
-						id="otherParty"
-						disabled={!users}
+					<Select
+						options={options}
+						className={styles.select}
 						onChange={handleSelectParty}
-						className={styles.select}>
-						{users.map((user, index) => {
+					/>
+					{/* {users.map((user, index) => {
 							if (user._id != session.user.id)
 								return (
 									<option value={user._id} key={index}>
 										{user.name}
 									</option>
 								);
-						})}
-					</select>
+						})} */}
 
 					{!debts ? (
 						<Spinner title="Loading debts..." />

@@ -65,8 +65,6 @@ $default: var(--secondary);
 	@include border($color: transparent, $radius: 100px);
 	background-color: var(--background);
 	padding: 0.25rem 0.25rem 0.25rem 0.5rem;
-
-	@include scale(1.025);
 }
 
 .background {

@@ -1,0 +1,17 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
+	width: 100%;
+}
+
+.input {
+}
+
+.dark {
+	background-color: var(--backgroundDark);
+}
+
+.disabled {
+	background-color: var(--backgroundLight);
+}

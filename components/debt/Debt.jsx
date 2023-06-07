@@ -30,7 +30,7 @@ export default function Debt({ debt, className, unreceived = false }) {
 			className={`${className ? className : ""}`}>
 			<TextWithTitle
 				pretitle="Debt"
-				title={<Money amount={debt.amount} />}
+				title={<Money amount={debt.amount} notColoured small />}
 				text={
 					debt.debtor == session.user.id
 						? debt.status == "closed"

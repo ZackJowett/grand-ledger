@@ -10,6 +10,7 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import CurrentDebts from "components/settlement/create/CurrentDebts";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
+import Button from "components/button/Button";
 
 export default function Create() {
 	const { data: session } = useSession();
@@ -68,6 +69,10 @@ export default function Create() {
 		);
 	}
 
+	function handleSubmit(e) {
+		e.preventDefault();
+		console.log("submitting");
+	}
 	// Create new debt
 	// const handleCreateSettlement = async (e) => {
 	// 	e.preventDefault();
@@ -152,7 +157,16 @@ export default function Create() {
 							setSelectedUser={setSelectedUser}
 							stats={stats}
 						/>
-						<SubmitSettlement />
+
+						{stats.net < 0 ? (
+							<SubmitSettlement
+								selectedUser={selectedUser}
+								handleSubmit={handleSubmit}
+								stats={stats}
+							/>
+						) : stats.net > 0 ? (
+							<Button title="Nudge" />
+						) : null}
 					</>
 				)}
 

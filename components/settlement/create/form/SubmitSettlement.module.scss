@@ -1,0 +1,6 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, flex-start, flex-start, $gap: 1rem);
+	margin-top: 1rem;
+}

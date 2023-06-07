@@ -33,7 +33,12 @@ export default function NetPosition() {
 						<>
 							<TextWithButton
 								text="Total Debt"
-								title={<Money amount={stats.current.debt} />}
+								title={
+									<Money
+										amount={stats.current.debt}
+										className={styles.debt}
+									/>
+								}
 								buttonTitle="PAY NOW"
 								link="/settlements/create"
 								align="left"
@@ -44,7 +49,10 @@ export default function NetPosition() {
 							<TextWithButton
 								text="Total Unreceived"
 								title={
-									<Money amount={stats.current.unreceived} />
+									<Money
+										amount={stats.current.unreceived}
+										className={styles.unreceived}
+									/>
 								}
 								buttonTitle="VIEW"
 								link="/unreceived-payments"

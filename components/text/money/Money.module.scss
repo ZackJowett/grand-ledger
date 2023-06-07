@@ -15,13 +15,22 @@
 	}
 }
 
-.background {
+.background,
+.backgroundDark {
 	display: block;
 	margin-top: 0.25rem;
-	background-color: var(--background);
+
 	padding: 0.25rem;
 
 	@include border($color: var(--background), $radius: 8px);
+}
+
+.background {
+	background-color: var(--background);
+}
+
+.backgroundDark {
+	border-color: var(--backgroundDark);
 }
 
 .negative {

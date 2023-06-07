@@ -142,6 +142,7 @@ hr {
 	border-color: var(--subtext);
 	color: var(--subtext);
 	// margin: 1rem 0;
+	width: 80%;
 }
 
 // FORMS
@@ -175,24 +176,24 @@ textarea {
 	white-space: pre-wrap;
 }
 
-select {
-	min-width: 10rem;
-	padding: 0.5rem;
+// select {
+// 	min-width: 10rem;
+// 	padding: 0.5rem;
 
-	background-color: var(--primary);
-	color: var(--text);
+// 	background-color: var(--primary);
+// 	color: var(--text);
 
-	@include border($color: var(--primary), $radius: 100px);
+// 	@include border($color: var(--primary), $radius: 100px);
 
-	&:hover {
-		cursor: pointer;
-	}
+// 	&:hover {
+// 		cursor: pointer;
+// 	}
 
-	&:focus {
-		outline: none;
-		border-color: transparent;
-	}
-}
+// 	&:focus {
+// 		outline: none;
+// 		border-color: transparent;
+// 	}
+// }
 
 input {
 	width: 100%;
@@ -203,6 +204,6 @@ input {
 	color: var(--text);
 
 	&:focus {
-		border-color: var(--primary);
+		// border-color: var(--primary);
 	}
 }

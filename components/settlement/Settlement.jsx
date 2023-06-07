@@ -44,7 +44,13 @@ export default function Settlement({ settlement, globals, className }) {
 			className={className}>
 			<Link href={`/settlements/${settlement._id}`}>
 				<TextWithTitle
-					title={<Money amount={settlement.netAmount} />}
+					title={
+						<Money
+							amount={settlement.netAmount}
+							notColoured
+							small
+						/>
+					}
 					text="Amount Transferred"
 					align="left"
 					reverse
