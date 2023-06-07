@@ -349,7 +349,24 @@ export default function MultiDebt({
 						/>
 					</div>
 					<div className={styles.parties} key={debt.id}>
+						{/* Current User */}
+						<SelectUser
+							key={`${debt._id}-${session.user.id}`}
+							id={`${debt._id}-${session.user.id}`}
+							user={users.find(
+								(user) => user._id === session.user.id
+							)}
+							debt={debt}
+							total={total}
+							userSelected={userIsSelected(session.user.id)}
+							handleSelectUser={handleSelectUser}
+							editingUser={editingUser}
+							setEditingUser={setEditingUser}
+							recalculateTotal={recalculateTotal}
+						/>
+
 						{users.map((user, index) => {
+							if (user._id === session.user.id) return; // Don't show current user
 							return (
 								<SelectUser
 									key={`${debt._id}-${index}`}

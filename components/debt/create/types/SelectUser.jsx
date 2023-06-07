@@ -67,7 +67,7 @@ export default function SelectUser({
 						onChange={(e) => handleSelectUser(e, debt.id)}
 					/>
 					<label htmlFor={`checkbox-${debt.id}-${user._id}`}>
-						{user._id == session.user.id
+						{user._id === session.user.id
 							? "Include Myself"
 							: user.name}
 					</label>

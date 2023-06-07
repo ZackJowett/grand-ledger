@@ -2,10 +2,28 @@
 
 .wrapper {
 	@include mainSection;
+	// max-width: none;
+	padding-right: 0;
+	padding-left: 0;
 }
 
 .header {
 	text-align: left;
 	width: 100%;
-	max-width: var(--maxWidth);
+}
+
+.header {
+	text-align: left;
+	width: 100%;
+}
+
+.desc {
+	text-align: left;
+	width: 100%;
+	color: var(--subtext);
+}
+
+.hr {
+	width: 100%;
+	margin: 1rem auto;
 }

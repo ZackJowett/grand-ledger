@@ -29,7 +29,7 @@ export default function NetPosition() {
 		<Card title="Overview" dark>
 			{stats ? (
 				<>
-					{stats.current.net > 0 && (
+					{stats.current.net != 0 && (
 						<>
 							<TextWithButton
 								text="Total Debt"

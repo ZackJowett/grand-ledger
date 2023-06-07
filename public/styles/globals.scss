@@ -184,12 +184,13 @@ select {
 
 	@include border($color: var(--primary), $radius: 100px);
 
-	&:hover,
-	&:focus {
+	&:hover {
 		cursor: pointer;
-		@include shadow;
-		transform: scale(1.02);
-		transition: transform 0.05s ease-in-out;
+	}
+
+	&:focus {
+		outline: none;
+		border-color: transparent;
 	}
 }
 

@@ -1,0 +1,36 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(column, flex-start, flex-start, $gap: 1rem);
+	width: 100%;
+}
+
+.select {
+	background-color: var(--background);
+	border-color: var(--background);
+}
+
+.stats {
+	@include flex(column, flex-start, center, $gap: 2rem);
+	margin-top: 1rem;
+
+	.debts {
+		@include flex(row, space-between, center, $gap: 1rem);
+		width: 100%;
+
+		.amount {
+			width: 100%;
+		}
+	}
+}
+
+.info {
+	color: var(--subtext);
+	margin-top: 0.5rem;
+	text-align: center;
+}
+
+.hr {
+	width: 80%;
+	margin: 0;
+}
