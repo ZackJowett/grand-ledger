@@ -6,9 +6,9 @@ import { useState, useEffect } from "react";
 import Money from "components/text/money/Money";
 
 export default function SubmitSettlement({ selectedUser, stats }) {
-	if (!selectedUser) return null;
-
 	const [description, setDescription] = useState("");
+
+	if (!selectedUser) return null;
 
 	return (
 		<>
