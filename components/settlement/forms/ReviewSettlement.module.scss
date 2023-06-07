@@ -2,7 +2,7 @@
 
 .reviewForm {
 	@include flex(column, flex-start, flex-start);
-	gap: 1.25rem;
+	gap: 1rem;
 
 	margin-top: 1rem;
 
@@ -12,21 +12,37 @@
 	}
 }
 
+.checkboxWrapper {
+	@include flex(row, flex-start, flex-start);
+	width: 100%;
+
+	input {
+		width: 1rem;
+	}
+}
+
 .submitWrapper {
 	width: 100%;
 	@include flex;
 }
 
 .approveButton,
-.rejectButton {
+.rejectButton,
+.rejectReason,
+.rejectReason {
 	width: 90%;
+}
+
+.or {
+	margin: 1rem 0;
+	text-align: left;
 }
 
 .rejectButton {
 	margin-top: 1.5rem;
 	background-color: transparent;
-	border-color: var(--subtext);
-	color: var(--subtext);
+	border-color: var(--red);
+	color: var(--red);
 
 	&:hover {
 		border-color: var(--red);

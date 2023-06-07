@@ -69,7 +69,7 @@ export default function ReviewSettlement({ settlement, otherPartyName }) {
 			dark
 			className={styles.statusCard}>
 			<form className={styles.reviewForm} onSubmit={handleReviewForm}>
-				<div>
+				<div className={styles.checkboxWrapper}>
 					<input
 						type="checkbox"
 						id="received"
@@ -79,7 +79,7 @@ export default function ReviewSettlement({ settlement, otherPartyName }) {
 					<label for="received">I have received payment</label>
 				</div>
 
-				<div>
+				<div className={styles.checkboxWrapper}>
 					<input
 						type="checkbox"
 						id="details"
@@ -91,7 +91,7 @@ export default function ReviewSettlement({ settlement, otherPartyName }) {
 					</label>
 				</div>
 
-				<div>
+				<div className={styles.checkboxWrapper}>
 					<input
 						type="checkbox"
 						id="paid"
@@ -110,7 +110,7 @@ export default function ReviewSettlement({ settlement, otherPartyName }) {
 				)}
 				<div className={styles.submitWrapper}>
 					<TextWithTitle
-						text="Submit Verdict"
+						text="Submit Settlement"
 						align="left"
 						className={styles.submitTitle}
 					/>
@@ -125,12 +125,21 @@ export default function ReviewSettlement({ settlement, otherPartyName }) {
 						<strong>Close</strong> Settlement and included Debts
 					</p>
 
+					<h4 className={styles.or}>OR</h4>
+
+					<TextWithTitle
+						text="Reject Settlement"
+						align="left"
+						className={styles.submitTitle}
+					/>
 					<input
 						type="text"
 						id="reason"
 						name="reason"
 						placeholder="Reason for rejection"
+						maxLength={100}
 						onChange={(e) => setReason(e.target.value)}
+						className={styles.rejectReason}
 					/>
 					<Button
 						title="REJECT"
