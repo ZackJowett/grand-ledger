@@ -73,7 +73,7 @@ function settlementAction(settlement, session, users) {
 			return (
 				<>
 					<p className={styles.date}>
-						Rejected {formatDate(settlement.dateRejected)}
+						Reopened {formatDate(settlement.dateReopened)}
 					</p>
 					<hr className={styles.hr} />
 					<Button
@@ -92,7 +92,7 @@ function settlementAction(settlement, session, users) {
 			return (
 				<>
 					<p className={styles.date}>
-						Rejected
+						Rejected{" "}
 						{settlement.dateReopened &&
 							formatDate(settlement.dateReopened)}
 					</p>
