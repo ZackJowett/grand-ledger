@@ -24,10 +24,10 @@ export default function Select({
 				control: (baseStyles) => ({
 					...baseStyles,
 					backgroundColor: "#2581b3",
-					border: "none",
+					border: "solid 2px transparent",
 					borderRadius: "100px",
 					color: "#f5f5f5",
-					"&:hover": {},
+					"&:hover": { borderColor: "#f5f5f5" },
 				}),
 				dropdownIndicator: (baseStyles) => ({
 					...baseStyles,

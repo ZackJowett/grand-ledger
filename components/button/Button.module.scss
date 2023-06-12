@@ -16,13 +16,13 @@
 
 	&:hover {
 		cursor: pointer;
+		border-color: var(--text);
+	}
 
-		border-color: var(--primary);
+	&:active {
+		// outline: none;
+		border-color: var(--text);
 		background-color: transparent;
-
-		// @include shadow();
-		// transform: scale(1.02);
-		// transition: transform 0.05s ease-in-out;
 	}
 
 	&.dark {
@@ -42,5 +42,7 @@
 		transform: none;
 		transition: none;
 		box-shadow: none;
+		background-color: var(--backgroundDark);
+		border-color: var(--subtext);
 	}
 }
