@@ -17,6 +17,7 @@
 	}
 
 	&.closed {
-		background-color: var(--green);
+		background-color: var(--backgroundDark);
+		color: var(--subtext);
 	}
 }

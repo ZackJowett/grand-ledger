@@ -10,7 +10,7 @@
 
 	background-color: var(--background);
 
-	@include border($color: transparent);
+	@include border($color: transparent, $size: 1px);
 }
 
 .header {
@@ -39,7 +39,8 @@
 	}
 
 	&.closed {
-		background-color: var(--green);
+		background-color: var(--backgroundDark);
+		color: var(--subtext);
 	}
 }
 
