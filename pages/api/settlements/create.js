@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 		// Change status of debts to pending
 		for (let i = 0; i < req.body.debts.length; i++) {
 			await Debt.findOneAndUpdate(
-				{ _id: req.body.debts[i]._id },
+				{ _id: req.body.debts[i] },
 				{ status: "pending", settlement: settlement._id },
 				{ new: true }
 			);
@@ -29,6 +29,6 @@ export default async function handler(req, res) {
 		res.status(200).json({ success: true, data: settlement });
 	} catch (error) {
 		console.log("ERROR", error);
-		res.status(400).json({ success: false });
+		res.status(400).json({ success: false, message: error.message });
 	}
 }

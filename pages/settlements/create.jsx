@@ -11,6 +11,8 @@ import CurrentDebts from "components/settlement/create/CurrentDebts";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
 import Button from "components/button/Button";
+import { createSettlement } from "../../utils/data/settlements";
+import TextButton from "components/button/text/TextButton";
 
 export default function Create() {
 	const { data: session } = useSession();
@@ -69,44 +71,6 @@ export default function Create() {
 		);
 	}
 
-	function handleSubmit(e) {
-		e.preventDefault();
-		console.log("submitting");
-	}
-	// Create new debt
-	// const handleCreateSettlement = async (e) => {
-	// 	e.preventDefault();
-
-	// 	const settler = session.user.id;
-	// 	const settlee = selectedUser._id;
-	// 	const description = e.target.description.value;
-	// 	const debtsToSettle = debts;
-	// 	console.log(debts);
-
-	// 	// Post data
-	// 	await fetch("/api/settlements/create", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify({
-	// 			settler,
-	// 			settlee,
-	// 			description,
-	// 			debts: debtsToSettle,
-	// 			netAmount: netTotal,
-	// 		}),
-	// 	});
-	// };
-
-	const handleSelectUser = (e) => {
-		let id = e.target.value;
-
-		let user = users.find((user) => user._id == id);
-
-		setSelectedUser(user);
-	};
-
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
 	let stats = { totalDebt: 0, totalUnreceived: 0, net: 0 };
@@ -116,10 +80,51 @@ export default function Create() {
 			if (debt.creditor == session.user.id) {
 				// User is creditor
 				stats.totalUnreceived += debt.amount;
-				stats.net -= debt.amount;
+				stats.net += debt.amount;
 			} else {
 				stats.totalDebt -= debt.amount;
-				stats.net += debt.amount;
+				stats.net -= debt.amount;
+			}
+		});
+	}
+
+	// Create new debt
+	function handleSubmit(description) {
+		console.log("submitting");
+
+		// Set submitting state
+		setSubmitting(true);
+
+		// get debt ids
+		const debtIds = debts.map((debt) => {
+			return debt._id;
+		});
+
+		// Create settlement object
+		const settlement = {
+			settler: session.user.id,
+			settlee: selectedUser._id,
+			debts: debtIds,
+			netAmount: stats.net,
+			description: description,
+		};
+
+		// Post data
+		createSettlement(settlement).then((data) => {
+			// Check if error
+			if (!data.success) {
+				// Error submitting
+				setSubmitError(data.error);
+				setSubmitSuccess(false);
+				setSubmitting(false);
+			} else {
+				// Success submitting
+				setDebts([]);
+				setSubmitSuccess(data.data);
+				setSubmitError(false);
+				setSubmitting(false);
+
+				console.log("Success submitting", data);
 			}
 		});
 	}
@@ -134,6 +139,22 @@ export default function Create() {
 					align="left"
 					large
 				/>
+				{submitError && (
+					<p className={styles.error}>
+						There was an error creating the settlement. Please try
+						again or contact admin.
+					</p>
+				)}
+				{submitSuccess && (
+					<p className={styles.success}>
+						Successfully created the settlement:{" "}
+						<TextButton
+							title="Click to view"
+							link={`/settlements/${submitSuccess._id}`}
+							className={styles.link}
+						/>{" "}
+					</p>
+				)}
 				<hr className={styles.hr} />
 
 				{submitting ? (
@@ -169,139 +190,7 @@ export default function Create() {
 						) : null}
 					</>
 				)}
-
-				{/*  */}
-
-				{/* <DebtList /> */}
-
-				{/* <SubmitDebts /> */}
 			</section>
-			{/* <h1>Create new settlement</h1>
-
-			{debts && debts.length == 0 ? (
-				<>
-					<p>
-						You and {selectedUser.name} have no oustanding debts to
-						each other. Well done!
-					</p>
-				</>
-			) : (
-				<>
-					{selectedUser && (
-						<>
-							<>
-								<h3>
-									Total Debt (How much I owe{" "}
-									{selectedUser.name}
-									): ${totalDebt}
-								</h3>
-								<h3>
-									Total Credit (How much {selectedUser.name}{" "}
-									owes me): ${totalCredit}
-								</h3>
-								<h3>
-									Total Payable (How much you I{" "}
-									{selectedUser.name}
-									): ${netTotal}
-								</h3>
-							</>
-							<>
-								{netTotal < 0 ? (
-									<p>
-										{selectedUser.name} owes you. Wait for
-										them to pay you. Click here to nudge
-										them.
-									</p>
-								) : netTotal == 0 ? (
-									<p>
-										The net total is exactly $0. Nice! You
-										can continue to close this settlement
-										without paying a cent.
-									</p>
-								) : (
-									<p>
-										You owe {selectedUser.name} ${netTotal}
-										. You must pay them to settle your debt.
-									</p>
-								)}
-							</>
-						</>
-					)}
-				</>
-			)}
-
-			<form onSubmit={handleCreateSettlement}>
-				<label htmlFor="otherParty">
-					Creditor (who do you want settle your debt with?):{" "}
-				</label>
-				<select
-					name="otherParty"
-					id="otherParty"
-					disabled={!users}
-					onChange={handleSelectParty}>
-					{users ? (
-						users.map((user, index) => {
-							if (user._id != session.user.id)
-								return (
-									<option value={user._id} key={index}>
-										{user.name}
-									</option>
-								);
-						})
-					) : (
-						<option>Loading...</option>
-					)}
-				</select>
-
-				{netTotal >= 0 && debts && debts.length > 0 && (
-					<>
-						<label htmlFor="Description">Description</label>
-						<input
-							type="textarea"
-							name="description"
-							id="description"
-							required
-						/>
-
-						<button type="submit">Continue to Confirmation</button>
-					</>
-				)}
-			</form>
-
-			{debts && debts.length > 0 && (
-				<div>
-					<p>Debts included in this settlement</p>
-					{debts ? (
-						debts.map((debt, index) => {
-							return (
-								<div key={index}>
-									<hr />
-									<p>
-										Creditor:{" "}
-										{getName(debt.creditor, users, session)}
-									</p>
-									<p>
-										Debtor:{" "}
-										{getName(debt.debtor, users, session)}
-									</p>
-									<p>Amount: ${debt.amount} AUD</p>
-									<p>Description: {debt.description}</p>
-									<p>
-										Status:{" "}
-										{debt.closed ? "Closed" : "Open"}
-									</p>
-									<p>
-										Date Created:{" "}
-										{formatDate(debt.dateCreated)}
-									</p>
-								</div>
-							);
-						})
-					) : (
-						<p>Loading...</p>
-					)}
-				</div>
-			)} */}
 		</Layout>
 	);
 }

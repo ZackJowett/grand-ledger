@@ -27,3 +27,15 @@
 	width: 100%;
 	margin: 1rem auto;
 }
+
+.error {
+	color: var(--red);
+	text-align: left;
+	width: 100%;
+}
+
+.success {
+	color: var(--green);
+	text-align: left;
+	width: 100%;
+}

@@ -99,3 +99,34 @@ export async function resubmitSettlement(id) {
 		return null;
 	}
 }
+
+// CREATE NEW SETTLEMENT: /api/settlements/create
+export async function createSettlement(settlement) {
+	try {
+		const newSettlement = {
+			settler: settlement.settler,
+			settlee: settlement.settlee,
+			debts: settlement.debts,
+			netAmount: settlement.netAmount,
+			description: settlement.description,
+		};
+
+		const response = await fetch(`${getRootURL()}api/settlements/create`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+
+			body: JSON.stringify(newSettlement),
+		});
+		const json = await response.json();
+		if (!json.success) {
+			throw new Error("Error creating settlement");
+		}
+
+		return { success: true, data: json.data };
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}

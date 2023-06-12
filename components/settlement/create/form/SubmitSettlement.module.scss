@@ -4,3 +4,22 @@
 	@include flex(column, flex-start, flex-start, $gap: 1rem);
 	margin-top: 1rem;
 }
+
+.checkboxes {
+	@include flex(column, flex-start, flex-start, $gap: 1rem);
+	margin: 1rem 0;
+}
+
+.text,
+.warning,
+.note {
+	margin: auto;
+}
+
+.note {
+	color: var(--subtext);
+}
+
+.warning {
+	color: var(--red);
+}
