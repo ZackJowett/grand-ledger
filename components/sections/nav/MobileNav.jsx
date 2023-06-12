@@ -5,6 +5,8 @@ import { FaHandshake, FaHandHolding } from "react-icons/fa";
 import { IoWarning } from "react-icons/io5";
 import { TiArrowForward } from "react-icons/ti";
 import { MdSpaceDashboard, MdGroups, MdSettings } from "react-icons/md";
+import Image from "next/image";
+import DesktopNav from "./DesktopNav";
 import styles from "./MobileNav.module.scss";
 // import Logo from "../../logo/Logo";
 // import SocialsList from "@/components/icons/socialsList";
@@ -30,8 +32,14 @@ export default function HamburgerMenu({ currentRoute }) {
 					size={40}
 					onClick={toggleMenu}
 				/>
-				<nav className={styles.nav}>
-					{/* <Logo className={styles.logo} /> */}
+				<Image
+					src="/images/logo.png"
+					width={500}
+					height={500}
+					className={styles.logo}
+				/>
+				<DesktopNav currentRoute={currentRoute} />
+				{/* <nav className={styles.nav}>
 					<div className={styles.navLinkContainer}>
 						<Link
 							href="/"
@@ -49,7 +57,6 @@ export default function HamburgerMenu({ currentRoute }) {
 							)}
 							<h2>Dashboard</h2>
 						</Link>
-						{/* <RoundedBar length="90%" margin="2rem" /> */}
 						<Link
 							href="/settlements/create"
 							className={`${styles.navItem} ${styles.highlight} ${
@@ -147,7 +154,6 @@ export default function HamburgerMenu({ currentRoute }) {
 										/>
 									</svg>
 								)}
-								{/* <h5>Profile</h5> */}
 							</Link>
 							<Link
 								href="/groups"
@@ -161,7 +167,6 @@ export default function HamburgerMenu({ currentRoute }) {
 								) : (
 									<MdGroups />
 								)}
-								{/* <h5>Groups</h5> */}
 							</Link>
 							<Link
 								href="/settings"
@@ -175,11 +180,10 @@ export default function HamburgerMenu({ currentRoute }) {
 								) : (
 									<MdSettings />
 								)}
-								{/* <h5>Settings</h5> */}
 							</Link>
 						</div>
 					</div>
-				</nav>
+				</nav> */}
 			</div>
 			<div
 				className={`${styles.navCloseOutside} ${

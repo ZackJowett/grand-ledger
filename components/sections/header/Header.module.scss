@@ -11,3 +11,12 @@
 		padding-left: 1rem;
 	}
 }
+
+.title {
+	width: 100%;
+	text-align: center;
+
+	@include desktop-up {
+		text-align: left;
+	}
+}

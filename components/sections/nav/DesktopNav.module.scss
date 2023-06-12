@@ -17,6 +17,11 @@ $width: 200px;
 	height: calc(100vh - var(--headerHeight));
 	background-color: var(--backgroundDark);
 	width: var(--desktopNavWidth);
+
+	@include mobile-only {
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .linksWrapper {
@@ -56,7 +61,7 @@ $width: 200px;
 	}
 
 	h2 {
-		font-size: 1vw;
+		font-size: 1rem;
 	}
 
 	@include screen-up(2000px) {
