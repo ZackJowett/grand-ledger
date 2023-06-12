@@ -5,6 +5,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useStore } from "react-redux";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import Select from "components/forms/Select";
 
 export default function SingularDebt({
 	debt,
@@ -32,11 +33,11 @@ export default function SingularDebt({
 		);
 	}, [amount, debt]);
 
-	function updateCreateAs(e) {
+	function updateCreateAs(option) {
 		setDebts(
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
-					currentDebt.createAs = e.target.value;
+					currentDebt.createAs = option.value;
 					return currentDebt;
 				}
 				return currentDebt;
@@ -44,11 +45,11 @@ export default function SingularDebt({
 		); // Set debts state
 	}
 
-	function updateOtherParty(e) {
+	function updateOtherParty(option) {
 		setDebts(
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
-					currentDebt.otherParty = e.target.value;
+					currentDebt.otherParty = option.value;
 					return currentDebt;
 				}
 				return currentDebt;
@@ -81,6 +82,18 @@ export default function SingularDebt({
 		); // Set debts state
 	}
 
+	const optionCreateAs = [
+		{ value: "creditor", label: "Creditor" },
+		{ value: "debtor", label: "Debtor" },
+	];
+
+	const optionOtherParty = users
+		.map((user) => {
+			if (user._id === session.user.id) return;
+			return { value: user._id, label: user.name };
+		})
+		.filter((item) => item);
+
 	return (
 		<Card dark className={className ? className : ""}>
 			<section className={styles.wrapper}>
@@ -106,13 +119,12 @@ export default function SingularDebt({
 				<div className={styles.inputSection}>
 					<TextWithTitle title="Create as" align="left" small />
 					<div className={styles.createAs}>
-						<select
-							name="createAs"
-							id="createAs"
-							onChange={updateCreateAs}>
-							<option value="creditor">Creditor</option>
-							<option value="debtor">Debtor</option>
-						</select>
+						<Select
+							options={optionCreateAs}
+							defaultValue={optionCreateAs[0]}
+							className={styles.select}
+							onChange={updateCreateAs}
+						/>
 						<p>
 							{debt.createAs == "creditor"
 								? "(Someone owes you money)"
@@ -124,24 +136,12 @@ export default function SingularDebt({
 				{/* Other party */}
 				<div className={styles.inputSection}>
 					<TextWithTitle title="With" align="left" small />
-					<select
-						name="otherParty"
-						id="otherParty"
-						disabled={!users}
-						onChange={updateOtherParty}>
-						{users ? (
-							users.map((user, index) => {
-								if (user._id != session.user.id)
-									return (
-										<option value={user._id} key={index}>
-											{user.name}
-										</option>
-									);
-							})
-						) : (
-							<option>Loading...</option>
-						)}
-					</select>
+					<Select
+						options={optionOtherParty}
+						defaultValue={optionOtherParty[0]}
+						className={styles.select}
+						onChange={updateOtherParty}
+					/>
 				</div>
 
 				{/* Amount */}

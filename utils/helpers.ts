@@ -69,6 +69,7 @@ const filterDebts = (debt, filter) => {
 
 // Filters Settlements
 const filterSettlements = (settlement, filter) => {
+	console.log(filter);
 	if (!filter) return true;
 	if (filter == "all") return true;
 	if (filter == "pending" && settlement.status == "pending") return true;

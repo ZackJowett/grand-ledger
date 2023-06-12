@@ -45,16 +45,9 @@ export default function SelectUser({
 					<Select
 						options={options}
 						className={styles.select}
+						defaultValue={options[0]}
 						onChange={handleSelectParty}
 					/>
-					{/* {users.map((user, index) => {
-							if (user._id != session.user.id)
-								return (
-									<option value={user._id} key={index}>
-										{user.name}
-									</option>
-								);
-						})} */}
 
 					{!debts ? (
 						<Spinner title="Loading debts..." />

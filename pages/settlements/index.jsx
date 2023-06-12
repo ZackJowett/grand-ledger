@@ -12,6 +12,7 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import Link from "next/link";
 import { filterSettlements } from "/utils/helpers";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
+import Select from "components/forms/Select";
 
 export default function Settlements() {
 	// Session
@@ -43,9 +44,16 @@ export default function Settlements() {
 		);
 	}
 
-	const handleFilterSelect = (e) => {
-		setFilter(e.target.value);
+	const handleFilterSelect = (option) => {
+		setFilter(option.value);
 	};
+
+	const options = [
+		{ value: "all", label: "All" },
+		{ value: "reopened", label: "Reopened" },
+		{ value: "pending", label: "Pending" },
+		{ value: "closed", label: "Closed" },
+	];
 
 	return (
 		<Layout>
@@ -76,14 +84,12 @@ export default function Settlements() {
 				/>
 				<Card dark title="Settlements">
 					<hr className={styles.hr} />
-					<select onChange={handleFilterSelect} class>
-						<option value="pending">Pending</option>
-						<option value="reopened">Reopened</option>
-						<option value="closed">Closed</option>
-						<option value="all" selected="selected">
-							All
-						</option>{" "}
-					</select>
+					<Select
+						options={options}
+						defaultValue={options[0]}
+						className={styles.select}
+						onChange={handleFilterSelect}
+					/>
 					<div className={styles.cards}>
 						{settlements && settlements.length == 0 && (
 							<p className={styles.noSettlements}>

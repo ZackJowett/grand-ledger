@@ -1,34 +1,41 @@
 import ReactSelect from "react-select";
 import styles from "./Select.module.scss";
 
-export default function Select({ options, name, className, onChange }) {
+export default function Select({
+	options,
+	name,
+	className,
+	onChange,
+	defaultValue,
+}) {
 	return (
 		<ReactSelect
 			options={options}
 			name={name}
 			onChange={onChange}
+			defaultValue={defaultValue}
 			className={`${styles.select} ${className ? className : ""}`}
 			styles={{
-				container: (baseStyles, state) => ({
+				container: (baseStyles) => ({
 					...baseStyles,
 					color: "#f5f5f5",
 					"&:hover": {},
 				}),
-				control: (baseStyles, state) => ({
+				control: (baseStyles) => ({
 					...baseStyles,
 					backgroundColor: "#2581b3",
-					border: state.isFocused ? "none" : "none",
+					border: "none",
 					borderRadius: "100px",
 					color: "#f5f5f5",
 					"&:hover": {},
 				}),
-				dropdownIndicator: (baseStyles, state) => ({
+				dropdownIndicator: (baseStyles) => ({
 					...baseStyles,
 					color: "#f5f5f5",
 					"&:hover": { color: "#2a2a2a" },
 				}),
 
-				menu: (baseStyles, state) => ({
+				menu: (baseStyles) => ({
 					...baseStyles,
 					backgroundColor: "#2a2a2a",
 					borderRadius: "15px",
@@ -36,20 +43,20 @@ export default function Select({ options, name, className, onChange }) {
 				}),
 				option: (baseStyles, state) => ({
 					...baseStyles,
-					backgroundColor: "transparent",
+					backgroundColor: state.isSelected ? "#333" : "transparent",
 					"&:hover": { backgroundColor: "#2581b3" },
 				}),
-				placeholder: (baseStyles, state) => ({
+				placeholder: (baseStyles) => ({
 					...baseStyles,
 					color: "#f5f5f5",
 					marginLeft: "5px",
 				}),
-				singleValue: (baseStyles, state) => ({
+				singleValue: (baseStyles) => ({
 					...baseStyles,
 					color: "#f5f5f5",
 					marginLeft: "5px",
 				}),
-				input: (baseStyles, state) => ({
+				input: (baseStyles) => ({
 					...baseStyles,
 					color: "#f5f5f5",
 					marginLeft: "5px",

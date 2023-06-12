@@ -11,6 +11,7 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import Button from "components/button/Button";
 import { filterDebts } from "/utils/helpers";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
+import Select from "components/forms/Select";
 
 export default function UnreceivedPayments() {
 	const { data: session } = useSession();
@@ -60,9 +61,16 @@ export default function UnreceivedPayments() {
 		);
 	}
 
-	const handleFilterSelect = (e) => {
-		setFilter(e.target.value);
+	const handleFilterSelect = (option) => {
+		setFilter(option.value);
 	};
+
+	const options = [
+		{ value: "all", label: "All" },
+		{ value: "outstanding", label: "Unreceived" },
+		{ value: "pending", label: "Pending" },
+		{ value: "closed", label: "Closed" },
+	];
 
 	// Logged in
 	return (
@@ -92,12 +100,12 @@ export default function UnreceivedPayments() {
 					title="Unreceived debts"
 					className={styles.debtsWrapper}>
 					<hr className={styles.hr} />
-					<select onChange={handleFilterSelect}>
-						<option value="outstanding">Unreceived</option>
-						<option value="pending">Pending</option>
-						<option value="closed">Closed</option>
-						<option value="all">All</option>
-					</select>
+					<Select
+						options={options}
+						defaultValue={options[1]}
+						className={styles.select}
+						onChange={handleFilterSelect}
+					/>
 					<div className={styles.cards}>
 						{debts && debts.length == 0 && (
 							<p className={styles.noDebts}>
