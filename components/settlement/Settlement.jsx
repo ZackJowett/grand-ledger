@@ -99,11 +99,6 @@ function settlementAction(settlement, session, users) {
 			// Rejector was not logged in user
 			return (
 				<>
-					<p className={styles.date}>
-						Rejected{" "}
-						{settlement.dateReopened &&
-							formatDate(settlement.dateReopened)}
-					</p>
 					<hr className={styles.hr} />
 					<Button
 						title="SUBMIT SETTLEMENT AGAIN"
