@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Debt from "/components/debt/Debt";
 import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
+import { MdRefresh } from "react-icons/md";
 // import { useStore } from "react-redux";
 
 export default function RecentDebts({ className }) {
@@ -18,9 +19,7 @@ export default function RecentDebts({ className }) {
 	useEffect(() => {
 		if (!session) return;
 
-		getAllForDebtor(session.user.id).then((data) => {
-			data ? setDebts(data) : console.log("Error fetching debts");
-		});
+		getData();
 	}, [session]);
 
 	useEffect(() => {
@@ -31,6 +30,12 @@ export default function RecentDebts({ className }) {
 	// No session data yet
 	if (!session) return;
 
+	function getData() {
+		getAllForDebtor(session.user.id).then((data) => {
+			data ? setDebts(data) : console.log("Error fetching debts");
+		});
+	}
+
 	const handleViewMore = () => {
 		if (debts.length - showAmount < 3) {
 			setShowAmount(debts.length);
@@ -39,6 +44,11 @@ export default function RecentDebts({ className }) {
 		}
 	};
 
+	function handleRefresh() {
+		setDebts(null);
+		getData();
+	}
+
 	return (
 		<Card
 			title="Recent Debts"
@@ -46,6 +56,9 @@ export default function RecentDebts({ className }) {
 			link="/debts"
 			dark
 			className={`${className} ${styles.wrapper}`}>
+			<div className={styles.refresh} onClick={handleRefresh}>
+				<MdRefresh className={styles.icon} />
+			</div>
 			{debts ? (
 				debts.map((debt, index) => {
 					if (index >= showAmount) return;

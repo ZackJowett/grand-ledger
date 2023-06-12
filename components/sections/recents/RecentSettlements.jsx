@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Settlement from "/components/settlement/Settlement";
 import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
+import { MdRefresh } from "react-icons/md";
 
 export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
@@ -19,33 +20,42 @@ export default function RecentSettlements({ className }) {
 	useEffect(() => {
 		if (!session) return;
 
-		getAllSettlements(session.user.id).then((data) => {
-			data
-				? setSettlements(data)
-				: console.log("Error fetching settlements");
-			// Time fetched
-			//....
-		});
-
-		getAllUsers(session.user.id).then((data) => {
-			data ? setUsers(data) : console.log("Error fetching users");
-		});
+		getData();
 	}, [session]);
-
-	useEffect(() => {
-		// Set time fetched
-		setTimeFetched(new Date().toLocaleTimeString());
-	}, [settlements]);
 
 	if (!session) return;
 
-	const handleViewMore = () => {
+	function handleViewMore() {
 		if (settlements.length - showAmount < 3) {
 			setShowAmount(settlements.length);
 		} else {
 			setShowAmount(showAmount + 3);
 		}
-	};
+	}
+
+	function getData() {
+		if (!session) return;
+
+		getAllSettlements(session.user.id)
+			.then((data) => {
+				data
+					? setSettlements(data)
+					: console.log("Error fetching settlements");
+			})
+			.then(() => {
+				setTimeFetched(new Date().toLocaleTimeString());
+			});
+
+		getAllUsers(session.user.id).then((data) => {
+			data ? setUsers(data) : console.log("Error fetching users");
+		});
+	}
+
+	function handleRefresh() {
+		setSettlements(null);
+		setUsers(null);
+		getData();
+	}
 
 	return (
 		<Card
@@ -54,6 +64,9 @@ export default function RecentSettlements({ className }) {
 			link="/settlements"
 			dark
 			className={`${className} ${styles.wrapper}`}>
+			<div className={styles.refresh} onClick={handleRefresh}>
+				<MdRefresh className={styles.icon} />
+			</div>
 			{settlements && users ? (
 				settlements.map((settlement, index) => {
 					if (index >= showAmount) return;
