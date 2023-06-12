@@ -153,7 +153,7 @@ export default function SingularDebt({
 							type="number"
 							name="amount"
 							id="amount"
-							pattern="\d*"
+							inputmode="decimal"
 							min="0"
 							step=".01"
 							placeholder="0.00"
