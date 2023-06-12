@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------------
 
 :root {
-	--primary: var(--blue);
+	--primary: #2581b3;
 
 	--background: #242424;
 	--backgroundDark: #1b1b1b;
@@ -21,15 +21,18 @@
 	--heading: var(--secondary);
 	--text: var(--secondary);
 	--subtext: #777;
-
-	--button: var(--blue);
+	--button: var(--primary);
 
 	--red: #ca5555;
 	--orange: #c57e22;
 	--yellow: #cac855;
 	--green: #61a767;
-	--blue: #2581b3;
+	--blue: #7f35b4;
 	--teal: #55cac8;
+
+	--settlement: var(--blue);
+	--debt: var(--red);
+	--unreceived: var(--green);
 
 	// --grey: #2a2a2a;
 	// --darkgrey: #333;

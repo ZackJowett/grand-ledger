@@ -22,7 +22,11 @@
 
 	padding: 0.25rem;
 
-	@include border($color: var(--background), $radius: 8px);
+	@include border($color: var(--background), $radius: 8px, $size: 0px);
+
+	&.backgroundFit {
+		width: fit-content;
+	}
 }
 
 .background {
@@ -30,7 +34,7 @@
 }
 
 .backgroundDark {
-	border-color: var(--backgroundDark);
+	background-color: var(--backgroundDark);
 }
 
 .negative {
@@ -39,4 +43,9 @@
 
 .positive {
 	color: var(--green);
+}
+
+.padding {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
 }

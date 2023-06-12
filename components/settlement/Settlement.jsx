@@ -7,11 +7,6 @@ import Button from "/components/button/Button";
 import Money from "/components/text/money/Money";
 
 export default function Settlement({ settlement, globals, className }) {
-	const shortDesc =
-		settlement.description.length > 25
-			? settlement.description.slice(0, 25) + "..."
-			: settlement.description;
-
 	// Set who is settling with you
 	// It shows the name of the user who is not logged in
 	let settleWith = "";
@@ -32,7 +27,7 @@ export default function Settlement({ settlement, globals, className }) {
 	return (
 		<ClickableCard
 			href={`/settlements/${settlement._id}`}
-			pretitle="Settlement with"
+			pretitle="Settlement"
 			title={settleWith}
 			badge={
 				settlement.status == "reopened"
@@ -41,29 +36,39 @@ export default function Settlement({ settlement, globals, className }) {
 					? "Pending"
 					: "Closed"
 			}
-			className={className}>
-			<Link href={`/settlements/${settlement._id}`}>
+			className={`${styles.card} ${className}`}
+			pretitleClassName={styles.title}>
+			<div className={styles.details}>
 				<TextWithTitle
 					title={
 						<Money
 							amount={settlement.netAmount}
 							notColoured
+							backgroundDark
+							backgroundFit
+							padding
 							small
 						/>
 					}
-					text="Amount Transferred"
+					text="Amount"
 					align="left"
 					reverse
 					className={styles.amount}
 				/>
-				<p className={styles.date}>
-					{settlement.status == "closed"
-						? `Closed ${formatDate(settlement.dateClosed)}`
-						: `Opened ${formatDate(settlement.dateCreated)}`}
-				</p>
+				<div className={styles.descWrapper}>
+					<p className={styles.descTitle}>Description</p>
+					{settlement.description}
+				</div>
+			</div>
+			<p className={styles.date}>
+				{settlement.status == "closed"
+					? `Closed ${formatDate(settlement.dateClosed)}`
+					: settlement.status == "reopened"
+					? `Reopened ${formatDate(settlement.dateReopened)}`
+					: `Opened ${formatDate(settlement.dateCreated)}`}
+			</p>
 
-				{settlementAction(settlement, globals.session, globals.users)}
-			</Link>
+			{settlementAction(settlement, globals.session, globals.users)}
 		</ClickableCard>
 	);
 }
@@ -78,9 +83,6 @@ function settlementAction(settlement, session, users) {
 			// Rejector was logged in user since only settlees can reject a settlement
 			return (
 				<>
-					<p className={styles.date}>
-						Reopened {formatDate(settlement.dateReopened)}
-					</p>
 					<hr className={styles.hr} />
 					<Button
 						title={`WAITING FOR ${settlerName.toUpperCase()} TO RESUBMIT`}

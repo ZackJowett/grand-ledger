@@ -6,6 +6,8 @@ export default function Money({
 	includeSign = false,
 	background = false,
 	backgroundDark = false,
+	backgroundFit = false,
+	padding = false,
 	small = false,
 	notColoured = false,
 }) {
@@ -14,6 +16,8 @@ export default function Money({
 	if (className) classes += ` ${className}`;
 	if (background) classes += ` ${styles.background}`;
 	if (backgroundDark) classes += ` ${styles.backgroundDark}`;
+	if (backgroundFit) classes += ` ${styles.backgroundFit}`;
+	if (padding) classes += ` ${styles.padding}`;
 	if (small) classes += ` ${styles.small}`;
 	if (!notColoured)
 		classes += ` ${amount < 0 ? styles.negative : styles.positive}`;

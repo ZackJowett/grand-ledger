@@ -165,7 +165,7 @@ $width: 200px;
 .unreceived {
 	.icon,
 	.iconCurrent {
-		color: var(--green);
+		color: var(--unreceived);
 	}
 }
 
@@ -173,7 +173,7 @@ $width: 200px;
 .settlements {
 	.icon,
 	.iconCurrent {
-		color: var(--yellow);
+		color: var(--settlement);
 	}
 }
 

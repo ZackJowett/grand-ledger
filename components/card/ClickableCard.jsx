@@ -9,6 +9,8 @@ export default function ClickableCard({
 	children,
 	href,
 	className,
+	titleClassName,
+	pretitleClassName,
 }) {
 	const badgeColor =
 		badge == "Outstanding" || badge == "Unreceived"
@@ -27,8 +29,18 @@ export default function ClickableCard({
 			} `}>
 			<div className={styles.header}>
 				<div className={styles.titleWrapper}>
-					<p className={styles.pretitle}>{pretitle}</p>
-					<h3 className={styles.title}>{title}</h3>
+					<p
+						className={`${styles.pretitle} ${
+							pretitleClassName ? pretitleClassName : ""
+						}`}>
+						{pretitle}
+					</p>
+					<h3
+						className={`${styles.title} ${
+							titleClassName ? titleClassName : ""
+						}`}>
+						{title}
+					</h3>
 					<p className={styles.subtitle}>{subtitle}</p>
 				</div>
 
