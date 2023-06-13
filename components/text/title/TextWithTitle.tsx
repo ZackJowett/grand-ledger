@@ -9,6 +9,8 @@ interface Props {
 	large?: boolean;
 	tiny?: boolean;
 	reverse?: boolean;
+	background?: boolean;
+	backgroundFit?: boolean;
 }
 
 export default function TextWithTitle({
@@ -20,12 +22,16 @@ export default function TextWithTitle({
 	tiny,
 	large,
 	reverse,
+	background,
+	backgroundFit,
 }: Props) {
 	return (
 		<div
 			className={`${className} ${styles.wrapper} ${
 				small ? styles.small : ""
-			} ${large ? styles.large : ""}${reverse ? styles.reverse : ""}`}
+			} ${large ? styles.large : ""} ${reverse ? styles.reverse : ""} ${
+				background ? styles.background : ""
+			} ${backgroundFit ? styles.backgroundFit : ""}`}
 			style={{ textAlign: align }}>
 			{small ? (
 				<h4 className={styles.title}>{title}</h4>
