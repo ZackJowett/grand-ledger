@@ -11,6 +11,7 @@ interface Props {
 	reverse?: boolean;
 	background?: boolean;
 	backgroundFit?: boolean;
+	onClick?: () => void;
 }
 
 export default function TextWithTitle({
@@ -24,6 +25,7 @@ export default function TextWithTitle({
 	reverse,
 	background,
 	backgroundFit,
+	onClick,
 }: Props) {
 	return (
 		<div
@@ -31,8 +33,11 @@ export default function TextWithTitle({
 				small ? styles.small : ""
 			} ${large ? styles.large : ""} ${reverse ? styles.reverse : ""} ${
 				background ? styles.background : ""
-			} ${backgroundFit ? styles.backgroundFit : ""}`}
-			style={{ textAlign: align }}>
+			} ${backgroundFit ? styles.backgroundFit : ""} ${
+				onClick ? styles.clickable : ""
+			}`}
+			style={{ textAlign: align }}
+			onClick={onClick}>
 			{small ? (
 				<h4 className={styles.title}>{title}</h4>
 			) : large ? (

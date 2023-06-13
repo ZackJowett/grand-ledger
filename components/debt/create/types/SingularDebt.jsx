@@ -6,6 +6,7 @@ import { useStore } from "react-redux";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Select from "components/forms/Select";
+import { InputNumber, InputText } from "components/forms/Input";
 
 export default function SingularDebt({
 	debt,
@@ -149,15 +150,13 @@ export default function SingularDebt({
 					<TextWithTitle title="Amount" align="left" small />
 					<div className={styles.amountInput}>
 						$
-						<input
+						<InputNumber
 							type="number"
 							name="amount"
 							id="amount"
-							inputmode="decimal"
 							min="0"
 							step=".01"
 							placeholder="0.00"
-							className={styles.amount}
 							value={amount > 0 ? amount : ""}
 							onChange={updateAmount}
 						/>
@@ -168,8 +167,7 @@ export default function SingularDebt({
 				{/* Description */}
 				<div className={styles.inputSection}>
 					<TextWithTitle title="Description" align="left" small />
-					<input
-						type="text"
+					<InputText
 						placeholder="This is for..."
 						onChange={(e) => updateDescription(e)}
 					/>

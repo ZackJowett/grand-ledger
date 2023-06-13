@@ -2,7 +2,7 @@
 
 .cardDebt {
 	&:hover {
-		border-color: var(--debt);
+		border-color: var(--debt) !important;
 	}
 
 	.title {
@@ -12,7 +12,7 @@
 
 .cardUnreceived {
 	&:hover {
-		border-color: var(--unreceived);
+		border-color: var(--unreceived) !important;
 	}
 
 	.title {

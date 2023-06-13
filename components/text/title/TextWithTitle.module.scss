@@ -75,3 +75,9 @@ $default: var(--secondary);
 .backgroundFit {
 	width: fit-content;
 }
+
+.clickable {
+	&:hover {
+		cursor: pointer;
+	}
+}

@@ -7,8 +7,9 @@ $breakpoint: 1200px;
 	flex-wrap: nowrap;
 
 	@include screen-up($breakpoint) {
-		flex-direction: row;
-		align-items: flex-start;
+		// flex-direction: row;
+		// align-items: flex-start;
+		// flex-wrap: wrap;
 	}
 
 	width: 100%;

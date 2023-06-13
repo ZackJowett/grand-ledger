@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/api/hello.js", "pages/debts/debts.jsx", "pages/profile.jsx", "pages/unreceived-payments/index.jsx", "utils/models/settlement.ts", "utils/helpers.js", "components/banner/InfoBanner.jsx", "components/sections/nav/MobileNav.jsx", "pages/index.jsx"  ],
+, "pages/api/hello.js", "pages/debts/debts.jsx", "pages/profile/profile.jsx", "pages/unreceived-payments/index.jsx", "utils/models/settlement.ts", "utils/helpers.js", "components/banner/InfoBanner.jsx", "components/sections/nav/MobileNav.jsx", "pages/index.jsx"  ],
   "exclude": [
     "node_modules"
   ]
