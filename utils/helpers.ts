@@ -114,6 +114,21 @@ const distributeAmount = (amount, piles) => {
 	return amounts;
 };
 
+// Decifers the correct terminology for a debt status if unreceived payment or not
+function getDebtStatus(debtStatus, unreceived) {
+	if (debtStatus == "closed") {
+		return "Closed";
+	} else if (debtStatus == "outstanding") {
+		// Return "Unreceived" if the debt is viewed as an unreceived payment
+		// otherwise just return "Outstanding"
+		return unreceived ? "Unreceived" : "Outstanding";
+	} else if (debtStatus == "pending") {
+		return "Pending";
+	}
+	console.log("ERROR getting debt status");
+	return "";
+}
+
 module.exports = {
 	formatDate,
 	getName,
@@ -122,4 +137,5 @@ module.exports = {
 	filterDebts,
 	filterSettlements,
 	distributeAmount,
+	getDebtStatus,
 };

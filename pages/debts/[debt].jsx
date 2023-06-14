@@ -15,6 +15,7 @@ import { formatDate } from "utils/helpers";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
+import { getDebtStatus } from "utils/helpers";
 
 export default function Debt() {
 	const { data: session } = useSession();
@@ -101,18 +102,19 @@ export default function Debt() {
 						large
 					/>
 					<Badge
-						title={status}
+						title={getDebtStatus(debt.status, !isDebtor)}
 						color={debt.status}
 						className={styles.badge}
 					/>
 				</div>
 
-				{debt.status == "closed" || debt.status == "pending" ? (
-					<Button
-						title="View Settlement Details"
-						href={`/settlements/${debt.settlement}`}
-					/>
-				) : null}
+				{debt.status == "closed" ||
+					(debt.status == "pending" && (
+						<Button
+							title="View Settlement Details"
+							href={`/settlements/${debt.settlement}`}
+						/>
+					))}
 
 				<Card title="Amount" dark>
 					<TextWithTitle

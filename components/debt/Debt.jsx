@@ -5,8 +5,9 @@ import { getName, formatDate } from "/utils/helpers";
 import Money from "/components/text/money/Money";
 import { useStore } from "react-redux";
 import { useSession } from "next-auth/react";
+import { getDebtStatus } from "/utils/helpers";
 
-export default function Debt({ debt, className, unreceived = false }) {
+export default function Debt({ debt, className }) {
 	const { data: session } = useSession();
 	const state = useStore().getState();
 	const users = state.userList.users;
@@ -28,7 +29,7 @@ export default function Debt({ debt, className, unreceived = false }) {
 			<ClickableCard
 				title={debtWith}
 				pretitle="Debt"
-				badge={getStatus(debt.status, unreceived)}
+				badge={getDebtStatus(debt.status, !userIsDebtor)}
 				href={`/debts/${debt._id}`}
 				className={`${styles.cardDebt} ${className ? className : ""}`}
 				pretitleClassName={styles.title}>
@@ -68,8 +69,12 @@ export default function Debt({ debt, className, unreceived = false }) {
 		return (
 			<ClickableCard
 				title={debtWith}
-				pretitle="Unreceived Payment"
-				badge={getStatus(debt.status, unreceived)}
+				pretitle={
+					debt.status != "closed"
+						? "Unreceived Payment"
+						: "Received Payment"
+				}
+				badge={getDebtStatus(debt.status, !userIsDebtor)}
 				href={`/debts/${debt._id}`}
 				className={`${styles.cardUnreceived} ${
 					className ? className : ""
@@ -107,18 +112,4 @@ export default function Debt({ debt, className, unreceived = false }) {
 			</ClickableCard>
 		);
 	}
-}
-
-function getStatus(debtStatus, unreceived) {
-	if (debtStatus == "closed") {
-		return "Closed";
-	} else if (debtStatus == "outstanding") {
-		// Return "Unreceived" if the debt is viewed as an unreceived payment
-		// otherwise just return "Outstanding"
-		return unreceived ? "Unreceived" : "Outstanding";
-	} else if (debtStatus == "pending") {
-		return "Pending";
-	}
-	console.log("ERROR getting debt status");
-	return "";
 }
