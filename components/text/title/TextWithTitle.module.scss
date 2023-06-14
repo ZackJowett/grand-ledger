@@ -68,7 +68,7 @@ $default: var(--secondary);
 
 .background {
 	background-color: var(--background);
-	@include border($color: transparent, $radius: 10px, $size: 0px);
+	@include border($color: transparent, $radius: 10px, $size: 1px);
 	padding: 0.5rem;
 }
 
@@ -80,4 +80,8 @@ $default: var(--secondary);
 	&:hover {
 		cursor: pointer;
 	}
+
+	// &:active {
+	// 	border-color: var(--text);
+	// }
 }

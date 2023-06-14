@@ -7,6 +7,8 @@
 .money {
 	font-size: 2rem;
 
+	white-space: nowrap;
+
 	&.small {
 		& > .sign {
 			font-size: 1.2rem;
