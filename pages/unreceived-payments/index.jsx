@@ -97,7 +97,7 @@ export default function UnreceivedPayments() {
 				/>
 				<Card
 					dark
-					title="Unreceived debts"
+					title="Unreceived Payments"
 					className={styles.debtsWrapper}>
 					<hr className={styles.hr} />
 					<Select

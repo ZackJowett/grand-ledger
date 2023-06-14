@@ -41,7 +41,7 @@ export default function Debt({ debt, className }) {
 								amount={-debt.amount}
 								notColoured={debt.status != "outstanding"}
 								backgroundDark
-								backgroundFit
+								className={styles.money}
 								padding
 								small
 							/>
@@ -57,11 +57,11 @@ export default function Debt({ debt, className }) {
 					</div>
 				</div>
 
-				<p className={styles.date}>
+				{/* <p className={styles.date}>
 					{debt.status == "outstanding" || debt.status == "pending"
 						? `Opened ${formatDate(debt.dateCreated)}`
 						: `Closed ${formatDate(debt.dateClosed)}`}
-				</p>
+				</p> */}
 			</ClickableCard>
 		);
 	} else {
@@ -88,9 +88,9 @@ export default function Debt({ debt, className }) {
 								amount={debt.amount}
 								notColoured={debt.status != "outstanding"}
 								backgroundDark
-								backgroundFit
 								padding
 								small
+								className={styles.money}
 							/>
 						}
 						text={"Amount"}
@@ -104,11 +104,11 @@ export default function Debt({ debt, className }) {
 					</div>
 				</div>
 
-				<p className={styles.date}>
+				{/* <p className={styles.date}>
 					{debt.status == "outstanding" || debt.status == "pending"
 						? `Opened ${formatDate(debt.dateCreated)}`
 						: `Closed ${formatDate(debt.dateClosed)}`}
-				</p>
+				</p> */}
 			</ClickableCard>
 		);
 	}
