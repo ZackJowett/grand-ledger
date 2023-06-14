@@ -6,23 +6,46 @@
 }
 
 .debts {
-	@include flex(row, flex-start, flex-start, $gap: 0.5rem);
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
 	width: 100%;
 
-	.debtData {
-		width: 100%;
+	@include screen(500px) {
+		flex-direction: row;
+	}
+}
 
-		.green {
-			color: var(--green);
-		}
+.row {
+	@include flex(row, flex-start, flex-start, $gap: 0.5rem);
+	width: 100%;
+	margin-top: 0.5rem;
 
-		.orange {
-			color: var(--orange);
-		}
+	@include screen(500px) {
+		flex-direction: column;
 
-		.red {
-			color: var(--red);
-		}
+		text-align: right;
+	}
+}
+
+.debtData {
+	width: 100%;
+	min-width: 8rem;
+
+	// Reduce size
+
+	.green {
+		color: var(--green);
+	}
+
+	.orange {
+		color: var(--orange);
+	}
+
+	.red {
+		color: var(--red);
+	}
+
+	@include screen(500px) {
+		text-align: left;
 	}
 }
 

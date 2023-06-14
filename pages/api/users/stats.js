@@ -18,22 +18,26 @@ export default async function handler(req, res) {
 				reopened: 0,
 				pending: 0,
 				closed: 0,
-				totalSettled: 0,
 			},
 			debts: {
 				asCreditor: 0,
 				asDebtor: 0,
-				oustanding: 0,
+				outstanding: 0,
 				pending: 0,
 				closed: 0,
-				totalPending: 0,
-				totalPaid: 0,
-				totalReceived: 0,
 			},
 			current: {
 				debt: 0,
 				unreceived: 0,
 				net: 0,
+			},
+			total: {
+				debts: 0,
+				settlements: 0,
+				unreceived: 0,
+				paidAmount: 0,
+				pendingAmount: 0,
+				receivedAmount: 0,
 			},
 		};
 
@@ -46,6 +50,7 @@ export default async function handler(req, res) {
 		});
 
 		settlements.forEach((settlement) => {
+			statistics.total.settlements++;
 			// Increment created as settler or settlee statistics
 			if (settlement.settler == req.query.id) {
 				// User is settler
@@ -62,56 +67,46 @@ export default async function handler(req, res) {
 				statistics.settlements.pending++;
 			} else {
 				statistics.settlements.closed++;
-
-				// Increment total amount settled statistics
-				statistics.settlements.totalSettled += settlement.netAmount;
 			}
 		});
 
 		// ----- DEBTS ----- \\
 		debts.forEach((debt) => {
 			// Increment created as debtor or creditor statistics
-			if (debt.creditor == req.query.id) {
-				// User is creditor
-				statistics.debts.asCreditor++;
-			} else {
+			if (debt.debtor == req.query.id) {
+				statistics.total.debts++;
 				// User is debtor
 				statistics.debts.asDebtor++;
-			}
 
-			// Increment open, closed statistics
-			if (debt.status == "outstanding") {
-				// Debt is open
-				statistics.debts.oustanding++;
-
-				// Increment total debt
-				if (debt.debtor == req.query.id) {
+				if (debt.status == "outstanding") {
+					statistics.debts.outstanding++;
 					statistics.current.debt += debt.amount;
 					statistics.current.net -= debt.amount; // Net position
+				} else if (debt.status == "pending") {
+					statistics.debts.pending++;
+					statistics.total.pendingAmount += debt.amount;
 				} else {
-					// Increment total unreceived
+					statistics.debts.closed++;
+					statistics.total.paidAmount += debt.amount;
+				}
+			} else {
+				// User is creditor
+				statistics.debts.asCreditor++;
+				statistics.total.unreceived++;
+				if (debt.status == "outstanding") {
 					statistics.current.unreceived += debt.amount;
 					statistics.current.net += debt.amount; // Net position
-				}
-			} else if (debt.status == "pending") {
-				// Debt is pending
-				statistics.debts.pending++;
-				statistics.debts.totalPending += debt.amount;
-			} else {
-				// Debt is closed
-				statistics.debts.closed++;
-
-				// Increment total amount paid debt
-				if (debt.debtor == req.query.id) {
-					statistics.debts.totalPaid += debt.amount;
+				} else if (debt.status == "pending") {
+					statistics.total.pendingAmount += debt.amount;
 				} else {
-					statistics.debts.totalReceived += debt.amount;
+					statistics.total.receivedAmount += debt.amount;
 				}
 			}
 		});
 
 		res.status(200).json({ success: true, data: statistics });
 	} catch (error) {
+		console.log(error);
 		res.status(400).json({ success: false });
 	}
 }

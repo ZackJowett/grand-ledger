@@ -33,8 +33,7 @@ export default function UserStatistics({ user }) {
 							<p>Error loading stats.</p>
 						) : (
 							<>
-								<Card title="Overall"></Card>
-								<Card title="Debts">
+								<Card title="Overall">
 									<hr className={styles.hr} />
 									<TextWithTitle
 										title={"Total"}
@@ -44,55 +43,63 @@ export default function UserStatistics({ user }) {
 										small
 									/>
 									<div className={styles.debts}>
-										<TextWithTitle
-											text="Paid"
-											title={
-												<Money
-													amount={
-														stats.debts.totalPaid
-													}
-													className={styles.red}
-													backgroundDark
-													small
-												/>
-											}
-											className={styles.debtData}
-											align="left"
-											reverse
-										/>
-										<TextWithTitle
-											text="Pending"
-											title={
-												<Money
-													amount={
-														stats.debts.totalPending
-													}
-													className={styles.orange}
-													small
-													backgroundDark
-												/>
-											}
-											className={styles.debtData}
-											reverse
-										/>
-										<TextWithTitle
-											text="Received"
-											title={
-												<Money
-													amount={
-														stats.debts
-															.totalReceived
-													}
-													className={styles.green}
-													small
-													backgroundDark
-												/>
-											}
-											className={styles.debtData}
-											align="right"
-											reverse
-										/>
+										<div className={styles.row}>
+											<TextWithTitle
+												text="Paid"
+												title={
+													<Money
+														amount={
+															stats.total
+																.paidAmount
+														}
+														className={styles.red}
+														backgroundDark
+														small
+													/>
+												}
+												className={styles.debtData}
+												align="left"
+												reverse
+											/>
+											<TextWithTitle
+												text="Pending"
+												title={
+													<Money
+														amount={
+															stats.total
+																.pendingAmount
+														}
+														className={
+															styles.orange
+														}
+														small
+														backgroundDark
+													/>
+												}
+												className={styles.debtData}
+												reverse
+											/>
+											<TextWithTitle
+												text="Received"
+												title={
+													<Money
+														amount={
+															stats.total
+																.receivedAmount
+														}
+														className={styles.green}
+														small
+														backgroundDark
+													/>
+												}
+												className={styles.debtData}
+												align="right"
+												reverse
+											/>
+										</div>
 									</div>
+								</Card>
+								<Card title="Debts">
 									<hr className={styles.hr} />
 									<TextWithTitle
 										title={"Current"}
@@ -102,40 +109,100 @@ export default function UserStatistics({ user }) {
 										small
 									/>
 									<div className={styles.debts}>
-										<TextWithTitle
-											text="Outstanding"
-											title={
-												<Money
-													amount={stats.current.debt}
-													className={styles.red}
-													backgroundDark
-													small
-												/>
-											}
-											className={styles.debtData}
-											// align="left"
-											reverse
-										/>
-										<TextWithTitle
-											text="Unreceived"
-											title={
-												<Money
-													amount={
-														stats.current.unreceived
-													}
-													className={styles.green}
-													small
-													backgroundDark
-												/>
-											}
-											className={styles.debtData}
-											// align="right"
-											reverse
-										/>
+										<div className={styles.row}>
+											<TextWithTitle
+												text="Outstanding"
+												title={stats.debts.outstanding}
+												className={styles.debtData}
+												align="center"
+												reverse
+											/>
+											<TextWithTitle
+												text="Pending"
+												title={stats.debts.pending}
+												className={styles.debtData}
+												align="center"
+												reverse
+											/>
+											<TextWithTitle
+												text="Closed"
+												title={stats.debts.closed}
+												className={styles.debtData}
+												align="center"
+												reverse
+											/>
+										</div>
+										<div className={styles.row}>
+											<TextWithTitle
+												text="Outstanding"
+												title={
+													<Money
+														amount={
+															stats.current.debt
+														}
+														className={styles.red}
+														backgroundDark
+														small
+													/>
+												}
+												className={styles.debtData}
+												reverse
+											/>
+											<TextWithTitle
+												text="Unreceived"
+												title={
+													<Money
+														amount={
+															stats.current
+																.unreceived
+														}
+														className={styles.green}
+														small
+														backgroundDark
+													/>
+												}
+												className={styles.debtData}
+												reverse
+											/>
+										</div>
 									</div>
-									<hr className={styles.hr} />
 								</Card>
-								<Card title="Settlements"></Card>
+								<Card title="Settlements">
+									<hr className={styles.hr} />
+									<TextWithTitle
+										title={"Total"}
+										className={styles.title}
+										align="left"
+										reverse
+										small
+									/>
+									<div className={styles.debts}>
+										<div className={styles.row}>
+											<TextWithTitle
+												text="Closed"
+												title={stats.settlements.closed}
+												className={styles.debtData}
+												reverse
+											/>
+											<TextWithTitle
+												text="Pending"
+												title={
+													stats.settlements.pending
+												}
+												className={styles.debtData}
+												reverse
+											/>
+											<TextWithTitle
+												text="Reopened"
+												title={
+													stats.settlements.reopened
+												}
+												className={styles.debtData}
+												reverse
+											/>
+										</div>
+									</div>
+								</Card>
 							</>
 						)}
 					</>

@@ -27,17 +27,21 @@ export default function TextWithTitle({
 	backgroundFit,
 	onClick,
 }: Props) {
+	// Add classes to class prop
+	let classes = styles.wrapper;
+	if (className) classes += " " + className;
+	if (small) classes += " " + styles.small;
+	if (large) classes += " " + styles.large;
+	if (reverse) classes += " " + styles.reverse;
+	if (background) classes += " " + styles.background;
+	if (backgroundFit) classes += " " + styles.backgroundFit;
+	if (onClick) classes += " " + styles.clickable;
+	if (align === "left") classes += " " + styles.left;
+	if (align === "center") classes += " " + styles.center;
+	if (align === "right") classes += " " + styles.right;
+
 	return (
-		<div
-			className={`${className} ${styles.wrapper} ${
-				small ? styles.small : ""
-			} ${large ? styles.large : ""} ${reverse ? styles.reverse : ""} ${
-				background ? styles.background : ""
-			} ${backgroundFit ? styles.backgroundFit : ""} ${
-				onClick ? styles.clickable : ""
-			}`}
-			style={{ textAlign: align }}
-			onClick={onClick}>
+		<div className={classes} onClick={onClick}>
 			{small ? (
 				<h4 className={styles.title}>{title}</h4>
 			) : large ? (
