@@ -12,6 +12,10 @@ import Button from "components/button/Button";
 import { filterDebts } from "/utils/helpers";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
 import Select from "components/forms/Select";
+import Spinner from "components/placeholders/spinner/Spinner";
+import Money from "components/text/money/Money";
+import { FiPlusSquare } from "react-icons/fi";
+import { TiArrowForward } from "react-icons/ti";
 
 export default function UnreceivedPayments() {
 	const { data: session } = useSession();
@@ -82,23 +86,44 @@ export default function UnreceivedPayments() {
 					align="left"
 					className={styles.heading}
 				/>
-				<Card dark>
-					<h3>
-						Total Amount (Unreceived):{" $"}
-						{totalUnreceived !== null
-							? totalUnreceived
-							: "Calculating..."}
-					</h3>
-				</Card>
-				<Button
-					title="Create Debt"
-					href="/debts/create"
-					className={styles.create}
-				/>
+
+				<div className={styles.buttons}>
+					<Button
+						title="Pay Someone"
+						icon={<TiArrowForward />}
+						href="/settlements/create"
+						className={styles.create}
+					/>
+					<Button
+						title="New Debt"
+						icon={<FiPlusSquare />}
+						href="/debts/create"
+						className={styles.create}
+					/>
+				</div>
 				<Card
 					dark
 					title="Unreceived Payments"
 					className={styles.debtsWrapper}>
+					{totalUnreceived ? (
+						<TextWithTitle
+							title={
+								<Money
+									amount={totalUnreceived}
+									background
+									backgroundFit
+									padding
+								/>
+							}
+							text={"Total Outstanding"}
+							small
+							reverse
+							align="left"
+							className={styles.totals}
+						/>
+					) : (
+						<Spinner title="Calculating totals..." />
+					)}
 					<hr className={styles.hr} />
 					<Select
 						options={options}

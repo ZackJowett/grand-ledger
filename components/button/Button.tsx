@@ -9,6 +9,8 @@ interface Props {
 	dark?: boolean;
 	submit?: boolean;
 	disabled?: boolean;
+	icon?: any | React.ReactNode;
+	secondary?: boolean;
 }
 
 export default function Button({
@@ -19,6 +21,8 @@ export default function Button({
 	submit,
 	onClick = null,
 	disabled = false,
+	icon,
+	secondary = false,
 }: Props) {
 	return (
 		<>
@@ -27,7 +31,10 @@ export default function Button({
 					href={href}
 					className={`${className ? className : ""} ${styles.link} ${
 						dark ? styles.dark : ""
-					} ${disabled ? styles.disabled : ""}`}>
+					} ${disabled ? styles.disabled : ""} ${
+						icon ? styles.icon : ""
+					} ${secondary ? styles.secondary : ""}`}>
+					{icon && icon}
 					{title}
 				</Link>
 			) : (
@@ -37,6 +44,8 @@ export default function Button({
 						styles.submit
 					} ${dark ? styles.dark : ""} ${
 						disabled ? styles.disabled : ""
+					}  ${icon ? styles.icon : ""} ${
+						secondary ? styles.secondary : ""
 					}`}
 					disabled={disabled}
 					onClick={
@@ -46,6 +55,7 @@ export default function Button({
 									return;
 							  }
 					}>
+					{icon && icon}
 					{title}
 				</button>
 			)}

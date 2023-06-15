@@ -14,6 +14,9 @@ import { filterDebts } from "/utils/helpers";
 import Money from "components/text/money/Money";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
 import Select from "components/forms/Select";
+import Spinner from "components/placeholders/spinner/Spinner";
+import { FiPlusSquare } from "react-icons/fi";
+import { TiArrowForward } from "react-icons/ti";
 
 export default function Debts() {
 	const { data: session } = useSession();
@@ -86,7 +89,7 @@ export default function Debts() {
 				<div className={styles.heading}>
 					<TextWithTitle
 						title="Debts"
-						text="A debt is the amount of money you owe someone"
+						text="A debt is an amount of money you owe someone"
 						align="left"
 					/>
 					<p className={styles.callToSettle}>
@@ -98,22 +101,42 @@ export default function Debts() {
 						</Link>
 					</p>
 				</div>
-				<Card dark>
-					<h3>
-						Total Amount (Outstanding):
-						{totalDebt !== null ? (
-							<Money amount={totalDebt} />
-						) : (
-							"Calculating..."
-						)}
-					</h3>
-				</Card>
-				<Button
-					title="Create Debt"
-					href="/debts/create"
-					className={styles.create}
-				/>
+				<div className={styles.buttons}>
+					<Button
+						title="Pay Someone"
+						icon={<TiArrowForward />}
+						href="/settlements/create"
+						className={styles.create}
+					/>
+					<Button
+						title="New Debt"
+						icon={<FiPlusSquare />}
+						href="/debts/create"
+						className={styles.create}
+						secondary
+					/>
+				</div>
+
 				<Card dark title="Debts" className={styles.debtsWrapper}>
+					{totalDebt ? (
+						<TextWithTitle
+							title={
+								<Money
+									amount={-totalDebt}
+									background
+									backgroundFit
+									padding
+								/>
+							}
+							text={"Total Outstanding"}
+							small
+							reverse
+							align="left"
+							className={styles.totals}
+						/>
+					) : (
+						<Spinner title="Calculating totals..." />
+					)}
 					<hr className={styles.hr} />
 					<Select
 						options={options}

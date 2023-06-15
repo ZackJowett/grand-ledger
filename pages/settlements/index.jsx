@@ -13,6 +13,9 @@ import Link from "next/link";
 import { filterSettlements } from "/utils/helpers";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
 import Select from "components/forms/Select";
+import Spinner from "components/placeholders/spinner/Spinner";
+import { FiPlusSquare } from "react-icons/fi";
+import { TiArrowForward } from "react-icons/ti";
 
 export default function Settlements() {
 	// Session
@@ -64,24 +67,22 @@ export default function Settlements() {
 						text="An offer to close multiple debts to the same person"
 						align="left"
 					/>
-
-					<p className={styles.callToSettle}>
-						You can settle multiple debts to the same person at once{" "}
-						<Link
-							href="/settlements/create"
-							className={styles.link}>
-							here
-						</Link>
-					</p>
 				</div>
-				<Card dark>
-					<h3>Totals</h3>
-				</Card>
-				<Button
-					title="Create Settlement"
-					href="/settlements/create"
-					className={styles.create}
-				/>
+				<div className={styles.buttons}>
+					<Button
+						title="New Settlement"
+						icon={<TiArrowForward />}
+						href="/settlements/create"
+						className={styles.create}
+					/>
+					<Button
+						title="New Debt"
+						icon={<FiPlusSquare />}
+						href="/debts/create"
+						className={styles.create}
+						secondary
+					/>
+				</div>
 				<Card dark title="Settlements">
 					<hr className={styles.hr} />
 					<Select

@@ -46,3 +46,29 @@
 		border-color: var(--subtext);
 	}
 }
+
+.icon {
+	@include flex(row);
+
+	gap: 0.5rem;
+
+	svg {
+		$size: 20px;
+
+		height: $size;
+		width: $size;
+	}
+}
+
+.secondary {
+	border-color: var(--button);
+	color: var(--button);
+	background-color: transparent;
+
+	&:active {
+		// outline: none;
+		border-color: var(--text);
+		background-color: var(--button);
+		color: var(--text);
+	}
+}

@@ -12,17 +12,21 @@
 	text-align: left;
 	width: 100%;
 	max-width: var(--maxWidth);
-	margin-bottom: 1rem;
 
 	.callToSettle {
 		margin-top: 0.5rem;
 	}
 }
 
-.create {
-	margin: 0.5rem auto;
-	width: 90%;
-	max-width: calc(var(--maxWidth) - 4rem);
+.buttons {
+	@include flex(row, $gap: 1rem);
+	width: 100%;
+	max-width: var(--maxWidth);
+
+	.create {
+		margin: 0.5rem auto;
+		width: 90%;
+	}
 }
 
 .title {
@@ -54,4 +58,9 @@
 .select {
 	min-width: 50%;
 	width: fit-content;
+}
+
+.totals {
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
 }
