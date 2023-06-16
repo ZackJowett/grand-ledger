@@ -1,0 +1,16 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	margin: auto;
+	max-width: var(--maxWidthSmall);
+}
+
+.form {
+	@include flex(column, $gap: 0.5rem);
+	margin-top: 1rem;
+	width: 100%;
+}
+
+.login {
+	color: var(--subtext);
+}

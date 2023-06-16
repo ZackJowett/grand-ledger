@@ -87,3 +87,87 @@ export function InputNumber({
 		</div>
 	);
 }
+
+// Input text
+export function InputPassword({
+	placeholder = "",
+	value = "",
+	onChange = () => {},
+	name,
+	required = false,
+	disabled = false,
+	className,
+	large,
+	title,
+	dark,
+}) {
+	const maxLength = 100;
+
+	return (
+		<div className={styles.wrapperText}>
+			{title && (
+				<TextWithTitle
+					className={styles.title}
+					title={title}
+					tiny={large ? false : true}
+				/>
+			)}
+			<input
+				className={`${styles.inputText} ${className ? className : ""} ${
+					dark ? styles.dark : ""
+				} ${disabled ? styles.disabled : ""}`}
+				type="password"
+				name={name}
+				id={name}
+				placeholder={placeholder}
+				value={value ? value : null}
+				onChange={onChange}
+				required={required}
+				disabled={disabled}
+				maxLength={maxLength}
+			/>
+		</div>
+	);
+}
+
+// Input text
+export function InputEmail({
+	placeholder = "",
+	value = "",
+	onChange = () => {},
+	name,
+	required = false,
+	disabled = false,
+	className,
+	large,
+	title,
+	dark,
+}) {
+	const maxLength = 100;
+
+	return (
+		<div className={styles.wrapperText}>
+			{title && (
+				<TextWithTitle
+					className={styles.title}
+					title={title}
+					tiny={large ? false : true}
+				/>
+			)}
+			<input
+				className={`${styles.inputText} ${className ? className : ""} ${
+					dark ? styles.dark : ""
+				} ${disabled ? styles.disabled : ""}`}
+				type="email"
+				name={name}
+				id={name}
+				placeholder={placeholder}
+				value={value ? value : null}
+				onChange={onChange}
+				required={required}
+				disabled={disabled}
+				maxLength={maxLength}
+			/>
+		</div>
+	);
+}

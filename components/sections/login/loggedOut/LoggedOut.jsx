@@ -6,13 +6,24 @@ import styles from "./LoggedOut.module.scss";
 
 export default function LoggedOut() {
 	return (
-		<Card>
+		<Card className={styles.wrapper}>
 			<TextWithTitle
 				title="You are logged out"
 				text="Login to use features"
 			/>
-			<Button title="Login" onClick={signIn} className={styles.button} />
-			{/* <button onClick={() => signIn()}>Sign in</button> */}
+			<div className={styles.buttons}>
+				<Button
+					title="Login"
+					onClick={signIn}
+					className={styles.button}
+				/>
+				<Button
+					title="Sign Up"
+					href="/register"
+					className={styles.button}
+					secondary
+				/>
+			</div>
 		</Card>
 	);
 }

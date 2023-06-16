@@ -1,3 +1,10 @@
-.button {
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	margin: auto;
+}
+
+.buttons {
+	@include flex(row, $gap: 1rem);
 	margin-top: 1rem;
 }

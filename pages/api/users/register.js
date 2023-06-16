@@ -9,14 +9,13 @@ export default async function handler(req, res) {
 
 	try {
 		const user = await User.create({
-			username: req.body.username,
+			email: req.body.email,
 			password: req.body.password,
 			name: req.body.name,
-			email: req.body.email,
 		});
 		res.status(201).json({ success: true, data: user });
 	} catch (error) {
 		console.log(error);
-		res.status(400).json({ success: false });
+		res.status(400).json({ success: false, message: error });
 	}
 }
