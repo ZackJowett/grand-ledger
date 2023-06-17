@@ -2,14 +2,18 @@
 
 .link,
 .submit {
-	@include flex;
+	@include flex(row, $gap: 0.5rem);
 	width: 100%;
+	height: 2.5rem;
 
 	text-align: center;
 
-	padding: 0.5rem 0.5rem;
+	@include border(
+		$radius: 100px,
+		$size: 2px,
 
-	@include border($radius: 100px, $size: 2px, $color: var(--button));
+		$color: var(--button)
+	);
 
 	color: var(--text);
 	background-color: var(--button);
@@ -48,19 +52,6 @@
 	}
 }
 
-.icon {
-	@include flex(row);
-
-	gap: 0.5rem;
-
-	svg {
-		$size: 20px;
-
-		height: $size;
-		width: $size;
-	}
-}
-
 .secondary {
 	border-color: var(--button);
 	color: var(--button);
@@ -72,4 +63,8 @@
 		background-color: var(--button);
 		color: var(--text);
 	}
+}
+
+.spinnerBlocks {
+	fill: var(--text) !important;
 }

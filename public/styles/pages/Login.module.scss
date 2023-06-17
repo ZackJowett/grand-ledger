@@ -1,8 +1,34 @@
 @use "public/styles/mixins.scss" as *;
 
 .wrapper {
-	margin: auto;
+	height: 100vh;
+	width: 100vw;
+	background-color: var(--background);
+	@include flex;
+}
+
+.title {
+	margin-bottom: 2rem;
+}
+
+.wrapperCard {
 	max-width: var(--maxWidthSmall);
+	height: 500px;
+	position: relative;
+	padding: 0;
+}
+
+.submit {
+	margin-top: 1.5rem;
+}
+
+.provider {
+	@include flex(row, $gap: 1rem);
+	width: 80%;
+
+	.providerText {
+		@include flex(row, $gap: 1rem);
+	}
 }
 
 .form {
@@ -13,4 +39,20 @@
 
 .login {
 	color: var(--subtext);
+}
+
+.hr {
+	margin: 2rem auto 1rem auto;
+}
+
+.or {
+	width: 100%;
+	text-align: center;
+	margin: 1rem auto;
+	color: var(--subtext);
+}
+.error {
+	color: var(--red);
+	text-align: center;
+	margin-bottom: 1rem;
 }

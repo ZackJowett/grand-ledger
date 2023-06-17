@@ -2,6 +2,7 @@ import Layout from "components/layouts/Layout";
 import Card from "components/card/Card";
 import styles from "public/styles/pages/Register.module.scss";
 import Button from "components/button/Button";
+import TextButton from "components/button/text/TextButton";
 import { InputText, InputEmail, InputPassword } from "components/forms/Input";
 import { signIn } from "next-auth/react";
 import { hash } from "utils/password";
@@ -100,10 +101,14 @@ export default function Register() {
 							title="Sign Up"
 							submit
 							className={styles.button}
+							loading={loading}
 						/>
 						<hr />
-						<p className={styles.login}>Already have an account?</p>
-						<Button title="Login" href="/login" secondary />
+						<TextButton
+							text="Already have an account?"
+							title="Login"
+							link="/login"
+						/>
 					</form>
 				)}
 			</Card>

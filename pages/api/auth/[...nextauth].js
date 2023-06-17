@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { getRootURL } from "/utils/helpers";
 
+const rootURL = getRootURL();
+
 export const authOptions = {
 	// Configure one or more authentication providers
 	providers: [
@@ -21,7 +23,7 @@ export const authOptions = {
 			// You can pass any HTML attribute to the <input> tag through the object.
 			credentials: {
 				email: {
-					label: "email",
+					label: "Email",
 					type: "email",
 					placeholder: "Username",
 				},
@@ -37,12 +39,14 @@ export const authOptions = {
 
 				// Get root url based on environment
 				try {
-					let root_url = getRootURL();
-
 					// Fetch user data from api
-					let userData = await fetch(
-						root_url + "api/users/" + credentials.email
-					).then((res) => res.json());
+
+					const res = await fetch(rootURL + "api/users", {
+						method: "POST",
+						body: JSON.stringify(credentials),
+						headers: { "Content-Type": "application/json" },
+					});
+					const userData = await res.json();
 
 					// Check user was returned
 					if (!userData.success) {
@@ -50,7 +54,7 @@ export const authOptions = {
 					}
 
 					// Get specific user details
-					const storedUser = userData.user;
+					const storedUser = userData.data;
 
 					// Check password match
 					if (storedUser.password != credentials.password) {
@@ -97,6 +101,13 @@ export const authOptions = {
 			session.user.id = token.id;
 			return session;
 		},
+	},
+	pages: {
+		signIn: "/login",
+		// signOut: "/auth/signout",
+		error: "/login", // Error code passed in query string as ?error=
+		// verifyRequest: "/auth/verify-request", // (used for check email message)
+		newUser: "/", // New users will be directed here on first sign in (leave the property out if not of interest)
 	},
 	secret: process.env.NEXT_PUBLIC_SECRET,
 };

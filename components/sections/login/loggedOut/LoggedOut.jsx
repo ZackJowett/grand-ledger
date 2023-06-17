@@ -12,11 +12,7 @@ export default function LoggedOut() {
 				text="Login to use features"
 			/>
 			<div className={styles.buttons}>
-				<Button
-					title="Login"
-					onClick={signIn}
-					className={styles.button}
-				/>
+				<Button title="Login" href="/login" className={styles.button} />
 				<Button
 					title="Sign Up"
 					href="/register"

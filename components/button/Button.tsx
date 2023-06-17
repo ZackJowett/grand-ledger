@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./Button.module.scss";
+import Spinner from "../placeholders/spinner/Spinner";
 
 interface Props {
 	className?: string;
@@ -11,6 +12,7 @@ interface Props {
 	disabled?: boolean;
 	icon?: any | React.ReactNode;
 	secondary?: boolean;
+	loading?: boolean;
 }
 
 export default function Button({
@@ -23,30 +25,31 @@ export default function Button({
 	disabled = false,
 	icon,
 	secondary = false,
+	loading = false,
 }: Props) {
+	let classes = className ? className : "";
+	classes += dark ? styles.dark : "";
+	classes += disabled ? styles.disabled : "";
+	classes += icon ? styles.icon : "";
+	classes += secondary ? styles.secondary : "";
+
 	return (
 		<>
 			{href ? (
-				<Link
-					href={href}
-					className={`${className ? className : ""} ${styles.link} ${
-						dark ? styles.dark : ""
-					} ${disabled ? styles.disabled : ""} ${
-						icon ? styles.icon : ""
-					} ${secondary ? styles.secondary : ""}`}>
-					{icon && icon}
-					{title}
+				<Link href={href} className={`${classes} ${styles.link}`}>
+					{loading ? (
+						<Spinner spinnerClassName={styles.spinnerBlocks} />
+					) : (
+						<>
+							{icon && icon}
+							{title}
+						</>
+					)}
 				</Link>
 			) : (
 				<button
 					type={submit ? "submit" : "button"}
-					className={`${className ? className : ""} ${
-						styles.submit
-					} ${dark ? styles.dark : ""} ${
-						disabled ? styles.disabled : ""
-					}  ${icon ? styles.icon : ""} ${
-						secondary ? styles.secondary : ""
-					}`}
+					className={`${classes} ${styles.submit} `}
 					disabled={disabled}
 					onClick={
 						onClick
@@ -55,8 +58,14 @@ export default function Button({
 									return;
 							  }
 					}>
-					{icon && icon}
-					{title}
+					{loading ? (
+						<Spinner spinnerClassName={styles.spinnerBlocks} />
+					) : (
+						<>
+							{icon && icon}
+							{title}
+						</>
+					)}
 				</button>
 			)}
 		</>
