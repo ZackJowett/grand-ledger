@@ -10,6 +10,7 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 // Get Providers for login
 export const getServerSideProps = async () => {
@@ -71,6 +72,12 @@ export default function Login({ providers }) {
 			{status != "authenticated" && (
 				// Hide title & error if authenticated
 				<>
+					<Image
+						src="/images/logo.png"
+						width={1000}
+						height={1000}
+						className={styles.image}
+					/>
 					<TextWithTitle title="Login" className={styles.title} />
 					{error && <p className={styles.error}>{error}</p>}
 				</>
