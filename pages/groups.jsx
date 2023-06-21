@@ -16,7 +16,7 @@ export default function Groups() {
 
 	return (
 		<Layout>
-			<h1>Groups</h1>
+			<h1>Groups (Coming Soon)</h1>
 		</Layout>
 	);
 }

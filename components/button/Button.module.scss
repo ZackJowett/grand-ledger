@@ -2,11 +2,13 @@
 
 .link,
 .submit {
-	@include flex(row, $gap: 0.5rem);
+	@include flex(row, $gap: 1rem);
 	width: 100%;
 	height: 2.5rem;
 
 	text-align: center;
+
+	padding: 0.5rem 0.5rem;
 
 	@include border(
 		$radius: 100px,
@@ -35,6 +37,32 @@
 		// background-color: var(--primary);
 		color: var(--button);
 	}
+}
+
+// With Icons
+.link,
+.submit {
+	&.iconCenter {
+		// Default
+	}
+	&.iconLeft {
+		position: relative;
+
+		.title {
+			flex: 1;
+			padding: 1rem;
+		}
+
+		.icon {
+			// @include flex;
+			position: absolute;
+			left: 0.75rem;
+		}
+	}
+}
+
+.icon {
+	@include flex; // Center vertically;
 }
 
 .disabled {

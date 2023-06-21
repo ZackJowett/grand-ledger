@@ -16,7 +16,7 @@ export default function Settings() {
 
 	return (
 		<Layout>
-			<h1>Settings</h1>
+			<h1>Settings (Coming Soon)</h1>
 		</Layout>
 	);
 }

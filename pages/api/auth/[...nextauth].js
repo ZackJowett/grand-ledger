@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { getRootURL } from "/utils/helpers";
@@ -12,6 +13,10 @@ export const authOptions = {
 		GoogleProvider({
 			clientId: process.env.GOOGLE_ID,
 			clientSecret: process.env.GOOGLE_SECRET,
+		}),
+		AppleProvider({
+			clientId: process.env.APPLE_ID,
+			clientSecret: process.env.APPLE_SECRET,
 		}),
 		// ...add more providers here
 		CredentialsProvider({
@@ -58,6 +63,7 @@ export const authOptions = {
 
 					// Check password match
 					if (storedUser.password != credentials.password) {
+						console.log("Incorrect Password");
 						return null;
 					}
 
@@ -88,18 +94,52 @@ export const authOptions = {
 	],
 	callbacks: {
 		async jwt({ token, user }) {
-			if (user?.username) {
-				token.username = user.username;
-			}
+			console.log(`user`, user);
+			console.log(`token`, token);
+			// if (user?.username) {
+			// 	token.username = user.username;
+			// }
 			if (user?._id) {
 				token.id = user._id;
+			}
+			if (user?.email) {
+				token.email = user.email;
 			}
 			return token;
 		},
 		async session({ session, token }) {
+			console.log("session", session);
+			console.log("token2", token);
+
 			session.user.username = token.username;
+			session.user.email = token.email;
 			session.user.id = token.id;
 			return session;
+		},
+		async signIn({ account, profile }) {
+			if (account.provider === "google") {
+				// Check if user exists in database
+				const res = await fetch(rootURL + "api/users", {
+					method: "POST",
+					body: JSON.stringify({ email: profile.email }),
+					headers: { "Content-Type": "application/json" },
+				});
+				const userData = await res.json();
+
+				// Check user was returned
+				if (!userData.success) {
+					// User exists
+					return true;
+				} else {
+					// User does not exist
+					// Create user
+					// TO DO
+				}
+
+				console.log(profile);
+			} else {
+				return true;
+			}
 		},
 	},
 	pages: {

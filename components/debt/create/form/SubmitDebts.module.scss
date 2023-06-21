@@ -5,7 +5,7 @@
 	text-align: center;
 	max-width: var(--maxWidth);
 
-	p {
+	.text {
 		margin-bottom: 1rem;
 	}
 }
@@ -14,21 +14,24 @@
 	@include flex(row, space-between, center, $gap: 1rem);
 	width: 100%;
 
+	.yes,
+	.no {
+		&:hover {
+			border-color: var(--text);
+		}
+
+		&:active {
+			background-color: transparent;
+		}
+	}
+
 	.yes {
 		background-color: var(--green);
 		border-color: var(--green);
-
-		&:hover {
-			background-color: transparent;
-		}
 	}
 
 	.no {
 		background-color: var(--red);
 		border-color: var(--red);
-
-		&:hover {
-			background-color: transparent;
-		}
 	}
 }

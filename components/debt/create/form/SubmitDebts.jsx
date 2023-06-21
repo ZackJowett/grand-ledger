@@ -42,7 +42,7 @@ export default function SubmitDebts({
 	if (confirmSubmission) {
 		return (
 			<div className={styles.wrapper}>
-				<p>Are you sure?</p>
+				<p className={styles.text}>Are you sure?</p>
 				<div className={styles.confirmButtons}>
 					<Button
 						title="Confirm"
