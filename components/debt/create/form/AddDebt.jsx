@@ -17,29 +17,45 @@ export default function AddDebt({ numDebts, addSingle, addMulti }) {
 					align="left"
 					className={styles.title}
 				/>
-				{numDebts >= maxDebts ? (
-					<p className={styles.max}>Maximum quantity reached</p>
+				{numDebts.total >= maxDebts ? (
+					<p className={styles.max}>
+						Maximum quantity reached
+						<br />
+						Submit current debts, then create more
+					</p>
 				) : (
 					<>
 						<div className={styles.buttons}>
-							<Button
-								title={
-									<p className={styles.button}>
-										<MdPerson />
-										Singular Debt
-									</p>
-								}
-								onClick={() => addSingle()}
-							/>
-							<Button
-								title={
-									<p className={styles.button}>
-										<MdGroups />
-										Multi Debt
-									</p>
-								}
-								onClick={() => addMulti()}
-							/>
+							<div className={styles.buttonWrapper}>
+								<Button
+									title={
+										<p className={styles.button}>
+											<MdPerson />
+											Singular Debt
+										</p>
+									}
+									onClick={() => addSingle()}
+								/>
+								<TextWithTitle
+									title={numDebts.single}
+									className={styles.count}
+								/>
+							</div>
+							<div className={styles.buttonWrapper}>
+								<Button
+									title={
+										<p className={styles.button}>
+											<MdGroups />
+											Multi Debt
+										</p>
+									}
+									onClick={() => addMulti()}
+								/>
+								<TextWithTitle
+									title={numDebts.multi}
+									className={styles.count}
+								/>
+							</div>
 						</div>
 					</>
 				)}

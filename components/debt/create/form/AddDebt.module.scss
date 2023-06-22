@@ -18,7 +18,16 @@
 	@include flex(row);
 	gap: 1rem;
 	margin-top: 1rem;
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
+}
+
+.buttonWrapper {
+	width: 100%;
+
+	.count {
+		margin-top: 1rem;
+		text-align: center;
+	}
 }
 
 .button {
