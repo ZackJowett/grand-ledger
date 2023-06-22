@@ -9,9 +9,12 @@ import { hash } from "utils/password";
 import { useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useRouter } from "next/navigation";
+import FullScreen from "components/layouts/FullScreen";
+import { useSession } from "next-auth/react";
 
 export default function Register() {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -22,13 +25,18 @@ export default function Register() {
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 
+	// If authenticated, redirect to home page
+	if (status == "authenticated") {
+		// setLoading(true);
+		router.push("/");
+	}
+
 	function handleRegister(e) {
-		setLoading(true);
+		setError(null);
 
 		// Check all fields are filled
 		if (!name || !email || !password || !passwordConfirm) {
 			setError("Please fill in all fields");
-			setLoading(false);
 			return;
 		}
 
@@ -39,9 +47,7 @@ export default function Register() {
 			return;
 		}
 
-		// Encrypt password
-		// TO DO
-		// const hashedPassword = ;
+		setLoading(true);
 
 		fetch("/api/users/register", {
 			method: "POST",
@@ -56,7 +62,8 @@ export default function Register() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.status === 200) {
+				if (data.success) {
+					console.log("SUCCESS");
 					// Login user
 					const signInRes = signIn("credentials", {
 						redirect: false,
@@ -66,11 +73,9 @@ export default function Register() {
 
 					if (signInRes.error) {
 						router.push("/login");
-						setLoading(false);
 						return;
 					} else if (signInRes.ok) {
 						router.push("/");
-						setLoading(false);
 						return;
 					}
 				} else {
@@ -82,53 +87,56 @@ export default function Register() {
 	}
 
 	return (
-		<Layout>
-			<Card title="Sign Up" dark className={styles.wrapper}>
-				{loading ? (
-					<Spinner />
+		<FullScreen title="Sign Up">
+			{error && <p className={styles.error}>{error}</p>}
+			<Card className={styles.wrapper}>
+				{status == "authenticated" ? (
+					<Spinner title="Logging in..." />
 				) : (
-					<div className={styles.form}>
-						<InputText
-							title="Name"
-							placeholder="Jeff"
-							name="name"
-							onChange={(e) => setName(e.target.value)}
-						/>
-						<InputEmail
-							title="Email"
-							placeholder="jeff@money.com"
-							name="email"
-							onChange={(e) => setEmail(e.target.value)}
-						/>
+					<Card dark>
+						<div className={styles.form}>
+							<InputText
+								title="Name"
+								placeholder="Jeff"
+								name="name"
+								onChange={(e) => setName(e.target.value)}
+							/>
+							<InputEmail
+								title="Email"
+								placeholder="jeff@money.com"
+								name="email"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
 
-						<InputPassword
-							title="Password"
-							name="password"
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-						<InputPassword
-							title="Confirm Password"
-							name="passwordConfirm"
-							onChange={(e) => setPasswordConfirm(e.target.value)}
-						/>
+							<InputPassword
+								title="Password"
+								name="password"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+							<InputPassword
+								title="Confirm Password"
+								name="passwordConfirm"
+								onChange={(e) =>
+									setPasswordConfirm(e.target.value)
+								}
+							/>
 
-						{error && <p className={styles.error}>{error}</p>}
-
-						<Button
-							title="Sign Up"
-							className={styles.button}
-							loading={loading}
-							onClick={handleRegister}
-						/>
-						<hr />
-						<TextButton
-							text="Already have an account?"
-							title="Login"
-							link="/login"
-						/>
-					</div>
+							<Button
+								title="Sign Up"
+								className={styles.button}
+								loading={loading}
+								onClick={handleRegister}
+							/>
+							<hr />
+							<TextButton
+								text="Already have an account?"
+								title="Login"
+								link="/login"
+							/>
+						</div>
+					</Card>
 				)}
 			</Card>
-		</Layout>
+		</FullScreen>
 	);
 }

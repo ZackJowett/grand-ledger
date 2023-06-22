@@ -11,6 +11,7 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import FullScreen from "components/layouts/FullScreen";
 
 // Get Providers for login
 export const getServerSideProps = async () => {
@@ -70,23 +71,10 @@ export default function Login({ providers }) {
 	};
 
 	return (
-		<section className={styles.wrapper}>
-			{status != "authenticated" && (
-				// Hide title & error if authenticated
-				<>
-					<Image
-						src="/images/logo.png"
-						width={1000}
-						height={1000}
-						className={styles.image}
-						alt={"Logo"}
-					/>
-					<TextWithTitle title="Login" className={styles.title} />
-					{error && <p className={styles.error}>{error}</p>}
-				</>
-			)}
+		<FullScreen title="Login">
+			{error && <p className={styles.error}>{error}</p>}
 
-			<Card className={styles.wrapperCard}>
+			<Card className={styles.wrapper}>
 				{status == "authenticated" ? (
 					<Spinner title="Logging in..." />
 				) : (
@@ -150,7 +138,7 @@ export default function Login({ providers }) {
 					</div>
 				)}
 			</Card>
-		</section>
+		</FullScreen>
 	);
 }
 
