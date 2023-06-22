@@ -5,9 +5,7 @@
 @import "public/styles/reset.scss";
 // @import url("https://fonts.googleapis.com/css2?family=B612+Mono:wght@400;700&family=Ubuntu+Mono:ital,wght@0,700;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Roboto:wght@400&display=swap"); // SCSS VARIABLES
-// -----------------------------------------------------------------------------
-
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Roboto:wght@500&family=Varela+Round&display=swap");
 :root {
 	--primary: #2581b3;
 
@@ -45,6 +43,9 @@
 	--color: #303030;
 	--headerHeight: 100px;
 	--desktopNavWidth: 250px;
+
+	//Fonts
+	--moneyFont: "Lato", sans-serif;
 }
 
 #__next {
@@ -60,7 +61,11 @@ body {
 
 body {
 	min-width: 300px;
-	font-family: "Open Sans", sans-serif;
+	font-family: "Lato", sans-serif;
+}
+
+p {
+	font-family: "Lato", sans-serif;
 }
 
 h1,
@@ -72,12 +77,12 @@ h6,
 a,
 label {
 	color: var(--heading);
-	font-family: "Roboto", sans-serif;
+	font-family: "Varela Round", sans-serif;
 }
 
 h1 {
 	font-size: 2rem;
-	font-family: "Libre Baskerville", serif;
+	font-family: "Varela Round", sans-serif;
 }
 
 h2 {
