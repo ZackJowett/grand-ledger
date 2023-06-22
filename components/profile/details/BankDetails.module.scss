@@ -19,7 +19,12 @@
 
 	.form {
 		width: 100%;
-		@include flex(row, $gap: 1rem);
+		@include flex(column, $gap: 1rem);
+
+		.row {
+			@include flex(row, $gap: 1rem);
+			width: 100%;
+		}
 	}
 
 	.input {
@@ -33,7 +38,7 @@
 	}
 
 	.saveButton {
-		width: 4rem;
+		width: 30%;
 	}
 }
 
@@ -41,6 +46,7 @@
 .success {
 	width: 100%;
 	text-align: center;
+	margin-top: 1rem;
 }
 
 .error {

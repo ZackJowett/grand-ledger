@@ -14,19 +14,29 @@ export default function BankDetails({ className, user }) {
 	const router = useRouter();
 
 	const [updateDetails, setUpdateDetails] = useState(false);
-	const [bsb, setBsb] = useState(user.bsb);
-	const [accountNumber, setAccountNumber] = useState(user.accountNumber);
+	const [bsb, setBsb] = useState("");
+	const [accountNumber, setAccountNumber] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [success, setSuccess] = useState(null);
 
 	// Save details to database
 	function saveDetails() {
+		if (!bsb && !accountNumber) {
+			setError("Cannot set details to empty");
+			return;
+		}
+
+		const newBsb = bsb ? bsb : user.bsb;
+		const newAccountNumber = accountNumber
+			? accountNumber
+			: user.accountNumber;
+
 		setLoading(true);
 		setUpdateDetails(false);
 
 		// Save details to database
-		setBankDetails(user._id, bsb, accountNumber).then((res) => {
+		setBankDetails(user._id, newBsb, newAccountNumber).then((res) => {
 			if (!res.success) {
 				// If error, show error message
 				setError(res.message);
@@ -73,25 +83,42 @@ export default function BankDetails({ className, user }) {
 						<div className={styles.formWrapper}>
 							{updateDetails ? (
 								<div className={styles.form}>
-									<InputNumber
-										placeholder="New BSB"
-										name="acc"
-										className={styles.input}
-										onChange={(e) => setBsb(e.target.value)}
-									/>
-									<InputNumber
-										placeholder="New Account Number"
-										name="acc"
-										className={styles.input}
-										onChange={(e) =>
-											setAccountNumber(e.target.value)
-										}
-									/>
-									<Button
-										title="Save"
-										className={styles.saveButton}
-										onClick={saveDetails}
-									/>
+									<hr />
+									<div className={styles.row}>
+										<InputNumber
+											placeholder="New BSB"
+											name="acc"
+											className={styles.input}
+											onChange={(e) =>
+												setBsb(e.target.value)
+											}
+										/>
+										<InputNumber
+											placeholder="New Account Number"
+											name="acc"
+											className={styles.input}
+											onChange={(e) =>
+												setAccountNumber(e.target.value)
+											}
+										/>
+									</div>
+									<div className={styles.row}>
+										<Button
+											title="Save"
+											className={styles.saveButton}
+											onClick={saveDetails}
+										/>
+										<Button
+											title="Cancel"
+											secondary
+											className={styles.saveButton}
+											onClick={() => {
+												setUpdateDetails(false);
+												setError(null);
+												setSuccess(null);
+											}}
+										/>
+									</div>
 								</div>
 							) : (
 								<Button
