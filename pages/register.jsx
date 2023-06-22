@@ -16,14 +16,14 @@ export default function Register() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
-	function handleRegister(e) {
-		e.preventDefault();
-		setLoading(true);
+	// Form States
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordConfirm, setPasswordConfirm] = useState("");
 
-		const name = e.target.name.value;
-		const email = e.target.email.value;
-		const password = e.target.password.value;
-		const passwordConfirm = e.target.passwordConfirm.value;
+	function handleRegister(e) {
+		setLoading(true);
 
 		// Check all fields are filled
 		if (!name || !email || !password || !passwordConfirm) {
@@ -59,6 +59,7 @@ export default function Register() {
 				if (data.status === 200) {
 					// Login user
 					const signInRes = signIn("credentials", {
+						redirect: false,
 						email: email,
 						password: password,
 					});
@@ -86,31 +87,38 @@ export default function Register() {
 				{loading ? (
 					<Spinner />
 				) : (
-					<form onSubmit={handleRegister} className={styles.form}>
+					<div className={styles.form}>
 						<InputText
 							title="Name"
 							placeholder="Jeff"
 							name="name"
+							onChange={(e) => setName(e.target.value)}
 						/>
 						<InputEmail
 							title="Email"
 							placeholder="jeff@money.com"
 							name="email"
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 
-						<InputPassword title="Password" name="password" />
+						<InputPassword
+							title="Password"
+							name="password"
+							onChange={(e) => setPassword(e.target.value)}
+						/>
 						<InputPassword
 							title="Confirm Password"
 							name="passwordConfirm"
+							onChange={(e) => setPasswordConfirm(e.target.value)}
 						/>
 
 						{error && <p className={styles.error}>{error}</p>}
 
 						<Button
 							title="Sign Up"
-							submit
 							className={styles.button}
 							loading={loading}
+							onClick={handleRegister}
 						/>
 						<hr />
 						<TextButton
@@ -118,7 +126,7 @@ export default function Register() {
 							title="Login"
 							link="/login"
 						/>
-					</form>
+					</div>
 				)}
 			</Card>
 		</Layout>
