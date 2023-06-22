@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { getRootURL } from "/utils/helpers";
@@ -13,34 +14,16 @@ export const authOptions = {
 			clientId: process.env.GOOGLE_ID,
 			clientSecret: process.env.GOOGLE_SECRET,
 		}),
+		AppleProvider({
+			clientId: process.env.APPLE_ID,
+			clientSecret: process.env.APPLE_SECRET,
+		}),
 		// ...add more providers here
 		CredentialsProvider({
-			// The name to display on the sign in form (e.g. 'Sign in with...')
-			name: "Credentials",
-			// The credentials is used to generate a suitable form on the sign in page.
-			// You can specify whatever fields you are expecting to be submitted.
-			// e.g. domain, username, password, 2FA token, etc.
-			// You can pass any HTML attribute to the <input> tag through the object.
-			credentials: {
-				email: {
-					label: "Email",
-					type: "email",
-					placeholder: "Username",
-				},
-				password: { label: "Password", type: "password" },
-			},
 			async authorize(credentials, req) {
-				// You need to provide your own logic here that takes the credentials
-				// submitted and returns either a object representing a user or value
-				// that is false/null if the credentials are invalid.
-				// e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-				// You can also use the `req` object to obtain additional parameters
-				// (i.e., the request IP address)
-
-				// Get root url based on environment
+				// Authenticate user
 				try {
-					// Fetch user data from api
-
+					// Fetch user data
 					const res = await fetch(rootURL + "api/users", {
 						method: "POST",
 						body: JSON.stringify(credentials),
@@ -48,8 +31,8 @@ export const authOptions = {
 					});
 					const userData = await res.json();
 
-					// Check user was returned
-					if (!userData.success) {
+					// Check user returned status
+					if (!userData.success || !userData.data) {
 						return null;
 					}
 
@@ -57,28 +40,19 @@ export const authOptions = {
 					const storedUser = userData.data;
 
 					// Check password match
-					if (storedUser.password != credentials.password) {
+					const match = await bcrypt.compare(
+						credentials.password,
+						storedUser.password
+					);
+
+					if (match) {
+						//login
+						console.log("PASSWORDS MATCH");
+						return storedUser;
+					} else {
+						console.log("PASSWORDS DO NOT MATCH");
 						return null;
 					}
-
-					// bcrypt.compare(
-					// 	credentials.password,
-					// 	storedUser.password,
-					// 	function (err, result) {
-					// 		if (result == true) {
-					// 			console.log("It matches!");
-					// 		} else {
-					// 			console.log("Invalid password!");
-					// 		}
-					// 	}
-					// );
-
-					// If no error and we have user data, return it
-					if (storedUser) {
-						return storedUser;
-					}
-					// Return null if user data could not be retrieved
-					return null;
 				} catch (error) {
 					console.log(error);
 					return null;
@@ -88,18 +62,52 @@ export const authOptions = {
 	],
 	callbacks: {
 		async jwt({ token, user }) {
-			if (user?.username) {
-				token.username = user.username;
-			}
+			console.log(`user`, user);
+			console.log(`token`, token);
+			// if (user?.username) {
+			// 	token.username = user.username;
+			// }
 			if (user?._id) {
 				token.id = user._id;
 			}
+			// if (user?.email) {
+			// 	token.email = user.email;
+			// }
 			return token;
 		},
 		async session({ session, token }) {
-			session.user.username = token.username;
+			console.log("session", session);
+			console.log("token2", token);
+
+			// session.user.username = token.username;
+			// session.user.email = token.email;
 			session.user.id = token.id;
 			return session;
+		},
+		async signIn({ account, profile }) {
+			if (account.provider === "google") {
+				// Check if user exists in database
+				const res = await fetch(rootURL + "api/users", {
+					method: "POST",
+					body: JSON.stringify({ email: profile.email }),
+					headers: { "Content-Type": "application/json" },
+				});
+				const userData = await res.json();
+
+				// Check user was returned
+				if (!userData.success) {
+					// User exists
+					return true;
+				} else {
+					// User does not exist
+					// Create user
+					// TO DO
+				}
+
+				console.log(profile);
+			} else {
+				return true;
+			}
 		},
 	},
 	pages: {

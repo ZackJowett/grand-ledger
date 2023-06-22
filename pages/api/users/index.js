@@ -19,6 +19,7 @@ export default async function handler(req, res) {
 				success: false,
 				message: "Users not found",
 			});
+			return;
 		}
 
 		res.status(200).json({ success: true, data: users });

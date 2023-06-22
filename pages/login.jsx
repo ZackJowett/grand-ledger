@@ -5,7 +5,7 @@ import Button from "components/button/Button";
 import TextButton from "components/button/text/TextButton";
 import { InputEmail, InputPassword } from "components/forms/Input";
 import { useRouter } from "next/navigation";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaApple } from "react-icons/fa";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useState } from "react";
@@ -25,6 +25,10 @@ export default function Login({ providers }) {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
+	// Form Values
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
 	// If authenticated, redirect to home page
 	if (status == "authenticated") {
 		// setLoading(true);
@@ -33,11 +37,9 @@ export default function Login({ providers }) {
 
 	// Handle login
 	const handleLogin = async (e) => {
-		e.preventDefault();
+		setError(null);
 
 		// Validate form
-		const email = e.target.email.value;
-		const password = e.target.password.value;
 		if (!email || !password) {
 			setError("Please fill in all fields");
 			return;
@@ -49,7 +51,6 @@ export default function Login({ providers }) {
 			redirect: false,
 			email: email,
 			password: password,
-			// callbackUrl: "/",
 		});
 
 		if (response.error) {
@@ -61,11 +62,12 @@ export default function Login({ providers }) {
 
 		// If successful, redirect to home page
 		if (response.ok) {
+			console.log(response);
 			router.push("/");
+			console.log("Pushed...");
+			return;
 		}
 	};
-
-	console.log(providers);
 
 	return (
 		<section className={styles.wrapper}>
@@ -77,6 +79,7 @@ export default function Login({ providers }) {
 						width={1000}
 						height={1000}
 						className={styles.image}
+						alt={"Logo"}
 					/>
 					<TextWithTitle title="Login" className={styles.title} />
 					{error && <p className={styles.error}>{error}</p>}
@@ -87,24 +90,33 @@ export default function Login({ providers }) {
 				{status == "authenticated" ? (
 					<Spinner title="Logging in..." />
 				) : (
-					<form onSubmit={handleLogin} className={styles.form}>
+					<div>
 						<Card dark>
 							<div className={styles.inputElements}>
-								<InputEmail title="Email" name="email" />
+								<InputEmail
+									title="Email"
+									name="email"
+									placeholder=""
+									onChange={(e) => setEmail(e.target.value)}
+								/>
 								<InputPassword
 									title="Password"
 									name="password"
+									placeholder=""
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
 								/>
 								<Button
 									title="Login"
-									submit
 									className={styles.submit}
 									loading={loading}
+									onClick={handleLogin}
 								/>
 							</div>
 						</Card>
 
-						{providers && (
+						{/* {providers && (
 							<>
 								<p className={styles.or}>OR</p>
 								{Object.values(providers).map((provider) => {
@@ -114,33 +126,20 @@ export default function Login({ providers }) {
 											key={provider.name}
 											className={styles.provider}>
 											<Button
-												title={
-													<p
-														className={
-															styles.providerText
-														}>
-														{/* Icon */}
-														{provider.name ===
-															"Google" && (
-															<FaGoogle
-																className={
-																	styles.icon
-																}
-															/>
-														)}
-														Login with{" "}
-														{provider.name}
-													</p>
-												}
+												icon={getProviderIcon(
+													provider.name
+												)}
+												title={`Login with ${provider.name}`}
 												onClick={() =>
 													signIn(provider.id)
 												}
+												alignIcon="left"
 											/>
 										</div>
 									);
 								})}
 							</>
-						)}
+						)} */}
 
 						<hr className={styles.hr} />
 						<TextButton
@@ -148,9 +147,20 @@ export default function Login({ providers }) {
 							title="Sign Up"
 							link="/register"
 						/>
-					</form>
+					</div>
 				)}
 			</Card>
 		</section>
 	);
+}
+
+function getProviderIcon(provider) {
+	switch (provider) {
+		case "Google":
+			return <FaGoogle className={styles.icon} />;
+		case "Apple":
+			return <FaApple className={styles.icon} />;
+		default:
+			return null;
+	}
 }

@@ -13,6 +13,7 @@ interface Props {
 	icon?: any | React.ReactNode;
 	secondary?: boolean;
 	loading?: boolean;
+	alignIcon?: "center" | "left" | "right";
 }
 
 export default function Button({
@@ -26,12 +27,17 @@ export default function Button({
 	icon,
 	secondary = false,
 	loading = false,
+	alignIcon = "center",
 }: Props) {
 	let classes = className ? className : "";
-	classes += dark ? styles.dark : "";
-	classes += disabled ? styles.disabled : "";
-	classes += icon ? styles.icon : "";
-	classes += secondary ? styles.secondary : "";
+	classes += dark ? " " + styles.dark : "";
+	classes += disabled ? " " + styles.disabled : "";
+	classes += secondary ? " " + styles.secondary : "";
+
+	// Align icon
+	classes += alignIcon === "center" ? " " + styles.iconCenter : "";
+	classes += alignIcon === "left" ? " " + styles.iconLeft : "";
+	classes += alignIcon === "right" ? " " + styles.iconRight : "";
 
 	return (
 		<>
@@ -41,8 +47,8 @@ export default function Button({
 						<Spinner spinnerClassName={styles.spinnerBlocks} />
 					) : (
 						<>
-							{icon && icon}
-							{title}
+							{icon && <div className={styles.icon}>{icon}</div>}
+							<p className={styles.title}>{title}</p>
 						</>
 					)}
 				</Link>
@@ -62,8 +68,8 @@ export default function Button({
 						<Spinner spinnerClassName={styles.spinnerBlocks} />
 					) : (
 						<>
-							{icon && icon}
-							{title}
+							{icon && <div className={styles.icon}>{icon}</div>}
+							<p className={styles.title}>{title}</p>
 						</>
 					)}
 				</button>

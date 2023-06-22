@@ -16,14 +16,14 @@ import UserStatistics from "components/profile/stats/UserStatistics";
 // Displays the logged in user if no user is specified in url query
 // Displays the specified user if a user is specified in url query
 export default function Profile() {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const router = useRouter();
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
 		setLoading(true);
-		if (!session) return;
+		if (status !== "authenticated") return;
 
 		// Specific user is specified
 		if (router.query.user) {
@@ -48,7 +48,7 @@ export default function Profile() {
 		}
 	}, [session, router.query.user]);
 
-	if (!session) {
+	if (status === "unauthenticated") {
 		return (
 			<Layout>
 				<LoggedOut />

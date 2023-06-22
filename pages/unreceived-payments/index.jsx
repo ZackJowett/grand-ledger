@@ -115,7 +115,7 @@ export default function UnreceivedPayments() {
 									padding
 								/>
 							}
-							text={"Total Outstanding"}
+							text={"Total Unreceived"}
 							small
 							reverse
 							align="left"
