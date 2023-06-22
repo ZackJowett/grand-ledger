@@ -60,13 +60,13 @@ export default function Settlement({ settlement, globals, className }) {
 					{settlement.description}
 				</div>
 			</div>
-			<p className={styles.date}>
+			{/* <p className={styles.date}>
 				{settlement.status == "closed"
 					? `Closed ${formatDate(settlement.dateClosed)}`
 					: settlement.status == "reopened"
 					? `Reopened ${formatDate(settlement.dateReopened)}`
 					: `Opened ${formatDate(settlement.dateCreated)}`}
-			</p>
+			</p> */}
 
 			{settlementAction(settlement, globals.session, globals.users)}
 		</ClickableCard>
