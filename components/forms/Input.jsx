@@ -47,15 +47,15 @@ export function InputNumber({
 	placeholder = "",
 	value,
 	onChange = () => {},
-	name,
+	name = "",
 	required = false,
 	disabled = false,
-	className,
-	large,
-	title,
-	dark,
-	step,
-	min,
+	className = null,
+	large = false,
+	title = "",
+	dark = false,
+	step = 1,
+	min = 0,
 }) {
 	return (
 		<div className={styles.wrapperNumber}>

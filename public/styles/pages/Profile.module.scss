@@ -28,8 +28,8 @@
 		}
 	}
 
-	.userDetails {
-		@include flex(column, flex-start, center);
+	.bankDetails {
+		@include flex(column, flex-start, flex-start);
 		height: 100%;
 
 		grid-column: 2 / 5;

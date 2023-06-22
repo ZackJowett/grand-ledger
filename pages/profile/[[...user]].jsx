@@ -44,21 +44,17 @@ export default function Profile() {
 				.then(() => {
 					setLoading(false);
 				});
-			setLoading(false);
 		}
 	}, [session, router.query.user]);
 
 	if (status === "unauthenticated") {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+		return <LoggedOut />;
 	}
 
 	console.log(user);
 
-	const userIsLoggedIn = session && user && session.user.id === user._id;
+	const userIsLoggedIn =
+		status == "authenticated" && user && session.user.id === user._id;
 
 	return (
 		<Layout>
@@ -86,15 +82,17 @@ export default function Profile() {
 												className={styles.photo}
 											/>
 										</div>
-
-										<UserDetails
-											className={styles.userDetails}
+										<BankDetails
 											user={user}
+											className={styles.bankDetails}
 										/>
 									</div>
 								</Card>
 
-								<BankDetails user={user} />
+								<UserDetails
+									className={styles.userDetails}
+									user={user}
+								/>
 
 								{/* Show statistcs if logged in */}
 								{userIsLoggedIn && (

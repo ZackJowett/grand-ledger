@@ -3,6 +3,12 @@
 .wrapperText,
 .wrapperNumber {
 	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
+	width: 100%;
+	// @include border($color: transparent, $size: 1px, $radius: 100px);
+
+	// &:hover {
+	// 	border-color: var(--text);
+	// }
 }
 
 .wrapperText {
@@ -10,6 +16,7 @@
 }
 
 .input {
+	width: 100%;
 }
 
 .dark {
