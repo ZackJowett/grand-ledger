@@ -4,7 +4,7 @@ import styles from "./Input.module.scss";
 // Input text
 export function InputText({
 	placeholder = "",
-	value = "",
+	value,
 	onChange = () => {},
 	name,
 	required = false,
@@ -33,7 +33,7 @@ export function InputText({
 				name={name}
 				id={name}
 				placeholder={placeholder}
-				value={value ? value : null}
+				value={value}
 				onChange={onChange}
 				required={required}
 				disabled={disabled}
@@ -45,7 +45,7 @@ export function InputText({
 
 export function InputNumber({
 	placeholder = "",
-	value = "",
+	value,
 	onChange = () => {},
 	name,
 	required = false,
@@ -79,7 +79,7 @@ export function InputNumber({
 				step={step}
 				min={min}
 				placeholder={placeholder}
-				value={value ? value : null}
+				value={value}
 				onChange={onChange}
 				required={required}
 				disabled={disabled}
@@ -91,7 +91,7 @@ export function InputNumber({
 // Input text
 export function InputPassword({
 	placeholder = "",
-	value = "",
+	value,
 	onChange = () => {},
 	name,
 	required = false,
@@ -120,7 +120,7 @@ export function InputPassword({
 				name={name}
 				id={name}
 				placeholder={placeholder}
-				value={value ? value : null}
+				value={value}
 				onChange={onChange}
 				required={required}
 				disabled={disabled}
@@ -133,7 +133,7 @@ export function InputPassword({
 // Input text
 export function InputEmail({
 	placeholder = "",
-	value = "",
+	value,
 	onChange = () => {},
 	name,
 	required = false,
@@ -162,7 +162,7 @@ export function InputEmail({
 				name={name}
 				id={name}
 				placeholder={placeholder}
-				value={value ? value : null}
+				value={value}
 				onChange={onChange}
 				required={required}
 				disabled={disabled}

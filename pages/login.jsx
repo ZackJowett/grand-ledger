@@ -25,6 +25,10 @@ export default function Login({ providers }) {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
+	// Form Values
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
 	// If authenticated, redirect to home page
 	if (status == "authenticated") {
 		// setLoading(true);
@@ -33,11 +37,9 @@ export default function Login({ providers }) {
 
 	// Handle login
 	const handleLogin = async (e) => {
-		e.preventDefault();
+		setError(null);
 
 		// Validate form
-		const email = e.target.email.value;
-		const password = e.target.password.value;
 		if (!email || !password) {
 			setError("Please fill in all fields");
 			return;
@@ -49,7 +51,6 @@ export default function Login({ providers }) {
 			redirect: false,
 			email: email,
 			password: password,
-			// callbackUrl: "/",
 		});
 
 		if (response.error) {
@@ -63,6 +64,8 @@ export default function Login({ providers }) {
 		if (response.ok) {
 			console.log(response);
 			router.push("/");
+			console.log("Pushed...");
+			return;
 		}
 	};
 
@@ -87,24 +90,28 @@ export default function Login({ providers }) {
 				{status == "authenticated" ? (
 					<Spinner title="Logging in..." />
 				) : (
-					<form onSubmit={handleLogin} className={styles.form}>
+					<div>
 						<Card dark>
 							<div className={styles.inputElements}>
 								<InputEmail
 									title="Email"
 									name="email"
 									placeholder=""
+									onChange={(e) => setEmail(e.target.value)}
 								/>
 								<InputPassword
 									title="Password"
 									name="password"
 									placeholder=""
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
 								/>
 								<Button
 									title="Login"
-									submit
 									className={styles.submit}
 									loading={loading}
+									onClick={handleLogin}
 								/>
 							</div>
 						</Card>
@@ -140,7 +147,7 @@ export default function Login({ providers }) {
 							title="Sign Up"
 							link="/register"
 						/>
-					</form>
+					</div>
 				)}
 			</Card>
 		</section>

@@ -22,18 +22,18 @@ export default function Register() {
 
 		const name = e.target.name.value;
 		const email = e.target.email.value;
-		const unHashedPassword = e.target.password.value;
+		const password = e.target.password.value;
 		const passwordConfirm = e.target.passwordConfirm.value;
 
 		// Check all fields are filled
-		if (!name || !email || !unHashedPassword || !passwordConfirm) {
+		if (!name || !email || !password || !passwordConfirm) {
 			setError("Please fill in all fields");
 			setLoading(false);
 			return;
 		}
 
 		// Check passwords match
-		if (unHashedPassword !== passwordConfirm) {
+		if (password !== passwordConfirm) {
 			setError("Passwords do not match");
 			setLoading(false);
 			return;
@@ -41,7 +41,7 @@ export default function Register() {
 
 		// Encrypt password
 		// TO DO
-		const hashedPassword = unHashedPassword;
+		// const hashedPassword = ;
 
 		fetch("/api/users/register", {
 			method: "POST",
@@ -50,7 +50,7 @@ export default function Register() {
 			},
 			body: JSON.stringify({
 				name: name,
-				password: hashedPassword,
+				password: password,
 				email: email,
 			}),
 		})
@@ -58,11 +58,20 @@ export default function Register() {
 			.then((data) => {
 				if (data.status === 200) {
 					// Login user
-					signIn("credentials", {
+					const signInRes = signIn("credentials", {
 						email: email,
-						password: unHashedPassword,
-						callbackUrl: "/",
+						password: password,
 					});
+
+					if (signInRes.error) {
+						router.push("/login");
+						setLoading(false);
+						return;
+					} else if (signInRes.ok) {
+						router.push("/");
+						setLoading(false);
+						return;
+					}
 				} else {
 					console.log(data);
 					setError(data.message);
