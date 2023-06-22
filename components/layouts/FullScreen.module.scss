@@ -1,0 +1,25 @@
+@use "public/styles/mixins.scss" as *;
+
+.main {
+	height: 100vh;
+	width: 100vw;
+	padding: 2rem;
+	min-width: 300px;
+	background-color: var(--background);
+	@include flex(column, center, center);
+	// padding-top: 20%;
+}
+
+.image {
+	$size: 200px;
+	width: $size;
+	height: $size;
+}
+
+.title {
+	margin-bottom: 2rem;
+}
+
+.children {
+	width: 100%;
+}

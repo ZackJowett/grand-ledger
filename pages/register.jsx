@@ -9,26 +9,34 @@ import { hash } from "utils/password";
 import { useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useRouter } from "next/navigation";
+import FullScreen from "components/layouts/FullScreen";
+import { useSession } from "next-auth/react";
 
 export default function Register() {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
-	function handleRegister(e) {
-		e.preventDefault();
-		setLoading(true);
+	// Form States
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordConfirm, setPasswordConfirm] = useState("");
 
-		const name = e.target.name.value;
-		const email = e.target.email.value;
-		const password = e.target.password.value;
-		const passwordConfirm = e.target.passwordConfirm.value;
+	// If authenticated, redirect to home page
+	if (status == "authenticated") {
+		// setLoading(true);
+		router.push("/");
+	}
+
+	function handleRegister(e) {
+		setError(null);
 
 		// Check all fields are filled
 		if (!name || !email || !password || !passwordConfirm) {
 			setError("Please fill in all fields");
-			setLoading(false);
 			return;
 		}
 
@@ -39,9 +47,7 @@ export default function Register() {
 			return;
 		}
 
-		// Encrypt password
-		// TO DO
-		// const hashedPassword = ;
+		setLoading(true);
 
 		fetch("/api/users/register", {
 			method: "POST",
@@ -56,20 +62,20 @@ export default function Register() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				if (data.status === 200) {
+				if (data.success) {
+					console.log("SUCCESS");
 					// Login user
 					const signInRes = signIn("credentials", {
+						redirect: false,
 						email: email,
 						password: password,
 					});
 
 					if (signInRes.error) {
 						router.push("/login");
-						setLoading(false);
 						return;
 					} else if (signInRes.ok) {
 						router.push("/");
-						setLoading(false);
 						return;
 					}
 				} else {
@@ -81,46 +87,56 @@ export default function Register() {
 	}
 
 	return (
-		<Layout>
-			<Card title="Sign Up" dark className={styles.wrapper}>
-				{loading ? (
-					<Spinner />
+		<FullScreen title="Sign Up">
+			{error && <p className={styles.error}>{error}</p>}
+			<Card className={styles.wrapper}>
+				{status == "authenticated" ? (
+					<Spinner title="Logging in..." />
 				) : (
-					<form onSubmit={handleRegister} className={styles.form}>
-						<InputText
-							title="Name"
-							placeholder="Jeff"
-							name="name"
-						/>
-						<InputEmail
-							title="Email"
-							placeholder="jeff@money.com"
-							name="email"
-						/>
+					<Card dark>
+						<div className={styles.form}>
+							<InputText
+								title="Name"
+								placeholder="Jeff"
+								name="name"
+								onChange={(e) => setName(e.target.value)}
+							/>
+							<InputEmail
+								title="Email"
+								placeholder="jeff@money.com"
+								name="email"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
 
-						<InputPassword title="Password" name="password" />
-						<InputPassword
-							title="Confirm Password"
-							name="passwordConfirm"
-						/>
+							<InputPassword
+								title="Password"
+								name="password"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+							<InputPassword
+								title="Confirm Password"
+								name="passwordConfirm"
+								onChange={(e) =>
+									setPasswordConfirm(e.target.value)
+								}
+							/>
 
-						{error && <p className={styles.error}>{error}</p>}
-
-						<Button
-							title="Sign Up"
-							submit
-							className={styles.button}
-							loading={loading}
-						/>
-						<hr />
-						<TextButton
-							text="Already have an account?"
-							title="Login"
-							link="/login"
-						/>
-					</form>
+							<Button
+								title="Sign Up"
+								className={styles.button}
+								loading={loading}
+								onClick={handleRegister}
+							/>
+							<hr />
+							<TextButton
+								text="Already have an account?"
+								title="Login"
+								link="/login"
+							/>
+						</div>
+					</Card>
 				)}
 			</Card>
-		</Layout>
+		</FullScreen>
 	);
 }

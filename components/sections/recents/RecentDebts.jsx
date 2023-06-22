@@ -8,6 +8,7 @@ import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
 // import { useStore } from "react-redux";
+import { timeSince } from "/utils/helpers";
 
 export default function RecentDebts({ className }) {
 	const { data: session } = useSession();
@@ -24,7 +25,7 @@ export default function RecentDebts({ className }) {
 
 	useEffect(() => {
 		// Set time fetched
-		setTimeFetched(new Date().toLocaleTimeString());
+		setTimeFetched(new Date());
 	}, [debts]);
 
 	// No session data yet
@@ -52,7 +53,9 @@ export default function RecentDebts({ className }) {
 	return (
 		<Card
 			title="Recent Debts"
-			subtitle={`Updated: ${timeFetched ? timeFetched : "..."}`}
+			subtitle={`Updated: ${
+				timeFetched ? timeSince(timeFetched) : "..."
+			}`}
 			link="/debts"
 			dark
 			className={`${className} ${styles.wrapper}`}>

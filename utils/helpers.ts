@@ -129,6 +129,58 @@ function getDebtStatus(debtStatus, unreceived) {
 	return "";
 }
 
+// Time since a given date
+function timeSince(date) {
+	if (typeof date !== "object") {
+		date = new Date(date);
+	}
+
+	const now = new Date();
+
+	console.log(date);
+	var seconds = Math.floor((now.valueOf() - date) / 1000);
+	var intervalType;
+
+	var interval = Math.floor(seconds / 31536000);
+	if (interval >= 1) {
+		intervalType = "year";
+	} else {
+		interval = Math.floor(seconds / 2592000);
+		if (interval >= 1) {
+			intervalType = "month";
+		} else {
+			interval = Math.floor(seconds / 86400);
+			if (interval >= 1) {
+				intervalType = "day";
+			} else {
+				interval = Math.floor(seconds / 3600);
+				if (interval >= 1) {
+					intervalType = "hour";
+				} else {
+					interval = Math.floor(seconds / 60);
+					if (interval >= 1) {
+						intervalType = "minute";
+					} else if (seconds < 9) {
+						console.log("Seconds", seconds);
+						return "now";
+					} else {
+						interval = seconds;
+						intervalType = "second";
+					}
+				}
+			}
+		}
+	}
+
+	console.log(interval, intervalType, seconds);
+
+	if (interval > 1 || interval === 0) {
+		intervalType += "s";
+	}
+
+	return interval + " " + intervalType;
+}
+
 module.exports = {
 	formatDate,
 	getName,
@@ -138,4 +190,5 @@ module.exports = {
 	filterSettlements,
 	distributeAmount,
 	getDebtStatus,
+	timeSince,
 };

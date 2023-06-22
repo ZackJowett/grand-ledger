@@ -33,3 +33,22 @@ export async function getAllUsers() {
 		return null;
 	}
 }
+
+// SET BSB & ACC: /api/users/setBankDetails
+// Returns all users
+export async function setBankDetails(id, bsb, acc) {
+	try {
+		const res = await fetch(`${getRootURL()}api/users/setBankDetails`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id, bsb, acc }),
+		});
+
+		return await res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}

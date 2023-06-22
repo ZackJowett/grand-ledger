@@ -46,6 +46,7 @@ export default function Create() {
 	const [submitError, setSubmitError] = useState(null);
 	const [submitSuccess, setSubmitSuccess] = useState(null);
 	var [idCount, setIdCount] = useState(0);
+	const [numDebts, setNumDebts] = useState({ total: 0, single: 0, multi: 0 });
 
 	// User logged in
 	// Get user options in same group
@@ -57,8 +58,22 @@ export default function Create() {
 		});
 	}, [session]);
 
+	// Update number of debts counter
 	useEffect(() => {
 		console.log(debts);
+		// Update numDebts
+		let numSingle = 0;
+		let numMulti = 0;
+		debts.forEach((debt) => {
+			if (debt.type === "single") numSingle++;
+			else numMulti++;
+		});
+
+		setNumDebts({
+			total: debts.length,
+			single: numSingle,
+			multi: numMulti,
+		});
 	}, [debts]);
 
 	// User not logged in
@@ -129,14 +144,14 @@ export default function Create() {
 							</p>
 						)}
 						<AddDebt
-							numDebts={debts.length}
+							numDebts={numDebts}
 							addSingle={addSingle}
 							addMulti={addMulti}
 						/>
 
 						<DebtList debts={debts} setDebts={setDebts} />
 
-						{debts.length > 0 ? (
+						{numDebts.total > 0 ? (
 							<>
 								<hr className={styles.hr} />
 								<SubmitDebts

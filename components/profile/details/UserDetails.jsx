@@ -13,13 +13,6 @@ export default function UserDetails({ className, user }) {
 	return (
 		<Card dark className={`${className ? className : ""}`}>
 			<div className={styles.details}>
-				<TextWithTitle
-					title={user.username}
-					text="Username"
-					align="left"
-					reverse
-					tiny
-				/>
 				<div>
 					<TextWithTitle
 						title={user.email}
