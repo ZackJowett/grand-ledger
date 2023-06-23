@@ -41,9 +41,8 @@ export default function Groups() {
 						<TextWithTitle text="Friends" />
 						{users ? (
 							users.map((user) => (
-								<li>
+								<li key={user._id}>
 									<Button
-										key={user._id}
 										href={`/profile/${user._id}`}
 										title={user.name}
 									/>
