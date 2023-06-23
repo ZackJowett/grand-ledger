@@ -139,29 +139,35 @@ export default function Create() {
 								/>{" "}
 							</p>
 						)}
-						<AddDebt
-							numDebts={numDebts}
-							addSingle={addSingle}
-							addMulti={addMulti}
-						/>
-
-						<DebtList debts={debts} setDebts={setDebts} />
-
-						{numDebts.total > 0 ? (
-							<>
-								<hr className={styles.hr} />
-								<SubmitDebts
-									debts={debts}
-									setDebts={setDebts}
-									setSubmitting={setSubmitting}
-									setSubmitError={setSubmitError}
-									setSubmitSuccess={setSubmitSuccess}
-								/>
-							</>
+						{!users ? (
+							<Spinner title="Loading..." />
 						) : (
-							<p className={styles.startHint}>
-								Choose an option above to start
-							</p>
+							<>
+								<AddDebt
+									numDebts={numDebts}
+									addSingle={addSingle}
+									addMulti={addMulti}
+								/>
+
+								<DebtList debts={debts} setDebts={setDebts} />
+
+								{numDebts.total > 0 ? (
+									<>
+										<hr className={styles.hr} />
+										<SubmitDebts
+											debts={debts}
+											setDebts={setDebts}
+											setSubmitting={setSubmitting}
+											setSubmitError={setSubmitError}
+											setSubmitSuccess={setSubmitSuccess}
+										/>
+									</>
+								) : (
+									<p className={styles.startHint}>
+										Choose an option above to start
+									</p>
+								)}
+							</>
 						)}
 					</>
 				)}

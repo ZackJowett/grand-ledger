@@ -53,20 +53,25 @@ export default function FullScreen({ children, className, title }) {
 			</Head>
 
 			<main className={styles.main}>
-				{status != "authenticated" && (
-					// Hide title & error if authenticated
-					<>
-						<Image
-							src="/images/logo.png"
-							width={1000}
-							height={1000}
-							className={styles.image}
-							alt={"Logo"}
-						/>
-						<TextWithTitle title={title} className={styles.title} />
-					</>
-				)}
-				<div className={styles.children}>{children}</div>
+				<section className={styles.content}>
+					{status != "authenticated" && (
+						// Hide title & error if authenticated
+						<>
+							<Image
+								src="/images/logo.png"
+								width={1000}
+								height={1000}
+								className={styles.image}
+								alt={"Logo"}
+							/>
+							<TextWithTitle
+								title={title}
+								className={styles.title}
+							/>
+						</>
+					)}
+					<div className={styles.children}>{children}</div>
+				</section>
 			</main>
 		</>
 	);

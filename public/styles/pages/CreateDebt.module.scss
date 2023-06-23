@@ -3,12 +3,12 @@
 .wrapper {
 	@include mainSection;
 	max-width: none;
+	max-width: var(--maxWidth);
 }
 
 .header {
 	text-align: left;
 	width: 100%;
-	max-width: var(--maxWidth);
 }
 
 .error,
@@ -27,7 +27,6 @@
 .hr {
 	width: 100%;
 	margin: 1rem auto;
-	max-width: var(--maxWidth);
 }
 
 .startHint {

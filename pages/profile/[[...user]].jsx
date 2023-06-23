@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { getOne } from "utils/data/users";
 import BankDetails from "components/profile/details/BankDetails";
 import UserStatistics from "components/profile/stats/UserStatistics";
+import TextButton from "components/button/text/TextButton";
 
 // Displays the logged in user if no user is specified in url query
 // Displays the specified user if a user is specified in url query
@@ -110,7 +111,15 @@ export default function Profile() {
 								)}
 							</>
 						) : (
-							<p>User does not exist.</p>
+							<p>
+								Could not fetch profile data.{" "}
+								<TextButton
+									title="Refresh"
+									onClick={() => {
+										router.reload();
+									}}
+								/>
+							</p>
 						)}
 					</>
 				)}

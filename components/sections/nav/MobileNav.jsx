@@ -32,13 +32,15 @@ export default function HamburgerMenu({ currentRoute }) {
 					size={40}
 					onClick={toggleMenu}
 				/>
-				<Image
+				{/* <Image
 					src="/images/logo.png"
 					width={500}
 					height={500}
 					className={styles.logo}
-				/>
-				<DesktopNav currentRoute={currentRoute} />
+				/> */}
+				<div className={styles.nav}>
+					<DesktopNav currentRoute={currentRoute} />
+				</div>
 			</div>
 			<div
 				className={`${styles.navCloseOutside} ${

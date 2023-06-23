@@ -1,4 +1,5 @@
 import styles from "./TextButton.module.scss";
+import Link from "next/link";
 
 interface Props {
 	title: string;
@@ -20,9 +21,9 @@ export default function TextButton({
 			{link ? (
 				<p>
 					{text ? text + " " : null}
-					<a href={link} className={styles.clickable}>
+					<Link href={link} className={styles.clickable}>
 						{title}
-					</a>
+					</Link>
 				</p>
 			) : onClick ? (
 				<p>

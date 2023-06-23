@@ -155,6 +155,8 @@ export default function Create() {
 
 				{submitting ? (
 					<Spinner title="Creating settlement..." />
+				) : !debts ? (
+					<Spinner title="Loading debts..." />
 				) : (
 					<>
 						<p className={styles.desc}>
