@@ -14,7 +14,7 @@ import { useSession } from "next-auth/react";
 
 export default function Register() {
 	const router = useRouter();
-	const { data: session, status } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -26,7 +26,7 @@ export default function Register() {
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 
 	// If authenticated, redirect to home page
-	if (status == "authenticated") {
+	if (sessionStatus == "authenticated") {
 		// setLoading(true);
 		router.push("/");
 	}
@@ -90,7 +90,7 @@ export default function Register() {
 		<FullScreen title="Sign Up">
 			{error && <p className={styles.error}>{error}</p>}
 			<Card className={styles.wrapper}>
-				{status == "authenticated" ? (
+				{sessionStatus == "authenticated" ? (
 					<Spinner title="Logging in..." />
 				) : (
 					<Card dark>

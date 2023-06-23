@@ -10,24 +10,24 @@ import styles from "public/styles/pages/Groups.module.scss";
 import Button from "components/button/Button";
 
 export default function Groups() {
-	const { data: session, status } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	const [loading, setLoading] = useState(true);
 	const [users, setUsers] = useState(null);
 
 	// User not logged in
-	if (status == "unauthenticated") {
+	if (sessionStatus !== "authenticated") {
 		return <LoggedOut />;
 	}
 
 	// Get All users
 	useEffect(() => {
-		if (!session) return;
+		if (sessionStatus !== "authenticated") return;
 		getAllUsers().then((res) => {
 			setUsers(res);
 			setLoading(false);
 		});
-	}, [session]);
+	}, [sessionStatus]);
 
 	return (
 		<Layout>

@@ -36,7 +36,7 @@ function MultiDebt(id, total = 0, parties = [], description = "") {
 }
 
 export default function Create() {
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	// States
 	const [createAs, setCreateAs] = useState("creditor");
@@ -51,12 +51,12 @@ export default function Create() {
 	// User logged in
 	// Get user options in same group
 	useEffect(() => {
-		if (!session) return;
+		if (sessionStatus !== "authenticated") return;
 
 		getAllUsers().then((data) => {
 			data ? setUsers(data) : console.log("Error fetching data");
 		});
-	}, [session]);
+	}, [sessionStatus]);
 
 	// Update number of debts counter
 	useEffect(() => {
@@ -77,12 +77,8 @@ export default function Create() {
 	}, [debts]);
 
 	// User not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	// ----------- Add debt to list ---------------- \\

@@ -19,7 +19,7 @@ import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
 
 export default function Debts() {
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	// Get debts from database
 	const [debts, setDebts] = useState(null);
@@ -31,7 +31,7 @@ export default function Debts() {
 
 	// Get all debts associated with logged in user
 	useEffect(() => {
-		if (!session) return;
+		if (sessionStatus !== "authenticated") return;
 
 		getAllForDebtor(session.user.id).then((data) => {
 			data ? setDebts(data) : console.log("Error fetching data");
@@ -40,7 +40,7 @@ export default function Debts() {
 		getAllUsers().then((data) => {
 			data ? setUsers(data) : console.log("Error fetching data");
 		});
-	}, [session]);
+	}, [session, sessionStatus]);
 
 	// Calculate total debt amount (excluding closed debts)
 	useEffect(() => {
@@ -61,13 +61,9 @@ export default function Debts() {
 		setTotalDebt(total.toFixed(2));
 	}, [debts]);
 
-	// Not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	// User not logged in
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	// Filter debts

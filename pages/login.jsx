@@ -21,7 +21,7 @@ export const getServerSideProps = async () => {
 
 export default function Login({ providers }) {
 	const router = useRouter();
-	const { data: session, status } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -31,7 +31,7 @@ export default function Login({ providers }) {
 	const [password, setPassword] = useState("");
 
 	// If authenticated, redirect to home page
-	if (status == "authenticated") {
+	if (sessionStatus == "authenticated") {
 		// setLoading(true);
 		router.push("/");
 	}
@@ -75,7 +75,7 @@ export default function Login({ providers }) {
 			{error && <p className={styles.error}>{error}</p>}
 
 			<Card className={styles.wrapper}>
-				{status == "authenticated" ? (
+				{sessionStatus == "authenticated" ? (
 					<Spinner title="Logging in..." />
 				) : (
 					<div>

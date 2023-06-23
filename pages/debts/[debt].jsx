@@ -18,26 +18,22 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import { getDebtStatus } from "utils/helpers";
 
 export default function Debt() {
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 	const state = useStore().getState();
 	const [debt, setDebt] = useState(null);
 	const router = useRouter(); // Dynamically get debt from route
 
 	// Get debt from database
 	useEffect(() => {
-		if (!session) return;
+		if (sessionStatus !== "authenticated") return;
 		getOneDebt(router.query.debt).then((data) => {
 			data ? setDebt(data) : console.log("Error fetching debt");
 		});
-	}, [session]);
+	}, [sessionStatus]);
 
-	// Not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	// User not logged in
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	// Wait for debt to load

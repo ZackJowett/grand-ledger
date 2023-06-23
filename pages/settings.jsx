@@ -3,15 +3,11 @@ import Layout from "components/layouts/Layout";
 import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
 
 export default function Settings() {
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	// User not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	return (
