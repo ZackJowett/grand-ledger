@@ -8,6 +8,7 @@ import Settlement from "/components/settlement/Settlement";
 import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
+import { set } from "mongoose";
 
 export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
@@ -16,6 +17,7 @@ export default function RecentSettlements({ className }) {
 	const [users, setUsers] = useState(null); // [user
 	const [showAmount, setShowAmount] = useState(3); // Number to show
 	const [timeFetched, setTimeFetched] = useState(null);
+	const [loading, setLoading] = useState(true); // [user
 
 	useEffect(() => {
 		if (!session) return;
@@ -35,6 +37,7 @@ export default function RecentSettlements({ className }) {
 
 	function getData() {
 		if (!session) return;
+		setLoading(true);
 
 		getAllSettlements(session.user.id)
 			.then((data) => {
@@ -44,6 +47,7 @@ export default function RecentSettlements({ className }) {
 			})
 			.then(() => {
 				setTimeFetched(new Date().toLocaleTimeString());
+				setLoading(false);
 			});
 
 		getAllUsers(session.user.id).then((data) => {
@@ -67,7 +71,17 @@ export default function RecentSettlements({ className }) {
 			<div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
 			</div>
-			{settlements && users ? (
+			{loading ? (
+				<>
+					<CardPlaceholder />
+					<CardPlaceholder />
+					<CardPlaceholder />
+				</>
+			) : !settlements ? (
+				<p>Settlements could not be loaded</p>
+			) : settlements.length <= 0 ? (
+				<p>No settlements</p>
+			) : (
 				settlements.map((settlement, index) => {
 					if (index >= showAmount) return;
 					return (
@@ -79,12 +93,6 @@ export default function RecentSettlements({ className }) {
 						/>
 					);
 				})
-			) : (
-				<>
-					<CardPlaceholder />
-					<CardPlaceholder />
-					<CardPlaceholder />
-				</>
 			)}
 
 			{/* Show / Hide view more settlements button */}
