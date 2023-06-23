@@ -15,11 +15,6 @@ export default function Groups() {
 	const [loading, setLoading] = useState(true);
 	const [users, setUsers] = useState(null);
 
-	// User not logged in
-	if (sessionStatus !== "authenticated") {
-		return <LoggedOut />;
-	}
-
 	// Get All users
 	useEffect(() => {
 		if (sessionStatus !== "authenticated") return;
@@ -28,6 +23,11 @@ export default function Groups() {
 			setLoading(false);
 		});
 	}, [sessionStatus]);
+
+	// User not logged in
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
+	}
 
 	return (
 		<Layout>
