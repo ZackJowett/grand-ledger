@@ -49,7 +49,7 @@ export default function Groups() {
 								</li>
 							))
 						) : (
-							<p>Couldn't load users</p>
+							<p>Couldn&apos;t load users</p>
 						)}
 					</ul>
 				)}
