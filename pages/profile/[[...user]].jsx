@@ -12,18 +12,19 @@ import { useState, useEffect } from "react";
 import { getOne } from "utils/data/users";
 import BankDetails from "components/profile/details/BankDetails";
 import UserStatistics from "components/profile/stats/UserStatistics";
+import TextButton from "components/button/text/TextButton";
 
 // Displays the logged in user if no user is specified in url query
 // Displays the specified user if a user is specified in url query
 export default function Profile() {
-	const { data: session, status } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 	const router = useRouter();
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
 		setLoading(true);
-		if (status !== "authenticated") return;
+		if (sessionStatus !== "authenticated") return;
 
 		// Specific user is specified
 		if (router.query.user) {
@@ -45,16 +46,19 @@ export default function Profile() {
 					setLoading(false);
 				});
 		}
-	}, [session, router.query.user]);
+	}, [session, sessionStatus, router.query.user]);
 
-	if (status === "unauthenticated") {
+	// User not logged in
+	if (sessionStatus !== "authenticated") {
 		return <LoggedOut />;
 	}
 
 	console.log(user);
 
 	const userIsLoggedIn =
-		status == "authenticated" && user && session.user.id === user._id;
+		sessionStatus == "authenticated" &&
+		user &&
+		session.user.id === user._id;
 
 	return (
 		<Layout>
@@ -96,17 +100,26 @@ export default function Profile() {
 
 								{/* Show statistcs if logged in */}
 								{userIsLoggedIn && (
-									<UserStatistics user={user} />
+									<>
+										<UserStatistics user={user} />
+										<Button
+											title="Sign out"
+											onClick={() => signOut()}
+											className={styles.signOut}
+										/>
+									</>
 								)}
-
-								<Button
-									title="Sign out"
-									onClick={() => signOut()}
-									className={styles.signOut}
-								/>
 							</>
 						) : (
-							<p>User does not exist.</p>
+							<p>
+								Could not fetch profile data.{" "}
+								<TextButton
+									title="Refresh"
+									onClick={() => {
+										router.reload();
+									}}
+								/>
+							</p>
 						)}
 					</>
 				)}

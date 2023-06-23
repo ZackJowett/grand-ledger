@@ -15,7 +15,7 @@ import { createSettlement } from "../../utils/data/settlements";
 import TextButton from "components/button/text/TextButton";
 
 export default function Create() {
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	// States
 	const [createAs, setCreateAs] = useState("creditor");
@@ -31,7 +31,7 @@ export default function Create() {
 
 	// Get all debts between two users
 	useEffect(() => {
-		if (!session || !users) return;
+		if (sessionStatus !== "authenticated" || !users) return;
 
 		// Set default selected party that is not the user
 		if (selectedUser == null) {
@@ -60,15 +60,11 @@ export default function Create() {
 					: console.log("Error fetching data");
 			}
 		);
-	}, [session, users, selectedUser]);
+	}, [sessionStatus, session, users, selectedUser]);
 
 	// User not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	// Get Totals
@@ -159,6 +155,8 @@ export default function Create() {
 
 				{submitting ? (
 					<Spinner title="Creating settlement..." />
+				) : !debts ? (
+					<Spinner title="Loading debts..." />
 				) : (
 					<>
 						<p className={styles.desc}>

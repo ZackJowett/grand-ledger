@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import Spinner from "components/placeholders/spinner/Spinner";
 
 export default function Settlement() {
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 	const router = useRouter();
 
 	// --------- States --------- \\
@@ -29,13 +29,13 @@ export default function Settlement() {
 
 	// Get debt from database
 	useEffect(() => {
-		if (!session) return;
+		if (sessionStatus !== "authenticated") return;
 		getSettlementByID(router.query.settlement).then((data) => {
 			data
 				? setSettlement(data)
 				: console.log("Error fetching settlement");
 		});
-	}, [session]);
+	}, [sessionStatus]);
 
 	// Get Redux State
 	const dispatch = useDispatch();
@@ -52,13 +52,9 @@ export default function Settlement() {
 		getSettlementDebts(settlement._id).then((res) => setDebts(res));
 	}, [settlement]);
 
-	// Not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	// User not logged in
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	// --------- Functions --------- \\

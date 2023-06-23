@@ -1,13 +1,21 @@
 @use "public/styles/mixins.scss" as *;
 
 .main {
-	height: 100vh;
+	min-height: 100vh;
+	min-height: 100lvh;
 	width: 100vw;
-	padding: 2rem;
+	// padding: 2rem;
 	min-width: 300px;
 	background-color: var(--background);
-	@include flex(column, center, center);
+
 	// padding-top: 20%;
+	overflow-x: hidden;
+}
+
+.content {
+	@include flex(column, center, center);
+	min-height: 100svh;
+	width: 100%;
 }
 
 .image {

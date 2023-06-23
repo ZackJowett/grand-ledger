@@ -1,6 +1,10 @@
 @use "public/styles/mixins.scss" as *;
 
 .hamburgerButton {
+	$size: 2rem;
+	height: $size;
+	width: $size;
+
 	left: 25px;
 
 	@include desktop-up {
@@ -9,9 +13,15 @@
 }
 
 .exitCross {
+	$size: 2rem;
+
+	height: $size;
+	width: $size;
+
 	position: absolute;
-	right: 1.8rem;
-	top: 1.8rem;
+	right: 1rem;
+	top: 1rem;
+	z-index: 2;
 }
 
 .hamburgerButton,
@@ -21,10 +31,6 @@
 	&:hover {
 		cursor: pointer;
 	}
-}
-
-.exitCross {
-	z-index: 2;
 }
 
 .logo {
@@ -37,7 +43,7 @@
 	position: fixed;
 	width: 50vw;
 	max-width: 500px;
-	height: 100vh;
+	height: 100lvh;
 	top: 0;
 	left: 0;
 	z-index: 1;
@@ -51,7 +57,7 @@
 
 	&.open {
 		// includes display: flex
-		@include flex();
+		@include flex(column, flex-start, flex-start);
 	}
 
 	@include desktop-up {
@@ -62,6 +68,12 @@
 	}
 
 	@include slide-in();
+}
+
+.nav {
+	height: 100%;
+	width: 100%;
+	padding-top: 4rem;
 }
 
 .logo {

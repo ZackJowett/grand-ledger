@@ -14,9 +14,11 @@ $width: 200px;
 }
 
 .wrapper {
-	height: calc(100vh - var(--headerHeight));
+	height: calc(100svh - var(--headerHeight));
 	background-color: var(--backgroundDark);
 	width: var(--desktopNavWidth);
+
+	@include sticky;
 
 	@include mobile-only {
 		width: 100%;

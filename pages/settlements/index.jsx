@@ -19,7 +19,7 @@ import { TiArrowForward } from "react-icons/ti";
 
 export default function Settlements() {
 	// Session
-	const { data: session } = useSession();
+	const { data: session, status: sessionStatus } = useSession();
 
 	// Redux Store
 	const state = useStore().getState();
@@ -31,20 +31,16 @@ export default function Settlements() {
 
 	// Get settlements
 	useEffect(() => {
-		if (!session) return;
+		if (sessionStatus !== "authenticated") return;
 
 		getAllSettlements(session.user.id).then((data) => {
 			data ? setSettlements(data) : console.log("Error fetching data");
 		});
-	}, [session]);
+	}, [session, sessionStatus]);
 
 	// User not logged in
-	if (!session) {
-		return (
-			<Layout>
-				<LoggedOut />
-			</Layout>
-		);
+	if (sessionStatus !== "authenticated") {
+		return <LoggedOut />;
 	}
 
 	const handleFilterSelect = (option) => {

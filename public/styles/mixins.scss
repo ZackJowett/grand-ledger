@@ -132,3 +132,9 @@ $globalRadius: 55px;
 	gap: 1rem;
 	max-width: var(--maxWidth);
 }
+
+@mixin sticky($top: 1rem, $z: 1) {
+	position: sticky;
+	top: $top;
+	z-index: $z;
+}

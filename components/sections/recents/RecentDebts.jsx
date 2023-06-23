@@ -15,6 +15,7 @@ export default function RecentDebts({ className }) {
 
 	const [debts, setDebts] = useState(null);
 	const [timeFetched, setTimeFetched] = useState(null); // [user
+	const [loading, setLoading] = useState(true); // [user
 	const [showAmount, setShowAmount] = useState(3); // Number to show
 
 	useEffect(() => {
@@ -32,8 +33,15 @@ export default function RecentDebts({ className }) {
 	if (!session) return;
 
 	function getData() {
+		if (!session) return;
+		setLoading(true);
 		getAllForDebtor(session.user.id).then((data) => {
-			data ? setDebts(data) : console.log("Error fetching debts");
+			if (data) {
+				setDebts(data);
+			} else {
+				console.log("Error fetching debts");
+			}
+			setLoading(false);
 		});
 	}
 
@@ -62,7 +70,17 @@ export default function RecentDebts({ className }) {
 			<div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
 			</div>
-			{debts ? (
+			{loading ? (
+				<>
+					<CardPlaceholder />
+					<CardPlaceholder />
+					<CardPlaceholder />
+				</>
+			) : !debts ? (
+				<p>Debts could not be loaded</p>
+			) : debts.length <= 0 ? (
+				<p>No debts</p>
+			) : (
 				debts.map((debt, index) => {
 					if (index >= showAmount) return;
 					return (
@@ -74,12 +92,6 @@ export default function RecentDebts({ className }) {
 						/>
 					);
 				})
-			) : (
-				<>
-					<CardPlaceholder />
-					<CardPlaceholder />
-					<CardPlaceholder />
-				</>
 			)}
 
 			{/* Show / Hide view more devts button */}

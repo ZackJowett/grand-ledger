@@ -1,9 +1,11 @@
 @use "public/styles/mixins.scss" as *;
 
 .main {
-	height: 100vh;
+	min-height: 100vh;
+	min-height: 100svh;
 
-	overflow: hidden;
+	// overflow: hidden;
+	// overflow-y: auto;
 }
 
 .contentWrapper {
@@ -15,14 +17,15 @@
 .children {
 	@include flex(row, center, flex-start);
 	width: 100%;
-	height: calc(100vh - var(--headerHeight));
+	min-height: calc(100lvh - var(--headerHeight));
+	// height: calc(100vh - var(--headerHeight));
 
 	@include border($color: transparent);
 	border-radius: 10px 0 0 0;
 
 	background-color: var(--background);
 
-	overflow-y: auto;
+	// overflow-y: auto;
 }
 
 @include mobile-only {

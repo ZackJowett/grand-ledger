@@ -2,19 +2,15 @@
 
 .wrapper {
 	@include mainSection;
-	// max-width: none;
-	padding-right: 0;
-	padding-left: 0;
+	max-width: none;
+	max-width: var(--maxWidth);
 }
 
 .header {
 	text-align: left;
 	width: 100%;
-}
 
-.header {
 	text-align: left;
-	width: 100%;
 }
 
 .desc {
