@@ -45,7 +45,7 @@ export default function Create() {
 	const [submitting, setSubmitting] = useState(false);
 	const [submitError, setSubmitError] = useState(null);
 	const [submitSuccess, setSubmitSuccess] = useState(null);
-	var [idCount, setIdCount] = useState(0);
+	const [idCount, setIdCount] = useState(0);
 	const [numDebts, setNumDebts] = useState({ total: 0, single: 0, multi: 0 });
 
 	// User logged in
@@ -60,7 +60,6 @@ export default function Create() {
 
 	// Update number of debts counter
 	useEffect(() => {
-		console.log(debts);
 		// Update numDebts
 		let numSingle = 0;
 		let numMulti = 0;
@@ -91,13 +90,13 @@ export default function Create() {
 		let newDebt = new SingleDebt(idCount);
 		newDebt.otherParty = otherParty;
 
-		setDebts([newDebt, ...debts]);
+		setDebts([...debts, newDebt]);
 		setIdCount(idCount + 1);
 	}
 
 	// Multi Debt
 	function addMulti() {
-		setDebts([new MultiDebt(idCount), ...debts]);
+		setDebts([...debts, new MultiDebt(idCount)]);
 		setIdCount(idCount + 1);
 	}
 
