@@ -52,3 +52,41 @@ export async function setBankDetails(id, bsb, acc) {
 		return null;
 	}
 }
+
+// Update Email: /api/users/updateEmail
+// Returns all users
+export async function updateEmail(email, newEmail) {
+	try {
+		const res = await fetch(`${getRootURL()}api/users/updateEmail`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email, newEmail }),
+		});
+
+		return await res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
+
+// Update Email: /api/users/updateEmail
+// Returns all users
+export async function updatePassword(email, newPassword) {
+	try {
+		const res = await fetch(`${getRootURL()}api/users/updatePassword`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email, newPassword }),
+		});
+
+		return await res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}

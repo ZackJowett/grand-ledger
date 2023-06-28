@@ -10,6 +10,7 @@ export function InputText({
 	required = false,
 	disabled = false,
 	className,
+	wrapperClassName,
 	large,
 	title,
 	dark,
@@ -17,7 +18,10 @@ export function InputText({
 	const maxLength = 100;
 
 	return (
-		<div className={styles.wrapperText}>
+		<div
+			className={`${styles.wrapperText} ${
+				wrapperClassName ? wrapperClassName : ""
+			}`}>
 			{title && (
 				<TextWithTitle
 					className={styles.title}
