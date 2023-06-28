@@ -106,7 +106,7 @@ export default function Create() {
 		};
 
 		// Post data
-		createSettlement(settlement).then((data) => {
+		createSettlement(settlement, session.user.id).then((data) => {
 			// Check if error
 			if (!data.success) {
 				// Error submitting

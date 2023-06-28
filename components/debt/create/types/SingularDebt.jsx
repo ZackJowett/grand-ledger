@@ -19,19 +19,20 @@ export default function SingularDebt({
 	const state = useStore().getState();
 	const users = state.userList.users;
 
-	const [amount, setAmount] = useState(debt.amount);
+	const [amount, setAmount] = useState({ id: debt.id, value: debt.amount });
 
 	useEffect(() => {
 		// Update amount when it is edited
 		setDebts(
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
-					currentDebt.amount = Number(amount);
+					currentDebt.amount = Number(amount.value);
 					return currentDebt;
 				}
 				return currentDebt;
 			})
 		);
+		console.log(amount);
 	}, [amount, debt]);
 
 	function updateCreateAs(option) {
@@ -60,21 +61,22 @@ export default function SingularDebt({
 
 	function updateAmount(e) {
 		// Set amount of debt
-		let amount = Number(e.target.value);
+		let newAmount = Number(e.target.value);
 
 		// Limit to only two decimal places
-		if (amount.countDecimals() > 2) {
-			amount = amount.toFixed(2);
+		if (newAmount.countDecimals() > 2) {
+			newAmount = newAmount.toFixed(2);
 		}
 
 		// Set amount state - useEffect will then update the debt amount
-		setAmount(amount);
+		setAmount({ ...amount, value: newAmount });
 	}
 
 	function updateDescription(e) {
 		setDebts(
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
+					console.log(debt.id);
 					currentDebt.description = e.target.value;
 					return currentDebt;
 				}
@@ -157,7 +159,7 @@ export default function SingularDebt({
 							min="0"
 							step=".01"
 							placeholder="0.00"
-							value={amount > 0 ? amount : ""}
+							value={amount.value > 0 ? amount.value : ""}
 							onChange={updateAmount}
 						/>
 						AUD

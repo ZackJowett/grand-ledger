@@ -12,6 +12,7 @@ export default async function handler(req, res) {
 		const settlement = await Settlement.create({
 			settler: req.body.settler,
 			settlee: req.body.settlee,
+			creator: req.body.creator,
 			debts: req.body.debts,
 			netAmount: req.body.netAmount,
 			description: req.body.description ? req.body.description : "",

@@ -88,6 +88,7 @@ export async function postDebts(debts, userId) {
 				const newDebt = {
 					creditor: setCreditor,
 					debtor: setDebtor,
+					creator: userId,
 					amount: currentDebt.amount,
 					description: currentDebt.description,
 				};
@@ -143,5 +144,23 @@ export async function postDebts(debts, userId) {
 	} catch (error) {
 		console.log(error);
 		return { success: false, error: error };
+	}
+}
+
+// GET ALL: /api/debts
+// Returns all debts
+export async function deleteDebt(id) {
+	try {
+		const res = await fetch(`${getRootURL()}api/debts/delete`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id: id }),
+		});
+		return res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
 	}
 }

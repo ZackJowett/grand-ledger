@@ -11,6 +11,7 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import { useRouter } from "next/navigation";
 import FullScreen from "components/layouts/FullScreen";
 import { useSession } from "next-auth/react";
+import TextWithTitle from "components/text/title/TextWithTitle";
 
 export default function Register() {
 	const router = useRouter();
@@ -95,31 +96,60 @@ export default function Register() {
 				) : (
 					<Card dark>
 						<div className={styles.form}>
-							<InputText
-								title="Name"
-								placeholder="Jeff"
-								name="name"
-								onChange={(e) => setName(e.target.value)}
-							/>
-							<InputEmail
-								title="Email"
-								placeholder="jeff@money.com"
-								name="email"
-								onChange={(e) => setEmail(e.target.value)}
-							/>
-
-							<InputPassword
-								title="Password"
-								name="password"
-								onChange={(e) => setPassword(e.target.value)}
-							/>
-							<InputPassword
-								title="Confirm Password"
-								name="passwordConfirm"
-								onChange={(e) =>
-									setPasswordConfirm(e.target.value)
-								}
-							/>
+							<div className={styles.input}>
+								<TextWithTitle
+									title="Name"
+									text={"Who others will see you as"}
+									small
+									align="left"
+								/>
+								<InputText
+									placeholder="Jeff"
+									name="name"
+									onChange={(e) => setName(e.target.value)}
+								/>
+							</div>
+							<div className={styles.input}>
+								<TextWithTitle
+									title="Email"
+									text={"You'll use this to sign in"}
+									small
+									align="left"
+								/>
+								<InputEmail
+									placeholder="jeff@money.com"
+									name="email"
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</div>
+							<div className={styles.input}>
+								<TextWithTitle
+									title="Password"
+									small
+									align="left"
+								/>
+								<InputPassword
+									name="password"
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
+								/>
+							</div>
+							{password.length > 0 && (
+								<div className={styles.input}>
+									<TextWithTitle
+										title="Confirm Password"
+										small
+										align="left"
+									/>
+									<InputPassword
+										name="passwordConfirm"
+										onChange={(e) =>
+											setPasswordConfirm(e.target.value)
+										}
+									/>
+								</div>
+							)}
 
 							<Button
 								title="Sign Up"

@@ -16,18 +16,32 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { getDebtStatus } from "utils/helpers";
+import { deleteDebt } from "utils/data/debts";
 
 export default function Debt() {
 	const { data: session, status: sessionStatus } = useSession();
+	const router = useRouter(); // Dynamically get debt from route
+
 	const state = useStore().getState();
 	const [debt, setDebt] = useState(null);
-	const router = useRouter(); // Dynamically get debt from route
+	const [loading, setLoading] = useState(true);
+	const [confirmDelete, setConfirmDelete] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
+	const [deleteStatus, setDeleteStatus] = useState(null); // ["success", "error"]
 
 	// Get debt from database
 	useEffect(() => {
 		if (sessionStatus !== "authenticated") return;
+
+		setLoading(true);
+
 		getOneDebt(router.query.debt).then((data) => {
-			data ? setDebt(data) : console.log("Error fetching debt");
+			if (data) {
+				setDebt(data);
+			} else {
+				console.log("Error fetching debt");
+			}
+			setLoading(false);
 		});
 	}, [sessionStatus]);
 
@@ -38,7 +52,7 @@ export default function Debt() {
 
 	// Wait for debt to load
 	// useEffect refreshes component when debt is loaded
-	let isDebtor, isClosed, otherParty, otherPartyName, status;
+	let isDebtor, isClosed, otherParty, otherPartyName, status, creatorName;
 
 	if (debt) {
 		// Get if user is desbtor or creditor
@@ -48,6 +62,7 @@ export default function Debt() {
 		// Get name of other party (not logged in user)
 		otherParty = isDebtor ? debt.creditor : debt.debtor;
 		otherPartyName = getName(otherParty, state.userList.users, session);
+		creatorName = getName(debt.creator, state.userList.users, session);
 
 		// Get status of debt
 		status =
@@ -78,7 +93,23 @@ export default function Debt() {
 		}
 	}
 
-	if (!debt) {
+	function handleDeleteDebt() {
+		setDeleteLoading(true);
+
+		deleteDebt(debt._id).then((data) => {
+			console.log(data);
+			if (data.success) {
+				// Debt was deleted
+				setDeleteStatus("success");
+			} else {
+				setDeleteStatus("error");
+				console.log(data.message);
+			}
+			setDeleteLoading(false);
+		});
+	}
+
+	if (loading) {
 		return (
 			<Layout>
 				<Spinner title="Fetching debt..." />
@@ -86,90 +117,155 @@ export default function Debt() {
 		);
 	}
 
-	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<div className={styles.header}>
-					<TextWithTitle
-						title={getDebtTitle()}
-						text={`Identifier: ${debt._id}`}
-						className={styles.title}
-						align="left"
-						large
-					/>
-					<Badge
-						title={getDebtStatus(debt.status, !isDebtor)}
-						color={debt.status}
-						className={styles.badge}
-					/>
-				</div>
+	if (deleteLoading) {
+		return (
+			<Layout>
+				<Spinner title="Deleting Debt..." />
+			</Layout>
+		);
+	}
 
-				{debt.status == "closed" ||
-					(debt.status == "pending" && (
-						<Button
-							title="View Settlement Details"
-							href={`/settlements/${debt.settlement}`}
-						/>
-					))}
-
-				<Card title="Amount" dark>
-					<TextWithTitle
-						title={getAmountDescriptor()}
-						text={
-							<Money
-								amount={debt.amount}
-								className={styles.debt}
-								background
-								small
+	if (deleteStatus !== null) {
+		return (
+			<Layout>
+				<section className={styles.deletedWrapper}>
+					{deleteStatus === "success" ? (
+						<>
+							<p>{"Successfully deleted"}</p>
+							<Button
+								title="Back"
+								onClick={() => router.back()}
 							/>
-						}
-						className={styles.textWithTitle}
-						align="left"
-						tiny
-					/>
-				</Card>
+						</>
+					) : (
+						<>
+							<p>Failed to delete debt</p>
+							<Button
+								title="Back"
+								onClick={() => router.reload()}
+							/>
+						</>
+					)}
+				</section>
+			</Layout>
+		);
+	}
 
-				{debt.status == "outstanding" && (
-					<Button
-						title={`Settle debts with ${otherPartyName}`}
-						href="/settlements/create"
-						className={styles.settleButton}
-					/>
-				)}
-
-				<Card dark>
-					<div className={styles.details}>
+	return (
+		<Layout includeBack>
+			{debt ? (
+				<section className={styles.wrapper}>
+					<div className={styles.header}>
 						<TextWithTitle
-							text="Description"
-							title={debt.description}
+							title={getDebtTitle()}
+							text={`Identifier: ${debt._id}`}
+							className={styles.title}
 							align="left"
-							reverse
-							tiny
+							large
+						/>
+						<Badge
+							title={getDebtStatus(debt.status, !isDebtor)}
+							color={debt.status}
+							className={styles.badge}
 						/>
 					</div>
-				</Card>
-				<Card title="Timeline" dark>
-					<div className={styles.dates}>
+
+					{debt.status == "closed" ||
+						(debt.status == "pending" && (
+							<Button
+								title="View Settlement Details"
+								href={`/settlements/${debt.settlement}`}
+							/>
+						))}
+
+					<Card title="Amount" dark>
 						<TextWithTitle
-							text="Opened"
-							title={formatDate(debt.dateCreated)}
+							title={getAmountDescriptor()}
+							text={
+								<Money
+									amount={debt.amount}
+									className={styles.debt}
+									background
+									small
+								/>
+							}
+							className={styles.textWithTitle}
 							align="left"
-							reverse
 							tiny
 						/>
+					</Card>
 
-						{debt.dateClosed && (
+					{debt.status == "outstanding" && (
+						<Button
+							title={`Settle debts with ${otherPartyName}`}
+							href="/settlements/create"
+							className={styles.settleButton}
+						/>
+					)}
+
+					<Card title="Details" dark>
+						<div className={styles.details}>
 							<TextWithTitle
-								text="Closed"
-								title={formatDate(debt.dateClosed)}
+								text="Description"
+								title={debt.description}
 								align="left"
 								reverse
 								tiny
 							/>
+						</div>
+					</Card>
+					<Card title="Timeline" dark>
+						<div className={styles.dates}>
+							<TextWithTitle
+								text={`Opened by ${creatorName}`}
+								title={formatDate(debt.dateCreated)}
+								align="left"
+								reverse
+								tiny
+							/>
+
+							{debt.dateClosed && (
+								<TextWithTitle
+									text="Closed"
+									title={formatDate(debt.dateClosed)}
+									align="left"
+									reverse
+									tiny
+								/>
+							)}
+						</div>
+					</Card>
+
+					<div className={styles.deleteWrapper}>
+						{confirmDelete ? (
+							<>
+								<Button
+									title="Cancel"
+									className={styles.cancel}
+									onClick={() => {
+										setConfirmDelete(false);
+									}}
+								/>
+								<Button
+									title="Confirm Deletion"
+									className={styles.delete}
+									onClick={() => {
+										handleDeleteDebt();
+									}}
+								/>
+							</>
+						) : (
+							<Button
+								title="Delete"
+								className={styles.delete}
+								onClick={() => setConfirmDelete(true)}
+							/>
 						)}
 					</div>
-				</Card>
-			</section>
+				</section>
+			) : (
+				<p>Could not find debt.</p>
+			)}
 		</Layout>
 	);
 }
