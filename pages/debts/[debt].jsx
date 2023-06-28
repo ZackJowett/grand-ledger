@@ -236,32 +236,35 @@ export default function Debt() {
 						</div>
 					</Card>
 
-					<div className={styles.deleteWrapper}>
-						{confirmDelete ? (
-							<>
-								<Button
-									title="Cancel"
-									className={styles.cancel}
-									onClick={() => {
-										setConfirmDelete(false);
-									}}
-								/>
-								<Button
-									title="Confirm Deletion"
-									className={styles.delete}
-									onClick={() => {
-										handleDeleteDebt();
-									}}
-								/>
-							</>
-						) : (
-							<Button
-								title="Delete"
-								className={styles.delete}
-								onClick={() => setConfirmDelete(true)}
-							/>
+					{debt.status == "outstanding" &&
+						debt.creator == session.user.id && (
+							<div className={styles.deleteWrapper}>
+								{confirmDelete ? (
+									<>
+										<Button
+											title="Cancel"
+											className={styles.cancel}
+											onClick={() => {
+												setConfirmDelete(false);
+											}}
+										/>
+										<Button
+											title="Confirm Deletion"
+											className={styles.delete}
+											onClick={() => {
+												handleDeleteDebt();
+											}}
+										/>
+									</>
+								) : (
+									<Button
+										title="Delete"
+										className={styles.delete}
+										onClick={() => setConfirmDelete(true)}
+									/>
+								)}
+							</div>
 						)}
-					</div>
 				</section>
 			) : (
 				<p>Could not find debt.</p>
