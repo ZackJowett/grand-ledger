@@ -17,7 +17,7 @@ export default function DebtList({ debts, setDebts }) {
 				if (debt.type === "single") {
 					return (
 						<SingularDebt
-							key={index}
+							key={debt.id}
 							debt={debt}
 							debts={debts}
 							setDebts={setDebts}
@@ -28,7 +28,7 @@ export default function DebtList({ debts, setDebts }) {
 				} else if (debt.type === "multi") {
 					return (
 						<MultiDebt
-							key={index}
+							key={debt.id}
 							debt={debt}
 							debts={debts}
 							setDebts={setDebts}
