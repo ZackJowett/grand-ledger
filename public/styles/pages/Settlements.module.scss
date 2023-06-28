@@ -50,7 +50,24 @@
 	}
 }
 
+.filters {
+	@include flex(row, space-between);
+	width: 100%;
+	padding: auto 1rem;
+	max-width: var(--maxWidth);
+
+	@include screen(400px) {
+		flex-direction: column;
+		gap: 1rem;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+}
 .select {
-	min-width: 50%;
+	min-width: 48%;
 	width: fit-content;
+
+	@include screen(400px) {
+		min-width: 80%;
+	}
 }

@@ -28,6 +28,7 @@ export default function Settlements() {
 	// States
 	const [settlements, setSettlements] = useState(null);
 	const [filter, setFilter] = useState("all"); // "all" || "open" || "closed"
+	const [userFilter, setUserFilter] = useState(null);
 
 	// Get settlements
 	useEffect(() => {
@@ -46,12 +47,28 @@ export default function Settlements() {
 	const handleFilterSelect = (option) => {
 		setFilter(option.value);
 	};
+	const handleUserFilterSelect = (option) => {
+		setUserFilter(option.value);
+	};
 
 	const options = [
 		{ value: "all", label: "All" },
 		{ value: "reopened", label: "Reopened" },
 		{ value: "pending", label: "Pending" },
 		{ value: "closed", label: "Closed" },
+	];
+	const userOptions = [
+		{ value: null, label: "Everyone" },
+		...state.userList.users
+			.map((user) => {
+				// Don't include logged in user in filter
+				if (user._id == session.user.id) return;
+				return {
+					value: user._id,
+					label: user.name,
+				};
+			})
+			.filter((item) => item), // removes	undefined items
 	];
 
 	return (
@@ -81,12 +98,20 @@ export default function Settlements() {
 				</div>
 				<Card dark title="Settlements">
 					<hr className={styles.hr} />
-					<Select
-						options={options}
-						defaultValue={options[0]}
-						className={styles.select}
-						onChange={handleFilterSelect}
-					/>
+					<div className={styles.filters}>
+						<Select
+							options={options}
+							defaultValue={options[0]}
+							className={styles.select}
+							onChange={handleFilterSelect}
+						/>
+						<Select
+							options={userOptions}
+							defaultValue={userOptions[0]}
+							className={styles.select}
+							onChange={handleUserFilterSelect}
+						/>
+					</div>
 					<div className={styles.cards}>
 						{settlements && settlements.length == 0 && (
 							<p className={styles.noSettlements}>
@@ -97,7 +122,13 @@ export default function Settlements() {
 						)}
 						{settlements ? (
 							settlements.map((settlement, index) => {
-								if (!filterSettlements(settlement, filter))
+								if (
+									!filterSettlements(
+										settlement,
+										filter,
+										userFilter
+									)
+								)
 									return;
 
 								return (

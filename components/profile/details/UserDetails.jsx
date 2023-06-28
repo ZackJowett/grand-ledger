@@ -3,6 +3,8 @@ import styles from "./UserDetails.module.scss";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import TextButton from "../../button/text/TextButton";
 import { useSession } from "next-auth/react";
+import ChangePassword from "./forms/ChangePassword";
+import ChangeEmail from "./forms/ChangeEmail";
 
 export default function UserDetails({ className, user }) {
 	const { data: session } = useSession();
@@ -13,36 +15,26 @@ export default function UserDetails({ className, user }) {
 	return (
 		<Card dark className={`${className ? className : ""}`}>
 			<div className={styles.details}>
-				<div>
+				<div className={styles.row}>
 					<TextWithTitle
-						title={user.email}
+						title={user.email.toLowerCase()}
 						text="Email"
 						align="left"
 						reverse
 						tiny
 					/>
-					{userIsLoggedIn && (
-						<TextButton
-							title="Change email"
-							link="profile/change-email"
-							className={styles.change}
-						/>
-					)}
+					{userIsLoggedIn && <ChangeEmail user={user} />}
 				</div>
 
 				{userIsLoggedIn && (
-					<div>
+					<div className={styles.row}>
 						<TextWithTitle
 							text="Password"
 							align="left"
 							reverse
 							tiny
 						/>
-						<TextButton
-							title="Change password"
-							link="profile/change-password"
-							className={styles.change}
-						/>
+						<ChangePassword user={user} />
 					</div>
 				)}
 			</div>
