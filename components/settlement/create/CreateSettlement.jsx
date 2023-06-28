@@ -151,9 +151,20 @@ export default function CreateSettlement() {
 					handleSubmit={handleSubmit}
 					stats={stats}
 				/>
-			) : stats.net >
-			  0 ? null : null // <Button title="Nudge" />
-			}
+			) : stats.net > 0 ? (
+				<>
+					<p>
+						Person in greater debt ({selectedUser.name}) must create
+						the settlement
+					</p>
+					<Button
+						title={`Nudge ${selectedUser.name}`}
+						className={styles.nudge}
+					/>
+				</>
+			) : (
+				<p>No action needed</p>
+			)}
 		</>
 	);
 }
