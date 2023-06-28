@@ -19,6 +19,7 @@
 	width: 100%;
 	min-height: calc(100lvh - var(--headerHeight));
 	// height: calc(100vh - var(--headerHeight));
+	position: relative;
 
 	@include border($color: transparent);
 	border-radius: 10px 0 0 0;
@@ -26,6 +27,28 @@
 	background-color: var(--background);
 
 	// overflow-y: auto;
+
+	&.back {
+		padding-top: 1.25rem;
+	}
+}
+
+.backButton {
+	@include flex(row, $gap: 0.25rem);
+	position: absolute;
+	left: 0.25rem;
+	top: 0.25rem;
+
+	padding: 0.2rem;
+
+	background-color: var(--backgroundDark);
+	@include border($color: var(--backgroundDark), $radius: 5px);
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--backgroundLight);
+		border-color: var(--backgroundLight);
+	}
 }
 
 @include mobile-only {

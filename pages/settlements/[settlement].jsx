@@ -95,7 +95,7 @@ export default function Settlement() {
 	}
 
 	return (
-		<Layout>
+		<Layout includeBack>
 			<section className={styles.flexWrapper}>
 				<div className={styles.header}>
 					<TextWithTitle
