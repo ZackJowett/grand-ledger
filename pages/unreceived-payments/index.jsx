@@ -25,6 +25,7 @@ export default function UnreceivedPayments() {
 	const [users, setUsers] = useState(null);
 	const [totalUnreceived, setTotalUnreceived] = useState(null);
 	const [filter, setFilter] = useState("outstanding"); // "all" || "open" || "closed"
+	const [userFilter, setUserFilter] = useState(null);
 
 	// Get all debts associated with logged in user
 	useEffect(() => {
@@ -61,8 +62,20 @@ export default function UnreceivedPayments() {
 		return <LoggedOut />;
 	}
 
+	// Loading
+	if (!debts || !users) {
+		return (
+			<Layout>
+				<Spinner />
+			</Layout>
+		);
+	}
+
 	const handleFilterSelect = (option) => {
 		setFilter(option.value);
+	};
+	const handleUserFilterSelect = (option) => {
+		setUserFilter(option.value);
 	};
 
 	const options = [
@@ -70,6 +83,20 @@ export default function UnreceivedPayments() {
 		{ value: "outstanding", label: "Unreceived" },
 		{ value: "pending", label: "Pending" },
 		{ value: "closed", label: "Closed" },
+	];
+
+	const userOptions = [
+		{ value: null, label: "Everyone" },
+		...users
+			.map((user) => {
+				// Don't include logged in user in filter
+				if (user._id == session.user.id) return;
+				return {
+					value: user._id,
+					label: user.name,
+				};
+			})
+			.filter((item) => item), // removes	undefined items
 	];
 
 	// Logged in
@@ -121,12 +148,20 @@ export default function UnreceivedPayments() {
 						<Spinner title="Calculating totals..." />
 					)}
 					<hr className={styles.hr} />
-					<Select
-						options={options}
-						defaultValue={options[1]}
-						className={styles.select}
-						onChange={handleFilterSelect}
-					/>
+					<div className={styles.filters}>
+						<Select
+							options={options}
+							defaultValue={options[1]}
+							className={styles.select}
+							onChange={handleFilterSelect}
+						/>
+						<Select
+							options={userOptions}
+							defaultValue={userOptions[0]}
+							className={styles.select}
+							onChange={handleUserFilterSelect}
+						/>
+					</div>
 					<div className={styles.cards}>
 						{debts && debts.length == 0 && (
 							<p className={styles.noDebts}>
@@ -139,7 +174,8 @@ export default function UnreceivedPayments() {
 						)}
 						{debts ? (
 							debts.map((debt, index) => {
-								if (!filterDebts(debt, filter)) return;
+								if (!filterDebts(debt, filter, userFilter))
+									return;
 
 								return (
 									<Debt

@@ -56,28 +56,47 @@ function getRootURL() {
 }
 
 // Filters debts
-const filterDebts = (debt, filter) => {
-	if (!filter) return true;
-	if (filter == "all") return true;
-	if (filter == "outstanding" && debt.status == "outstanding") return true;
-	if (filter == "pending" && debt.status == "pending") return true;
-	if (filter == "closed" && debt.status == "closed") return true;
+const filterDebts = (debt, status, user) => {
+	let includeDebt = true;
+
+	// Ceck user filter
+	if (user !== null) {
+		if (debt.creditor != user && debt.debtor != user) {
+			includeDebt = false;
+		}
+	}
+
+	// Check status filter
+	if (status !== null && status !== "all") {
+		if (debt.status != status) {
+			includeDebt = false;
+		}
+	}
 
 	// No match found
-	return false;
+	return includeDebt;
 };
 
 // Filters Settlements
-const filterSettlements = (settlement, filter) => {
-	console.log(filter);
-	if (!filter) return true;
-	if (filter == "all") return true;
-	if (filter == "pending" && settlement.status == "pending") return true;
-	if (filter == "reopened" && settlement.status == "reopened") return true;
-	if (filter == "closed" && settlement.status == "closed") return true;
+const filterSettlements = (settlement, status, user) => {
+	let includeSettlement = true;
+
+	// Ceck user filter
+	if (user !== null) {
+		if (settlement.settler != user && settlement.settlee != user) {
+			includeSettlement = false;
+		}
+	}
+
+	// Check status filter
+	if (status !== null && status !== "all") {
+		if (settlement.status != status) {
+			includeSettlement = false;
+		}
+	}
 
 	// No match found
-	return false;
+	return includeSettlement;
 };
 
 // Distributes amount evenly across piles
