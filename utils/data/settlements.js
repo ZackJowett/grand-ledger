@@ -101,11 +101,12 @@ export async function resubmitSettlement(id) {
 }
 
 // CREATE NEW SETTLEMENT: /api/settlements/create
-export async function createSettlement(settlement) {
+export async function createSettlement(settlement, creator) {
 	try {
 		const newSettlement = {
 			settler: settlement.settler,
 			settlee: settlement.settlee,
+			creator: creator,
 			debts: settlement.debts,
 			netAmount: settlement.netAmount,
 			description: settlement.description,

@@ -29,8 +29,6 @@ export default function SelectUser({
 		})
 		.filter((item) => item);
 
-	console.log(options);
-
 	return (
 		<section className={styles.wrapper}>
 			<TextWithTitle

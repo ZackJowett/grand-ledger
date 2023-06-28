@@ -7,8 +7,9 @@ import DesktopNav from "../sections/nav/DesktopNav";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../store/actions/userAction";
+import { MdOutlineArrowBack } from "react-icons/md";
 
-export default function Layout({ children, className }) {
+export default function Layout({ children, className, includeBack = false }) {
 	const router = useRouter();
 	const currentRoute = router.pathname;
 
@@ -59,7 +60,16 @@ export default function Layout({ children, className }) {
 					<section
 						className={`${styles.children} ${
 							className ? className : ""
-						}`}>
+						} ${includeBack ? styles.back : ""}`}>
+						{includeBack && (
+							<div
+								className={styles.backButton}
+								onClick={() => {
+									router.back();
+								}}>
+								<MdOutlineArrowBack /> Back
+							</div>
+						)}
 						{children}
 					</section>
 				</div>

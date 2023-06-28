@@ -31,3 +31,50 @@
 	@include flex(column, flex-start, flex-start);
 	gap: 0.5rem;
 }
+
+.details {
+	@include flex(column, flex-start, flex-start, $gap: 1rem);
+	width: 100%;
+}
+
+.deleteWrapper {
+	width: 100%;
+	@include flex(row, flex-start, flex-start, $gap: 1rem);
+	@include mobile-only {
+		flex-direction: column;
+	}
+}
+
+.cancel {
+	flex: 3;
+	border-color: var(--green);
+	background-color: var(--green);
+	color: var(--red);
+
+	&:active {
+		background-color: var(--red);
+		// border-color: var(--red);
+	}
+}
+
+.delete {
+	flex: 1;
+	max-width: 50%;
+	border-color: var(--red);
+	background-color: transparent;
+	color: var(--red);
+
+	&:active {
+		background-color: var(--red);
+		// border-color: var(--red);
+	}
+
+	@include mobile-only {
+		max-width: 100%;
+	}
+}
+
+.deletedWrapper {
+	margin: auto;
+	@include flex($gap: 1rem);
+}

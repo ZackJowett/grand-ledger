@@ -7,7 +7,7 @@
 }
 
 .submit {
-	margin-top: 1.5rem;
+	margin-top: 0.75rem;
 }
 
 .provider {
@@ -19,9 +19,8 @@
 	}
 }
 
-.form {
-	@include flex(column, $gap: 0.5rem);
-	margin-top: 1rem;
+.inputElements {
+	@include flex(column, $gap: 1rem);
 	width: 100%;
 }
 

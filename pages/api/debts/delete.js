@@ -6,15 +6,8 @@ export default async function handler(req, res) {
 	await dbConnect();
 
 	try {
-		const debt = await Debt.create({
-			creditor: req.body.creditor,
-			debtor: req.body.debtor,
-			creator: req.body.creator,
-			amount: req.body.amount,
-			description: req.body.description,
-		});
+		const debt = await Debt.findByIdAndDelete(req.body.id);
 		res.status(201).json({ success: true, data: debt });
-		return;
 	} catch (error) {
 		console.log(error);
 		res.status(400).json({ success: false });
