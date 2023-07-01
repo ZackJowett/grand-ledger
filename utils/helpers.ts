@@ -51,7 +51,7 @@ function getRootURL() {
 	if (process.env.NODE_ENV == "development") {
 		return "http://localhost:3000/";
 	} else if (process.env.NODE_ENV == "production") {
-		return "https://grand-ledger.vercel.app/";
+		return "https://grandledger.app/";
 	}
 }
 
