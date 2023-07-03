@@ -13,12 +13,20 @@ export default function Main() {
 	const [fact, setFact] = useState(null);
 
 	useEffect(() => {
-		fetch("http://numbersapi.com/random/trivia")
-			.then((res) => res.text())
-			.then((data) => {
-				setFact(data);
-			});
+		getFact();
 	}, []);
+
+	function getFact() {
+		fetch("https://cat-fact.herokuapp.com/facts/random")
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.status.verified) {
+					setFact(data.text);
+				} else {
+					getFact();
+				}
+			});
+	}
 
 	return (
 		<div className={styles.main}>
@@ -27,11 +35,7 @@ export default function Main() {
 					title={
 						<Link href="/profile">Hello, {session.user.name}</Link>
 					}
-					subtitle={
-						fact
-							? `Did you know, the number ${fact}`
-							: "Loading fact..."
-					}
+					subtitle={fact ? fact : "Loading fact..."}
 					className={styles.welcome}
 				/>
 
