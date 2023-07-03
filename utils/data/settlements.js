@@ -131,3 +131,21 @@ export async function createSettlement(settlement, creator) {
 		return null;
 	}
 }
+
+// DELETE SETTLEMENT: /api/debts
+// Returns all debts
+export async function deleteSettlement(id) {
+	try {
+		const res = await fetch(`${getRootURL()}api/settlements/delete`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id: id }),
+		});
+		return res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}

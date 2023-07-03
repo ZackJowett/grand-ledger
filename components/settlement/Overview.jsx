@@ -2,16 +2,17 @@ import Card from "../card/Card";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import styles from "./Overview.module.scss";
 import Money from "components/text/money/Money";
+import Spinner from "components/placeholders/spinner/Spinner";
 
 export default function Overview({ stats, otherPartyName }) {
 	return (
-		<Card title="Overview" dark>
+		<Card dark>
 			<div className={styles.totalsWrapper}>
 				<TextWithTitle
 					title={`Total owed to ${otherPartyName}`}
 					text={
 						<Money
-							amount={stats.debt}
+							amount={-stats.debt}
 							className={styles.debt}
 							background
 							small
@@ -22,7 +23,7 @@ export default function Overview({ stats, otherPartyName }) {
 					tiny
 				/>
 				<TextWithTitle
-					title={`Total ${otherPartyName} owes me`}
+					title={`Total ${otherPartyName} owed me`}
 					text={
 						<Money
 							amount={stats.unreceived}
@@ -36,7 +37,6 @@ export default function Overview({ stats, otherPartyName }) {
 					tiny
 				/>
 			</div>
-			{/* <hr className={styles.hr} /> */}
 
 			<TextWithTitle
 				title="Net Total"

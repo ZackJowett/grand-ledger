@@ -6,11 +6,27 @@ import RecentSettlements from "../../sections/recents/RecentSettlements";
 import RecentDebts from "../../sections/recents/RecentDebts";
 import Card from "components/card/Card";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Main() {
 	const { data: session } = useSession();
+	const [fact, setFact] = useState(null);
 
-	const dailyFact = "The current world population is 7.8 billion";
+	useEffect(() => {
+		getFact();
+	}, []);
+
+	function getFact() {
+		fetch("https://cat-fact.herokuapp.com/facts/random")
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.status.verified) {
+					setFact(data.text);
+				} else {
+					getFact();
+				}
+			});
+	}
 
 	return (
 		<div className={styles.main}>
@@ -19,7 +35,7 @@ export default function Main() {
 					title={
 						<Link href="/profile">Hello, {session.user.name}</Link>
 					}
-					subtitle={dailyFact}
+					subtitle={fact ? fact : "Loading fact..."}
 					className={styles.welcome}
 				/>
 

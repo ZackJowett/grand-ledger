@@ -6,9 +6,31 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import { IoWarning } from "react-icons/io5";
 import ReviewSettlement from "./forms/ReviewSettlement";
 import { resubmitSettlement } from "/utils/data/settlements";
+import { useState } from "react";
+import Spinner from "components/placeholders/spinner/Spinner";
+import { useRouter } from "next/router";
 
 export default function Status({ settlement, otherPartyName }) {
 	const { data: session } = useSession();
+	const router = useRouter();
+
+	const [loading, setLoading] = useState(null);
+	const [success, setSuccess] = useState(null); // ["success", "error"
+
+	// --------- Functions --------- \\
+	function handleResubmit() {
+		setLoading("Resubmitting...");
+		resubmitSettlement(settlement._id).then((data) => {
+			if (data) {
+				setSuccess(true);
+			} else {
+				setSuccess(false);
+			}
+
+			setLoading(null);
+			router.reload();
+		});
+	}
 
 	console.log(settlement.reopenedReason);
 
@@ -23,36 +45,40 @@ export default function Status({ settlement, otherPartyName }) {
 						subtitle={`${otherPartyName} rejected your settlement`}
 						dark
 						className={styles.statusCard}>
-						<div className={styles.resubmitFormWrapper}>
-							<div className={styles.warningWrapper}>
-								<p className={styles.warning}>
-									<IoWarning className={styles.warningIcon} />
-									Ensure you paid the correct amount
-								</p>
-								<TextWithTitle
-									title={`${otherPartyName}'s Reasoning`}
-									text={settlement.reopenedReason}
-									tiny
-									align="left"
-								/>
-							</div>
+						{loading ? (
+							<Spinner title={loading} />
+						) : success === true ? (
+							<p>Success! Refreshing...</p>
+						) : success === false ? (
+							<p>Error, refreshing...</p>
+						) : (
+							<div className={styles.resubmitFormWrapper}>
+								<div className={styles.warningWrapper}>
+									<p className={styles.warning}>
+										<IoWarning
+											className={styles.warningIcon}
+										/>
+										Ensure you paid the correct amount
+									</p>
+									<TextWithTitle
+										title={`${otherPartyName}'s Reasoning`}
+										text={settlement.reopenedReason}
+										tiny
+										align="left"
+									/>
+								</div>
 
-							<form
-								onSubmit={handleResubmitForm}
-								className={styles.resubmitForm}>
 								<Button
 									title="RESUBMIT"
-									onClick={() =>
-										resubmitSettlement(settlement._id)
-									}
+									onClick={() => handleResubmit()}
 								/>
 								<p className={styles.underButtonText}>
 									<strong>Resubmit</strong> Settlement to{" "}
 									{otherPartyName} - ensure you&apos;ve fixed
 									issues
 								</p>
-							</form>
-						</div>
+							</div>
+						)}
 					</Card>
 					<hr className={styles.hr} />
 				</>
@@ -74,18 +100,15 @@ export default function Status({ settlement, otherPartyName }) {
 						className={styles.pendingWaiting}
 						tiny
 					/>
-					<form
-						onSubmit={handleNudgeForm}
-						className={styles.nudgeForm}>
-						<Button
-							title="NUDGE"
-							className={styles.nudgeButton}
-							submit
-						/>
-						<p className={styles.underButtonText}>
-							Send a gentle reminder to {otherPartyName}
-						</p>
-					</form>
+
+					<Button
+						title="NUDGE"
+						className={styles.nudgeButton}
+						// onClick={() => handleResubmit()}
+					/>
+					<p className={styles.underButtonText}>
+						Send a gentle reminder to {otherPartyName}
+					</p>
 				</Card>
 				<hr className={styles.hr} />
 			</>

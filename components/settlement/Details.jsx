@@ -9,7 +9,7 @@ export default function Details({ settlement, otherPartyName }) {
 	const { data: session } = useSession();
 
 	return (
-		<Card title="Details" dark className={styles.detailsCard}>
+		<Card dark>
 			<div className={styles.details}>
 				<TextWithTitle
 					text="Description"
@@ -18,17 +18,38 @@ export default function Details({ settlement, otherPartyName }) {
 					reverse
 					tiny
 				/>
+				<hr className={styles.hr} />
 				<TextWithTitle
-					text="Opened by"
-					title={
-						settlement.settler == session.user.id
+					text={`Opened by ${
+						settlement.creator == session.user.id
 							? "You"
 							: otherPartyName
-					}
+					}`}
+					title={formatDate(settlement.dateCreated)}
 					align="left"
 					reverse
 					tiny
 				/>
+
+				{settlement.dateReopened && (
+					<TextWithTitle
+						text="Rejected"
+						title={formatDate(settlement.dateReopened)}
+						align="left"
+						reverse
+						tiny
+					/>
+				)}
+
+				{settlement.dateClosed && (
+					<TextWithTitle
+						text="Closed"
+						title={formatDate(settlement.dateClosed)}
+						align="left"
+						reverse
+						tiny
+					/>
+				)}
 				{/* <TextWithTitle
 					text="Proof of payment"
 					align="left"

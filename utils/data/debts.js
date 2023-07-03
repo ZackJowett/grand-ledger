@@ -114,6 +114,7 @@ export async function postDebts(debts, userId) {
 						const newDebt = {
 							creditor: userId,
 							debtor: currentParty.id,
+							creator: userId,
 							amount: currentParty.amount,
 							description: currentDebt.description,
 						};

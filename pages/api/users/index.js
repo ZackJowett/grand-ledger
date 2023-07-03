@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 		if (req.body.email) {
 			users = await User.findOne({ email: req.body.email });
 		} else {
-			users = await User.find({});
+			users = await User.find({}).sort({ name: "asc" });
 		}
 
 		if (users == null) {
