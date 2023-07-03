@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { getAllSettlements, getSettlementByID } from "/utils/data/settlements";
+import { getSettlementByID } from "/utils/data/settlements";
 import Layout from "../../components/layouts/Layout";
 import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 import { getName } from "/utils/helpers";
@@ -10,7 +10,7 @@ import Badge from "components/text/badge/Badge";
 import { useEffect, useState } from "react";
 import { getUsers } from "store/actions/userAction";
 import Details from "components/settlement/Details";
-import { getSettlementDebts } from "utils/data/settlements";
+import { getSettlementDebts, deleteSettlement } from "utils/data/settlements";
 import Overview from "components/settlement/Overview";
 import DebtsIncluded from "components/settlement/DebtsIncluded";
 import Status from "components/settlement/Status";
@@ -18,6 +18,7 @@ import Card from "components/card/Card";
 import { formatDate } from "utils/helpers";
 import { useRouter } from "next/router";
 import Spinner from "components/placeholders/spinner/Spinner";
+import Button from "components/button/Button";
 
 export default function Settlement() {
 	const { data: session, status: sessionStatus } = useSession();
@@ -26,14 +27,20 @@ export default function Settlement() {
 	// --------- States --------- \\
 	const [settlement, setSettlement] = useState();
 	const [debts, setDebts] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [confirmDelete, setConfirmDelete] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
+	const [deleteStatus, setDeleteStatus] = useState(null); // ["success", "error"]
 
 	// Get debt from database
 	useEffect(() => {
 		if (sessionStatus !== "authenticated") return;
+		setLoading(true);
 		getSettlementByID(router.query.settlement).then((data) => {
-			data
-				? setSettlement(data)
-				: console.log("Error fetching settlement");
+			if (data) {
+				setSettlement(data);
+			}
+			setLoading(false);
 		});
 	}, [sessionStatus]);
 
@@ -51,6 +58,22 @@ export default function Settlement() {
 		if (!settlement) return;
 		getSettlementDebts(settlement._id).then((res) => setDebts(res));
 	}, [settlement]);
+
+	function handleDeleteSettlement() {
+		setDeleteLoading(true);
+
+		deleteSettlement(settlement._id).then((data) => {
+			console.log(data);
+			if (data.success) {
+				// Settlement was deleted
+				setDeleteStatus("success");
+			} else {
+				setDeleteStatus("error");
+				console.log(data.message);
+			}
+			setDeleteLoading(false);
+		});
+	}
 
 	// User not logged in
 	if (sessionStatus !== "authenticated") {
@@ -85,11 +108,44 @@ export default function Settlement() {
 		stats = calculateDebtStats(debts, session);
 	}
 
-	// Wait for settlement to be fetched
-	if (!settlement) {
+	if (loading) {
 		return (
 			<Layout>
 				<Spinner title="Fetching settlement..." />
+			</Layout>
+		);
+	}
+
+	if (deleteLoading) {
+		return (
+			<Layout>
+				<Spinner title="Deleting Settlement..." />
+			</Layout>
+		);
+	}
+
+	if (deleteStatus !== null) {
+		return (
+			<Layout>
+				<section className={styles.deletedWrapper}>
+					{deleteStatus === "success" ? (
+						<>
+							<p>{"Successfully deleted"}</p>
+							<Button
+								title="Back"
+								onClick={() => router.back()}
+							/>
+						</>
+					) : (
+						<>
+							<p>Failed to delete settlement</p>
+							<Button
+								title="Back"
+								onClick={() => router.reload()}
+							/>
+						</>
+					)}
+				</section>
 			</Layout>
 		);
 	}
@@ -140,6 +196,37 @@ export default function Settlement() {
 					align="left"
 				/>
 				<DebtsIncluded debts={debts} stats={stats} />
+
+				{/* Delete Settlement */}
+				{settlement.status != "closed" &&
+					settlement.creator == session.user.id && (
+						<div className={styles.deleteWrapper}>
+							{confirmDelete ? (
+								<>
+									<Button
+										title="Cancel"
+										className={styles.cancel}
+										onClick={() => {
+											setConfirmDelete(false);
+										}}
+									/>
+									<Button
+										title="Confirm Deletion"
+										className={styles.delete}
+										onClick={() => {
+											handleDeleteSettlement();
+										}}
+									/>
+								</>
+							) : (
+								<Button
+									title="Delete"
+									className={styles.delete}
+									onClick={() => setConfirmDelete(true)}
+								/>
+							)}
+						</div>
+					)}
 			</section>
 		</Layout>
 	);
