@@ -50,7 +50,7 @@ export default function Login({ providers }) {
 
 		const response = await signIn("credentials", {
 			redirect: false,
-			email: email,
+			email: email.toLowerCase(),
 			password: password,
 		});
 

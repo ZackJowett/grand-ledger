@@ -58,7 +58,7 @@ export default function Register() {
 			body: JSON.stringify({
 				name: name,
 				password: password,
-				email: email,
+				email: email.toLowerCase(),
 			}),
 		})
 			.then((res) => res.json())
