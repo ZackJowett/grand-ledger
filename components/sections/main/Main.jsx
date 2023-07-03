@@ -6,11 +6,19 @@ import RecentSettlements from "../../sections/recents/RecentSettlements";
 import RecentDebts from "../../sections/recents/RecentDebts";
 import Card from "components/card/Card";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Main() {
 	const { data: session } = useSession();
+	const [fact, setFact] = useState(null);
 
-	const dailyFact = "The current world population is 7.8 billion";
+	useEffect(() => {
+		fetch("http://numbersapi.com/random/trivia")
+			.then((res) => res.text())
+			.then((data) => {
+				setFact(data);
+			});
+	}, []);
 
 	return (
 		<div className={styles.main}>
@@ -19,7 +27,11 @@ export default function Main() {
 					title={
 						<Link href="/profile">Hello, {session.user.name}</Link>
 					}
-					subtitle={dailyFact}
+					subtitle={
+						fact
+							? `Did you know, the number ${fact}`
+							: "Loading fact..."
+					}
 					className={styles.welcome}
 				/>
 
