@@ -10,6 +10,10 @@
 	max-width: var(--maxWidth);
 }
 
+.title {
+	width: 100%;
+}
+
 .badge {
 	margin-top: 0.5rem;
 }
@@ -19,12 +23,16 @@
 	max-width: calc(var(--maxWidth) - 10rem);
 }
 
+.hrLong {
+	width: 100%;
+}
+
 .debt {
-	color: var(--red);
+	// color: var(--red);
 }
 
 .settleButton {
-	width: 90%;
+	width: 100%;
 }
 
 .dates {
@@ -33,7 +41,7 @@
 }
 
 .details {
-	@include flex(column, flex-start, flex-start, $gap: 1rem);
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
 	width: 100%;
 }
 

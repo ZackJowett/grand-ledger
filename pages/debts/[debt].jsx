@@ -55,7 +55,7 @@ export default function Debt() {
 	let isDebtor, isClosed, otherParty, otherPartyName, status, creatorName;
 
 	if (debt) {
-		// Get if user is desbtor or creditor
+		// Get if user is debtor or creditor
 		isDebtor = debt.debtor == session.user.id;
 		isClosed = debt.status == "closed";
 
@@ -178,12 +178,28 @@ export default function Debt() {
 							/>
 						))}
 
-					<Card title="Amount" dark>
+					{debt.status == "outstanding" && (
+						<Button
+							title={`Settle debts with ${otherPartyName}`}
+							href="/settlements/create"
+							className={styles.settleButton}
+						/>
+					)}
+
+					<TextWithTitle
+						title="Amount"
+						align="left"
+						reverse
+						className={styles.title}
+					/>
+					<Card dark>
 						<TextWithTitle
 							title={getAmountDescriptor()}
 							text={
 								<Money
-									amount={debt.amount}
+									amount={
+										isDebtor ? -debt.amount : debt.amount
+									}
 									className={styles.debt}
 									background
 									small
@@ -195,15 +211,13 @@ export default function Debt() {
 						/>
 					</Card>
 
-					{debt.status == "outstanding" && (
-						<Button
-							title={`Settle debts with ${otherPartyName}`}
-							href="/settlements/create"
-							className={styles.settleButton}
-						/>
-					)}
-
-					<Card title="Details" dark>
+					<TextWithTitle
+						title="Details"
+						align="left"
+						reverse
+						className={styles.title}
+					/>
+					<Card dark>
 						<div className={styles.details}>
 							<TextWithTitle
 								text="Description"
@@ -212,10 +226,7 @@ export default function Debt() {
 								reverse
 								tiny
 							/>
-						</div>
-					</Card>
-					<Card title="Timeline" dark>
-						<div className={styles.dates}>
+							<hr className={styles.hrLong} />
 							<TextWithTitle
 								text={`Opened by ${creatorName}`}
 								title={formatDate(debt.dateCreated)}

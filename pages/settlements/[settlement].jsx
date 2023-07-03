@@ -117,46 +117,29 @@ export default function Settlement() {
 					otherPartyName={otherPartyName}
 				/>
 
+				<TextWithTitle
+					title="Overview"
+					className={styles.title}
+					align="left"
+				/>
 				<Overview stats={stats} otherPartyName={otherPartyName} />
 
+				<TextWithTitle
+					title="Details"
+					className={styles.title}
+					align="left"
+				/>
 				<Details
 					settlement={settlement}
 					otherPartyName={otherPartyName}
 				/>
 
+				<TextWithTitle
+					title="Debts Included"
+					className={styles.title}
+					align="left"
+				/>
 				<DebtsIncluded debts={debts} stats={stats} />
-
-				<Card title="Timeline" dark>
-					<div className={styles.dates}>
-						<TextWithTitle
-							text="Opened"
-							title={formatDate(settlement.dateCreated)}
-							align="left"
-							reverse
-							tiny
-						/>
-
-						{settlement.dateReopened && (
-							<TextWithTitle
-								text="Rejected"
-								title={formatDate(settlement.dateReopened)}
-								align="left"
-								reverse
-								tiny
-							/>
-						)}
-
-						{settlement.dateClosed && (
-							<TextWithTitle
-								text="Closed"
-								title={formatDate(settlement.dateClosed)}
-								align="left"
-								reverse
-								tiny
-							/>
-						)}
-					</div>
-				</Card>
 			</section>
 		</Layout>
 	);

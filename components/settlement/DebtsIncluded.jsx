@@ -13,13 +13,13 @@ export default function DebtsIncluded({ debts, stats }) {
 	console.log(stats);
 
 	return (
-		<Card title="Debts Included" className={styles.wrapper} dark>
+		<Card className={styles.wrapper} dark>
 			<div className={styles.debts}>
-				{debts ? (
+				{debts && debts.length > 0 ? (
 					debts.map((debt, index) => {
 						return (
 							<Debt
-								key={index}
+								key={debt._id}
 								debt={debt}
 								globals={{
 									session: session,
