@@ -1,11 +1,17 @@
 @use "public/styles/mixins.scss" as *;
 
 .hamburgerButton {
-	$size: 2rem;
+	$size: 3.25rem;
 	height: $size;
 	width: $size;
 
 	left: 25px;
+	padding: 0.5rem;
+	@include border($color: transparent);
+
+	&:active {
+		background-color: var(--background);
+	}
 
 	@include desktop-up {
 		display: none;

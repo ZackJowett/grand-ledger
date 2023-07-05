@@ -33,11 +33,25 @@
 	}
 }
 
-.title {
+.titleWrapper {
 	// width: 100%;
 	text-align: center;
+	@include flex(row, $gap: 1rem);
+
+	@include border($color: transparent);
+	padding: 0.5rem 0.5rem;
+
+	&:active {
+		background-color: var(--background);
+	}
 
 	@include desktop-up {
 		text-align: left;
+	}
+}
+
+@include mobile-only {
+	.title {
+		display: none;
 	}
 }
