@@ -8,7 +8,8 @@
 // "settlement-delete",
 // "settlement-remind",
 // "settlement-approve",
-// "settlement-reject",
+// "settlement-reopen",
+// "settlement-resubmit"
 // "settlement-create-nudge",
 // "settlement-approve-nudge",
 
@@ -65,11 +66,54 @@ export default function Notification({ notification, link = "", onDelete }) {
 		const name = getName(notification.creator);
 
 		if (type === "debt-create") {
-			return name + " has created a debt with you";
+			return (
+				<>
+					<span>{name}</span> created a{" "}
+					<span className={styles.debt}>Debt</span>
+				</>
+			);
+		} else if (type === "settlement-create") {
+			return (
+				<>
+					<span>{name}</span> created a{" "}
+					<span className={styles.settlement}>Settlement</span>
+				</>
+			);
 		} else if (type === "settlement-create-nudge") {
-			return name + " nudged you to create a settlement with them";
+			return (
+				<>
+					<span>{name}</span> wants you to create a{" "}
+					<span className={styles.settlement}>Settlement</span>
+				</>
+			);
 		} else if (type === "settlement-approve-nudge") {
-			return name + " nudged you to review a settlement with them";
+			return (
+				<>
+					<span>{name}</span> wants you to review a{" "}
+					<span className={styles.settlement}>Settlement</span>
+				</>
+			);
+		} else if (type === "settlement-reopen") {
+			return (
+				<>
+					<span>{name}</span> rejected a{" "}
+					<span className={styles.settlement}>Settlement</span>
+				</>
+			);
+		} else if (type === "settlement-resubmit") {
+			return (
+				<>
+					<span>{name}</span> resubmitted a{" "}
+					<span className={styles.settlement}>Settlement</span>
+				</>
+			);
+		} else if (type === "settlement-approve") {
+			return (
+				<>
+					<span>{name}</span> approved a{" "}
+					<span className={styles.settlement}>Settlement</span>
+				</>
+			);
 		} else {
 			return <p>Unknown notification type. Contact Admin.</p>;
 		}
@@ -89,7 +133,7 @@ export default function Notification({ notification, link = "", onDelete }) {
 	return (
 		<div className={styles.wrapper} ref={hoverRef}>
 			<TextWithTitle
-				title={<p>{getMessage()}</p>}
+				title={<p className={styles.text}>{getMessage()}</p>}
 				text={formatDate(notification.dateCreated)}
 				align="left"
 			/>
@@ -109,7 +153,11 @@ export default function Notification({ notification, link = "", onDelete }) {
 }
 
 function getIconLink(type, link) {
-	if (type === "debt-create" || type === "settlement-create") {
+	if (
+		type === "debt-create" ||
+		type === "settlement-create" ||
+		type === "settlement-approve"
+	) {
 		return <IconButton icon={<MdOutlineRemoveRedEye />} href={link} />;
 	} else if (type === "settlement-create-nudge") {
 		return (
@@ -118,7 +166,11 @@ function getIconLink(type, link) {
 				href={"/settlements/create"}
 			/>
 		);
-	} else if (type === "settlement-approve-nudge") {
+	} else if (
+		type === "settlement-approve-nudge" ||
+		type === "settlement-reopen" ||
+		type === "settlement-resubmit"
+	) {
 		return <IconButton icon={<MdSearch />} href={link} />;
 	} else {
 		return;

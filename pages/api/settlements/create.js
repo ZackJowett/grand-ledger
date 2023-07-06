@@ -1,6 +1,7 @@
 import dbConnect from "/utils/mongodb";
 import Settlement from "/utils/models/settlement";
 import Debt from "/utils/models/debt";
+import { createNotification } from "/utils/data/notification";
 
 export default async function handler(req, res) {
 	await dbConnect();
@@ -26,6 +27,19 @@ export default async function handler(req, res) {
 				{ new: true }
 			);
 		}
+
+		// Create notification
+		const recipient =
+			req.body.settler === req.body.creator
+				? req.body.settlee
+				: req.body.settler;
+
+		createNotification(
+			req.body.creator,
+			[recipient],
+			"settlement-create",
+			settlement._id
+		);
 
 		res.status(200).json({ success: true, data: settlement });
 	} catch (error) {

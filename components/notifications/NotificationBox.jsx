@@ -94,10 +94,10 @@ export default function NotificationBox() {
 				) : (
 					<div ref={bellRef}>
 						<MdNotifications
+							onClick={() => setShow(!show)}
 							className={`${styles.bell} ${styles.unread} ${
 								show ? styles.show : ""
 							}`}
-							onClick={() => setShow(!show)}
 						/>
 					</div>
 				)}
