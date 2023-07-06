@@ -38,6 +38,24 @@ export async function getNotifications(userId) {
 		);
 	} catch (error) {
 		console.log(error);
-		return null;
+		res.status(400).json({ success: false, message: error.message });
+	}
+}
+
+// Delete notification
+export async function deleteNotification(notificationId) {
+	try {
+		const res = await fetch(`${getRootURL()}api/notification/delete`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id: notificationId }),
+		});
+
+		return res.json();
+	} catch (error) {
+		console.log(error);
+		res.status(400).json({ success: false, message: error.message });
 	}
 }

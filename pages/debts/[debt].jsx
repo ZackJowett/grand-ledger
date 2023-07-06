@@ -35,6 +35,8 @@ export default function Debt() {
 
 		setLoading(true);
 
+		if (!router.isReady) return;
+
 		getOneDebt(router.query.debt).then((data) => {
 			if (data) {
 				setDebt(data);
@@ -43,7 +45,7 @@ export default function Debt() {
 			}
 			setLoading(false);
 		});
-	}, [sessionStatus]);
+	}, [sessionStatus, router.isReady, router.query.debt]);
 
 	// User not logged in
 	if (sessionStatus !== "authenticated") {

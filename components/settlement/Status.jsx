@@ -9,6 +9,7 @@ import { resubmitSettlement } from "/utils/data/settlements";
 import { useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useRouter } from "next/router";
+import NudgeButton from "components/button/nudge/NudgeButton";
 
 export default function Status({ settlement, otherPartyName }) {
 	const { data: session } = useSession();
@@ -101,14 +102,17 @@ export default function Status({ settlement, otherPartyName }) {
 						tiny
 					/>
 
-					<Button
-						title="NUDGE"
-						className={styles.nudgeButton}
-						// onClick={() => handleResubmit()}
-					/>
-					<p className={styles.underButtonText}>
-						Send a gentle reminder to {otherPartyName}
-					</p>
+					<div className={styles.nudgeForm}>
+						<NudgeButton
+							user={settlement.settler}
+							name={otherPartyName}
+							settlement={settlement._id}
+							wide
+						/>
+						<p className={styles.underButtonText}>
+							Send a gentle reminder to {otherPartyName}
+						</p>
+					</div>
 				</Card>
 				<hr className={styles.hr} />
 			</>
@@ -132,18 +136,18 @@ export default function Status({ settlement, otherPartyName }) {
 							className={styles.pendingWaiting}
 							tiny
 						/>
-						<form
-							onSubmit={handleNudgeForm}
-							className={styles.nudgeForm}>
-							<Button
-								title="NUDGE"
-								className={styles.nudgeButton}
-								submit
+
+						<div className={styles.nudgeForm}>
+							<NudgeButton
+								user={settlement.settlee}
+								name={otherPartyName}
+								settlement={settlement._id}
+								wide
 							/>
 							<p className={styles.underButtonText}>
 								Send a gentle reminder to {otherPartyName}
 							</p>
-						</form>
+						</div>
 					</Card>
 					<hr className={styles.hr} />
 				</>

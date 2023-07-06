@@ -5,7 +5,7 @@
 	height: $size;
 	width: $size;
 
-	left: 25px;
+	// left: 25px;
 	padding: 0.5rem;
 	@include border($color: transparent);
 
@@ -32,7 +32,6 @@
 
 .hamburgerButton,
 .exitCross {
-	position: absolute;
 	color: var(--text);
 	&:hover {
 		cursor: pointer;

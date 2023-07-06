@@ -7,6 +7,7 @@ const notificationSchema = new Schema({
 	type: String, // Type of notification
 	// message: String, // Message to be displayed
 	target: { type: mongoose.Types.ObjectId, default: null }, // ID of debt or settlement being referenced
+	read: { type: Boolean, default: false }, // Whether the notification has been read
 	dateCreated: { type: Date, default: Date.now }, // Date the notification was created
 });
 
