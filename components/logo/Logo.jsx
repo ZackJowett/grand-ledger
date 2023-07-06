@@ -1,14 +1,15 @@
 import styles from "./Logo.module.scss";
 import Image from "next/image";
 
-export default function Logo() {
+export default function Logo({ className }) {
 	return (
 		<svg
 			width="60px"
 			height="60px"
 			viewBox="0 0 282 282"
 			version="1.1"
-			xmlns="http://www.w3.org/2000/svg">
+			xmlns="http://www.w3.org/2000/svg"
+			className={className}>
 			<g
 				id="Page-1"
 				stroke="none"

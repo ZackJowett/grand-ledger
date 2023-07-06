@@ -6,7 +6,7 @@
 	width: 100vw;
 	// padding: 2rem;
 	min-width: 300px;
-	background-color: var(--background);
+	background-color: var(--backgroundDark);
 
 	// padding-top: 20%;
 	overflow-x: hidden;
@@ -18,10 +18,11 @@
 	width: 100%;
 }
 
-.image {
-	$size: 200px;
+.logo {
+	$size: 150px;
 	width: $size;
 	height: $size;
+	margin-bottom: 1rem;
 }
 
 .title {

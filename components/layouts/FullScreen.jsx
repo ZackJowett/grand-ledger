@@ -7,6 +7,7 @@ import { getUsers } from "../../store/actions/userAction";
 import TextWithTitle from "../text/title/TextWithTitle";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Logo from "components/logo/Logo";
 
 export default function FullScreen({ children, className, title }) {
 	const router = useRouter();
@@ -57,13 +58,7 @@ export default function FullScreen({ children, className, title }) {
 					{status != "authenticated" && (
 						// Hide title & error if authenticated
 						<>
-							<Image
-								src="/images/logo.png"
-								width={1000}
-								height={1000}
-								className={styles.image}
-								alt={"Logo"}
-							/>
+							<Logo className={styles.logo} />
 							<TextWithTitle
 								title={title}
 								className={styles.title}
