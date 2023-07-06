@@ -64,7 +64,6 @@ export default function Profile() {
 	return (
 		<Layout>
 			<section className={styles.section}>
-				<NotificationBox />
 				{loading ? (
 					<Spinner title="Loading profile information..." />
 				) : (

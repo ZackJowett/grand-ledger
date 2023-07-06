@@ -166,7 +166,7 @@ export default function HamburgerMenu({ currentRoute, className }) {
 					<Link
 						href="https://zacharyjowett.dev"
 						className={styles.signature}>
-						v1.0 by Zack Jowett
+						by Zack Jowett
 					</Link>
 				</div>
 			</nav>

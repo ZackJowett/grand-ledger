@@ -31,42 +31,88 @@
 	}
 }
 
+.exitCrossWrapper {
+	@include flex(row, flex-end);
+	width: 100%;
+	padding: 1rem 1rem 0 1rem;
+}
+
 .exitCross {
-	$size: 2rem;
+	@include flex(row);
 
-	height: $size;
-	width: $size;
+	padding: 0.25rem;
 
-	position: absolute;
-	right: 1rem;
-	top: 1rem;
-	z-index: 2;
+	@include border($color: transparent, $radius: 10px);
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--background);
+	}
+
+	&:active {
+		background-color: var(--backgroundLight);
+	}
+
+	svg {
+		$size: 30px;
+		height: $size;
+		width: $size;
+
+		color: var(--subtext);
+	}
 }
 
 .hamburgerButton,
 .exitCross {
 	color: var(--text);
+	@include border($color: transparent, $radius: 10px);
+
 	&:hover {
 		cursor: pointer;
+		background-color: var(--background);
+	}
+
+	&:active {
+		background-color: var(--backgroundLight);
 	}
 }
 
-.logo {
-	width: 150px;
-	height: 150px;
+.logoWrapper {
+	@include flex;
+	width: 100%;
+	margin-bottom: 1rem;
+
+	.logo {
+		@include flex(column);
+		@include border($color: transparent);
+		text-align: center;
+
+		padding: 0.25rem;
+		&:hover {
+			cursor: pointer;
+		}
+
+		&:active {
+			background-color: var(--background);
+		}
+
+		svg {
+			margin-bottom: 0.5rem;
+		}
+	}
 }
 
 .navWrapper {
 	display: none;
 	position: fixed;
-	width: 50vw;
-	max-width: 500px;
+	width: 70vw;
+	max-width: 350px;
 	height: 100lvh;
 	top: 0;
 	left: 0;
 	z-index: 1;
 
-	min-width: 300px;
+	min-width: 200px;
 
 	background-color: var(--backgroundDark);
 
@@ -91,10 +137,4 @@
 .nav {
 	height: 100%;
 	width: 100%;
-	padding-top: 4rem;
-}
-
-.logo {
-	margin-top: 20%;
-	margin-bottom: 1rem;
 }

@@ -1,15 +1,9 @@
-import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { RxHamburgerMenu, RxCross2 } from "react-icons/rx";
-import { FaHandshake, FaHandHolding } from "react-icons/fa";
-import { IoWarning } from "react-icons/io5";
-import { TiArrowForward } from "react-icons/ti";
-import { MdSpaceDashboard, MdGroups, MdSettings } from "react-icons/md";
-import Image from "next/image";
 import DesktopNav from "./DesktopNav";
 import styles from "./MobileNav.module.scss";
-// import Logo from "../../logo/Logo";
-// import SocialsList from "@/components/icons/socialsList";
+import Logo from "components/logo/Logo";
+import Link from "next/link";
 
 export default function HamburgerMenu({ currentRoute }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +11,27 @@ export default function HamburgerMenu({ currentRoute }) {
 	const toggleMenu = () => {
 		setIsOpen(!isOpen);
 	};
+
+	// Reference for click outside hook
+	const wrapperRef = useRef(null);
+
+	useEffect(() => {
+		function handleClickOutside(event) {
+			if (
+				wrapperRef.current &&
+				!wrapperRef.current.contains(event.target)
+			) {
+				// Close notification box
+				setIsOpen(false);
+			}
+		}
+		// Bind the event listener
+		document.addEventListener("mouseup", handleClickOutside);
+		return () => {
+			// Unbind the event listener on clean up
+			document.removeEventListener("mouseup", handleClickOutside);
+		};
+	}, [wrapperRef]);
 
 	return (
 		<>
@@ -26,12 +41,21 @@ export default function HamburgerMenu({ currentRoute }) {
 				</div>
 			</div>
 			<div
+				ref={wrapperRef}
 				className={`${styles.navWrapper} ${isOpen ? styles.open : ""}`}>
-				<RxCross2
-					className={styles.exitCross}
-					size={40}
-					onClick={toggleMenu}
-				/>
+				<div className={styles.exitCrossWrapper}>
+					<div className={styles.exitCross} onClick={toggleMenu}>
+						<RxCross2 />
+					</div>
+				</div>
+
+				<div className={styles.logoWrapper}>
+					<Link className={styles.logo} href="/">
+						<Logo />
+						<h1>Grand Ledger</h1>
+					</Link>
+				</div>
+
 				<div className={styles.nav}>
 					<DesktopNav currentRoute={currentRoute} />
 				</div>

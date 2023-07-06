@@ -22,17 +22,23 @@ export default function Updates() {
 					align="left"
 					className={styles.title}
 				/>
+
+				<Card subtitle="In Development" dark>
+					<p>- Profile Photos</p>
+					<p>- Email Notifications</p>
+					<p>- Create Settlement redesign</p>
+				</Card>
 				<Card
 					title="Notifications & Logo"
-					subtitle="v1.1"
+					subtitle="v1.1 - Current"
 					badge="Thu 6 July 2023"
 					dark>
-					<ul className={styles.ul}>
-						<li>- New notification center</li>
-						<li>- New logo!</li>
-						<li>- Nudging to send a reminder to someone</li>
-						<li>- Minor styling changes</li>
-					</ul>
+					<br />
+					<p>- New notification center</p>
+					<p>- New logo</p>
+					<p>- Nudging to send a reminder to someone</p>
+					<p>- Updates page</p>
+					<p>- Minor styling changes</p>
 				</Card>
 				<Card
 					title="Launch"

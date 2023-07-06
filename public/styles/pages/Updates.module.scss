@@ -1,10 +1,7 @@
 @use "public/styles/mixins.scss" as *;
 
 .wrapper {
-	@include flex(column, $gap: 1rem);
-	width: 100%;
-
-	max-width: var(--maxWidth);
+	@include mainSection;
 }
 
 .title {
