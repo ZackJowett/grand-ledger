@@ -74,7 +74,7 @@ export default function Login({ providers }) {
 		<FullScreen title="Login">
 			{error && <p className={styles.error}>{error}</p>}
 
-			<Card className={styles.wrapper}>
+			<Card className={styles.wrapper} dark>
 				{sessionStatus == "authenticated" ? (
 					<Spinner title="Logging in..." />
 				) : (
