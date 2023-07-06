@@ -116,17 +116,17 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						<Link
 							href="/profile"
 							className={`${styles.bottomIcon} ${
-								currentRoute === "/profile"
+								currentRoute === "/profile/[[...user]]"
 									? styles.current
 									: ""
 							}`}>
-							{currentRoute === "/profile" ? (
+							{currentRoute === "/profile/[[...user]]" ? (
 								<BsPersonFill />
 							) : (
 								<BsPersonFill />
 							)}
-							{/* <h5>Profile</h5> */}
 						</Link>
+
 						<Link
 							href="/groups"
 							className={`${styles.bottomIcon} ${
@@ -137,8 +137,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							) : (
 								<MdGroups />
 							)}
-							{/* <h5>Groups</h5> */}
 						</Link>
+
 						<Link
 							href="/settings"
 							className={`${styles.bottomIcon} ${
@@ -151,7 +151,6 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							) : (
 								<MdSettings />
 							)}
-							{/* <h5>Settings</h5> */}
 						</Link>
 					</div>
 					{/* <hr className={styles.hr} /> */}
