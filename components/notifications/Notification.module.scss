@@ -1,0 +1,44 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex(row, space-between);
+	width: 100%;
+	padding: 0.25rem;
+}
+
+.text {
+	color: var(--subtext);
+
+	span {
+		color: var(--text);
+
+		&.debt {
+			color: var(--debt);
+		}
+
+		&.settlement {
+			color: var(--settlement);
+		}
+	}
+}
+
+.link {
+	@include border($color: transparent, $radius: 10px);
+
+	&:hover {
+		background-color: var(--backgroundLight);
+	}
+}
+
+.buttons {
+	@include flex(row, $gap: 0.5rem);
+	display: none;
+
+	&.show {
+		display: flex;
+	}
+
+	@include mobile-only {
+		display: flex;
+	}
+}

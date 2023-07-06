@@ -13,6 +13,7 @@ import SubmitSettlement from "components/settlement/create/form/SubmitSettlement
 import Button from "components/button/Button";
 import { createSettlement } from "utils/data/settlements";
 import TextButton from "components/button/text/TextButton";
+import NudgeButton from "components/button/nudge/NudgeButton";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
@@ -157,9 +158,9 @@ export default function CreateSettlement() {
 						Person in greater debt ({selectedUser.name}) must create
 						the settlement
 					</p>
-					<Button
-						title={`Nudge ${selectedUser.name}`}
-						className={styles.nudge}
+					<NudgeButton
+						user={selectedUser._id}
+						name={selectedUser.name}
 					/>
 				</>
 			) : (

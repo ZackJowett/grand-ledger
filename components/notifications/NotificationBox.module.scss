@@ -1,0 +1,91 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex;
+
+	display: inline-block;
+}
+
+.notifications {
+	display: none;
+	position: absolute;
+
+	width: 90vw;
+	left: 50%;
+	transform: translateX(-50%);
+	top: calc(var(--headerHeight) - 20px);
+	z-index: 3;
+
+	padding: 0.5rem;
+	@include border($color: var(--background));
+	@include shadow;
+
+	background-color: var(--background);
+
+	&.show {
+		display: flex;
+		flex-direction: column;
+	}
+
+	@include desktop-up {
+		width: 50vw;
+		min-width: 15rem;
+		max-width: 30rem;
+		right: 1rem;
+		left: auto;
+		transform: none;
+
+		&.empty {
+			width: fit-content;
+		}
+	}
+
+	&.empty {
+		justify-content: center;
+		flex-direction: row;
+	}
+}
+
+.bellWrapper {
+	@include flex(row);
+
+	color: var(--subtext);
+	padding: 0.5rem;
+
+	@include border($color: transparent, $radius: 10px);
+
+	&.show {
+		background-color: var(--background);
+	}
+
+	&.unread {
+		color: var(--red);
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--background);
+	}
+
+	&:active {
+		background-color: var(--backgroundLight);
+	}
+
+	svg {
+		$size: 25px;
+		height: $size;
+		width: $size;
+	}
+
+	@include desktop-up {
+		margin-right: 1rem;
+	}
+}
+
+.subtext {
+	color: var(--subtext);
+}
+
+.hr {
+	width: 95%;
+}

@@ -35,4 +35,16 @@ export function CardPlaceholder() {
 	);
 }
 
-module.exports = { NetPositionPlaceholder, CardPlaceholder };
+export function NotificationPlaceholder() {
+	return (
+		<ContentLoader
+			speed={2}
+			width="100%"
+			height="100%"
+			viewBox="0 0 400 80"
+			backgroundColor="#242424"
+			foregroundColor="#333">
+			<rect x="0" y="10" rx="15" ry="15" width="100%" height="70" />
+		</ContentLoader>
+	);
+}

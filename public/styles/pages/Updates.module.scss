@@ -1,0 +1,13 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include mainSection;
+}
+
+.title {
+	width: 100%;
+}
+
+.ul {
+	margin-top: 1rem;
+}

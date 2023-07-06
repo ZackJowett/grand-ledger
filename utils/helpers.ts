@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 // Takes a date string, converts it to a date object, and
 // returns a formatted date string
 // Input | date: string
@@ -39,7 +41,7 @@ async function quickFetch(url) {
 		.then((res) => res.json())
 		.then((data) => {
 			if (!data.success) {
-				console.log("Error in quickFetch()");
+				console.log("Error quick fetching: ", data.message);
 				return;
 			}
 			return data.data;
@@ -156,7 +158,6 @@ function timeSince(date) {
 
 	const now = new Date();
 
-	console.log(date);
 	var seconds = Math.floor((now.valueOf() - date) / 1000);
 	var intervalType;
 
@@ -180,7 +181,6 @@ function timeSince(date) {
 					if (interval >= 1) {
 						intervalType = "minute";
 					} else if (seconds < 9) {
-						console.log("Seconds", seconds);
 						return "now";
 					} else {
 						interval = seconds;
@@ -190,8 +190,6 @@ function timeSince(date) {
 			}
 		}
 	}
-
-	console.log(interval, intervalType, seconds);
 
 	if (interval > 1 || interval === 0) {
 		intervalType += "s";

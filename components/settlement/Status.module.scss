@@ -33,7 +33,8 @@
 }
 
 .nudgeForm {
-	@include flex(column, flex-start, flex-start);
+	// @include flex(column, flex-start, flex-start);
+	margin-top: 1rem;
 }
 
 .submitWrapper {

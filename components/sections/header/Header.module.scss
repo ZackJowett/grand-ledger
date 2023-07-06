@@ -3,13 +3,11 @@
 .header {
 	background-color: var(--backgroundDark);
 	height: var(--headerHeight);
-
-	@include flex;
 }
 
 .floatingHeader {
 	width: 100%;
-	@include flex(row);
+	@include flex(row, space-between);
 	height: var(--headerHeight);
 
 	background-color: var(--backgroundDark);
@@ -21,23 +19,50 @@
 	@include desktop-up {
 		justify-content: flex-start;
 	}
-
-	@include desktop-up {
-		padding-left: 1rem;
-	}
 	// Sticky on mobile
 	@include mobile-only {
 		position: fixed;
 		top: 0;
 		z-index: 1;
+		padding-left: 1rem;
+		padding-right: 1rem;
 	}
 }
 
-.title {
+.titleWrapper {
 	// width: 100%;
-	text-align: center;
+	flex: 1;
+	@include flex(row, $gap: 1rem);
+	position: relative;
+
+	@include border($color: transparent);
+	padding: 0.5rem 0.5rem;
+
+	&:active {
+		background-color: var(--background);
+	}
 
 	@include desktop-up {
 		text-align: left;
+		justify-content: flex-start;
+	}
+}
+
+.navWrapper {
+	flex: 1;
+	@include desktop-up {
+		display: none;
+	}
+}
+
+.notificationWrapper {
+	right: 1rem;
+	flex: 1;
+	@include flex(row, flex-end);
+}
+
+@include mobile-only {
+	.title {
+		display: none;
 	}
 }

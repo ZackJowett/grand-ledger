@@ -1,0 +1,23 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex;
+	@include border($color: transparent, $radius: 10px);
+
+	padding: 0.25rem;
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--backgroundLight);
+	}
+
+	svg {
+		$size: 25px;
+		height: $size;
+		width: $size;
+	}
+}
+
+.dark:hover {
+	background-color: var(--backgroundDark);
+}
