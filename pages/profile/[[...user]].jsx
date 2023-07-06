@@ -9,11 +9,11 @@ import UserDetails from "../../components/profile/details/UserDetails";
 import { useRouter } from "next/router";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useState, useEffect } from "react";
-import { getOne } from "utils/data/users";
+import { getOne, setAvatar } from "utils/data/users";
 import BankDetails from "components/profile/details/BankDetails";
 import UserStatistics from "components/profile/stats/UserStatistics";
 import TextButton from "components/button/text/TextButton";
-import NotificationBox from "components/notifications/NotificationBox";
+import { CldUploadButton } from "next-cloudinary";
 
 // Displays the logged in user if no user is specified in url query
 // Displays the specified user if a user is specified in url query
@@ -85,6 +85,11 @@ export default function Profile() {
 											/>
 											<ProfilePhoto
 												className={styles.photo}
+												url={
+													user.avatarURL
+														? user.avatarURL
+														: null
+												}
 											/>
 										</div>
 										<BankDetails
@@ -99,15 +104,22 @@ export default function Profile() {
 									user={user}
 								/>
 
+								{/* Show upload button if logged in */}
+								{userIsLoggedIn && (
+									<SetAvatarButton user={user} />
+								)}
+
 								{/* Show statistcs if logged in */}
 								{userIsLoggedIn && (
 									<>
 										<UserStatistics user={user} />
-										<Button
-											title="Sign out"
-											onClick={() => signOut()}
-											className={styles.signOut}
-										/>
+										<div className={styles.uploadWrapper}>
+											<Button
+												title="Sign out"
+												onClick={() => signOut()}
+												className={styles.signOut}
+											/>
+										</div>
 									</>
 								)}
 							</>
@@ -126,5 +138,36 @@ export default function Profile() {
 				)}
 			</section>
 		</Layout>
+	);
+}
+
+function SetAvatarButton(user) {
+	function handleUpload(result, widget) {
+		console.log(result, widget);
+		if (result.event === "success") {
+			setAvatar(user._id, result.info.secure_url).then((res) => {
+				if (res.success) {
+					console.log("SUCCESS YAY");
+				}
+			});
+		} else {
+			console.log("Error uploading image");
+		}
+	}
+
+	function handleError(error) {
+		console.log(error);
+	}
+
+	return (
+		<div className={styles.uploadWrapper}>
+			<CldUploadButton
+				uploadPreset="zpeljxi4"
+				onUpload={handleUpload}
+				onError={handleError}
+				className={styles.uploadButton}>
+				Upload Profile Photo
+			</CldUploadButton>
+		</div>
 	);
 }

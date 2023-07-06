@@ -1,13 +1,13 @@
-import { BsPersonFill } from "react-icons/bs";
 import styles from "./ProfilePhoto.module.scss";
 import Card from "components/card/Card";
+import Avatar from "components/avatar/Avatar";
 
-export default function ProfilePhoto({ className }) {
+export default function ProfilePhoto({ className, url }) {
 	return (
 		<Card
 			className={`${className ? className : ""} ${styles.wrapper}`}
 			dark>
-			<BsPersonFill />
+			<Avatar url={url} />
 		</Card>
 	);
 }
