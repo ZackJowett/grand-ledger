@@ -66,7 +66,7 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						<h2>Pay Someone</h2>
 					</Link>
 
-					<hr className={styles.hr} />
+					<br />
 
 					<Link
 						href="/debts"
@@ -111,7 +111,7 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						<h2 className={styles.settlements}>Settlements</h2>
 					</Link>
 
-					<hr className={styles.hr} />
+					<br />
 					<div className={styles.bottomIcons}>
 						<Link
 							href="/profile"
@@ -154,6 +154,15 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							{/* <h5>Settings</h5> */}
 						</Link>
 					</div>
+					{/* <hr className={styles.hr} /> */}
+
+					<Link
+						href="/updates"
+						className={`${styles.link} ${styles.updates} ${
+							currentRoute === "/updates" ? styles.current : ""
+						}`}>
+						<h2 className={styles.updates}>Updates</h2>
+					</Link>
 
 					<Link
 						href="https://zacharyjowett.dev"
