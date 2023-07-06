@@ -11,10 +11,12 @@ export default function Header({ currentRoute }) {
 				<div className={styles.navWrapper}>
 					<MobileNav currentRoute={currentRoute} />
 				</div>
-				<Link href="/" className={styles.titleWrapper}>
-					<Logo />
-					<h1 className={styles.title}>Grand Ledger</h1>
-				</Link>
+				<div>
+					<Link href="/" className={styles.titleWrapper}>
+						<Logo />
+						<h1 className={styles.title}>Grand Ledger</h1>
+					</Link>
+				</div>
 				<div className={styles.notificationWrapper}>
 					<NotificationBox />
 				</div>

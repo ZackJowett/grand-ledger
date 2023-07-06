@@ -20,11 +20,11 @@ export default function HamburgerMenu({ currentRoute }) {
 
 	return (
 		<>
-			<RxHamburgerMenu
-				className={styles.hamburgerButton}
-				size={30}
-				onClick={toggleMenu}
-			/>
+			<div className={styles.hamburgerWrapper}>
+				<div className={styles.hamburger} onClick={toggleMenu}>
+					<RxHamburgerMenu />
+				</div>
+			</div>
 			<div
 				className={`${styles.navWrapper} ${isOpen ? styles.open : ""}`}>
 				<RxCross2
@@ -32,12 +32,6 @@ export default function HamburgerMenu({ currentRoute }) {
 					size={40}
 					onClick={toggleMenu}
 				/>
-				{/* <Image
-					src="/images/logo.png"
-					width={500}
-					height={500}
-					className={styles.logo}
-				/> */}
 				<div className={styles.nav}>
 					<DesktopNav currentRoute={currentRoute} />
 				</div>

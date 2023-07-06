@@ -46,18 +46,13 @@
 	}
 }
 
-.bell {
-	$size: 43px;
-	height: $size;
-	width: $size;
-
+.bellWrapper {
 	@include flex(row);
 
 	color: var(--subtext);
 	padding: 0.5rem;
 
 	@include border($color: transparent, $radius: 10px);
-	margin-right: 1rem;
 
 	&.show {
 		background-color: var(--background);
@@ -69,10 +64,21 @@
 
 	&:hover {
 		cursor: pointer;
+		background-color: var(--background);
 	}
 
 	&:active {
 		background-color: var(--backgroundLight);
+	}
+
+	svg {
+		$size: 25px;
+		height: $size;
+		width: $size;
+	}
+
+	@include desktop-up {
+		margin-right: 1rem;
 	}
 }
 

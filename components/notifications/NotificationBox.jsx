@@ -74,31 +74,31 @@ export default function NotificationBox() {
 		<>
 			<div className={styles.wrapper}>
 				{notifications === null && loading === false ? (
-					<div ref={bellRef}>
-						<MdNotificationsOff
-							className={`${styles.bell} ${
-								show ? styles.show : ""
-							}`}
-							onClick={() => setShow(!show)}
-						/>
+					<div
+						ref={bellRef}
+						className={`${styles.bellWrapper} ${
+							show ? styles.show : ""
+						}`}
+						onClick={() => setShow(!show)}>
+						<MdNotificationsOff />
 					</div>
 				) : loading === true || notifications.length <= 0 ? (
-					<div ref={bellRef}>
-						<MdNotificationsNone
-							className={`${styles.bell} ${
-								show ? styles.show : ""
-							}`}
-							onClick={() => setShow(!show)}
-						/>
+					<div
+						ref={bellRef}
+						className={`${styles.bellWrapper} ${
+							show ? styles.show : ""
+						}`}
+						onClick={() => setShow(!show)}>
+						<MdNotificationsNone />
 					</div>
 				) : (
-					<div ref={bellRef}>
-						<MdNotifications
-							onClick={() => setShow(!show)}
-							className={`${styles.bell} ${styles.unread} ${
-								show ? styles.show : ""
-							}`}
-						/>
+					<div
+						ref={bellRef}
+						className={`${styles.bellWrapper} ${styles.unread} ${
+							show ? styles.show : ""
+						}`}
+						onClick={() => setShow(!show)}>
+						<MdNotifications />
 					</div>
 				)}
 				<div

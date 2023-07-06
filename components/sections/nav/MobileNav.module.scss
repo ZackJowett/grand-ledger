@@ -1,20 +1,33 @@
 @use "public/styles/mixins.scss" as *;
 
-.hamburgerButton {
-	$size: 3.25rem;
-	height: $size;
-	width: $size;
+.hamburgerWrapper {
+	@include flex(row, flex-start);
+}
 
-	// left: 25px;
+.hamburger {
+	@include flex(row);
+
+	color: var(--subtext);
 	padding: 0.5rem;
-	@include border($color: transparent);
+
+	@include border($color: transparent, $radius: 10px);
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--background);
+	}
 
 	&:active {
-		background-color: var(--background);
+		background-color: var(--backgroundLight);
 	}
 
 	@include desktop-up {
 		display: none;
+	}
+	svg {
+		$size: 25px;
+		height: $size;
+		width: $size;
 	}
 }
 

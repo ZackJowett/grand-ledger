@@ -1,17 +1,18 @@
 // Possible notification types:
-// "debt-create",
+//------  DONE
+//------  "debt-create",
 // "debt-update",
 // "debt-delete",
 // "debt-remind",
-// "settlement-create",
+//------ "settlement-create",
 // "settlement-update",
 // "settlement-delete",
 // "settlement-remind",
-// "settlement-approve",
-// "settlement-reopen",
-// "settlement-resubmit"
-// "settlement-create-nudge",
-// "settlement-approve-nudge",
+//------  "settlement-approve",
+//------  "settlement-reopen",
+//------  "settlement-resubmit"
+//------  "settlement-create-nudge",
+//------  "settlement-approve-nudge",
 
 import { formatDate } from "utils/helpers";
 import styles from "./Notification.module.scss";
