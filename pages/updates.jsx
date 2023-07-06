@@ -34,7 +34,7 @@ export default function Updates() {
 					badge="Thu 6 July 2023"
 					dark>
 					<br />
-					<p>- New notification center</p>
+					<p>- New notification centre</p>
 					<p>- New logo</p>
 					<p>- Nudging to send a reminder to someone</p>
 					<p>- Updates page</p>
