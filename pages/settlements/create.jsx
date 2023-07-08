@@ -1,17 +1,8 @@
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { getAllBetweenTwoUsers } from "/utils/data/debts";
 import Layout from "components/layouts/Layout";
 import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
 import styles from "public/styles/pages/CreateSettlement.module.scss";
 import TextWithTitle from "/components/text/title/TextWithTitle";
-import { useStore } from "react-redux";
-import Spinner from "components/placeholders/spinner/Spinner";
-import CurrentDebts from "components/settlement/create/CurrentDebts";
-import SelectUser from "components/settlement/create/form/SelectUser";
-import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
-import Button from "components/button/Button";
-import TextButton from "components/button/text/TextButton";
 import CreateSettlement from "components/settlement/create/CreateSettlement";
 
 export default function Create() {

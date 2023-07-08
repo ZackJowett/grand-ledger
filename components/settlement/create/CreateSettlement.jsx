@@ -1,25 +1,20 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getAllBetweenTwoUsers } from "/utils/data/debts";
-import Layout from "components/layouts/Layout";
-import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
 import styles from "public/styles/pages/CreateSettlement.module.scss";
-import TextWithTitle from "/components/text/title/TextWithTitle";
-import { useStore } from "react-redux";
-import Spinner from "components/placeholders/spinner/Spinner";
-import CurrentDebts from "components/settlement/create/CurrentDebts";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
-import Button from "components/button/Button";
 import { createSettlement } from "utils/data/settlements";
 import TextButton from "components/button/text/TextButton";
 import NudgeButton from "components/button/nudge/NudgeButton";
+import { useSelector } from "react-redux";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
+	const state = useSelector((state) => state);
+	const users = state.users.list;
 
 	// States
-	const [createAs, setCreateAs] = useState("creditor");
 	const [debts, setDebts] = useState(null);
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [submitError, setSubmitError] = useState(null);
@@ -27,12 +22,10 @@ export default function CreateSettlement() {
 	const [loading, setLoading] = useState(false); // String of loading state
 
 	// Redux
-	const state = useStore().getState();
-	const users = state.userList.users;
 
 	// Get all debts between two users
 	useEffect(() => {
-		if (sessionStatus !== "authenticated" || !users) return;
+		if (sessionStatus !== "authenticated" || !state.users.ready) return;
 
 		// Set default selected party that is not the user
 		if (selectedUser == null) {
@@ -139,7 +132,6 @@ export default function CreateSettlement() {
 			)}
 			<hr className={styles.hr} />
 			<SelectUser
-				users={users}
 				debts={debts}
 				selectedUser={selectedUser}
 				setSelectedUser={setSelectedUser}

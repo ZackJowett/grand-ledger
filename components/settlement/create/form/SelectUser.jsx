@@ -5,15 +5,17 @@ import { useSession } from "next-auth/react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
 import Select from "components/forms/Select";
+import { useSelector } from "react-redux";
 
 export default function SelectUser({
-	users,
 	debts,
 	selectedUser,
 	setSelectedUser,
 	stats,
 }) {
 	const { data: session } = useSession();
+	const state = useSelector((state) => state);
+	const users = state.users.list;
 
 	function handleSelectParty(selectedOption) {
 		const selectedUser = users.find(
@@ -22,12 +24,16 @@ export default function SelectUser({
 		setSelectedUser(selectedUser);
 	}
 
-	const options = users
-		.map((user) => {
-			if (user._id == session.user.id) return;
-			return { value: user._id, label: user.name };
-		})
-		.filter((item) => item);
+	let options = [];
+
+	if (state.users.ready) {
+		options = users
+			.map((user) => {
+				if (user._id == session.user.id) return;
+				return { value: user._id, label: user.name };
+			})
+			.filter((item) => item);
+	}
 
 	return (
 		<section className={styles.wrapper}>
