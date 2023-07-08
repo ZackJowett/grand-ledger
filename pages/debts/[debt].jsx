@@ -191,7 +191,7 @@ export default function Debt() {
 					{debt.status == "outstanding" && (
 						<Button
 							title={`Settle debts with ${otherPartyName}`}
-							href="/settlements/create"
+							href={`/settlements/create?id=${otherParty}`}
 							className={styles.settleButton}
 						/>
 					)}
