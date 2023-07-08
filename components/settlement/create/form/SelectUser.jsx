@@ -6,6 +6,7 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
 import Select from "components/forms/Select";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 export default function SelectUser({
 	debts,
@@ -14,6 +15,7 @@ export default function SelectUser({
 	stats,
 }) {
 	const { data: session } = useSession();
+	const router = useRouter();
 	const state = useSelector((state) => state);
 	const users = state.users.list;
 
@@ -33,6 +35,10 @@ export default function SelectUser({
 				return { value: user._id, label: user.name };
 			})
 			.filter((item) => item);
+
+		if (router.query.id) {
+			handleSelectParty({ value: router.query.id });
+		}
 	}
 
 	return (
@@ -49,7 +55,14 @@ export default function SelectUser({
 					<Select
 						options={options}
 						className={styles.select}
-						defaultValue={options[0]}
+						defaultValue={
+							router.query.id
+								? options.find(
+										(entry) =>
+											entry.value == router.query.id
+								  )
+								: options[0]
+						}
 						onChange={handleSelectParty}
 					/>
 

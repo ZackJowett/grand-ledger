@@ -143,7 +143,7 @@ export default function Notification({ notification, link = "", onDelete }) {
 				className={`${styles.buttons} ${
 					showButtons ? styles.show : ""
 				}`}>
-				{getIconLink(notification.type, link)}
+				{getIconLink(notification.type, link, notification.creator)}
 				<IconButton
 					icon={<MdClose />}
 					onClick={() => onDelete(notification._id)}
@@ -153,7 +153,7 @@ export default function Notification({ notification, link = "", onDelete }) {
 	);
 }
 
-function getIconLink(type, link) {
+function getIconLink(type, link, id) {
 	if (
 		type === "debt-create" ||
 		type === "settlement-create" ||
@@ -164,7 +164,7 @@ function getIconLink(type, link) {
 		return (
 			<IconButton
 				icon={<TiArrowForward />}
-				href={"/settlements/create"}
+				href={`/settlements/create?id=${id}`}
 			/>
 		);
 	} else if (
