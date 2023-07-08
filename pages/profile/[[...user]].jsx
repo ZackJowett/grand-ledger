@@ -20,6 +20,7 @@ import { CldUploadButton } from "next-cloudinary";
 export default function Profile() {
 	const { data: session, status: sessionStatus } = useSession();
 	const router = useRouter();
+
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState(null);
 

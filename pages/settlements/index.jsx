@@ -7,22 +7,19 @@ import styles from "public/styles/pages/Settlements.module.scss";
 import Layout from "/components/layouts/Layout";
 import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
 import Card from "/components/card/Card";
-import { useStore } from "react-redux";
 import TextWithTitle from "components/text/title/TextWithTitle";
-import Link from "next/link";
 import { filterSettlements } from "/utils/helpers";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
 import Select from "components/forms/Select";
-import Spinner from "components/placeholders/spinner/Spinner";
 import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
+import { useSelector } from "react-redux";
 
 export default function Settlements() {
 	// Session
 	const { data: session, status: sessionStatus } = useSession();
-
-	// Redux Store
-	const state = useStore().getState();
+	const userState = useSelector((state) => state.users);
+	const users = userState.list;
 
 	// User logged in
 	// States
@@ -57,19 +54,23 @@ export default function Settlements() {
 		{ value: "pending", label: "Pending" },
 		{ value: "closed", label: "Closed" },
 	];
-	const userOptions = [
-		{ value: null, label: "Everyone" },
-		...state.userList.users
-			.map((user) => {
-				// Don't include logged in user in filter
-				if (user._id == session.user.id) return;
-				return {
-					value: user._id,
-					label: user.name,
-				};
-			})
-			.filter((item) => item), // removes	undefined items
-	];
+	let userOptions = [];
+
+	if (userState.ready) {
+		userOptions = [
+			{ value: null, label: "Everyone" },
+			...users
+				.map((user) => {
+					// Don't include logged in user in filter
+					if (user._id == session.user.id) return;
+					return {
+						value: user._id,
+						label: user.name,
+					};
+				})
+				.filter((item) => item), // removes	undefined items
+		];
+	}
 
 	return (
 		<Layout>
@@ -135,10 +136,6 @@ export default function Settlements() {
 									<Settlement
 										key={index}
 										settlement={settlement}
-										globals={{
-											users: state.userList.users,
-											session: session,
-										}}
 										className={styles.settlement}
 									/>
 								);

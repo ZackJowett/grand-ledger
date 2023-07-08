@@ -5,23 +5,22 @@ import { getName, formatDate } from "/utils/helpers";
 import Link from "next/link";
 import Button from "/components/button/Button";
 import Money from "/components/text/money/Money";
+import { useSession } from "next-auth/react";
+import { useSelector } from "react-redux";
 
-export default function Settlement({ settlement, globals, className }) {
+export default function Settlement({ settlement, className }) {
+	const { data: session } = useSession();
+	const userState = useSelector((state) => state.users);
+	const users = userState.list;
+	if (!userState.ready) return;
+
 	// Set who is settling with you
 	// It shows the name of the user who is not logged in
 	let settleWith = "";
-	if (settlement.settler == globals.session.user.id) {
-		settleWith = getName(
-			settlement.settlee,
-			globals.users,
-			globals.session
-		);
+	if (settlement.settler == session.user.id) {
+		settleWith = getName(settlement.settlee, users, session);
 	} else {
-		settleWith = getName(
-			settlement.settler,
-			globals.users,
-			globals.session
-		);
+		settleWith = getName(settlement.settler, users, session);
 	}
 
 	return (
@@ -68,7 +67,7 @@ export default function Settlement({ settlement, globals, className }) {
 					: `Opened ${formatDate(settlement.dateCreated)}`}
 			</p> */}
 
-			{settlementAction(settlement, globals.session, globals.users)}
+			{settlementAction(settlement, session, users)}
 		</ClickableCard>
 	);
 }

@@ -3,14 +3,16 @@ import ClickableCard from "/components/card/ClickableCard";
 import TextWithTitle from "/components/text/title/TextWithTitle";
 import { getName, formatDate } from "/utils/helpers";
 import Money from "/components/text/money/Money";
-import { useStore } from "react-redux";
 import { useSession } from "next-auth/react";
 import { getDebtStatus } from "/utils/helpers";
+import { useSelector } from "react-redux";
 
 export default function Debt({ debt, className }) {
 	const { data: session } = useSession();
-	const state = useStore().getState();
-	const users = state.userList.users;
+	const userState = useSelector((state) => state.users);
+	if (!userState.ready) return;
+	const users = userState.list;
+
 	let userIsDebtor = debt.debtor == session.user.id;
 
 	// Get who has a debt with logged in user

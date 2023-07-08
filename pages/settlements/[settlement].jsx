@@ -3,7 +3,6 @@ import { getSettlementByID } from "/utils/data/settlements";
 import Layout from "../../components/layouts/Layout";
 import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 import { getName } from "/utils/helpers";
-import { useStore, useDispatch, useSelector } from "react-redux";
 import TextWithTitle from "/components/text/title/TextWithTitle";
 import styles from "public/styles/pages/Settlement.module.scss";
 import Badge from "components/text/badge/Badge";
@@ -19,9 +18,12 @@ import { formatDate } from "utils/helpers";
 import { useRouter } from "next/router";
 import Spinner from "components/placeholders/spinner/Spinner";
 import Button from "components/button/Button";
+import { useSelector } from "react-redux";
 
 export default function Settlement() {
 	const { data: session, status: sessionStatus } = useSession();
+	const userState = useSelector((state) => state.users);
+	const users = userState.list;
 	const router = useRouter();
 
 	// --------- States --------- \\
@@ -43,14 +45,6 @@ export default function Settlement() {
 			setLoading(false);
 		});
 	}, [sessionStatus]);
-
-	// Get Redux State
-	const dispatch = useDispatch();
-	useSelector((state) => state.userList.users);
-	useEffect(() => {
-		dispatch(getUsers());
-	}, [dispatch]);
-	const state = useStore().getState();
 
 	// --------- Effects --------- \\
 
@@ -80,6 +74,14 @@ export default function Settlement() {
 		return <LoggedOut />;
 	}
 
+	if (!userState.ready) {
+		return (
+			<Layout>
+				<Spinner title="Loading..." />
+			</Layout>
+		);
+	}
+
 	// --------- Functions --------- \\
 
 	// --------- Variables --------- \\
@@ -93,7 +95,7 @@ export default function Settlement() {
 				? settlement.settlee
 				: settlement.settler;
 
-		otherPartyName = getName(otherParty, state.userList.users, session);
+		otherPartyName = getName(otherParty, users, session);
 		status =
 			settlement.status == "pending"
 				? "Pending"
