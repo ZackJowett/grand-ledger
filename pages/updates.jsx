@@ -8,11 +8,6 @@ import styles from "public/styles/pages/Updates.module.scss";
 export default function Updates() {
 	const { data: session, status: sessionStatus } = useSession();
 
-	// User not logged in
-	if (sessionStatus !== "authenticated") {
-		return <LoggedOut />;
-	}
-
 	return (
 		<section className={styles.wrapper}>
 			<TextWithTitle

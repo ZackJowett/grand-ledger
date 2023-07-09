@@ -8,38 +8,21 @@ import Spinner from "/components/placeholders/spinner/Spinner";
 import Layout from "/components/layouts/Layout";
 
 export default function LoggedOut() {
-	const { data: session, status: sessionStatus } = useSession();
-
-	// User not logged in
-	if (sessionStatus == "loading") {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
-	}
-
 	return (
-		<FullScreen>
-			<Card className={styles.wrapper}>
-				<TextWithTitle
-					title="You are logged out"
-					text="Login to use features"
+		<Card className={styles.wrapper}>
+			<TextWithTitle
+				title="You are logged out"
+				text="Login to use features"
+			/>
+			<div className={styles.buttons}>
+				<Button title="Login" href="/login" className={styles.button} />
+				<Button
+					title="Sign Up"
+					href="/register"
+					className={styles.button}
+					secondary
 				/>
-				<div className={styles.buttons}>
-					<Button
-						title="Login"
-						href="/login"
-						className={styles.button}
-					/>
-					<Button
-						title="Sign Up"
-						href="/register"
-						className={styles.button}
-						secondary
-					/>
-				</div>
-			</Card>
-		</FullScreen>
+			</div>
+		</Card>
 	);
 }

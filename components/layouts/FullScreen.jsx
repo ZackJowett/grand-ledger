@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Logo from "components/logo/Logo";
 
-export default function FullScreen({ children, className, title }) {
+export default function FullScreen({ children, className = "", title = "" }) {
 	const router = useRouter();
 	const currentRoute = router.pathname;
 
