@@ -88,7 +88,7 @@ export default function Register() {
 	}
 
 	return (
-		<FullScreen title="Sign Up">
+		<>
 			{error && <p className={styles.error}>{error}</p>}
 			<Card className={styles.wrapper} dark>
 				{sessionStatus == "authenticated" ? (
@@ -167,6 +167,6 @@ export default function Register() {
 					</Card>
 				)}
 			</Card>
-		</FullScreen>
+		</>
 	);
 }

@@ -69,11 +69,7 @@ export default function Debts() {
 
 	// Loading
 	if (!debts || !users) {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
+		return <Spinner />;
 	}
 
 	// Filter debts
@@ -107,108 +103,103 @@ export default function Debts() {
 
 	// Logged in
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<div className={styles.heading}>
+		<section className={styles.wrapper}>
+			<div className={styles.heading}>
+				<TextWithTitle
+					title="Debts"
+					text="A debt is an amount of money you owe someone"
+					align="left"
+				/>
+				<p className={styles.callToSettle}>
+					You can settle multiple debts to the same person at once{" "}
+					<Link href="/settlements/create" className={styles.link}>
+						here
+					</Link>
+				</p>
+			</div>
+			<div className={styles.buttons}>
+				<Button
+					title="Pay Someone"
+					icon={<TiArrowForward />}
+					href="/settlements/create"
+					className={styles.create}
+				/>
+				<Button
+					title="New Debt"
+					icon={<FiPlusSquare />}
+					href="/debts/create"
+					className={styles.create}
+					secondary
+				/>
+			</div>
+
+			<Card dark title="Debts" className={styles.debtsWrapper}>
+				{totalDebt ? (
 					<TextWithTitle
-						title="Debts"
-						text="A debt is an amount of money you owe someone"
+						title={
+							<Money
+								amount={-totalDebt}
+								background
+								backgroundFit
+								padding
+							/>
+						}
+						text={"Total Outstanding"}
+						small
+						reverse
 						align="left"
+						className={styles.totals}
 					/>
-					<p className={styles.callToSettle}>
-						You can settle multiple debts to the same person at once{" "}
-						<Link
-							href="/settlements/create"
-							className={styles.link}>
-							here
-						</Link>
-					</p>
-				</div>
-				<div className={styles.buttons}>
-					<Button
-						title="Pay Someone"
-						icon={<TiArrowForward />}
-						href="/settlements/create"
-						className={styles.create}
+				) : (
+					<Spinner title="Calculating totals..." />
+				)}
+				<hr className={styles.hr} />
+				<div className={styles.filters}>
+					<Select
+						options={options}
+						defaultValue={options[1]}
+						className={styles.select}
+						onChange={handleFilterSelect}
 					/>
-					<Button
-						title="New Debt"
-						icon={<FiPlusSquare />}
-						href="/debts/create"
-						className={styles.create}
-						secondary
+					<Select
+						options={userOptions}
+						defaultValue={userOptions[0]}
+						className={styles.select}
+						onChange={handleUserFilterSelect}
 					/>
 				</div>
-
-				<Card dark title="Debts" className={styles.debtsWrapper}>
-					{totalDebt ? (
-						<TextWithTitle
-							title={
-								<Money
-									amount={-totalDebt}
-									background
-									backgroundFit
-									padding
-								/>
-							}
-							text={"Total Outstanding"}
-							small
-							reverse
-							align="left"
-							className={styles.totals}
-						/>
-					) : (
-						<Spinner title="Calculating totals..." />
+				<div className={styles.cards}>
+					{debts && debts.length == 0 && (
+						<p className={styles.noDebts}>
+							{`You have no ${
+								filter != "all" ? filter : ""
+							} debts. Well done!`}
+						</p>
 					)}
-					<hr className={styles.hr} />
-					<div className={styles.filters}>
-						<Select
-							options={options}
-							defaultValue={options[1]}
-							className={styles.select}
-							onChange={handleFilterSelect}
-						/>
-						<Select
-							options={userOptions}
-							defaultValue={userOptions[0]}
-							className={styles.select}
-							onChange={handleUserFilterSelect}
-						/>
-					</div>
-					<div className={styles.cards}>
-						{debts && debts.length == 0 && (
-							<p className={styles.noDebts}>
-								{`You have no ${
-									filter != "all" ? filter : ""
-								} debts. Well done!`}
-							</p>
-						)}
-						{debts ? (
-							debts.map((debt, index) => {
-								if (!filterDebts(debt, filter, userFilter))
-									return;
+					{debts ? (
+						debts.map((debt, index) => {
+							if (!filterDebts(debt, filter, userFilter)) return;
 
-								return (
-									<Debt
-										key={index}
-										debt={debt}
-										globals={{
-											session: session,
-											users: users,
-										}}
-									/>
-								);
-							})
-						) : (
-							<>
-								<CardPlaceholder />
-								<CardPlaceholder />
-								<CardPlaceholder />
-							</>
-						)}
-					</div>
-				</Card>
-			</section>
-		</Layout>
+							return (
+								<Debt
+									key={index}
+									debt={debt}
+									globals={{
+										session: session,
+										users: users,
+									}}
+								/>
+							);
+						})
+					) : (
+						<>
+							<CardPlaceholder />
+							<CardPlaceholder />
+							<CardPlaceholder />
+						</>
+					)}
+				</div>
+			</Card>
+		</section>
 	);
 }

@@ -73,83 +73,81 @@ export default function Settlements() {
 	}
 
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<div className={styles.heading}>
-					<TextWithTitle
-						title="Settlements"
-						text="An offer to close multiple debts to the same person"
-						align="left"
+		<section className={styles.wrapper}>
+			<div className={styles.heading}>
+				<TextWithTitle
+					title="Settlements"
+					text="An offer to close multiple debts to the same person"
+					align="left"
+				/>
+			</div>
+			<div className={styles.buttons}>
+				<Button
+					title="New Settlement"
+					icon={<TiArrowForward />}
+					href="/settlements/create"
+					className={styles.create}
+				/>
+				<Button
+					title="New Debt"
+					icon={<FiPlusSquare />}
+					href="/debts/create"
+					className={styles.create}
+					secondary
+				/>
+			</div>
+			<Card dark title="Settlements">
+				<hr className={styles.hr} />
+				<div className={styles.filters}>
+					<Select
+						options={options}
+						defaultValue={options[0]}
+						className={styles.select}
+						onChange={handleFilterSelect}
+					/>
+					<Select
+						options={userOptions}
+						defaultValue={userOptions[0]}
+						className={styles.select}
+						onChange={handleUserFilterSelect}
 					/>
 				</div>
-				<div className={styles.buttons}>
-					<Button
-						title="New Settlement"
-						icon={<TiArrowForward />}
-						href="/settlements/create"
-						className={styles.create}
-					/>
-					<Button
-						title="New Debt"
-						icon={<FiPlusSquare />}
-						href="/debts/create"
-						className={styles.create}
-						secondary
-					/>
-				</div>
-				<Card dark title="Settlements">
-					<hr className={styles.hr} />
-					<div className={styles.filters}>
-						<Select
-							options={options}
-							defaultValue={options[0]}
-							className={styles.select}
-							onChange={handleFilterSelect}
-						/>
-						<Select
-							options={userOptions}
-							defaultValue={userOptions[0]}
-							className={styles.select}
-							onChange={handleUserFilterSelect}
-						/>
-					</div>
-					<div className={styles.cards}>
-						{settlements && settlements.length == 0 && (
-							<p className={styles.noSettlements}>
-								{`You have no ${
-									filter != "all" ? filter : ""
-								} settlements`}
-							</p>
-						)}
-						{settlements ? (
-							settlements.map((settlement, index) => {
-								if (
-									!filterSettlements(
-										settlement,
-										filter,
-										userFilter
-									)
+				<div className={styles.cards}>
+					{settlements && settlements.length == 0 && (
+						<p className={styles.noSettlements}>
+							{`You have no ${
+								filter != "all" ? filter : ""
+							} settlements`}
+						</p>
+					)}
+					{settlements ? (
+						settlements.map((settlement, index) => {
+							if (
+								!filterSettlements(
+									settlement,
+									filter,
+									userFilter
 								)
-									return;
+							)
+								return;
 
-								return (
-									<Settlement
-										key={index}
-										settlement={settlement}
-										className={styles.settlement}
-									/>
-								);
-							})
-						) : (
-							<>
-								<CardPlaceholder />
-								<CardPlaceholder />
-								<CardPlaceholder />
-							</>
-						)}
-					</div>
-				</Card>
-			</section>
-		</Layout>
+							return (
+								<Settlement
+									key={index}
+									settlement={settlement}
+									className={styles.settlement}
+								/>
+							);
+						})
+					) : (
+						<>
+							<CardPlaceholder />
+							<CardPlaceholder />
+							<CardPlaceholder />
+						</>
+					)}
+				</div>
+			</Card>
+		</section>
 	);
 }

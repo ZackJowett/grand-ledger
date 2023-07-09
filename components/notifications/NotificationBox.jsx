@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./NotificationBox.module.scss";
-import {
-	getNotifications,
-	createNotification,
-	deleteNotification,
-} from "utils/data/notification";
+import { getNotifications, deleteNotification } from "utils/data/notification";
 import { useSession } from "next-auth/react";
 import Notification from "./Notification";
 import {
@@ -51,10 +47,11 @@ export default function NotificationBox() {
 		// Get notifications
 		getNotifications(session.user.id).then((data) => {
 			if (data === null) return;
+
 			setNotifications(data);
 			setLoading(false);
 		});
-	}, []);
+	}, [sessionStatus]);
 
 	// Delete notification
 	function onDelete(id) {
@@ -65,82 +62,78 @@ export default function NotificationBox() {
 		// Delete notification from database
 		deleteNotification(id);
 	}
-	// Create new notifications
 
 	// User not logged in
 	if (sessionStatus !== "authenticated") return;
 
 	return (
-		<>
-			<div className={styles.wrapper}>
-				{notifications === null && loading === false ? (
-					<div
-						ref={bellRef}
-						className={`${styles.bellWrapper} ${
-							show ? styles.show : ""
-						}`}
-						onClick={() => setShow(!show)}>
-						<MdNotificationsOff />
-					</div>
-				) : loading === true || notifications.length <= 0 ? (
-					<div
-						ref={bellRef}
-						className={`${styles.bellWrapper} ${
-							show ? styles.show : ""
-						}`}
-						onClick={() => setShow(!show)}>
-						<MdNotificationsNone />
-					</div>
-				) : (
-					<div
-						ref={bellRef}
-						className={`${styles.bellWrapper} ${styles.unread} ${
-							show ? styles.show : ""
-						}`}
-						onClick={() => setShow(!show)}>
-						<MdNotifications />
-					</div>
-				)}
+		<div className={styles.wrapper}>
+			{notifications === null && loading === false ? (
 				<div
-					className={`${styles.notifications} ${
+					ref={bellRef}
+					className={`${styles.bellWrapper} ${
 						show ? styles.show : ""
-					} ${
-						loading ||
-						notifications === null ||
-						notifications.length <= 0
-							? styles.empty
-							: ""
 					}`}
-					ref={wrapperRef}>
-					{loading === true ? (
-						<Spinner />
-					) : notifications === null ? (
-						<p>Error fetching notifications</p>
-					) : notifications.length <= 0 ? (
-						<p className={styles.subtext}>No notifications</p>
-					) : (
-						notifications.map((notification, index) => {
-							return (
-								<>
-									<Notification
-										key={notification._id}
-										notification={notification}
-										link={getLink(notification)}
-										onDelete={onDelete}
-									/>
-
-									{/* Add horizontal rule */}
-									{notifications.length > 1 &&
-										index < notifications.length - 1 && (
-											<hr className={styles.hr} />
-										)}
-								</>
-							);
-						})
-					)}
+					onClick={() => setShow(!show)}>
+					<MdNotificationsOff />
 				</div>
+			) : loading === true || notifications.length <= 0 ? (
+				<div
+					ref={bellRef}
+					className={`${styles.bellWrapper} ${
+						show ? styles.show : ""
+					}`}
+					onClick={() => setShow(!show)}>
+					<MdNotificationsNone />
+				</div>
+			) : (
+				<div
+					ref={bellRef}
+					className={`${styles.bellWrapper} ${styles.unread} ${
+						show ? styles.show : ""
+					}`}
+					onClick={() => setShow(!show)}>
+					<MdNotifications />
+				</div>
+			)}
+			<div
+				className={`${styles.notifications} ${
+					show ? styles.show : ""
+				} ${
+					loading ||
+					notifications === null ||
+					notifications.length <= 0
+						? styles.empty
+						: ""
+				}`}
+				ref={wrapperRef}>
+				{loading === true ? (
+					<Spinner />
+				) : notifications === null ? (
+					<p>Error fetching notifications</p>
+				) : notifications.length <= 0 ? (
+					<p className={styles.subtext}>No notifications</p>
+				) : (
+					notifications.map((notification, index) => {
+						return (
+							<div key={notification._id}>
+								<Notification
+									notification={notification}
+									link={getLink(notification)}
+									onDelete={onDelete}
+								/>
+
+								{/* Add horizontal rule */}
+								{notifications.length > 1 &&
+									index < notifications.length - 1 && (
+										<hr className={styles.hr} />
+									)}
+							</div>
+						);
+					})
+				)}
 			</div>
-		</>
+		</div>
 	);
 }
 

@@ -14,27 +14,25 @@ export default function Create() {
 	}
 
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<TextWithTitle
-					title={`Create Settlement`}
-					text="Pay outstanding balances to someone"
-					className={styles.header}
-					align="left"
-					large
-				/>
+		<section className={styles.wrapper}>
+			<TextWithTitle
+				title={`Create Settlement`}
+				text="Pay outstanding balances to someone"
+				className={styles.header}
+				align="left"
+				large
+			/>
 
-				<p className={styles.desc}>
-					1. Select someone to settle with
-					<br />
-					2. Check difference and if you need to pay them <br />
-					3. Pay them the difference <br />
-					4. Confirm
-				</p>
-				{/* <CurrentDebts /> */}
-				<hr className={styles.hr} />
-				<CreateSettlement />
-			</section>
-		</Layout>
+			<p className={styles.desc}>
+				1. Select someone to settle with
+				<br />
+				2. Check difference and if you need to pay them <br />
+				3. Pay them the difference <br />
+				4. Confirm
+			</p>
+			{/* <CurrentDebts /> */}
+			<hr className={styles.hr} />
+			<CreateSettlement />
+		</section>
 	);
 }

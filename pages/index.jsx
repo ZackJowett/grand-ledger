@@ -11,9 +11,5 @@ export default function Home() {
 		console.log(sessionStatus);
 		return <LoggedOut />;
 	}
-	return (
-		<Layout>
-			<Main />
-		</Layout>
-	);
+	return <Main />;
 }

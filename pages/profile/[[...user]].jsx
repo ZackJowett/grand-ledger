@@ -1,5 +1,4 @@
 import { signOut, useSession } from "next-auth/react";
-import Layout from "../../components/layouts/Layout";
 import LoggedOut from "../../components/sections/login/loggedOut/LoggedOut";
 import Card from "../../components/card/Card";
 import styles from "public/styles/pages/Profile.module.scss";
@@ -63,82 +62,76 @@ export default function Profile() {
 		session.user.id === user._id;
 
 	return (
-		<Layout>
-			<section className={styles.section}>
-				{loading ? (
-					<Spinner title="Loading profile information..." />
-				) : (
-					<>
-						{user ? (
-							<>
-								<Card className={styles.detailsWrapper}>
-									<div className={styles.details}>
-										<div className={styles.welcome}>
-											<Card
-												pretitle={
-													userIsLoggedIn
-														? "Hello"
-														: null
-												}
-												title={user.name}
-												className={styles.welcomeCard}
-												dark
-											/>
-											<ProfilePhoto
-												className={styles.photo}
-												url={
-													user.avatarURL
-														? user.avatarURL
-														: null
-												}
-											/>
-										</div>
-										<BankDetails
-											user={user}
-											className={styles.bankDetails}
+		<section className={styles.section}>
+			{loading ? (
+				<Spinner title="Loading profile information..." />
+			) : (
+				<>
+					{user ? (
+						<>
+							<Card className={styles.detailsWrapper}>
+								<div className={styles.details}>
+									<div className={styles.welcome}>
+										<Card
+											pretitle={
+												userIsLoggedIn ? "Hello" : null
+											}
+											title={user.name}
+											className={styles.welcomeCard}
+											dark
+										/>
+										<ProfilePhoto
+											className={styles.photo}
+											url={
+												user.avatarURL
+													? user.avatarURL
+													: null
+											}
 										/>
 									</div>
-								</Card>
+									<BankDetails
+										user={user}
+										className={styles.bankDetails}
+									/>
+								</div>
+							</Card>
 
-								<UserDetails
-									className={styles.userDetails}
-									user={user}
-								/>
+							<UserDetails
+								className={styles.userDetails}
+								user={user}
+							/>
 
-								{/* Show upload button if logged in */}
-								{userIsLoggedIn && (
-									<SetAvatarButton user={user} />
-								)}
+							{/* Show upload button if logged in */}
+							{userIsLoggedIn && <SetAvatarButton user={user} />}
 
-								{/* Show statistcs if logged in */}
-								{userIsLoggedIn && (
-									<>
-										<UserStatistics user={user} />
-										<div className={styles.uploadWrapper}>
-											<Button
-												title="Sign out"
-												onClick={() => signOut()}
-												className={styles.signOut}
-											/>
-										</div>
-									</>
-								)}
-							</>
-						) : (
-							<p>
-								Could not fetch profile data.{" "}
-								<TextButton
-									title="Refresh"
-									onClick={() => {
-										router.reload();
-									}}
-								/>
-							</p>
-						)}
-					</>
-				)}
-			</section>
-		</Layout>
+							{/* Show statistcs if logged in */}
+							{userIsLoggedIn && (
+								<>
+									<UserStatistics user={user} />
+									<div className={styles.uploadWrapper}>
+										<Button
+											title="Sign out"
+											onClick={() => signOut()}
+											className={styles.signOut}
+										/>
+									</div>
+								</>
+							)}
+						</>
+					) : (
+						<p>
+							Could not fetch profile data.{" "}
+							<TextButton
+								title="Refresh"
+								onClick={() => {
+									router.reload();
+								}}
+							/>
+						</p>
+					)}
+				</>
+			)}
+		</section>
 	);
 }
 

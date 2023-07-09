@@ -10,9 +10,5 @@ export default function Settings() {
 		return <LoggedOut />;
 	}
 
-	return (
-		<Layout>
-			<h1>Settings (Coming Soon)</h1>
-		</Layout>
-	);
+	return <h1>Settings (Coming Soon)</h1>;
 }

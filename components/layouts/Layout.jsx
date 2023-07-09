@@ -9,7 +9,11 @@ import { update } from "store/slices/usersSlice";
 import { useEffect } from "react";
 import { getAllUsers } from "utils/data/users";
 
-export default function Layout({ children, className, includeBack = false }) {
+export default function Layout({
+	children,
+	className = "",
+	includeBack = false,
+}) {
 	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -52,7 +56,7 @@ export default function Layout({ children, className, includeBack = false }) {
 					sizes="16x16"
 					href="/favicon/favicon-16x16.png"
 				/>
-				<link rel="manifest" href="/favicon/site.webmanifest" />
+				<link rel="manifest" href="/favicon/manifest.webmanifest" />
 			</Head>
 
 			<main className={styles.main}>

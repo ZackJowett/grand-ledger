@@ -75,11 +75,7 @@ export default function Settlement() {
 	}
 
 	if (!userState.ready) {
-		return (
-			<Layout>
-				<Spinner title="Loading..." />
-			</Layout>
-		);
+		return <Spinner title="Loading..." />;
 	}
 
 	// --------- Functions --------- \\
@@ -111,126 +107,102 @@ export default function Settlement() {
 	}
 
 	if (loading) {
-		return (
-			<Layout>
-				<Spinner title="Fetching settlement..." />
-			</Layout>
-		);
+		return <Spinner title="Fetching settlement..." />;
 	}
 
 	if (deleteLoading) {
-		return (
-			<Layout>
-				<Spinner title="Deleting Settlement..." />
-			</Layout>
-		);
+		return <Spinner title="Deleting Settlement..." />;
 	}
 
 	if (deleteStatus !== null) {
 		return (
-			<Layout>
-				<section className={styles.deletedWrapper}>
-					{deleteStatus === "success" ? (
-						<>
-							<p>{"Successfully deleted"}</p>
-							<Button
-								title="Back"
-								onClick={() => router.back()}
-							/>
-						</>
-					) : (
-						<>
-							<p>Failed to delete settlement</p>
-							<Button
-								title="Back"
-								onClick={() => router.reload()}
-							/>
-						</>
-					)}
-				</section>
-			</Layout>
+			<section className={styles.deletedWrapper}>
+				{deleteStatus === "success" ? (
+					<>
+						<p>{"Successfully deleted"}</p>
+						<Button title="Back" onClick={() => router.back()} />
+					</>
+				) : (
+					<>
+						<p>Failed to delete settlement</p>
+						<Button title="Back" onClick={() => router.reload()} />
+					</>
+				)}
+			</section>
 		);
 	}
 
 	return (
-		<Layout includeBack>
-			<section className={styles.flexWrapper}>
-				<div className={styles.header}>
-					<TextWithTitle
-						title={`Settlement with ${otherPartyName}`}
-						text={`Identifier: ${settlement._id}`}
-						className={styles.title}
-						align="left"
-						large
-					/>
-					<Badge
-						title={status}
-						color={settlement.status}
-						className={styles.badge}
-					/>
-				</div>
-
-				<Status
-					settlement={settlement}
-					otherPartyName={otherPartyName}
-				/>
-
+		<section className={styles.flexWrapper}>
+			<div className={styles.header}>
 				<TextWithTitle
-					title="Overview"
+					title={`Settlement with ${otherPartyName}`}
+					text={`Identifier: ${settlement._id}`}
 					className={styles.title}
 					align="left"
+					large
 				/>
-				<Overview stats={stats} otherPartyName={otherPartyName} />
+				<Badge
+					title={status}
+					color={settlement.status}
+					className={styles.badge}
+				/>
+			</div>
 
-				<TextWithTitle
-					title="Details"
-					className={styles.title}
-					align="left"
-				/>
-				<Details
-					settlement={settlement}
-					otherPartyName={otherPartyName}
-				/>
+			<Status settlement={settlement} otherPartyName={otherPartyName} />
 
-				<TextWithTitle
-					title="Debts Included"
-					className={styles.title}
-					align="left"
-				/>
-				<DebtsIncluded debts={debts} stats={stats} />
+			<TextWithTitle
+				title="Overview"
+				className={styles.title}
+				align="left"
+			/>
+			<Overview stats={stats} otherPartyName={otherPartyName} />
 
-				{/* Delete Settlement */}
-				{settlement.status != "closed" &&
-					settlement.creator == session.user.id && (
-						<div className={styles.deleteWrapper}>
-							{confirmDelete ? (
-								<>
-									<Button
-										title="Cancel"
-										className={styles.cancel}
-										onClick={() => {
-											setConfirmDelete(false);
-										}}
-									/>
-									<Button
-										title="Confirm Deletion"
-										className={styles.delete}
-										onClick={() => {
-											handleDeleteSettlement();
-										}}
-									/>
-								</>
-							) : (
+			<TextWithTitle
+				title="Details"
+				className={styles.title}
+				align="left"
+			/>
+			<Details settlement={settlement} otherPartyName={otherPartyName} />
+
+			<TextWithTitle
+				title="Debts Included"
+				className={styles.title}
+				align="left"
+			/>
+			<DebtsIncluded debts={debts} stats={stats} />
+
+			{/* Delete Settlement */}
+			{settlement.status != "closed" &&
+				settlement.creator == session.user.id && (
+					<div className={styles.deleteWrapper}>
+						{confirmDelete ? (
+							<>
 								<Button
-									title="Delete"
-									className={styles.delete}
-									onClick={() => setConfirmDelete(true)}
+									title="Cancel"
+									className={styles.cancel}
+									onClick={() => {
+										setConfirmDelete(false);
+									}}
 								/>
-							)}
-						</div>
-					)}
-			</section>
-		</Layout>
+								<Button
+									title="Confirm Deletion"
+									className={styles.delete}
+									onClick={() => {
+										handleDeleteSettlement();
+									}}
+								/>
+							</>
+						) : (
+							<Button
+								title="Delete"
+								className={styles.delete}
+								onClick={() => setConfirmDelete(true)}
+							/>
+						)}
+					</div>
+				)}
+		</section>
 	);
 }
 

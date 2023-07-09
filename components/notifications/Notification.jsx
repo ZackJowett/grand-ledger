@@ -18,30 +18,20 @@ import { formatDate } from "utils/helpers";
 import styles from "./Notification.module.scss";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import { useState, useEffect, useRef } from "react";
-import { getAllUsers } from "utils/data/users";
 import { useSession } from "next-auth/react";
 import IconButton from "components/button/icon/IconButton";
 import { MdClose, MdOutlineRemoveRedEye, MdSearch } from "react-icons/md";
 import { TiArrowForward } from "react-icons/ti";
-
-import { NotificationPlaceholder } from "../placeholders/Placeholders";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 export default function Notification({ notification, link = "", onDelete }) {
 	const { data: session, status: sessionStatus } = useSession();
+	const state = useSelector((state) => state);
 	const router = useRouter();
 
-	const [users, setUsers] = useState([]);
 	const [showButtons, setShowButtons] = useState(false);
 	// const [loading, setLoading] = useState(true);
-
-	// Get All users
-	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-		getAllUsers().then((res) => {
-			setUsers(res);
-		});
-	}, [sessionStatus]);
 
 	// Get hover
 	const hoverRef = useRef(null);
@@ -61,6 +51,10 @@ export default function Notification({ notification, link = "", onDelete }) {
 			document.removeEventListener("mouseover", handleClickOutside);
 		};
 	}, [hoverRef]);
+
+	// Wait for users to load
+	if (!state.users.ready) return;
+	const users = state.users.list;
 
 	function getMessage() {
 		const type = notification.type;

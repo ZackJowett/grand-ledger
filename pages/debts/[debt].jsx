@@ -55,9 +55,7 @@ export default function Debt() {
 
 	// Users data not loaded
 	if (!userState.ready) {
-		<Layout>
-			<Spinner title="Loading..." />
-		</Layout>;
+		<Spinner title="Loading..." />;
 	}
 
 	// Wait for debt to load
@@ -120,49 +118,33 @@ export default function Debt() {
 	}
 
 	if (loading) {
-		return (
-			<Layout>
-				<Spinner title="Fetching debt..." />
-			</Layout>
-		);
+		return <Spinner title="Fetching debt..." />;
 	}
 
 	if (deleteLoading) {
-		return (
-			<Layout>
-				<Spinner title="Deleting Debt..." />
-			</Layout>
-		);
+		return <Spinner title="Deleting Debt..." />;
 	}
 
 	if (deleteStatus !== null) {
 		return (
-			<Layout>
-				<section className={styles.deletedWrapper}>
-					{deleteStatus === "success" ? (
-						<>
-							<p>{"Successfully deleted"}</p>
-							<Button
-								title="Back"
-								onClick={() => router.back()}
-							/>
-						</>
-					) : (
-						<>
-							<p>Failed to delete debt</p>
-							<Button
-								title="Back"
-								onClick={() => router.reload()}
-							/>
-						</>
-					)}
-				</section>
-			</Layout>
+			<section className={styles.deletedWrapper}>
+				{deleteStatus === "success" ? (
+					<>
+						<p>{"Successfully deleted"}</p>
+						<Button title="Back" onClick={() => router.back()} />
+					</>
+				) : (
+					<>
+						<p>Failed to delete debt</p>
+						<Button title="Back" onClick={() => router.reload()} />
+					</>
+				)}
+			</section>
 		);
 	}
 
 	return (
-		<Layout includeBack>
+		<>
 			{debt ? (
 				<section className={styles.wrapper}>
 					<div className={styles.header}>
@@ -290,6 +272,6 @@ export default function Debt() {
 			) : (
 				<p>Could not find debt.</p>
 			)}
-		</Layout>
+		</>
 	);
 }

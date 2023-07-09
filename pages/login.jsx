@@ -71,7 +71,7 @@ export default function Login({ providers }) {
 	};
 
 	return (
-		<FullScreen title="Login">
+		<>
 			{error && <p className={styles.error}>{error}</p>}
 
 			<Card className={styles.wrapper} dark>
@@ -138,7 +138,7 @@ export default function Login({ providers }) {
 					</div>
 				)}
 			</Card>
-		</FullScreen>
+		</>
 	);
 }
 
