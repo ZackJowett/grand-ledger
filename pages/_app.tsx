@@ -53,7 +53,11 @@ function DynamicLayout({ Component, pageProps }) {
 			</FullScreen>
 		);
 	} else if (sessionStatus === "unauthenticated" && !layoutFullScreen) {
-		return <LoggedOut />;
+		return (
+			<FullScreen>
+				<LoggedOut />
+			</FullScreen>
+		);
 	}
 
 	return (

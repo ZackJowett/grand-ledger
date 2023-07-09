@@ -9,7 +9,7 @@ import Layout from "/components/layouts/Layout";
 
 export default function LoggedOut() {
 	return (
-		<Card className={styles.wrapper}>
+		<Card className={styles.wrapper} dark>
 			<TextWithTitle
 				title="You are logged out"
 				text="Login to use features"
