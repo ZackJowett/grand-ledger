@@ -2,10 +2,6 @@ import Card from "/components/card/Card";
 import TextWithTitle from "/components/text/title/TextWithTitle";
 import Button from "/components/button/Button";
 import styles from "./LoggedOut.module.scss";
-import FullScreen from "/components/layouts/FullScreen";
-import { useSession } from "next-auth/react";
-import Spinner from "/components/placeholders/spinner/Spinner";
-import Layout from "/components/layouts/Layout";
 
 export default function LoggedOut() {
 	return (
