@@ -2,7 +2,7 @@ import Card from "components/card/Card";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import styles from "./SingularDebt.module.scss";
 import { RxCross2 } from "react-icons/rx";
-import { useStore } from "react-redux";
+import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Select from "components/forms/Select";
@@ -16,8 +16,8 @@ export default function SingularDebt({
 	className,
 }) {
 	const { data: session } = useSession();
-	const state = useStore().getState();
-	const users = state.userList.users;
+	const state = useSelector((state) => state);
+	const users = state.users.list;
 
 	const [amount, setAmount] = useState({ id: debt.id, value: debt.amount });
 
@@ -90,12 +90,16 @@ export default function SingularDebt({
 		{ value: "debtor", label: "Debtor" },
 	];
 
-	const optionOtherParty = users
-		.map((user) => {
-			if (user._id === session.user.id) return;
-			return { value: user._id, label: user.name };
-		})
-		.filter((item) => item);
+	let optionOtherParty = null;
+
+	if (state.users.ready) {
+		optionOtherParty = users
+			.map((user) => {
+				if (user._id === session.user.id) return;
+				return { value: user._id, label: user.name };
+			})
+			.filter((item) => item);
+	}
 
 	return (
 		<Card dark className={className ? className : ""}>

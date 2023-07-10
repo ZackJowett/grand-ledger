@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const debtSchema = new Schema({
 	// id: { type: Number, unique: true },
+	id: { type: Number, unique: true },
 	creditor: mongoose.Types.ObjectId,
 	debtor: mongoose.Types.ObjectId,
 	creator: mongoose.Types.ObjectId,

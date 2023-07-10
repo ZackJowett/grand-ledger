@@ -150,7 +150,7 @@ export default function Debt() {
 					<div className={styles.header}>
 						<TextWithTitle
 							title={getDebtTitle()}
-							text={`Identifier: ${debt._id}`}
+							text={`Identifier: ${debt.id ? debt.id : debt._id}`}
 							className={styles.title}
 							align="left"
 							large
