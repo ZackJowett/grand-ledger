@@ -6,12 +6,12 @@
 }
 
 .select {
-	max-width: 15rem;
+	min-width: 15rem;
+	max-width: 100%;
 }
 
 .stats {
 	@include flex(column, flex-start, center, $gap: 2rem);
-	margin-top: 1rem;
 
 	.debts {
 		@include flex(row, space-between, center, $gap: 1rem);
@@ -21,6 +21,10 @@
 			width: 100%;
 		}
 	}
+}
+
+.netPos {
+	margin-top: 1rem;
 }
 
 .info {

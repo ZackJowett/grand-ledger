@@ -48,26 +48,26 @@ export default function SelectUser({
 				className={styles.header}
 				align="left"
 			/>
+			<Select
+				options={options}
+				className={styles.select}
+				defaultValue={
+					router.query.id
+						? options.find(
+								(entry) => entry.value == router.query.id
+						  )
+						: options[0]
+				}
+				onChange={handleSelectParty}
+			/>
 			{!users ? (
 				<Spinner title="Loading users..." />
 			) : (
 				<Card dark>
-					<Select
-						options={options}
-						className={styles.select}
-						defaultValue={
-							router.query.id
-								? options.find(
-										(entry) =>
-											entry.value == router.query.id
-								  )
-								: options[0]
-						}
-						onChange={handleSelectParty}
-					/>
-
 					{!debts ? (
 						<Spinner title="Loading debts..." />
+					) : stats.net == 0 ? (
+						"You are even"
 					) : (
 						<div className={styles.stats}>
 							<div className={styles.debts}>
@@ -101,25 +101,28 @@ export default function SelectUser({
 							<hr className={styles.hr} />
 							<div>
 								<TextWithTitle
-									title={`Net Position`}
-									text={
+									title={
+										stats.net > 0
+											? `${selectedUser.name} must pay you`
+											: stats.net < 0
+											? `You must pay ${selectedUser.name}`
+											: "You are even"
+									}
+									className={styles.header}
+									small
+								/>
+								<TextWithTitle
+									title={
 										<Money
 											amount={stats.net}
 											includeSign
 											background
 										/>
 									}
-									className={styles.header}
+									text={"Net Position"}
+									className={styles.netPos}
 									small
 								/>
-
-								<p className={styles.info}>
-									{stats.net > 0
-										? `${selectedUser.name} must pay you`
-										: stats.net < 0
-										? `You must pay ${selectedUser.name}`
-										: "You are even"}
-								</p>
 							</div>
 						</div>
 					)}
