@@ -51,7 +51,8 @@ async function createDebt(req) {
 // Generate an ID following the format "<day><month><year><random 6 digit number>"
 function generateID() {
 	let date = new Date();
-	let day = date.getDate();
+	let day = date.getDate().toString();
+	day = day < 10 ? "0" + day : day;
 
 	// get month and add 0 if month is less than 10
 	let month = date.getMonth() + 1;
@@ -60,9 +61,7 @@ function generateID() {
 	// get only last 2 digits of year
 	let year = date.getFullYear().toString().slice(2);
 
-	let random = Math.floor(100000 + Math.random() * 900000);
+	let random = Math.floor(1000 + Math.random() * 9000);
 
-	return (
-		day.toString() + month.toString() + year.toString() + random.toString()
-	);
+	return day + month + year + random;
 }
