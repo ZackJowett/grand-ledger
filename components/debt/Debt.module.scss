@@ -21,7 +21,8 @@
 }
 
 .details {
-	@include flex(row, flex-start, flex-start, $gap: 3rem);
+	@include flex(row, flex-start, center, $gap: 3rem);
+	color: var(--subtext);
 }
 
 .amount,
@@ -43,7 +44,8 @@
 }
 
 .money {
-	min-width: 8rem;
+	// min-width: 8rem;
+	// text-align: center;
 }
 
 .date,

@@ -30,33 +30,33 @@ export default function Debt({ debt, className }) {
 		return (
 			<ClickableCard
 				title={debtWith}
-				pretitle="Debt"
+				// pretitle="Debt"
 				badge={getDebtStatus(debt.status, !userIsDebtor)}
 				href={`/debts/${debt._id}`}
 				className={`${styles.cardDebt} ${className ? className : ""}`}
 				pretitleClassName={styles.title}>
 				<div className={styles.details}>
+					<div className={styles.descWrapper}>
+						{/* <p className={styles.descTitle}>Description</p> */}
+						{debt.description}
+					</div>
 					<TextWithTitle
 						pretitle="Debt"
 						title={
 							<Money
 								amount={-debt.amount}
 								notColoured={debt.status != "outstanding"}
-								backgroundDark
+								backgroundDark={debt.status == "outstanding"}
 								className={styles.money}
 								padding
 								small
 							/>
 						}
-						text={"Amount"}
+						// text={"Amount"}
 						align="left"
 						reverse
 						className={styles.amount}
 					/>
-					<div className={styles.descWrapper}>
-						<p className={styles.descTitle}>Description</p>
-						{debt.description}
-					</div>
 				</div>
 
 				{/* <p className={styles.date}>
