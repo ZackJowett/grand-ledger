@@ -42,10 +42,22 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	.descTitle {
-		color: var(--subtext);
-		margin-bottom: 0.7rem;
+	.description {
+		text-overflow: ellipsis;
+		width: 100%;
 	}
+}
+
+.typeUnreceived,
+.typeDebt {
+}
+
+.typeUnreceived {
+	color: var(--green);
+}
+
+.typeDebt {
+	color: var(--red);
 }
 
 .money {

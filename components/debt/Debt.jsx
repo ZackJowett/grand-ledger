@@ -37,7 +37,10 @@ export default function Debt({ debt, className }) {
 			} ${className ? className : ""}`}
 			pretitleClassName={styles.title}>
 			<div className={styles.details}>
-				<div className={styles.descWrapper}>{debt.description}</div>
+				<div className={styles.descWrapper}>
+					<DebtType status={debt.status} isDebtor={userIsDebtor} />
+					<div className={styles.description}>{debt.description}</div>
+				</div>
 
 				<TextWithTitle
 					pretitle="Debt"
@@ -59,4 +62,15 @@ export default function Debt({ debt, className }) {
 			</div>
 		</ClickableCard>
 	);
+}
+
+function DebtType({ status, isDebtor }) {
+	const text = isDebtor
+		? "Debt"
+		: status === "outstanding"
+		? "Unreceived Payment"
+		: "Received Payment";
+	const style = isDebtor ? styles.typeDebt : styles.typeUnreceived;
+
+	return <div className={style}>{text}</div>;
 }
