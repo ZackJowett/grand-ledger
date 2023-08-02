@@ -25,93 +25,38 @@ export default function Debt({ debt, className }) {
 		debtWith = getName(debt.debtor, users, session);
 	}
 
-	if (userIsDebtor) {
-		// User is debtor, return debt style card
-		return (
-			<ClickableCard
-				title={debtWith}
-				// pretitle="Debt"
-				badge={getDebtStatus(debt.status, !userIsDebtor)}
-				href={`/debts/${debt._id}`}
-				className={`${styles.cardDebt} ${className ? className : ""}`}
-				pretitleClassName={styles.title}>
-				<div className={styles.details}>
-					<div className={styles.descWrapper}>
-						{/* <p className={styles.descTitle}>Description</p> */}
-						{debt.description}
-					</div>
-					<TextWithTitle
-						pretitle="Debt"
-						title={
-							<Money
-								amount={-debt.amount}
-								notColoured={debt.status != "outstanding"}
-								backgroundDark={debt.status == "outstanding"}
-								className={styles.money}
-								padding
-								small
-							/>
-						}
-						// text={"Amount"}
-						align="left"
-						reverse
-						className={styles.amount}
-					/>
-				</div>
+	// if (userIsDebtor) {
+	// User is debtor, return debt style card
+	return (
+		<ClickableCard
+			title={debtWith}
+			badge={getDebtStatus(debt.status, !userIsDebtor)}
+			href={`/debts/${debt._id}`}
+			className={`${
+				userIsDebtor ? styles.cardDebt : styles.cardUnreceived
+			} ${className ? className : ""}`}
+			pretitleClassName={styles.title}>
+			<div className={styles.details}>
+				<div className={styles.descWrapper}>{debt.description}</div>
 
-				{/* <p className={styles.date}>
-					{debt.status == "outstanding" || debt.status == "pending"
-						? `Opened ${formatDate(debt.dateCreated)}`
-						: `Closed ${formatDate(debt.dateClosed)}`}
-				</p> */}
-			</ClickableCard>
-		);
-	} else {
-		// User is creditor, return unreceived payment style card
-		return (
-			<ClickableCard
-				title={debtWith}
-				pretitle={
-					debt.status != "closed"
-						? "Unreceived Payment"
-						: "Received Payment"
-				}
-				badge={getDebtStatus(debt.status, !userIsDebtor)}
-				href={`/debts/${debt._id}`}
-				className={`${styles.cardUnreceived} ${
-					className ? className : ""
-				}`}
-				pretitleClassName={styles.title}>
-				<div className={styles.details}>
-					<TextWithTitle
-						pretitle="Debt"
-						title={
-							<Money
-								amount={debt.amount}
-								notColoured={debt.status != "outstanding"}
-								backgroundDark
-								padding
-								small
-								className={styles.money}
-							/>
-						}
-						text={"Amount"}
-						align="left"
-						reverse
-						className={styles.amount}
-					/>
-					<div className={styles.descWrapper}>
-						<p className={styles.descTitle}>Description</p>
-						{debt.description}
-					</div>
-				</div>
-
-				{/* <p className={styles.date}>
-					{debt.status == "outstanding" || debt.status == "pending"
-						? `Opened ${formatDate(debt.dateCreated)}`
-						: `Closed ${formatDate(debt.dateClosed)}`}
-				</p> */}
-			</ClickableCard>
-		);
-	}
+				<TextWithTitle
+					pretitle="Debt"
+					title={
+						<Money
+							amount={userIsDebtor ? -debt.amount : debt.amount}
+							notColoured={debt.status != "outstanding"}
+							backgroundDark={debt.status == "outstanding"}
+							className={styles.money}
+							padding
+							small
+						/>
+					}
+					// text={"Amount"}
+					align="left"
+					reverse
+					className={styles.amount}
+				/>
+			</div>
+		</ClickableCard>
+	);
 }
