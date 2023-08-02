@@ -62,8 +62,6 @@ export const authOptions = {
 	],
 	callbacks: {
 		async jwt({ token, user }) {
-			console.log(`user`, user);
-			console.log(`token`, token);
 			// if (user?.username) {
 			// 	token.username = user.username;
 			// }
@@ -76,9 +74,6 @@ export const authOptions = {
 			return token;
 		},
 		async session({ session, token }) {
-			console.log("session", session);
-			console.log("token2", token);
-
 			// session.user.username = token.username;
 			// session.user.email = token.email;
 			session.user.id = token.id;
@@ -103,8 +98,6 @@ export const authOptions = {
 					// Create user
 					// TO DO
 				}
-
-				console.log(profile);
 			} else {
 				return true;
 			}

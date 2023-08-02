@@ -52,6 +52,18 @@ export async function getAllBetweenTwoUsers(id1, id2) {
 	}
 }
 
+// GET DEBT STATIS: /api/users/stats?userId=[id]
+// Returns all users between two users
+export async function getDebtStatusForUser(id) {
+	try {
+		console.log("FETCHING");
+		return await quickFetch(`${getRootURL()}api/debts/stats?id=${id}`);
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
+
 // GET ALL: /api/debts
 // Returns all debts
 export async function getAllDebts() {

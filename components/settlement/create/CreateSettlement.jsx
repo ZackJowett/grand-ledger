@@ -8,11 +8,14 @@ import { createSettlement } from "utils/data/settlements";
 import TextButton from "components/button/text/TextButton";
 import NudgeButton from "components/button/nudge/NudgeButton";
 import { useSelector } from "react-redux";
+import DebtsIncluded from "components/settlement/create/DebtsIncluded";
+import { useRouter } from "next/router";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
 	const state = useSelector((state) => state);
 	const users = state.users.list;
+	const router = useRouter();
 
 	// States
 	const [debts, setDebts] = useState(null);
@@ -29,10 +32,19 @@ export default function CreateSettlement() {
 
 		// Set default selected party that is not the user
 		if (selectedUser == null) {
-			if (users[0]._id != session.user.id) {
-				setSelectedUser(users[0]);
+			// If query id is set, set selected party to that user
+			if (router.query.id && router.query.id != session.user.id) {
+				// Find user with id from query that is not logged in user
+				const selectedUser = users.find(
+					(user) => user._id == router.query.id
+				);
+				setSelectedUser(selectedUser);
 			} else {
-				setSelectedUser(users[1]);
+				if (users[0]._id != session.user.id) {
+					setSelectedUser(users[0]);
+				} else {
+					setSelectedUser(users[1]);
+				}
 			}
 		}
 
@@ -130,13 +142,13 @@ export default function CreateSettlement() {
 					/>{" "}
 				</p>
 			)}
-			<hr className={styles.hr} />
 			<SelectUser
 				debts={debts}
 				selectedUser={selectedUser}
 				setSelectedUser={setSelectedUser}
 				stats={stats}
 			/>
+			<DebtsIncluded debts={debts} />
 
 			{stats.net < 0 ? (
 				<SubmitSettlement

@@ -23,6 +23,7 @@ export default function SelectUser({
 		const selectedUser = users.find(
 			(user) => user._id == selectedOption.value
 		);
+		console.log(selectedUser);
 		setSelectedUser(selectedUser);
 	}
 
@@ -36,8 +37,8 @@ export default function SelectUser({
 			})
 			.filter((item) => item);
 
-		if (router.query.id) {
-			handleSelectParty({ value: router.query.id });
+		if (selectedUser === null && router.query.id) {
+			handleSelectParty({ label: "lol", value: router.query.id });
 		}
 	}
 
@@ -63,7 +64,7 @@ export default function SelectUser({
 			{!users ? (
 				<Spinner title="Loading users..." />
 			) : (
-				<Card dark>
+				<Card dark title="Standings">
 					{!debts ? (
 						<Spinner title="Loading debts..." />
 					) : stats.net == 0 ? (
