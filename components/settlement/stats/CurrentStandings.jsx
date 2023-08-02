@@ -1,38 +1,34 @@
 import Card from "components/card/Card";
 import styles from "./CurrentStandings.module.scss";
-import { getDebtStatusForUser } from "utils/data/debts";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
+import { useUserDebtStats } from "utils/hooks";
+import { useSelector } from "react-redux";
 
-export default function CurrentStandings() {
-	const { data: session, status: sessionStatus } = useSession();
-	const [data, setData] = useState();
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		setLoading(true);
-		if (sessionStatus !== "authenticated") return;
-
-		getDebtStatusForUser(session.user.id).then((res) => {
-			setData(res);
-			setLoading(false);
-		});
-
-		console.log("FETCHING STAT");
-	}, []);
+export default function CurrentStandings({ setSelectedUser }) {
+	const { data: session } = useSession();
+	const { data, isLoading } = useUserDebtStats(session.user.id);
+	const state = useSelector((state) => state);
+	const users = state.users.list;
 
 	return (
 		<Card dark title="Current Debts">
-			{loading ? (
+			{isLoading ? (
 				<Spinner />
 			) : data ? (
 				<div className={styles.container}>
-					{data.map((user) => (
-						<div key={user.id} className={styles.user}>
-							<div className={styles.name}>{user.name}</div>
-							<Money amount={user.amountNet} small />
+					{data.map((stat) => (
+						<div
+							key={stat.id}
+							className={styles.user}
+							onClick={() =>
+								setSelectedUser(
+									users.find((user) => user._id == stat.id)
+								)
+							}>
+							<div className={styles.name}>{stat.name}</div>
+							<Money amount={stat.amountNet} small includeSign />
 						</div>
 					))}
 				</div>

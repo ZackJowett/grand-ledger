@@ -10,6 +10,7 @@ import NudgeButton from "components/button/nudge/NudgeButton";
 import { useSelector } from "react-redux";
 import DebtsIncluded from "components/settlement/create/DebtsIncluded";
 import { useRouter } from "next/router";
+import CurrentStandings from "components/settlement/stats/CurrentStandings";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
@@ -126,6 +127,8 @@ export default function CreateSettlement() {
 
 	return (
 		<>
+			<CurrentStandings setSelectedUser={setSelectedUser} />
+			<hr className={styles.hr} />
 			{submitError && (
 				<p className={styles.error}>
 					There was an error creating the settlement. Please try again
