@@ -114,7 +114,7 @@ export default function CreateSettlement() {
 				stats={stats}
 			/>
 
-			{debts.length > 0 && <DebtsIncluded debts={debts} />}
+			{debts && debts.length > 0 && <DebtsIncluded debts={debts} />}
 
 			{stats.net < 0 ? (
 				<SubmitSettlement

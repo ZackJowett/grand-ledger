@@ -2,15 +2,22 @@ import Link from "next/link";
 import { FaHandshake } from "react-icons/fa";
 import { IoWarning } from "react-icons/io5";
 import { TiArrowForward } from "react-icons/ti";
-import {
-	MdMoneyOff,
-	MdSpaceDashboard,
-	MdGroups,
-	MdSettings,
-} from "react-icons/md";
+import { MdMoneyOff, MdGroups, MdSettings } from "react-icons/md";
 import { BsPersonFill } from "react-icons/bs";
 import { FiPlusSquare } from "react-icons/fi";
 import styles from "./DesktopNav.module.scss";
+
+import {
+	IconDashboard,
+	IconDebt,
+	IconDebtCreate,
+	IconUnreceieved,
+	IconSettlement,
+	IconSettlementCreate,
+	IconProfile,
+	IconGroup,
+	IconSettings,
+} from "/components/icons";
 // import Logo from "../../logo/Logo";
 // import SocialsList from "@/components/icons/socialsList";
 
@@ -26,11 +33,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						className={`${styles.link} ${styles.dashboard} ${
 							currentRoute === "/" ? styles.current : ""
 						}`}>
-						{currentRoute === "/" ? (
-							<MdSpaceDashboard className={styles.iconCurrent} />
-						) : (
-							<MdSpaceDashboard className={styles.icon} />
-						)}
+						<IconDashboard
+							className={
+								currentRoute === "/"
+									? styles.iconCurrent
+									: styles.icon
+							}
+						/>
 						<h2>Dashboard</h2>
 					</Link>
 
@@ -43,11 +52,14 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								? styles.current
 								: ""
 						}`}>
-						{currentRoute === "/debts/create" ? (
-							<FiPlusSquare className={styles.iconCurrent} />
-						) : (
-							<FiPlusSquare className={styles.icon} />
-						)}
+						<IconDebtCreate
+							className={
+								currentRoute === "/debts/create"
+									? styles.iconCurrent
+									: styles.icon
+							}
+						/>
+
 						<h2>Create Debt</h2>
 					</Link>
 
@@ -58,11 +70,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								? styles.current
 								: ""
 						}`}>
-						{currentRoute === "/settlements/create" ? (
-							<TiArrowForward className={styles.iconCurrent} />
-						) : (
-							<TiArrowForward className={styles.icon} />
-						)}
+						<IconSettlementCreate
+							className={
+								currentRoute === "/settlements/create"
+									? styles.iconCurrent
+									: styles.icon
+							}
+						/>
 						<h2>Pay Someone</h2>
 					</Link>
 
@@ -73,11 +87,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						className={`${styles.link} ${styles.debts} ${
 							currentRoute === "/debts" ? styles.current : ""
 						}`}>
-						{currentRoute === "/debts" ? (
-							<IoWarning className={styles.iconCurrent} />
-						) : (
-							<IoWarning className={styles.icon} />
-						)}
+						<IconDebt
+							className={
+								currentRoute === "/debts"
+									? styles.iconCurrent
+									: styles.icon
+							}
+						/>
 						<h2 className={styles.debts}>Debts</h2>
 					</Link>
 
@@ -88,11 +104,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								? styles.current
 								: ""
 						}`}>
-						{currentRoute === "/unreceived-payments" ? (
-							<MdMoneyOff className={styles.iconCurrent} />
-						) : (
-							<MdMoneyOff className={styles.icon} />
-						)}
+						<IconUnreceieved
+							className={
+								currentRoute === "/unreceived-payments"
+									? styles.iconCurrent
+									: styles.icon
+							}
+						/>
 						<h2 className={styles.unreceived}>Unreceived</h2>
 					</Link>
 
@@ -103,11 +121,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								? styles.current
 								: ""
 						}`}>
-						{currentRoute === "/settlements" ? (
-							<FaHandshake className={styles.iconCurrent} />
-						) : (
-							<FaHandshake className={styles.icon} />
-						)}
+						<IconSettlement
+							className={
+								currentRoute === "/settlements"
+									? styles.iconCurrent
+									: styles.icon
+							}
+						/>
 						<h2 className={styles.settlements}>Settlements</h2>
 					</Link>
 
@@ -120,11 +140,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 									? styles.current
 									: ""
 							}`}>
-							{currentRoute === "/profile/[[...user]]" ? (
-								<BsPersonFill />
-							) : (
-								<BsPersonFill />
-							)}
+							<IconProfile
+								className={
+									currentRoute === "/profile/[[...user]]"
+										? styles.iconCurrent
+										: styles.icon
+								}
+							/>
 						</Link>
 
 						<Link
@@ -132,11 +154,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							className={`${styles.bottomIcon} ${
 								currentRoute === "/groups" ? styles.current : ""
 							}`}>
-							{currentRoute === "/groups" ? (
-								<MdGroups />
-							) : (
-								<MdGroups />
-							)}
+							<IconGroup
+								className={
+									currentRoute === "/groups"
+										? styles.iconCurrent
+										: styles.icon
+								}
+							/>
 						</Link>
 
 						<Link
@@ -146,11 +170,13 @@ export default function HamburgerMenu({ currentRoute, className }) {
 									? styles.current
 									: ""
 							}`}>
-							{currentRoute === "/settings" ? (
-								<MdSettings />
-							) : (
-								<MdSettings />
-							)}
+							<IconSettings
+								className={
+									currentRoute === "/settings"
+										? styles.iconCurrent
+										: styles.icon
+								}
+							/>
 						</Link>
 					</div>
 					{/* <hr className={styles.hr} /> */}
