@@ -37,6 +37,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 						{debts.map((stat) => {
 							return (
 								<div
+									key={stat._id}
 									className={styles.user}
 									onClick={() =>
 										setSelectedUser(
@@ -63,6 +64,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 						{unreceived.map((stat) => {
 							return (
 								<div
+									key={stat._id}
 									className={styles.user}
 									onClick={() =>
 										setSelectedUser(
