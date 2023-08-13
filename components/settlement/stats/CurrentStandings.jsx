@@ -27,7 +27,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 	}
 
 	return (
-		<Card dark title="Current Debts">
+		<Card dark title="Current Debts" subtitle="Click someone to inspect">
 			{statsLoading || usersLoading ? (
 				<Spinner />
 			) : stats ? (
