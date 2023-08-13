@@ -33,50 +33,6 @@ export default function CreateSettlement() {
 		error: debtsError,
 	} = useDebtsBetweenUsers(session.user.id, selectedUser?._id);
 
-	// // Get all debts between two users
-	// useEffect(() => {
-	// 	if (sessionStatus !== "authenticated" || usersLoading) return;
-
-	// 	// Set default selected party that is not the user
-	// 	if (selectedUser == null) {
-	// 		// If query id is set, set selected party to that user
-	// 		if (router.query.id && router.query.id != session.user.id) {
-	// 			// Find user with id from query that is not logged in user
-	// 			const selectedUser = users.find(
-	// 				(user) => user._id == router.query.id
-	// 			);
-	// 			setSelectedUser(selectedUser);
-	// 		} else {
-	// 			if (users[0]._id != session.user.id) {
-	// 				setSelectedUser(users[0]);
-	// 			} else {
-	// 				setSelectedUser(users[1]);
-	// 			}
-	// 		}
-	// 	}
-
-	// 	if (!selectedUser) return; // Verify selected party is set to a user
-
-	// 	setDebts(null); // Reset debts
-	// 	setLoading("Loading Debts...");
-
-	// 	// Fetch all closed debts between user and selected party
-	// 	// api endpoint with queries returns if user is creditor or debtor
-	// 	getAllBetweenTwoUsers(session.user.id, selectedUser._id, false).then(
-	// 		(data) => {
-	// 			// Return only outstanding debts
-	// 			data
-	// 				? setDebts(
-	// 						data.filter((debt) => {
-	// 							return debt.status == "outstanding";
-	// 						})
-	// 				  )
-	// 				: console.log("Error fetching data");
-	// 			setLoading(null);
-	// 		}
-	// 	);
-	// }, [sessionStatus, session, users, selectedUser]);
-
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
 	let stats = { totalDebt: 0, totalUnreceived: 0, net: 0 };
@@ -157,7 +113,8 @@ export default function CreateSettlement() {
 				setSelectedUser={setSelectedUser}
 				stats={stats}
 			/>
-			<DebtsIncluded debts={debts} />
+
+			{debts.length > 0 && <DebtsIncluded debts={debts} />}
 
 			{stats.net < 0 ? (
 				<SubmitSettlement

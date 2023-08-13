@@ -64,13 +64,38 @@ export default function SelectUser({
 			{!users ? (
 				<Spinner title="Loading users..." />
 			) : (
-				<Card dark title="Standings">
+				<Card dark title="">
 					{!debts ? (
 						<Spinner title="Loading debts..." />
 					) : stats.net == 0 ? (
 						"You are even"
 					) : (
 						<div className={styles.stats}>
+							<div className={styles.net}>
+								<TextWithTitle
+									title={
+										stats.net > 0
+											? `${selectedUser.name} must pay you`
+											: stats.net < 0
+											? `You must pay ${selectedUser.name}`
+											: "You are even"
+									}
+									className={styles.header}
+									small
+								/>
+								<TextWithTitle
+									title={
+										<Money
+											amount={stats.net}
+											includeSign
+											background
+										/>
+									}
+									className={styles.netPos}
+									small
+								/>
+							</div>
+							<hr className={styles.hr} />
 							<div className={styles.debts}>
 								<TextWithTitle
 									title={`${selectedUser.name} owes you`}
@@ -97,32 +122,6 @@ export default function SelectUser({
 									className={styles.amount}
 									align="right"
 									tiny
-								/>
-							</div>
-							<hr className={styles.hr} />
-							<div>
-								<TextWithTitle
-									title={
-										stats.net > 0
-											? `${selectedUser.name} must pay you`
-											: stats.net < 0
-											? `You must pay ${selectedUser.name}`
-											: "You are even"
-									}
-									className={styles.header}
-									small
-								/>
-								<TextWithTitle
-									title={
-										<Money
-											amount={stats.net}
-											includeSign
-											background
-										/>
-									}
-									text={"Net Position"}
-									className={styles.netPos}
-									small
 								/>
 							</div>
 						</div>

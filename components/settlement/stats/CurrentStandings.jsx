@@ -57,7 +57,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 							);
 						})}
 					</div>
-
+					<hr />
 					<div className={styles.section}>
 						<Title title="You are owed" small />
 						{unreceived.map((stat) => {

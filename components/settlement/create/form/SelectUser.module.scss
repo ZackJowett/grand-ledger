@@ -11,7 +11,11 @@
 }
 
 .stats {
-	@include flex(column, flex-start, center, $gap: 2rem);
+	@include flex(column, flex-start, center, $gap: 1.5rem);
+
+	.net {
+		@include flex(column, flex-start, center, $gap: 0.5rem);
+	}
 
 	.debts {
 		@include flex(row, space-between, center, $gap: 1rem);
@@ -19,12 +23,9 @@
 
 		.amount {
 			width: 100%;
+			@include flex(column, space-between, center, $gap: 0.5rem);
 		}
 	}
-}
-
-.netPos {
-	margin-top: 1rem;
 }
 
 .info {
@@ -34,6 +35,6 @@
 }
 
 .hr {
-	width: 80%;
+	width: 100%;
 	margin: 0;
 }
