@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { getAllBetweenTwoUsers } from "/utils/data/debts";
 import styles from "public/styles/pages/CreateSettlement.module.scss";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
@@ -11,65 +10,72 @@ import { useSelector } from "react-redux";
 import DebtsIncluded from "components/settlement/create/DebtsIncluded";
 import { useRouter } from "next/router";
 import CurrentStandings from "components/settlement/stats/CurrentStandings";
+import { useUsers, useDebtsBetweenUsers } from "utils/hooks";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
-	const state = useSelector((state) => state);
-	const users = state.users.list;
 	const router = useRouter();
+	const {
+		data: users,
+		isLoading: usersLoading,
+		error: usersError,
+	} = useUsers();
 
 	// States
-	const [debts, setDebts] = useState(null);
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [submitError, setSubmitError] = useState(null);
 	const [submitSuccess, setSubmitSuccess] = useState(null);
 	const [loading, setLoading] = useState(false); // String of loading state
 
-	// Redux
+	const {
+		data: debts,
+		isLoading: debtsLoading,
+		error: debtsError,
+	} = useDebtsBetweenUsers(session.user.id, selectedUser?._id);
 
-	// Get all debts between two users
-	useEffect(() => {
-		if (sessionStatus !== "authenticated" || !state.users.ready) return;
+	// // Get all debts between two users
+	// useEffect(() => {
+	// 	if (sessionStatus !== "authenticated" || usersLoading) return;
 
-		// Set default selected party that is not the user
-		if (selectedUser == null) {
-			// If query id is set, set selected party to that user
-			if (router.query.id && router.query.id != session.user.id) {
-				// Find user with id from query that is not logged in user
-				const selectedUser = users.find(
-					(user) => user._id == router.query.id
-				);
-				setSelectedUser(selectedUser);
-			} else {
-				if (users[0]._id != session.user.id) {
-					setSelectedUser(users[0]);
-				} else {
-					setSelectedUser(users[1]);
-				}
-			}
-		}
+	// 	// Set default selected party that is not the user
+	// 	if (selectedUser == null) {
+	// 		// If query id is set, set selected party to that user
+	// 		if (router.query.id && router.query.id != session.user.id) {
+	// 			// Find user with id from query that is not logged in user
+	// 			const selectedUser = users.find(
+	// 				(user) => user._id == router.query.id
+	// 			);
+	// 			setSelectedUser(selectedUser);
+	// 		} else {
+	// 			if (users[0]._id != session.user.id) {
+	// 				setSelectedUser(users[0]);
+	// 			} else {
+	// 				setSelectedUser(users[1]);
+	// 			}
+	// 		}
+	// 	}
 
-		if (!selectedUser) return; // Verify selected party is set to a user
+	// 	if (!selectedUser) return; // Verify selected party is set to a user
 
-		setDebts(null); // Reset debts
-		setLoading("Loading Debts...");
+	// 	setDebts(null); // Reset debts
+	// 	setLoading("Loading Debts...");
 
-		// Fetch all closed debts between user and selected party
-		// api endpoint with queries returns if user is creditor or debtor
-		getAllBetweenTwoUsers(session.user.id, selectedUser._id, false).then(
-			(data) => {
-				// Return only outstanding debts
-				data
-					? setDebts(
-							data.filter((debt) => {
-								return debt.status == "outstanding";
-							})
-					  )
-					: console.log("Error fetching data");
-				setLoading(null);
-			}
-		);
-	}, [sessionStatus, session, users, selectedUser]);
+	// 	// Fetch all closed debts between user and selected party
+	// 	// api endpoint with queries returns if user is creditor or debtor
+	// 	getAllBetweenTwoUsers(session.user.id, selectedUser._id, false).then(
+	// 		(data) => {
+	// 			// Return only outstanding debts
+	// 			data
+	// 				? setDebts(
+	// 						data.filter((debt) => {
+	// 							return debt.status == "outstanding";
+	// 						})
+	// 				  )
+	// 				: console.log("Error fetching data");
+	// 			setLoading(null);
+	// 		}
+	// 	);
+	// }, [sessionStatus, session, users, selectedUser]);
 
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
