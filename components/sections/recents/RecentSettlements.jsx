@@ -8,7 +8,6 @@ import Settlement from "/components/settlement/Settlement";
 import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
-import { set } from "mongoose";
 
 export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
