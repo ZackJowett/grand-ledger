@@ -10,6 +10,11 @@ export function IconSettings({ className = null }) {
 	return <MdSettings className={className} />;
 }
 
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+export function IconArrow({ className = null }) {
+	return <MdOutlineKeyboardArrowRight className={className} />;
+}
+
 // ----------- DEBTS ----------- \\
 import { MdOutlineAttachMoney } from "react-icons/md";
 export function IconDebt({ className = null }) {

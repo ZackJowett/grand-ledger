@@ -36,7 +36,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 						<Title title="You owe" small />
 						{debts.map((stat) => {
 							return (
-								<div
+								<a
 									key={stat._id}
 									className={styles.user}
 									onClick={() =>
@@ -45,7 +45,8 @@ export default function CurrentStandings({ setSelectedUser }) {
 												(user) => user._id == stat.id
 											)
 										)
-									}>
+									}
+									href="#settlement-standings">
 									<div className={styles.name}>
 										{stat.name}
 									</div>
@@ -54,7 +55,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 										small
 										includeSign
 									/>
-								</div>
+								</a>
 							);
 						})}
 					</div>
@@ -63,7 +64,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 						<Title title="You are owed" small />
 						{unreceived.map((stat) => {
 							return (
-								<div
+								<a
 									key={stat._id}
 									className={styles.user}
 									onClick={() =>
@@ -72,7 +73,8 @@ export default function CurrentStandings({ setSelectedUser }) {
 												(user) => user._id == stat.id
 											)
 										)
-									}>
+									}
+									href="#settlement-standings">
 									<div className={styles.name}>
 										{stat.name}
 									</div>
@@ -81,7 +83,7 @@ export default function CurrentStandings({ setSelectedUser }) {
 										small
 										includeSign
 									/>
-								</div>
+								</a>
 							);
 						})}
 					</div>

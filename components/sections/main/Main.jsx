@@ -1,12 +1,10 @@
 import styles from "./Main.module.scss";
 import { useSession } from "next-auth/react";
-import Button from "../../button/Button";
 import NetPosition from "../../sections/stats/NetPosition";
 import RecentSettlements from "../../sections/recents/RecentSettlements";
 import RecentDebts from "../../sections/recents/RecentDebts";
-import Card from "components/card/Card";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Title from "components/text/title/TextWithTitle";
 
 export default function Main() {
 	const { data: session } = useSession();
@@ -31,23 +29,22 @@ export default function Main() {
 	return (
 		<div className={styles.main}>
 			<div className={styles.overview}>
-				<Card
-					title={
-						<Link href="/profile">Hello, {session.user.name}</Link>
-					}
-					subtitle={fact ? fact : "Loading fact..."}
-					className={styles.welcome}
-				/>
+				<div className={styles.welcome}>
+					<Title title={`Hello, ${session.user.name}`} align="left" />
+					<p className={styles.fact}>
+						{fact ? fact : "Loading fact..."}
+					</p>
+				</div>
 
 				<NetPosition />
 
-				<div className={styles.buttonWrapper}>
+				{/* <div className={styles.buttonWrapper}>
 					<Button
 						title="CREATE NEW DEBT"
 						href="/debts/create"
 						className={styles.newDebt}
 					/>
-				</div>
+				</div> */}
 			</div>
 
 			<RecentSettlements />

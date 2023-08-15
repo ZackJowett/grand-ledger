@@ -60,9 +60,23 @@ export function useDebtsBetweenUsers(id1, id2) {
 	};
 }
 
+// ------------------------------ STATISTICS ------------------------------- \\
 export function useUserDebtStats(id) {
 	const { data, error, isLoading } = useSWR(
 		`api/debts/stats?id=${id}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+	};
+}
+
+export function useUserStats(id) {
+	const { data, error, isLoading } = useSWR(
+		`api/users/stats?id=${id}`,
 		fetcher
 	);
 

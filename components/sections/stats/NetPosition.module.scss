@@ -1,24 +1,16 @@
+@use "public/styles/mixins.scss" as *;
+
 .totalDebt,
+.netPosition,
 .totalUnreceived {
-	margin-top: 1rem;
+	p {
+		text-align: center;
+	}
 }
 
-.totalDebt h1,
-.negative h1 {
-	color: var(--red);
-}
-
-.totalUnreceived h1,
-.positive h1 {
-	color: var(--green);
-}
-
-.netPosition {
-	margin-bottom: 0.5rem;
-}
-
-.hr {
-	margin: 2.5rem auto 1.5rem auto;
+.stats {
+	width: 100%;
+	@include flex(row, space-evenly);
 }
 
 .noDebts {

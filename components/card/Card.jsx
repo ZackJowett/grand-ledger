@@ -23,37 +23,39 @@ export default function Card({
 			className={`${className} ${styles.card} ${
 				dark ? styles.dark : ""
 			}`}>
-			{link ? (
-				<Link className={styles.header} href={link}>
-					<div className={styles.titleWrapper}>
-						<p className={styles.pretitle}>{pretitle}</p>
-						<h3 className={styles.title}>{title}</h3>
-						<p className={styles.subtitle}>{subtitle}</p>
-					</div>
-
-					{badge && (
-						<div className={`${styles.badge} ${badgeColor}`}>
-							{badge}
+			<div className={styles.content}>
+				{link ? (
+					<Link className={styles.header} href={link}>
+						<div className={styles.titleWrapper}>
+							<p className={styles.pretitle}>{pretitle}</p>
+							<h3 className={styles.title}>{title}</h3>
+							<p className={styles.subtitle}>{subtitle}</p>
 						</div>
-					)}
-				</Link>
-			) : (
-				<div className={styles.header}>
-					<div className={styles.titleWrapper}>
-						<p className={styles.pretitle}>{pretitle}</p>
-						<h3 className={styles.title}>{title}</h3>
-						<p className={styles.subtitle}>{subtitle}</p>
-					</div>
 
-					{badge && (
-						<div className={`${styles.badge} ${badgeColor}`}>
-							{badge}
+						{badge && (
+							<div className={`${styles.badge} ${badgeColor}`}>
+								{badge}
+							</div>
+						)}
+					</Link>
+				) : (
+					<div className={styles.header}>
+						<div className={styles.titleWrapper}>
+							<p className={styles.pretitle}>{pretitle}</p>
+							<h3 className={styles.title}>{title}</h3>
+							<p className={styles.subtitle}>{subtitle}</p>
 						</div>
-					)}
-				</div>
-			)}
 
-			{children}
+						{badge && (
+							<div className={`${styles.badge} ${badgeColor}`}>
+								{badge}
+							</div>
+						)}
+					</div>
+				)}
+
+				{children}
+			</div>
 		</section>
 	);
 }

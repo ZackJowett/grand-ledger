@@ -1,4 +1,5 @@
 import styles from "./Money.module.scss";
+import { IconDebt, IconUnreceieved } from "/components/icons";
 
 export default function Money({
 	amount,
@@ -24,7 +25,7 @@ export default function Money({
 
 	return (
 		<span className={classes}>
-			<span className={styles.sign}>$</span>{" "}
+			{notColoured || amount < 0 ? <IconDebt /> : <IconUnreceieved />}
 			{includeSign ? (amount < 0 ? "-" : "+") : ""}
 			{Math.abs(amount).toFixed(2).toLocaleString("en-US")}
 		</span>

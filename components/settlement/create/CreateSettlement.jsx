@@ -14,12 +14,6 @@ import { useUsers, useDebtsBetweenUsers } from "utils/hooks";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
-	const router = useRouter();
-	const {
-		data: users,
-		isLoading: usersLoading,
-		error: usersError,
-	} = useUsers();
 
 	// States
 	const [selectedUser, setSelectedUser] = useState(null);

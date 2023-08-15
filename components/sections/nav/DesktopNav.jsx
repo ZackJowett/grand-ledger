@@ -43,8 +43,6 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						<h2>Dashboard</h2>
 					</Link>
 
-					{/* <hr className={styles.hr} /> */}
-
 					<Link
 						href="/debts/create"
 						className={`${styles.link} ${styles.createDebt} ${

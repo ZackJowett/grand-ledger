@@ -80,7 +80,7 @@ export default async function handler(req, res) {
 
 				if (debt.status == "outstanding") {
 					statistics.debts.outstanding++;
-					statistics.current.debt += debt.amount;
+					statistics.current.debt -= debt.amount;
 					statistics.current.net -= debt.amount; // Net position
 				} else if (debt.status == "pending") {
 					statistics.debts.pending++;

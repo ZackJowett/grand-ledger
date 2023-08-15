@@ -1,10 +1,11 @@
 @use "public/styles/mixins.scss" as *;
 
 .card {
-	display: block;
+	@include flex(row, space-between);
 
-	padding: 1rem;
-	// margin: 1rem 1rem;
+	padding: 0.75rem;
+	padding-right: 0.5rem;
+
 	max-width: var(--maxWidth);
 	width: 100%;
 
@@ -13,7 +14,13 @@
 	@include border($color: transparent, $size: 1px);
 }
 
+.content {
+	width: 100%;
+	@include flex(column, flex-start, flex-start);
+}
+
 .header {
+	width: 100%;
 	@include flex(row, space-between);
 	align-items: flex-start;
 }
@@ -57,4 +64,13 @@
 
 .children {
 	width: 100%;
+}
+
+.arrow {
+	$size: 25px;
+
+	width: $size;
+	height: $size;
+
+	color: var(--subtext);
 }

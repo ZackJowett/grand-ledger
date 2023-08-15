@@ -7,62 +7,28 @@ import TextWithTitle from "components/text/title/TextWithTitle";
 import { useSession } from "next-auth/react";
 import styles from "./NetPosition.module.scss";
 import { NetPositionPlaceholder } from "/components/placeholders/Placeholders";
+import { useUserStats } from "/utils/hooks";
+import Spinner from "/components/placeholders/spinner/Spinner";
 
 export default function NetPosition() {
 	const { data: session } = useSession();
-
-	const [stats, setStats] = useState(null);
-
-	useEffect(() => {
-		if (!session) return;
-
-		getUserStats(session.user.id).then((data) => {
-			data ? setStats(data) : console.log("Error fetching user stats");
-		});
-	}, [session]);
+	const {
+		data: stats,
+		isLoading: statsLoading,
+		isError: statsError,
+	} = useUserStats(session ? session.user.id : null);
 
 	if (!session) return;
 
-	console.log(stats);
-
 	return (
-		<Card title="Overview" dark>
-			{stats ? (
+		<>
+			{statsLoading ? (
+				<Spinner />
+			) : stats ? (
 				<>
 					{stats.current.net != 0 && (
 						<>
-							<TextWithButton
-								text="Total Debt"
-								title={
-									<Money
-										amount={stats.current.debt}
-										className={styles.debt}
-									/>
-								}
-								buttonTitle="PAY NOW"
-								link="/settlements/create"
-								align="left"
-								reverse
-								large
-								className={styles.totalDebt}
-							/>
-							<TextWithButton
-								text="Total Unreceived"
-								title={
-									<Money
-										amount={stats.current.unreceived}
-										className={styles.unreceived}
-									/>
-								}
-								buttonTitle="VIEW"
-								link="/unreceived-payments"
-								align="left"
-								reverse
-								large
-								className={styles.totalUnreceived}
-							/>
-							<hr className={styles.hr} />
-							<TextWithTitle
+							{/* <TextWithTitle
 								title={
 									<Money
 										amount={stats.current.net}
@@ -77,7 +43,37 @@ export default function NetPosition() {
 										: styles.negative
 								} ${styles.netPosition}
 						`}
-							/>
+							/> */}
+							<div className={styles.stats}>
+								<TextWithTitle
+									text="Total Debt"
+									title={
+										<Money
+											amount={stats.current.debt}
+											className={styles.debt}
+										/>
+									}
+									// buttonTitle="PAY NOW"
+									link="/settlements/create"
+									align="left"
+									large
+									className={styles.totalDebt}
+								/>
+								<TextWithTitle
+									text="Total Unreceived Payments"
+									title={
+										<Money
+											amount={stats.current.unreceived}
+											className={styles.unreceived}
+										/>
+									}
+									// buttonTitle="VIEW"
+									link="/unreceived-payments"
+									align="left"
+									large
+									className={styles.totalUnreceived}
+								/>
+							</div>
 						</>
 					)}
 
@@ -92,6 +88,6 @@ export default function NetPosition() {
 			) : (
 				<NetPositionPlaceholder />
 			)}
-		</Card>
+		</>
 	);
 }

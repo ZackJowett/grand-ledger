@@ -35,7 +35,8 @@ export default function Debt({ debt, className }) {
 			className={`${
 				userIsDebtor ? styles.cardDebt : styles.cardUnreceived
 			} ${className ? className : ""}`}
-			pretitleClassName={styles.title}>
+			pretitleClassName={styles.title}
+			includeArrow>
 			<div className={styles.details}>
 				<div className={styles.descWrapper}>
 					<DebtType status={debt.status} isDebtor={userIsDebtor} />

@@ -70,7 +70,7 @@ export default function SelectUser({
 					) : stats.net == 0 ? (
 						"You are even"
 					) : (
-						<div className={styles.stats}>
+						<div className={styles.stats} id="settlement-standings">
 							<div className={styles.net}>
 								<TextWithTitle
 									title={

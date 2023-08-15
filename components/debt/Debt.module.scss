@@ -1,7 +1,7 @@
 @use "public/styles/mixins.scss" as *;
 
-.cardDebt,
-.cardUnreceived {
+.content {
+	@include flex(row);
 	padding: 0.75rem 0.75rem;
 }
 
@@ -30,12 +30,6 @@
 	color: var(--subtext);
 }
 
-// .amount,
-// .descWrapper,
-// .date {
-// 	margin-top: 0.5rem;
-// }
-
 .descWrapper {
 	flex: 1;
 	overflow: hidden;
@@ -48,21 +42,12 @@
 	}
 }
 
-.typeUnreceived,
-.typeDebt {
-}
-
 .typeUnreceived {
 	color: var(--green);
 }
 
 .typeDebt {
 	color: var(--red);
-}
-
-.money {
-	// min-width: 8rem;
-	// text-align: center;
 }
 
 .date,

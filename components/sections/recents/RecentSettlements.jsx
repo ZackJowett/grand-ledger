@@ -8,6 +8,7 @@ import Settlement from "/components/settlement/Settlement";
 import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
+import TextWithTitle from "/components/text/title/TextWithTitle";
 
 export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
@@ -61,15 +62,15 @@ export default function RecentSettlements({ className }) {
 	}
 
 	return (
-		<Card
-			title="Recent Settlements"
-			subtitle={`Updated: ${timeFetched}`}
-			link="/settlements"
-			dark
-			className={`${className} ${styles.wrapper}`}>
-			<div className={styles.refresh} onClick={handleRefresh}>
+		<section className={styles.wrapper}>
+			<TextWithTitle
+				title="Recent Settlements"
+				align="left"
+				link="/settlements"
+			/>
+			{/* <div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
-			</div>
+			</div> */}
 			{loading ? (
 				<>
 					<CardPlaceholder />
@@ -96,7 +97,7 @@ export default function RecentSettlements({ className }) {
 
 			{/* Show / Hide view more settlements button */}
 			{/* Links to all settlements when max reached */}
-			{settlements &&
+			{/* {settlements &&
 			showAmount != settlements.length &&
 			showAmount < settlements.length ? (
 				<TextButton
@@ -110,7 +111,7 @@ export default function RecentSettlements({ className }) {
 					link="/settlements"
 					className={styles.viewMore}
 				/>
-			)}
-		</Card>
+			)} */}
+		</section>
 	);
 }
