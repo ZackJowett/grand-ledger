@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { getDebtStatus } from "/utils/helpers";
 import { useSelector } from "react-redux";
 
-export default function Debt({ debt, className }) {
+export default function Debt({ debt, className, light = false }) {
 	const { data: session } = useSession();
 	const userState = useSelector((state) => state.users);
 	if (!userState.ready) return;
@@ -36,6 +36,7 @@ export default function Debt({ debt, className }) {
 				userIsDebtor ? styles.cardDebt : styles.cardUnreceived
 			} ${className ? className : ""}`}
 			pretitleClassName={styles.title}
+			light={light}
 			includeArrow>
 			<div className={styles.details}>
 				<div className={styles.descWrapper}>

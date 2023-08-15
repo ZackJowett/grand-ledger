@@ -188,6 +188,7 @@ export default function Debts() {
 										session: session,
 										users: users,
 									}}
+									light
 								/>
 							);
 						})

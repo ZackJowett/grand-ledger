@@ -136,6 +136,7 @@ export default function Settlements() {
 									key={index}
 									settlement={settlement}
 									className={styles.settlement}
+									light
 								/>
 							);
 						})

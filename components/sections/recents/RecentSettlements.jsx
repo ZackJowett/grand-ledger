@@ -90,6 +90,7 @@ export default function RecentSettlements({ className }) {
 							settlement={settlement}
 							globals={{ users: users, session: session }}
 							className={styles.settlement}
+							dark
 						/>
 					);
 				})

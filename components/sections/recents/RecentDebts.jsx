@@ -82,6 +82,7 @@ export default function RecentDebts({ className }) {
 							debt={debt}
 							session={session}
 							className={styles.debt}
+							dark
 						/>
 					);
 				})

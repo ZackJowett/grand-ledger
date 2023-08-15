@@ -14,6 +14,7 @@ export default function ClickableCard({
 	pretitleClassName,
 	includeArrow,
 	action,
+	light,
 }) {
 	const badgeColor =
 		badge == "Outstanding" || badge == "Unreceived"
@@ -30,7 +31,7 @@ export default function ClickableCard({
 			className={`${styles.card} ${styles.clickable} ${
 				action ? styles.includeAction : ""
 			} ${className ? className : ""} `}>
-			<div className={styles.wrapper}>
+			<div className={`${styles.wrapper} ${light ? styles.light : ""}`}>
 				<div className={styles.content}>
 					<div className={styles.header}>
 						<div className={styles.titleWrapper}>

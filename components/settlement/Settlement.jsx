@@ -8,7 +8,7 @@ import Money from "/components/text/money/Money";
 import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 
-export default function Settlement({ settlement, className }) {
+export default function Settlement({ settlement, className, light = false }) {
 	const { data: session } = useSession();
 	const userState = useSelector((state) => state.users);
 	const users = userState.list;
@@ -39,6 +39,7 @@ export default function Settlement({ settlement, className }) {
 				settlement.status != "closed" ? styles.showAction : ""
 			} ${className}`}
 			pretitleClassName={styles.title}
+			light={light}
 			includeArrow
 			action={settlementAction(settlement, session, users)}>
 			<div className={styles.details}>

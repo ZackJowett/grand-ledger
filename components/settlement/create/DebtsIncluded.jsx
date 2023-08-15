@@ -15,6 +15,7 @@ export default function DebtsIncluded({ debts }) {
 							<Debt
 								debt={debt}
 								key={debt.id ? debt.id : debt._id}
+								light
 							/>
 						);
 					})

@@ -180,6 +180,7 @@ export default function UnreceivedPayments() {
 										users: users,
 									}}
 									unreceived
+									light
 								/>
 							);
 						})

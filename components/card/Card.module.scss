@@ -16,17 +16,35 @@
 	overflow: hidden;
 
 	@include border($color: transparent, $size: 1px);
+
+	background-color: var(--backgroundDark);
+
+	&.clickable {
+		// padding: 0.25rem;
+		cursor: pointer;
+
+		@include scale($color: var(--settlement));
+		padding: 0;
+
+		background-color: transparent;
+	}
 }
 
 .wrapper {
 	padding: 0.75rem;
 	@include flex(row);
 	width: 100%;
+
+	background-color: var(--backgroundDark);
+
+	&.light {
+		background-color: var(--background);
+	}
 }
 
 .content {
 	width: 100%;
-	background-color: var(--backgroundDark);
+
 	@include flex(column, flex-start, flex-start);
 }
 
@@ -68,14 +86,6 @@
 
 .dark {
 	max-width: var(--maxWidth);
-	background-color: var(--backgroundDark);
-}
-
-.clickable {
-	padding: 0.25rem;
-	cursor: pointer;
-
-	@include scale($color: var(--settlement));
 }
 
 .children {
