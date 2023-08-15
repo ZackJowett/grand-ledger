@@ -117,7 +117,7 @@ function settlementAction(settlement, session, users) {
 		} else {
 			return (
 				<div className={styles.action}>
-					<h5>REVIEW TO CLOSE</h5>
+					<h5>Review to Close</h5>
 					<p className={styles.note}>
 						{settlerName} is waiting for you
 					</p>
