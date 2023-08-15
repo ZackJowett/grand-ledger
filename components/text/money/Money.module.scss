@@ -6,7 +6,7 @@
 	white-space: nowrap;
 	font-family: var(--moneyFont);
 
-	@include flex(row, center, center, $gap: 0.25rem);
+	@include flex(row, center, center);
 
 	svg {
 		$size: 1.5rem;

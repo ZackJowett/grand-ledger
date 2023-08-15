@@ -14,11 +14,10 @@
 	}
 }
 
-.amount,
-.descWrapper,
-.date {
-	margin-top: 0.5rem;
-}
+// .amount,
+// .date {
+// 	margin-top: 0.5rem;
+// }
 
 .descWrapper {
 	flex: 1;
@@ -26,9 +25,12 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	.descTitle {
+	.type {
+		color: var(--settlement);
+	}
+
+	.description {
 		color: var(--subtext);
-		margin-bottom: 0.7rem;
 	}
 }
 

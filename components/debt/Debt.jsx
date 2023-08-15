@@ -29,9 +29,9 @@ export default function Debt({ debt, className }) {
 	// User is debtor, return debt style card
 	return (
 		<ClickableCard
+			href={`/debts/${debt._id}`}
 			title={debtWith}
 			badge={getDebtStatus(debt.status, !userIsDebtor)}
-			href={`/debts/${debt._id}`}
 			className={`${
 				userIsDebtor ? styles.cardDebt : styles.cardUnreceived
 			} ${className ? className : ""}`}

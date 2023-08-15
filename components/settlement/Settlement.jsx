@@ -16,6 +16,7 @@ export default function Settlement({ settlement, className }) {
 
 	// Set who is settling with you
 	// It shows the name of the user who is not logged in
+	const isSettler = settlement.settler == session.user.id;
 	let settleWith = "";
 	if (settlement.settler == session.user.id) {
 		settleWith = getName(settlement.settlee, users, session);
@@ -26,7 +27,6 @@ export default function Settlement({ settlement, className }) {
 	return (
 		<ClickableCard
 			href={`/settlements/${settlement._id}`}
-			pretitle="Settlement"
 			title={settleWith}
 			badge={
 				settlement.status == "reopened"
@@ -36,28 +36,31 @@ export default function Settlement({ settlement, className }) {
 					: "Closed"
 			}
 			className={`${styles.card} ${className}`}
-			pretitleClassName={styles.title}>
+			pretitleClassName={styles.title}
+			includeArrow>
 			<div className={styles.details}>
+				<div className={styles.descWrapper}>
+					<div className={styles.type}>Settlement</div>
+					<div className={styles.description}>
+						{settlement.description}
+					</div>
+				</div>
 				<TextWithTitle
 					title={
 						<Money
 							amount={settlement.netAmount}
-							notColoured
-							backgroundDark
-							backgroundFit
+							notColoured={true}
+							backgroundDark={settlement.status == "outstanding"}
+							className={styles.money}
 							padding
 							small
 						/>
 					}
-					text="Amount"
+					// text={"Amount"}
 					align="left"
 					reverse
 					className={styles.amount}
 				/>
-				<div className={styles.descWrapper}>
-					<p className={styles.descTitle}>Description</p>
-					{settlement.description}
-				</div>
 			</div>
 			{/* <p className={styles.date}>
 				{settlement.status == "closed"

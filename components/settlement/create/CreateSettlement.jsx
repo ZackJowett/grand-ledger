@@ -73,7 +73,7 @@ export default function CreateSettlement() {
 				setLoading(null);
 			} else {
 				// Success submitting
-				setDebts([]);
+				// setDebts([]);
 				setSubmitSuccess(data.data);
 				setSubmitError(false);
 				setLoading(null);
