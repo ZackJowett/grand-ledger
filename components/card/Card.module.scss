@@ -1,22 +1,37 @@
 @use "public/styles/mixins.scss" as *;
 
 .card {
-	@include flex(row, space-between);
+	@include flex(column, space-between);
 
-	padding: 0.75rem;
-	padding-right: 0.5rem;
+	// padding-right: 0.5rem
+	padding: 1rem;
+
+	&.includeAction {
+		padding: 0;
+	}
 
 	max-width: var(--maxWidth);
 	width: 100%;
 
-	background-color: var(--background);
+	overflow: hidden;
 
 	@include border($color: transparent, $size: 1px);
 }
 
+.wrapper {
+	padding: 0.75rem;
+	@include flex(row);
+	width: 100%;
+}
+
 .content {
 	width: 100%;
+	background-color: var(--backgroundDark);
 	@include flex(column, flex-start, flex-start);
+}
+
+.content > * {
+	width: 100%;
 }
 
 .header {
@@ -57,9 +72,10 @@
 }
 
 .clickable {
+	padding: 0.25rem;
 	cursor: pointer;
 
-	@include scale;
+	@include scale($color: var(--settlement));
 }
 
 .children {
@@ -73,4 +89,10 @@
 	height: $size;
 
 	color: var(--subtext);
+}
+
+.action {
+	width: 100%;
+	background-color: var(--backgroundDarkHover);
+	padding: 0.5rem;
 }

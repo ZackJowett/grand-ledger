@@ -35,9 +35,12 @@ export default function Settlement({ settlement, className }) {
 					? "Pending"
 					: "Closed"
 			}
-			className={`${styles.card} ${className}`}
+			className={`${styles.card} ${
+				settlement.status != "closed" ? styles.showAction : ""
+			} ${className}`}
 			pretitleClassName={styles.title}
-			includeArrow>
+			includeArrow
+			action={settlementAction(settlement, session, users)}>
 			<div className={styles.details}>
 				<div className={styles.descWrapper}>
 					<div className={styles.type}>Settlement</div>
@@ -69,8 +72,6 @@ export default function Settlement({ settlement, className }) {
 					? `Reopened ${formatDate(settlement.dateReopened)}`
 					: `Opened ${formatDate(settlement.dateCreated)}`}
 			</p> */}
-
-			{settlementAction(settlement, session, users)}
 		</ClickableCard>
 	);
 }
@@ -84,33 +85,22 @@ function settlementAction(settlement, session, users) {
 		if (settlement.settler != session.user.id) {
 			// Rejector was logged in user since only settlees can reject a settlement
 			return (
-				<>
-					<hr className={styles.hr} />
-					<Button
-						title={`WAITING FOR ${settlerName.toUpperCase()} TO RESUBMIT`}
-						link={`/settlements/${settlement._id}`}
-						className={styles.button}
-						disabled
-					/>
+				<div className={styles.action}>
+					<h5>Waiting for {settlerName} to Resubmit</h5>
 					<p className={styles.note}>
-						You previously rejected this settlement.
+						You previously rejected this settlement
 					</p>
-				</>
+				</div>
 			);
 		} else {
 			// Rejector was not logged in user
 			return (
-				<>
-					<hr className={styles.hr} />
-					<Button
-						title="SUBMIT SETTLEMENT AGAIN"
-						className={styles.button}
-						href={`/settlements/${settlement._id}`}
-					/>
+				<div className={styles.action}>
+					<h5>Submit Settlement again</h5>
 					<p className={styles.note}>
-						Settlement was rejected by {settleeName}.
+						Settlement was rejected by {settleeName}
 					</p>
-				</>
+				</div>
 			);
 		}
 	} else if (settlement.status == "pending") {
@@ -118,23 +108,20 @@ function settlementAction(settlement, session, users) {
 		if (settlement.settler == session.user.id) {
 			// Waiting review from not logged in user
 			return (
-				<>
-					<hr className={styles.hr} />
+				<div className={styles.action}>
 					<p className={styles.note}>
-						{`Waiting for ${settleeName} to review.`}
+						Waiting for {settleeName} to Review
 					</p>
-				</>
+				</div>
 			);
 		} else {
 			return (
-				<>
-					<hr className={styles.hr} />
-					<Button
-						title="REVIEW TO CLOSE"
-						link={`/settlements/${settlement._id}`}
-						className={styles.button}
-					/>
-				</>
+				<div className={styles.action}>
+					<h5>REVIEW TO CLOSE</h5>
+					<p className={styles.note}>
+						{settlerName} is waiting for you
+					</p>
+				</div>
 			);
 		}
 	} else {
