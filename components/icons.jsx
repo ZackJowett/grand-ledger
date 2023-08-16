@@ -15,6 +15,16 @@ export function IconArrow({ className = null }) {
 	return <MdOutlineKeyboardArrowRight className={className} />;
 }
 
+import { MdCheck } from "react-icons/md";
+export function IconCheck({ className = null }) {
+	return <MdCheck className={className} />;
+}
+
+import { MdClose } from "react-icons/md";
+export function IconCross({ className = null }) {
+	return <MdClose className={className} />;
+}
+
 // ----------- DEBTS ----------- \\
 import { MdOutlineAttachMoney } from "react-icons/md";
 export function IconDebt({ className = null }) {

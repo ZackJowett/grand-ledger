@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
 import { createSettlement } from "utils/data/settlements";
@@ -12,9 +12,9 @@ export default function CreateSettlement() {
 
 	// States
 	const [selectedUser, setSelectedUser] = useState(null);
-	const [submitError, setSubmitError] = useState(null);
-	const [submitSuccess, setSubmitSuccess] = useState(null);
-	const [loading, setLoading] = useState(false); // String of loading state
+	// const [submitError, setSubmitError] = useState(null);
+	// const [submitSuccess, setSubmitSuccess] = useState(null);
+	// const [loading, setLoading] = useState(false); // String of loading state
 
 	const {
 		data: debts,
@@ -22,11 +22,14 @@ export default function CreateSettlement() {
 		error: debtsError,
 	} = useDebtsBetweenUsers(session.user.id, selectedUser?._id);
 
+	const [selectedDebts, setSelectedDebts] = useState(debts);
+
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
 	let stats = { totalDebt: 0, totalUnreceived: 0, net: 0 };
 
 	if (debts) {
+		if (selectedDebts === null) setSelectedDebts(debts);
 		debts.forEach((debt) => {
 			if (debt.creditor == session.user.id) {
 				// User is creditor
@@ -38,6 +41,10 @@ export default function CreateSettlement() {
 			}
 		});
 	}
+
+	useEffect(() => {
+		setSelectedDebts(debts);
+	}, [selectedUser, debts]);
 
 	// Create new debt
 	function handleSubmit(description) {
@@ -78,28 +85,12 @@ export default function CreateSettlement() {
 
 	return (
 		<>
-			{/* <CurrentStandings setSelectedUser={setSelectedUser} /> */}
-			{/* {submitError && (
-				<p className={styles.error}>
-					There was an error creating the settlement. Please try again
-					or contact admin.
-				</p>
-			)}
-			{submitSuccess && (
-				<p className={styles.success}>
-					Successfully created the settlement:{" "}
-					<TextButton
-						title="Click to view"
-						link={`/settlements/${submitSuccess._id}`}
-						className={styles.link}
-					/>{" "}
-				</p>
-			)} */}
-
 			<SelectUser
 				debts={debts}
 				selectedUser={selectedUser}
 				setSelectedUser={setSelectedUser}
+				selectedDebts={selectedDebts}
+				setSelectedDebts={setSelectedDebts}
 				stats={stats}
 			/>
 

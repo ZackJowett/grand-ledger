@@ -13,6 +13,8 @@ export default function SelectUser({
 	debts,
 	selectedUser,
 	setSelectedUser,
+	selectedDebts,
+	setSelectedDebts,
 	stats,
 }) {
 	const { data: session } = useSession();
@@ -30,7 +32,7 @@ export default function SelectUser({
 		const selectedUser = users.find(
 			(user) => user._id == selectedOption.value
 		);
-		console.log(selectedUser);
+
 		setSelectedUser(selectedUser);
 	}
 
@@ -48,7 +50,7 @@ export default function SelectUser({
 			.filter((item) => item);
 
 		if (selectedUser === null && router.query.id) {
-			handleSelectParty({ label: "lol", value: router.query.id });
+			handleSelectParty({ label: "", value: router.query.id });
 		}
 	}
 
@@ -59,70 +61,29 @@ export default function SelectUser({
 				className={styles.header}
 				align="left"
 			/>
-			<Select
-				options={options}
-				className={styles.select}
-				defaultValue={
-					router.query.id
-						? options.find(
-								(entry) => entry.value == router.query.id
-						  )
-						: options[0]
-				}
-				onChange={handleSelectParty}
-			/>
-
-			{!users ? (
-				<Spinner title="Loading users..." />
-			) : (
-				<Card dark>
-					<div className={styles.stats} id="settlement-standings">
-						<div className={styles.debts}>
-							<Card
-								className={styles.unreceived}
-								action={
-									selectedUser
-										? `${selectedUser.name} owes you`
-										: ""
-								}
-								reverseAction
-								light
-								smallPadding>
-								{!debts || !stats ? (
-									<p className={styles.loading}>---</p>
-								) : (
-									<Money amount={stats.totalUnreceived} />
-								)}
-							</Card>
-							<Card
-								className={styles.debt}
-								action={
-									selectedUser
-										? `You owe ${selectedUser.name}`
-										: ""
-								}
-								reverseAction
-								light
-								smallPadding>
-								{!debts || !stats ? (
-									<p className={styles.loading}>---</p>
-								) : (
-									<Money
-										amount={stats.totalDebt}
-										className={styles.debtAmount}
-									/>
-								)}
-							</Card>
-						</div>
+			{users && (
+				<Select
+					options={options}
+					className={styles.select}
+					defaultValue={
+						router.query.id
+							? options.find(
+									(entry) => entry.value == router.query.id
+							  )
+							: options[0]
+					}
+					onChange={handleSelectParty}
+				/>
+			)}
+			<Card dark>
+				<div className={styles.stats} id="settlement-standings">
+					<div className={styles.debts}>
 						<Card
-							className={styles.netWrapper}
+							className={styles.unreceived}
 							action={
 								selectedUser
-									? stats.net > 0
-										? `${selectedUser.name}
-										must pay you`
-										: `You must pay ${selectedUser.name}`
-									: ""
+									? `${selectedUser.name} owes you`
+									: " "
 							}
 							reverseAction
 							light
@@ -130,15 +91,55 @@ export default function SelectUser({
 							{!debts || !stats ? (
 								<p className={styles.loading}>---</p>
 							) : (
-								<Money amount={stats.net} notColoured />
+								<Money amount={stats.totalUnreceived} />
+							)}
+						</Card>
+						<Card
+							className={styles.debt}
+							action={
+								selectedUser
+									? `You owe ${selectedUser.name}`
+									: " "
+							}
+							reverseAction
+							light
+							smallPadding>
+							{!debts || !stats ? (
+								<p className={styles.loading}>---</p>
+							) : (
+								<Money
+									amount={stats.totalDebt}
+									className={styles.debtAmount}
+								/>
 							)}
 						</Card>
 					</div>
-					{debts && debts.length > 0 && (
-						<DebtsIncluded debts={debts} />
-					)}
-				</Card>
-			)}
+					<Card
+						className={styles.netWrapper}
+						action={
+							selectedUser
+								? stats.net > 0
+									? `${selectedUser.name}
+										must pay you`
+									: `You must pay ${selectedUser.name}`
+								: " "
+						}
+						reverseAction
+						light
+						smallPadding>
+						{!debts || !stats ? (
+							<p className={styles.loading}>---</p>
+						) : (
+							<Money amount={stats.net} notColoured />
+						)}
+					</Card>
+				</div>
+				<DebtsIncluded
+					debts={debts}
+					selectedDebts={selectedDebts}
+					setSelectedDebts={setSelectedDebts}
+				/>
+			</Card>
 		</section>
 	);
 }

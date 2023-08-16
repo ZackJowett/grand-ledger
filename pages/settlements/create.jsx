@@ -32,7 +32,7 @@ export default function Create() {
 			</p>
 			{/* <CurrentDebts /> */}
 			<hr className={styles.hr} />
-			<CreateSettlement />
+			<CreateSettlement id="#createSettlement" />
 		</section>
 	);
 }
