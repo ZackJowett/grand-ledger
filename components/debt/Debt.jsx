@@ -50,7 +50,10 @@ export default function Debt({ debt, className, light = false }) {
 						<Money
 							amount={userIsDebtor ? -debt.amount : debt.amount}
 							notColoured={debt.status != "outstanding"}
-							backgroundDark={debt.status == "outstanding"}
+							background={debt.status == "outstanding" && !light}
+							backgroundDark={
+								debt.status == "outstanding" && light
+							}
 							className={styles.money}
 							padding
 							small

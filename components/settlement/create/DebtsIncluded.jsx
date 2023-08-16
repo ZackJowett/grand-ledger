@@ -20,6 +20,11 @@ export default function DebtsIncluded({
 		<section className={styles.wrapper}>
 			<Title
 				title="Debts Included"
+				text={
+					<p className={styles.descriptor}>
+						Click <IconCheck /> to exclude
+					</p>
+				}
 				align="left"
 				className={styles.title}
 			/>

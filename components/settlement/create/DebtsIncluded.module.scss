@@ -56,3 +56,12 @@
 		color: var(--green);
 	}
 }
+
+.descriptor {
+	@include flex(row, flex-start);
+	color: var(--subtext);
+
+	svg {
+		margin: 0 0.25rem 0 0.25rem;
+	}
+}

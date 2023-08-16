@@ -52,7 +52,12 @@ export default function Settlement({ settlement, className, light = false }) {
 						<Money
 							amount={settlement.netAmount}
 							notColoured={true}
-							backgroundDark={settlement.status == "outstanding"}
+							background={
+								settlement.status == "outstanding" && !light
+							}
+							backgroundDark={
+								settlement.status == "outstanding" && light
+							}
 							className={styles.money}
 							padding
 							small

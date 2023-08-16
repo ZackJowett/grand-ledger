@@ -37,6 +37,7 @@
 	text-overflow: ellipsis;
 
 	.description {
+		overflow: hidden;
 		text-overflow: ellipsis;
 		width: 100%;
 	}
@@ -44,10 +45,14 @@
 
 .typeUnreceived {
 	color: var(--green);
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .typeDebt {
 	color: var(--red);
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .date,
