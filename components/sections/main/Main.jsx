@@ -47,8 +47,10 @@ export default function Main() {
 				</div> */}
 			</div>
 
-			<RecentSettlements />
-			<RecentDebts />
+			<div className={styles.recents}>
+				<RecentSettlements className={styles.settlements} />
+				<RecentDebts className={styles.debts} />
+			</div>
 			<br />
 		</div>
 	);

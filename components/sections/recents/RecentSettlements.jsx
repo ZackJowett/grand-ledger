@@ -15,7 +15,7 @@ export default function RecentSettlements({ className }) {
 
 	const [settlements, setSettlements] = useState(null);
 	const [users, setUsers] = useState(null); // [user
-	const [showAmount, setShowAmount] = useState(3); // Number to show
+	const [showAmount, setShowAmount] = useState(4); // Number to show
 	const [timeFetched, setTimeFetched] = useState(null);
 	const [loading, setLoading] = useState(true); // [user
 

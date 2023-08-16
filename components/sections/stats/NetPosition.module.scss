@@ -1,16 +1,38 @@
 @use "public/styles/mixins.scss" as *;
 
-.totalDebt,
-.netPosition,
-.totalUnreceived {
-	p {
-		text-align: center;
+.wrapper {
+	min-width: 100%;
+	@include flex(column, center, flex-start, $gap: 0.5rem);
+
+	@include desktop-up {
+		min-width: 30rem;
 	}
 }
 
-.stats {
+.individualDebtTotals {
 	width: 100%;
-	@include flex(row, space-evenly);
+	@include flex(row, center, flex-start, $gap: 0.5rem);
+
+	@include desktop-up {
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+
+	@include screen("430px") {
+		flex-direction: column;
+	}
+}
+
+.debtWrapper {
+	&:hover {
+		border-color: var(--debt) !important;
+	}
+}
+
+.unreceivedWrapper {
+	&:hover {
+		border-color: var(--unreceived) !important;
+	}
 }
 
 .noDebts {
@@ -18,10 +40,8 @@
 	color: var(--green);
 }
 
-.unreceived {
-	color: var(--green);
-}
-
-.debt {
-	color: var(--red);
+.action {
+	width: 100%;
+	text-align: center;
+	color: var(--subtext);
 }

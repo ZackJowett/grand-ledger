@@ -6,16 +6,15 @@ $breakpoint: 1200px;
 	@include flex(column, center, $gap: 2rem);
 	flex-wrap: nowrap;
 
-	@include screen-up($breakpoint) {
-		// flex-direction: row;
-		// align-items: flex-start;
-		// flex-wrap: wrap;
-	}
-
 	width: 100%;
 
 	max-width: 1500px;
 	padding: 1rem;
+
+	@include desktop-up {
+		align-items: flex-start;
+		width: calc(100vw - var(--desktopNavWidth));
+	}
 }
 
 .welcome {
@@ -29,6 +28,10 @@ $breakpoint: 1200px;
 	min-width: var(--minWidth);
 
 	@include flex(column, $gap: 2rem);
+
+	@include desktop-up {
+		align-items: flex-start;
+	}
 }
 
 .buttonWrapper {
@@ -43,4 +46,19 @@ $breakpoint: 1200px;
 
 .fact {
 	color: var(--subtext);
+}
+
+.recents {
+	width: 100%;
+	@include flex(column, $gap: 2rem);
+
+	@include desktop-up() {
+		flex-direction: row;
+		align-items: flex-start;
+		// flex-wrap: wrap;
+	}
+
+	@include screen("920px") {
+		flex-direction: column;
+	}
 }

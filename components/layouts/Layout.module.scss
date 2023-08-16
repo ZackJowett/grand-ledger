@@ -17,6 +17,7 @@
 .children {
 	@include flex(row, center, flex-start);
 	width: 100%;
+
 	min-height: calc(100lvh - var(--headerHeight));
 	// height: calc(100vh - var(--headerHeight));
 	position: relative;
@@ -30,6 +31,10 @@
 
 	&.back {
 		padding-top: 1.25rem;
+	}
+
+	@include desktop-up {
+		width: calc(100vw - var(--desktopNavWidth));
 	}
 }
 

@@ -4,7 +4,7 @@
 	width: 100%;
 	max-width: var(--maxWidth);
 	min-width: var(--minWidth);
-	@include flex(column, flex-start, flex-start, $gap: 1rem);
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
 }
 
 .viewMore {

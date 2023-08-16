@@ -15,7 +15,7 @@ export default function RecentDebts({ className }) {
 	const [debts, setDebts] = useState(null);
 	const [timeFetched, setTimeFetched] = useState(null); // [user
 	const [loading, setLoading] = useState(true); // [user
-	const [showAmount, setShowAmount] = useState(5); // Number to show
+	const [showAmount, setShowAmount] = useState(4); // Number to show
 
 	useEffect(() => {
 		if (!session) return;

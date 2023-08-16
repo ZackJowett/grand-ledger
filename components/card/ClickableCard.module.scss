@@ -1,6 +1,12 @@
 @use "public/styles/mixins.scss" as *;
 
 .card {
+	@include flex;
+
+	&.reverseAction {
+		flex-direction: column-reverse;
+	}
+
 	&.includeAction {
 		padding: 0;
 	}
@@ -12,10 +18,13 @@
 
 	@include border($color: transparent, $size: 1px);
 
-	&:hover {
-		cursor: pointer;
+	&.clickable {
+		&:hover {
+			cursor: pointer;
+		}
+
+		@include scale($color: var(--settlement));
 	}
-	@include scale($color: var(--settlement));
 }
 
 .contentWrapper {
@@ -30,6 +39,10 @@
 	&.light {
 		background-color: var(--background);
 	}
+}
+
+.reverseAction > .contentWrapper {
+	background-color: var(--backgroundDarkHover);
 }
 
 .content {
@@ -93,4 +106,8 @@
 	width: 100%;
 	background-color: var(--backgroundDarkHover);
 	padding: 0.5rem;
+}
+
+.reverseAction > .action {
+	background-color: var(--backgroundDark);
 }
