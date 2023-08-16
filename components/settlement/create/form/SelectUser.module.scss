@@ -10,6 +10,14 @@
 	max-width: 100%;
 }
 
+.selectDebt {
+	color: var(--debt);
+}
+
+.selectUnreceived {
+	color: var(--unreceived);
+}
+
 .stats {
 	@include flex(column, flex-start, center, $gap: 1.5rem);
 

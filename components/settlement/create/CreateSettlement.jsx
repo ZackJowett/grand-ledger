@@ -1,16 +1,11 @@
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import styles from "public/styles/pages/CreateSettlement.module.scss";
+import { useState } from "react";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
 import { createSettlement } from "utils/data/settlements";
-import TextButton from "components/button/text/TextButton";
 import NudgeButton from "components/button/nudge/NudgeButton";
-import { useSelector } from "react-redux";
 import DebtsIncluded from "components/settlement/create/DebtsIncluded";
-import { useRouter } from "next/router";
-import CurrentStandings from "components/settlement/stats/CurrentStandings";
-import { useUsers, useDebtsBetweenUsers } from "utils/hooks";
+import { useDebtsBetweenUsers } from "utils/hooks";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
@@ -83,9 +78,8 @@ export default function CreateSettlement() {
 
 	return (
 		<>
-			<CurrentStandings setSelectedUser={setSelectedUser} />
-			<hr className={styles.hr} />
-			{submitError && (
+			{/* <CurrentStandings setSelectedUser={setSelectedUser} /> */}
+			{/* {submitError && (
 				<p className={styles.error}>
 					There was an error creating the settlement. Please try again
 					or contact admin.
@@ -100,15 +94,14 @@ export default function CreateSettlement() {
 						className={styles.link}
 					/>{" "}
 				</p>
-			)}
+			)} */}
+
 			<SelectUser
 				debts={debts}
 				selectedUser={selectedUser}
 				setSelectedUser={setSelectedUser}
 				stats={stats}
 			/>
-
-			{debts && debts.length > 0 && <DebtsIncluded debts={debts} />}
 
 			{stats.net < 0 ? (
 				<SubmitSettlement

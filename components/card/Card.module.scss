@@ -32,7 +32,7 @@
 
 .wrapper {
 	padding: 0.75rem;
-	@include flex(row);
+	@include flex(row, $gap: 1rem);
 	width: 100%;
 
 	background-color: var(--backgroundDark);
@@ -44,6 +44,7 @@
 
 .content {
 	width: 100%;
+	// flex: 1;
 
 	@include flex(column, flex-start, flex-start);
 }
@@ -53,7 +54,7 @@
 }
 
 .header {
-	width: 100%;
+	// width: 100%;
 	@include flex(row, space-between);
 	align-items: flex-start;
 }
@@ -93,10 +94,10 @@
 }
 
 .arrow {
-	$size: 25px;
+	$size: 20px;
 
-	width: $size;
-	height: $size;
+	min-width: $size;
+	min-height: $size;
 
 	color: var(--subtext);
 }

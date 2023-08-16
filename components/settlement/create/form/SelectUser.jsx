@@ -5,8 +5,9 @@ import { useSession } from "next-auth/react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
 import Select from "components/forms/Select";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { useUsers, useUserDebtStats } from "utils/hooks";
+import DebtsIncluded from "components/settlement/create/DebtsIncluded";
 
 export default function SelectUser({
 	debts,
@@ -16,8 +17,14 @@ export default function SelectUser({
 }) {
 	const { data: session } = useSession();
 	const router = useRouter();
-	const state = useSelector((state) => state);
-	const users = state.users.list;
+	const {
+		data: users,
+		isLoading: usersLoading,
+		error: usersError,
+	} = useUsers();
+	const { data: userStats, isLoading: userStatsLoading } = useUserDebtStats(
+		session.user.id
+	);
 
 	function handleSelectParty(selectedOption) {
 		const selectedUser = users.find(
@@ -29,11 +36,14 @@ export default function SelectUser({
 
 	let options = [];
 
-	if (state.users.ready) {
+	if (!usersLoading) {
 		options = users
 			.map((user) => {
 				if (user._id == session.user.id) return;
-				return { value: user._id, label: user.name };
+				return {
+					value: user._id,
+					label: getUserLabel(user, userStats, userStatsLoading),
+				};
 			})
 			.filter((item) => item);
 
@@ -61,10 +71,11 @@ export default function SelectUser({
 				}
 				onChange={handleSelectParty}
 			/>
+
 			{!users ? (
 				<Spinner title="Loading users..." />
 			) : (
-				<Card dark title="">
+				<Card dark>
 					{!debts ? (
 						<Spinner title="Loading debts..." />
 					) : stats.net == 0 ? (
@@ -107,7 +118,7 @@ export default function SelectUser({
 										/>
 									}
 									className={styles.amount}
-									align="left"
+									align="center"
 									tiny
 								/>
 								<TextWithTitle
@@ -120,14 +131,43 @@ export default function SelectUser({
 										/>
 									}
 									className={styles.amount}
-									align="right"
+									align="center"
 									tiny
 								/>
 							</div>
 						</div>
 					)}
+					{debts && debts.length > 0 && (
+						<DebtsIncluded debts={debts} />
+					)}
 				</Card>
 			)}
 		</section>
+	);
+}
+
+function getUserLabel(user, stats, loading) {
+	// Statistics not loaded yet
+	if (loading) {
+		return `${user.name} - ...`;
+	}
+
+	// User has no debt
+	if (!stats.find((stat) => stat.id == user._id)) {
+		return `${user.name} - 0`;
+	}
+
+	const net = stats.find((stat) => stat.id == user._id)?.amountNet;
+
+	return (
+		<p>
+			{user.name} -{" "}
+			<span
+				className={
+					net < 0 ? styles.selectDebt : styles.selectUnreceived
+				}>
+				${net}
+			</span>
+		</p>
 	);
 }
