@@ -1,5 +1,5 @@
 import styles from "./Debt.module.scss";
-import ClickableCard from "/components/card/ClickableCard";
+import Card from "/components/card/Card";
 import TextWithTitle from "/components/text/title/TextWithTitle";
 import { getName, formatDate } from "/utils/helpers";
 import Money from "/components/text/money/Money";
@@ -28,7 +28,7 @@ export default function Debt({ debt, className, light = false }) {
 	// if (userIsDebtor) {
 	// User is debtor, return debt style card
 	return (
-		<ClickableCard
+		<Card
 			href={`/debts/${debt._id}`}
 			title={debtWith}
 			badge={getDebtStatus(debt.status, !userIsDebtor)}
@@ -62,7 +62,7 @@ export default function Debt({ debt, className, light = false }) {
 					className={styles.amount}
 				/>
 			</div>
-		</ClickableCard>
+		</Card>
 	);
 }
 

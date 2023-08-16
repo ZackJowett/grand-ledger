@@ -1,61 +1,123 @@
-import styles from "./Card.module.scss";
 import Link from "next/link";
+import styles from "./Card.module.scss";
+import { IconArrow } from "/components/icons";
 
-export default function Card({
+export default function ClickableCard({
 	pretitle,
 	title,
 	subtitle,
 	badge,
 	children,
+	href,
 	className,
-	dark,
-	link = null,
+	titleClassName,
+	pretitleClassName,
+	includeArrow,
+	action,
+	light,
+	reverseAction,
 }) {
 	const badgeColor =
-		badge == "Open"
+		badge == "Outstanding" || badge == "Unreceived"
 			? styles.open
 			: badge == "Pending"
 			? styles.pending
+			: badge == "Reopened"
+			? styles.open
 			: styles.closed;
 
-	return (
-		<section
-			className={`${className} ${styles.card} ${
-				dark ? styles.dark : ""
-			}`}>
-			<div className={styles.content}>
-				{link ? (
-					<Link className={styles.header} href={link}>
-						<div className={styles.titleWrapper}>
-							<p className={styles.pretitle}>{pretitle}</p>
-							<h3 className={styles.title}>{title}</h3>
-							<p className={styles.subtitle}>{subtitle}</p>
-						</div>
-
-						{badge && (
-							<div className={`${styles.badge} ${badgeColor}`}>
-								{badge}
+	if (href) {
+		return (
+			<Link
+				href={href}
+				className={`${styles.card} ${styles.clickable} ${
+					action ? styles.includeAction : ""
+				} ${reverseAction ? styles.reverseAction : ""} ${
+					className ? className : ""
+				} `}>
+				<div
+					className={`${styles.contentWrapper} ${
+						light ? styles.light : ""
+					}`}>
+					<div className={styles.content}>
+						<div className={styles.header}>
+							<div className={styles.titleWrapper}>
+								<p
+									className={`${styles.pretitle} ${
+										pretitleClassName
+											? pretitleClassName
+											: ""
+									}`}>
+									{pretitle}
+								</p>
+								<h3
+									className={`${styles.title} ${
+										titleClassName ? titleClassName : ""
+									}`}>
+									{title}
+								</h3>
+								<p className={styles.subtitle}>{subtitle}</p>
 							</div>
-						)}
-					</Link>
-				) : (
-					<div className={styles.header}>
-						<div className={styles.titleWrapper}>
-							<p className={styles.pretitle}>{pretitle}</p>
-							<h3 className={styles.title}>{title}</h3>
-							<p className={styles.subtitle}>{subtitle}</p>
-						</div>
 
-						{badge && (
-							<div className={`${styles.badge} ${badgeColor}`}>
-								{badge}
-							</div>
-						)}
+							{badge && (
+								<div
+									className={`${styles.badge} ${badgeColor}`}>
+									{badge}
+								</div>
+							)}
+						</div>
+						<div className={styles.children}>{children}</div>
 					</div>
-				)}
+					{includeArrow && <IconArrow className={styles.arrow} />}
+				</div>
+				{action && <div className={styles.action}>{action}</div>}
+			</Link>
+		);
+	} else {
+		return (
+			<div
+				className={`${styles.card} ${
+					action ? styles.includeAction : ""
+				} ${reverseAction ? styles.reverseAction : ""} ${
+					className ? className : ""
+				} `}>
+				<div
+					className={`${styles.contentWrapper} ${
+						light ? styles.light : ""
+					}`}>
+					<div className={styles.content}>
+						<div className={styles.header}>
+							<div className={styles.titleWrapper}>
+								<p
+									className={`${styles.pretitle} ${
+										pretitleClassName
+											? pretitleClassName
+											: ""
+									}`}>
+									{pretitle}
+								</p>
+								<h3
+									className={`${styles.title} ${
+										titleClassName ? titleClassName : ""
+									}`}>
+									{title}
+								</h3>
+								<p className={styles.subtitle}>{subtitle}</p>
+							</div>
 
-				{children}
+							{badge && (
+								<div
+									className={`${styles.badge} ${badgeColor}`}>
+									{badge}
+								</div>
+							)}
+						</div>
+						<div className={styles.children}>{children}</div>
+					</div>
+					{includeArrow && <IconArrow className={styles.arrow} />}
+				</div>
+				{action && <div className={styles.action}>{action}</div>}
 			</div>
-		</section>
-	);
+		);
+	}
 }

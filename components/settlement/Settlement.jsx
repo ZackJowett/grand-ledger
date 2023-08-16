@@ -1,9 +1,7 @@
 import styles from "./Settlement.module.scss";
-import ClickableCard from "/components/card/ClickableCard";
+import Card from "/components/card/Card";
 import TextWithTitle from "/components/text/title/TextWithTitle";
-import { getName, formatDate } from "/utils/helpers";
-import Link from "next/link";
-import Button from "/components/button/Button";
+import { getName } from "/utils/helpers";
 import Money from "/components/text/money/Money";
 import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
@@ -25,7 +23,7 @@ export default function Settlement({ settlement, className, light = false }) {
 	}
 
 	return (
-		<ClickableCard
+		<Card
 			href={`/settlements/${settlement._id}`}
 			title={settleWith}
 			badge={
@@ -73,7 +71,7 @@ export default function Settlement({ settlement, className, light = false }) {
 					? `Reopened ${formatDate(settlement.dateReopened)}`
 					: `Opened ${formatDate(settlement.dateCreated)}`}
 			</p> */}
-		</ClickableCard>
+		</Card>
 	);
 }
 

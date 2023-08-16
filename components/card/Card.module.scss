@@ -1,10 +1,11 @@
 @use "public/styles/mixins.scss" as *;
 
 .card {
-	@include flex(column, space-between);
+	@include flex;
 
-	// padding-right: 0.5rem
-	padding: 1rem;
+	&.reverseAction {
+		flex-direction: column-reverse;
+	}
 
 	&.includeAction {
 		padding: 0;
@@ -17,12 +18,20 @@
 
 	@include border($color: transparent, $size: 1px);
 
-	background-color: var(--backgroundDark);
+	&.clickable {
+		&:hover {
+			cursor: pointer;
+		}
+
+		@include scale($color: var(--settlement));
+	}
 }
 
-.wrapper {
+.contentWrapper {
+	position: relative;
 	padding: 0.75rem;
-	@include flex(row, $gap: 1rem);
+	padding-right: 2rem;
+	// @include flex(row, space-between);
 	width: 100%;
 
 	background-color: var(--backgroundDark);
@@ -30,6 +39,10 @@
 	&.light {
 		background-color: var(--background);
 	}
+}
+
+.reverseAction > .contentWrapper {
+	background-color: var(--backgroundDarkHover);
 }
 
 .content {
@@ -75,20 +88,17 @@
 	}
 }
 
-.dark {
-	max-width: var(--maxWidth);
-}
-
-.children {
-	width: 100%;
-}
-
 .arrow {
-	$size: 20px;
+	$size: 0.5rem;
+
+	position: absolute;
+	top: 50%;
+	right: 0.75rem;
+
+	transform: translateY(-50%);
 
 	min-width: $size;
 	min-height: $size;
-
 	color: var(--subtext);
 }
 
@@ -96,4 +106,8 @@
 	width: 100%;
 	background-color: var(--backgroundDarkHover);
 	padding: 0.5rem;
+}
+
+.reverseAction > .action {
+	background-color: var(--backgroundDark);
 }
