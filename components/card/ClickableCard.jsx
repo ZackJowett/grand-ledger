@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./Card.module.scss";
+import styles from "./ClickableCard.module.scss";
 import { IconArrow } from "/components/icons";
 
 export default function ClickableCard({
@@ -31,7 +31,10 @@ export default function ClickableCard({
 			className={`${styles.card} ${styles.clickable} ${
 				action ? styles.includeAction : ""
 			} ${className ? className : ""} `}>
-			<div className={`${styles.wrapper} ${light ? styles.light : ""}`}>
+			<div
+				className={`${styles.contentWrapper} ${
+					light ? styles.light : ""
+				}`}>
 				<div className={styles.content}>
 					<div className={styles.header}>
 						<div className={styles.titleWrapper}>
