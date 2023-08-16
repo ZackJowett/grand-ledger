@@ -76,48 +76,64 @@ export default function SelectUser({
 				<Spinner title="Loading users..." />
 			) : (
 				<Card dark>
-					{!debts ? (
-						<Spinner title="Loading debts..." />
-					) : stats.net == 0 ? (
-						"You are even"
-					) : (
-						<div className={styles.stats} id="settlement-standings">
-							<div className={styles.debts}>
-								<Card
-									className={styles.unreceived}
-									action={`${selectedUser.name} owes you`}
-									reverseAction
-									light
-									smallPadding>
-									<Money amount={stats.totalUnreceived} />
-								</Card>
-								<Card
-									className={styles.debt}
-									action={`You owe ${selectedUser.name}`}
-									reverseAction
-									light
-									smallPadding>
-									<Money
-										amount={stats.totalDebt}
-										className={styles.debtAmount}
-									/>
-								</Card>
-							</div>
+					<div className={styles.stats} id="settlement-standings">
+						<div className={styles.debts}>
 							<Card
-								className={styles.netWrapper}
+								className={styles.unreceived}
 								action={
-									stats.net > 0
-										? `${selectedUser.name}
-										must pay you`
-										: `You must pay ${selectedUser.name}`
+									selectedUser
+										? `${selectedUser.name} owes you`
+										: ""
 								}
 								reverseAction
 								light
 								smallPadding>
-								<Money amount={stats.net} notColoured />
+								{!debts || !stats ? (
+									<p className={styles.loading}>---</p>
+								) : (
+									<Money amount={stats.totalUnreceived} />
+								)}
+							</Card>
+							<Card
+								className={styles.debt}
+								action={
+									selectedUser
+										? `You owe ${selectedUser.name}`
+										: ""
+								}
+								reverseAction
+								light
+								smallPadding>
+								{!debts || !stats ? (
+									<p className={styles.loading}>---</p>
+								) : (
+									<Money
+										amount={stats.totalDebt}
+										className={styles.debtAmount}
+									/>
+								)}
 							</Card>
 						</div>
-					)}
+						<Card
+							className={styles.netWrapper}
+							action={
+								selectedUser
+									? stats.net > 0
+										? `${selectedUser.name}
+										must pay you`
+										: `You must pay ${selectedUser.name}`
+									: ""
+							}
+							reverseAction
+							light
+							smallPadding>
+							{!debts || !stats ? (
+								<p className={styles.loading}>---</p>
+							) : (
+								<Money amount={stats.net} notColoured />
+							)}
+						</Card>
+					</div>
 					{debts && debts.length > 0 && (
 						<DebtsIncluded debts={debts} />
 					)}
