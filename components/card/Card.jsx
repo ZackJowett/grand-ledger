@@ -16,6 +16,7 @@ export default function ClickableCard({
 	action,
 	light,
 	reverseAction,
+	smallPadding,
 }) {
 	const badgeColor =
 		badge == "Outstanding" || badge == "Unreceived"
@@ -38,7 +39,7 @@ export default function ClickableCard({
 				<div
 					className={`${styles.contentWrapper} ${
 						light ? styles.light : ""
-					}`}>
+					} ${smallPadding ? styles.smallPadding : ""}`}>
 					<div className={styles.content}>
 						<div className={styles.header}>
 							<div className={styles.titleWrapper}>
@@ -70,7 +71,14 @@ export default function ClickableCard({
 					</div>
 					{includeArrow && <IconArrow className={styles.arrow} />}
 				</div>
-				{action && <div className={styles.action}>{action}</div>}
+				{action && (
+					<div
+						className={`${styles.action} ${
+							light ? styles.actionLight : ""
+						}`}>
+						{action}
+					</div>
+				)}
 			</Link>
 		);
 	} else {
@@ -84,7 +92,7 @@ export default function ClickableCard({
 				<div
 					className={`${styles.contentWrapper} ${
 						light ? styles.light : ""
-					}`}>
+					} ${smallPadding ? styles.smallPadding : ""}`}>
 					<div className={styles.content}>
 						<div className={styles.header}>
 							<div className={styles.titleWrapper}>
@@ -116,7 +124,14 @@ export default function ClickableCard({
 					</div>
 					{includeArrow && <IconArrow className={styles.arrow} />}
 				</div>
-				{action && <div className={styles.action}>{action}</div>}
+				{action && (
+					<div
+						className={`${styles.action} ${
+							light ? styles.actionLight : ""
+						}`}>
+						{action}
+					</div>
+				)}
 			</div>
 		);
 	}

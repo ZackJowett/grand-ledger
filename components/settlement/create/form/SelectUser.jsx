@@ -82,59 +82,40 @@ export default function SelectUser({
 						"You are even"
 					) : (
 						<div className={styles.stats} id="settlement-standings">
-							<div className={styles.net}>
-								<TextWithTitle
-									title={
-										stats.net > 0
-											? `${selectedUser.name} must pay you`
-											: stats.net < 0
-											? `You must pay ${selectedUser.name}`
-											: "You are even"
-									}
-									className={styles.header}
-									small
-								/>
-								<TextWithTitle
-									title={
-										<Money
-											amount={stats.net}
-											includeSign
-											background
-										/>
-									}
-									className={styles.netPos}
-									small
-								/>
-							</div>
-							<hr className={styles.hr} />
 							<div className={styles.debts}>
-								<TextWithTitle
-									title={`${selectedUser.name} owes you`}
-									text={
-										<Money
-											amount={stats.totalUnreceived}
-											background
-											small
-										/>
-									}
-									className={styles.amount}
-									align="center"
-									tiny
-								/>
-								<TextWithTitle
-									title={`You owe ${selectedUser.name}`}
-									text={
-										<Money
-											amount={stats.totalDebt}
-											background
-											small
-										/>
-									}
-									className={styles.amount}
-									align="center"
-									tiny
-								/>
+								<Card
+									className={styles.unreceived}
+									action={`${selectedUser.name} owes you`}
+									reverseAction
+									light
+									smallPadding>
+									<Money amount={stats.totalUnreceived} />
+								</Card>
+								<Card
+									className={styles.debt}
+									action={`You owe ${selectedUser.name}`}
+									reverseAction
+									light
+									smallPadding>
+									<Money
+										amount={stats.totalDebt}
+										className={styles.debtAmount}
+									/>
+								</Card>
 							</div>
+							<Card
+								className={styles.netWrapper}
+								action={
+									stats.net > 0
+										? `${selectedUser.name}
+										must pay you`
+										: `You must pay ${selectedUser.name}`
+								}
+								reverseAction
+								light
+								smallPadding>
+								<Money amount={stats.net} notColoured />
+							</Card>
 						</div>
 					)}
 					{debts && debts.length > 0 && (

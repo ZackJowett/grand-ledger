@@ -27,10 +27,13 @@
 	}
 }
 
+.clickable > .contentWrapper {
+	padding-right: 2rem;
+}
+
 .contentWrapper {
 	position: relative;
 	padding: 0.75rem;
-	padding-right: 2rem;
 	// @include flex(row, space-between);
 	width: 100%;
 
@@ -39,10 +42,18 @@
 	&.light {
 		background-color: var(--background);
 	}
+
+	&.smallPadding {
+		padding: 0.25rem;
+	}
 }
 
 .reverseAction > .contentWrapper {
 	background-color: var(--backgroundDarkHover);
+
+	&.light {
+		background-color: var(--background);
+	}
 }
 
 .content {
@@ -106,8 +117,14 @@
 	width: 100%;
 	background-color: var(--backgroundDarkHover);
 	padding: 0.5rem;
+	text-align: center;
+	color: var(--subtext);
 }
 
 .reverseAction > .action {
 	background-color: var(--backgroundDark);
+
+	&.actionLight {
+		background-color: var(--backgroundDarkHover);
+	}
 }

@@ -1,7 +1,7 @@
 @use "public/styles/mixins.scss" as *;
 
 .wrapper {
-	@include flex($gap: 1rem);
+	@include flex($gap: 0.5rem);
 	margin-top: 1rem;
 }
 
