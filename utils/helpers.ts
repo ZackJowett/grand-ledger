@@ -58,7 +58,7 @@ function getRootURL() {
 		return "http://localhost:3000/";
 	} else if (process.env.NODE_ENV === "production") {
 		console.log("USED PRODUCT");
-		return "https://www.grandledger.app/";
+		return "https://grand-ledger-git-development-zackjowett.vercel.app/";
 	} else {
 		console.log("USED ELSE");
 		return "http://localhost:3000/";
