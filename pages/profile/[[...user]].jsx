@@ -102,7 +102,7 @@ export default function Profile() {
 							/>
 
 							{/* Show upload button if logged in */}
-							{userIsLoggedIn && <SetAvatarButton user={user} />}
+							{/* {userIsLoggedIn && <SetAvatarButton user={user} />} */}
 
 							{/* Show statistcs if logged in */}
 							{userIsLoggedIn && (
@@ -136,12 +136,23 @@ export default function Profile() {
 }
 
 function SetAvatarButton(user) {
+	const [loading, setLoading] = useState(false);
+	const [status, setStatus] = useState(null);
 	function handleUpload(result, widget) {
+		setLoading(true);
 		console.log(result, widget);
 		if (result.event === "success") {
 			setAvatar(user._id, result.info.secure_url).then((res) => {
 				if (res.success) {
 					console.log("SUCCESS YAY");
+					setLoading(false);
+					setStatus("Successfully Uploaded. Refreshing...");
+					// setTimeout(() => {
+					// 	window.location.reload();
+					// }, 1000);
+				} else {
+					setLoading(false);
+					setStatus("Error uploading image");
 				}
 			});
 		} else {
@@ -155,13 +166,19 @@ function SetAvatarButton(user) {
 
 	return (
 		<div className={styles.uploadWrapper}>
-			<CldUploadButton
-				uploadPreset="zpeljxi4"
-				onUpload={handleUpload}
-				onError={handleError}
-				className={styles.uploadButton}>
-				Upload Profile Photo
-			</CldUploadButton>
+			{loading ? (
+				<Spinner title="Uploading image..." />
+			) : status ? (
+				<p>{status}</p>
+			) : (
+				<CldUploadButton
+					uploadPreset="zpeljxi4"
+					onUpload={handleUpload}
+					onError={handleError}
+					className={styles.uploadButton}>
+					Upload Profile Photo
+				</CldUploadButton>
+			)}
 		</div>
 	);
 }
