@@ -20,11 +20,8 @@
 	}
 
 	max-width: var(--maxWidth);
-	width: 100%;
-
-	overflow: hidden;
-
 	@include border($color: transparent, $size: 1px);
+	width: 100%;
 
 	&.clickable {
 		&:hover {
@@ -46,6 +43,7 @@
 	width: 100%;
 
 	background-color: var(--backgroundDark);
+	@include border($color: transparent, $size: 1px);
 
 	&.light {
 		background-color: var(--background);
@@ -53,6 +51,20 @@
 
 	&.smallPadding {
 		padding: 0.25rem;
+	}
+}
+
+.includeAction {
+	&.reverseAction > .contentWrapper {
+		@include border($color: transparent, $size: 1px);
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+
+	.contentWrapper {
+		@include border($color: transparent, $size: 1px);
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 }
 
@@ -127,10 +139,18 @@
 	padding: 0.5rem;
 	text-align: center;
 	color: var(--subtext);
+
+	@include border($color: transparent, $size: 1px);
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
 
 .reverseAction > .action {
 	background-color: var(--backgroundDark);
+
+	@include border($color: transparent, $size: 1px);
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 
 	&.actionLight {
 		background-color: var(--backgroundDarkHover);

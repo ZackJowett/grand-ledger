@@ -12,6 +12,7 @@ export default function ClickableCard({
 	className,
 	titleClassName,
 	pretitleClassName,
+	contentClassName,
 	includeArrow,
 	action,
 	light,
@@ -39,7 +40,9 @@ export default function ClickableCard({
 				<div
 					className={`${styles.contentWrapper} ${
 						light ? styles.light : ""
-					} ${smallPadding ? styles.smallPadding : ""}`}>
+					} ${smallPadding ? styles.smallPadding : ""} ${
+						contentClassName ? contentClassName : ""
+					}`}>
 					<div className={styles.content}>
 						<div className={styles.header}>
 							<div className={styles.titleWrapper}>
@@ -94,41 +97,36 @@ export default function ClickableCard({
 						light ? styles.light : ""
 					} ${smallPadding ? styles.smallPadding : ""}`}>
 					<div className={styles.content}>
-						{pretitle ||
-							title ||
-							badge ||
-							(subtitle && (
-								<div className={styles.header}>
-									<div className={styles.titleWrapper}>
-										<p
-											className={`${styles.pretitle} ${
-												pretitleClassName
-													? pretitleClassName
-													: ""
-											}`}>
-											{pretitle}
-										</p>
-										<h3
-											className={`${styles.title} ${
-												titleClassName
-													? titleClassName
-													: ""
-											}`}>
-											{title}
-										</h3>
-										<p className={styles.subtitle}>
-											{subtitle}
-										</p>
-									</div>
-
-									{badge && (
-										<div
-											className={`${styles.badge} ${badgeColor}`}>
-											{badge}
-										</div>
-									)}
+						{pretitle || title || badge || subtitle ? (
+							<div className={styles.header}>
+								<div className={styles.titleWrapper}>
+									<p
+										className={`${styles.pretitle} ${
+											pretitleClassName
+												? pretitleClassName
+												: ""
+										}`}>
+										{pretitle}
+									</p>
+									<h3
+										className={`${styles.title} ${
+											titleClassName ? titleClassName : ""
+										}`}>
+										{title}
+									</h3>
+									<p className={styles.subtitle}>
+										{subtitle}
+									</p>
 								</div>
-							))}
+
+								{badge && (
+									<div
+										className={`${styles.badge} ${badgeColor}`}>
+										{badge}
+									</div>
+								)}
+							</div>
+						) : null}
 						<div className={styles.children}>{children}</div>
 					</div>
 					{includeArrow && <IconArrow className={styles.arrow} />}

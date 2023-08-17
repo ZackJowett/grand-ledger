@@ -201,7 +201,7 @@ function getUserLabel(user, stats, loading) {
 
 	const net = stats.find((stat) => stat.id == user._id)?.amountNet;
 
-	return `${user.name} - ${net}`;
+	return `${user.name} | ${net > 0 ? "+" : ""}${net}`;
 	{
 		/* <span
 				className={

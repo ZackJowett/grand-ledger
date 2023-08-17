@@ -80,6 +80,11 @@ function DebtSelector({ debt, selectedDebts, setSelectedDebts, netPosition }) {
 						? styles.debtRoundCorners
 						: ""
 				}`}
+				contentClassName={`${styles.debt} ${
+					netPosition && netPosition < 0
+						? styles.debtRoundCorners
+						: ""
+				}`}
 			/>
 
 			{netPosition && netPosition < 0 && (

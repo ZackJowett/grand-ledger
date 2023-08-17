@@ -127,14 +127,18 @@ export default function SubmitSettlement({
 							</p> */}
 							<div className={styles.checkboxes}>
 								<Checkbox
-									label={`I approve the amount of $${totalAmount}`}
+									label={`I approve the amount of $${totalAmount.toFixed(
+										2
+									)}`}
 									onChange={(checked, e) =>
 										setCheckedApprove(checked)
 									}
 									invalid={!formValid.checkedApprove}
 								/>
 								<Checkbox
-									label={`I have sent $${totalAmount} to ${selectedUser.name}`}
+									label={`I have sent $${totalAmount.toFixed(
+										2
+									)} to ${selectedUser.name}`}
 									onChange={(checked, e) =>
 										setCheckedSent(checked)
 									}
