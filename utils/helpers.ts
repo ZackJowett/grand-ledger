@@ -50,6 +50,7 @@ async function quickFetch(url) {
 }
 
 function getRootURL() {
+	console.log("vercel ENV", process.env.VERCEL_ENV);
 	if (process.env.VERCEL_ENV == "development") {
 		return "https://grand-ledger-git-development-zackjowett.vercel.app/";
 	} else if (process.env.NODE_ENV == "development") {
