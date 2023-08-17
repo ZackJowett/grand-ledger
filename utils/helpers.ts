@@ -50,13 +50,14 @@ async function quickFetch(url) {
 }
 
 function getRootURL() {
-	console.log("vercel ENV", process.env.VERCEL_ENV);
-	if (process.env.VERCEL_ENV == "development") {
+	if (process.env.VERCEL_ENV === "development") {
 		return "https://grand-ledger-git-development-zackjowett.vercel.app/";
-	} else if (process.env.NODE_ENV == "development") {
+	} else if (process.env.NODE_ENV === "development") {
 		return "http://localhost:3000/";
-	} else if (process.env.NODE_ENV == "production") {
+	} else if (process.env.NODE_ENV === "production") {
 		return "https://www.grandledger.app/";
+	} else {
+		return "http://localhost:3000/";
 	}
 }
 
