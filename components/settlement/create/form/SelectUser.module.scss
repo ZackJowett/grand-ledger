@@ -18,6 +18,10 @@
 	color: var(--unreceived);
 }
 
+.settlementWrapper {
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
+}
+
 .stats {
 	width: 100%;
 	@include flex(column, flex-start, center, $gap: 0.5rem);

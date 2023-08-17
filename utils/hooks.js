@@ -73,6 +73,20 @@ export function useDebtsBetweenUsersOutstanding(id1, id2) {
 	};
 }
 
+// ------------------------------- SETTLEMENTS -------------------------------- \\
+export function useSettlementsBetweenUsers(id1, id2) {
+	const { data, error, isLoading } = useSWR(
+		`api/settlements/getBetweenUsers?userId1=${id1}&userId2=${id2}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+	};
+}
+
 // ------------------------------ STATISTICS ------------------------------- \\
 export function useUserDebtStats(id) {
 	const { data, error, isLoading } = useSWR(

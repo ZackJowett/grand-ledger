@@ -6,8 +6,13 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
 import Select from "components/forms/Select";
 import { useRouter } from "next/router";
-import { useUsers, useUserDebtStats } from "utils/hooks";
+import {
+	useUsers,
+	useUserDebtStats,
+	useSettlementsBetweenUsers,
+} from "utils/hooks";
 import DebtsIncluded from "components/settlement/create/DebtsIncluded";
+import Settlement from "components/settlement/Settlement";
 
 export default function SelectUser({
 	debts,
@@ -27,6 +32,11 @@ export default function SelectUser({
 	const { data: userStats, isLoading: userStatsLoading } = useUserDebtStats(
 		session.user.id
 	);
+	const {
+		data: existingSettlements,
+		isLoading: existingSettlementsLoading,
+		error: existingSettlementsError,
+	} = useSettlementsBetweenUsers(session.user.id, selectedUser?._id);
 
 	function handleSelectParty(selectedOption) {
 		const selectedUser = users.find(
@@ -35,6 +45,8 @@ export default function SelectUser({
 
 		setSelectedUser(selectedUser);
 	}
+
+	console.log(existingSettlements);
 
 	let options = [];
 
@@ -82,6 +94,30 @@ export default function SelectUser({
 					onChange={handleSelectParty}
 				/>
 			)}
+
+			{!existingSettlementsLoading &&
+				existingSettlements &&
+				existingSettlements.length > 0 && (
+					<Card className={styles.debt}>
+						<div className={styles.settlementWrapper}>
+							<TextWithTitle
+								title={`Existing Settlements`}
+								className={styles.header}
+								align="left"
+							/>
+
+							{existingSettlements.map((settlement) => {
+								return (
+									<Settlement
+										settlement={settlement}
+										key={settlement.id}
+										light
+									/>
+								);
+							})}
+						</div>
+					</Card>
+				)}
 			<Card dark>
 				<div className={styles.stats} id="settlement-standings">
 					<div className={styles.debts}>
@@ -165,15 +201,16 @@ function getUserLabel(user, stats, loading) {
 
 	const net = stats.find((stat) => stat.id == user._id)?.amountNet;
 
-	return (
-		<p>
-			{user.name} -{" "}
-			<span
+	return `${user.name} - ${net}`;
+	{
+		/* <span
 				className={
 					net < 0 ? styles.selectDebt : styles.selectUnreceived
 				}>
 				${net}
-			</span>
-		</p>
-	);
+			</span> */
+	}
+	{
+		/* // </> */
+	}
 }
