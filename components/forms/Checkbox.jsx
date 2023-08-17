@@ -8,9 +8,13 @@ export default function Checkbox({
 	label = "Label",
 	className,
 	onChange,
+	invalid = false,
 }) {
 	return (
-		<div className={`${styles.wrapper} ${className ? className : ""}`}>
+		<div
+			className={`${styles.wrapper} ${className ? className : ""} ${
+				invalid ? styles.invalid : ""
+			}`}>
 			<CustomCheckbox
 				checked={checked}
 				icon={icon ? icon : <MdCheck className={styles.svg} />}

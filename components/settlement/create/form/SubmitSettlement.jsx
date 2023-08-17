@@ -12,11 +12,16 @@ export default function SubmitSettlement({
 	stats,
 	handleSubmit,
 	debtsIncluded,
+	totalNumDebts,
 }) {
 	const [description, setDescription] = useState("");
 	const [checkedApprove, setCheckedApprove] = useState(false);
 	const [checkedSent, setCheckedSent] = useState(false);
-	const [formValid, setformValid] = useState(true);
+	const [formValid, setformValid] = useState({
+		description: true,
+		checkedApprove: true,
+		checkedSent: true,
+	});
 	const [formInvalidRetries, setFormInvalidRetries] = useState(0); // increase number of '!' if trying to resubmit
 
 	if (!selectedUser) return null;
@@ -34,9 +39,38 @@ export default function SubmitSettlement({
 		: null;
 
 	function verifySubmit() {
+		let newFormValid = { ...formValid };
+
+		console.log(checkedApprove, checkedSent, description);
+
+		if (!checkedApprove) {
+			newFormValid.checkedApprove = false;
+		} else {
+			newFormValid.checkedApprove = true;
+		}
+		if (!checkedSent) {
+			newFormValid.checkedSent = false;
+		} else {
+			newFormValid.checkedSent = true;
+		}
+		if (!description || description.length <= 0) {
+			newFormValid.description = false;
+		} else {
+			newFormValid.description = true;
+		}
+
+		setformValid(newFormValid);
+
+		console.log(newFormValid);
+
 		if (!checkedApprove || !checkedSent || !description) {
-			setformValid(false);
 			setFormInvalidRetries(formInvalidRetries + 1);
+			return;
+		} else {
+			setFormInvalidRetries(0);
+		}
+
+		if (debtsIncluded && debtsIncluded.length <= 0) {
 			return;
 		}
 
@@ -55,7 +89,11 @@ export default function SubmitSettlement({
 							reverseAction
 							light>
 							<h2 className={styles.text}>
-								{debtsIncluded ? debtsIncluded.length : "---"}
+								{debtsIncluded
+									? `${debtsIncluded.length} / ${
+											totalNumDebts ? totalNumDebts : "--"
+									  }`
+									: "---"}
 							</h2>
 						</Card>
 						<Card
@@ -82,38 +120,42 @@ export default function SubmitSettlement({
 								placeholder="Settling our debts for movies, lunch..."
 								onChange={(e) => setDescription(e.target.value)}
 								required
+								invalid={!formValid.description}
 							/>
 							{/* <p className={styles.text}>
 								Please pay them now, then submit this settlement
 							</p> */}
 							<div className={styles.checkboxes}>
 								<Checkbox
-									label={`I approve the amounts`}
+									label={`I approve the amount of $${totalAmount}`}
 									onChange={(checked, e) =>
 										setCheckedApprove(checked)
 									}
+									invalid={!formValid.checkedApprove}
 								/>
 								<Checkbox
-									label={`I have sent the money to ${selectedUser.name}`}
+									label={`I have sent $${totalAmount} to ${selectedUser.name}`}
 									onChange={(checked, e) =>
 										setCheckedSent(checked)
 									}
+									invalid={!formValid.checkedSent}
 								/>
 							</div>
-							{!formValid && (
+							{!formValid.checkedApprove ||
+							!formValid.checkedSent ||
+							!formValid.description ? (
 								<p className={styles.warning}>
 									Please ensure all checkboxes are checked and
 									a description is provided
 									{formInvalidRetries > 0 &&
 										"!".repeat(formInvalidRetries)}
 								</p>
-							)}
+							) : null}
 							<Button
 								title="Submit"
 								className={styles.submit}
 								onClick={verifySubmit}
 							/>
-							<p className={styles.note}>You cannot undo this</p>
 						</div>
 					)}
 				</div>

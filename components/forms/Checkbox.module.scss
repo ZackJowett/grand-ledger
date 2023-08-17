@@ -19,3 +19,9 @@
 
 .label {
 }
+
+.invalid {
+	.label {
+		color: var(--red);
+	}
+}

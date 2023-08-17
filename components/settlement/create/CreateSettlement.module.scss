@@ -1,0 +1,38 @@
+@use "public/styles/mixins.scss" as *;
+
+.loading,
+.success,
+.error {
+	width: 100%;
+}
+
+.loading {
+	@include flex(row, space-between);
+}
+
+.success {
+	@include flex(column, flex-start, flex-start);
+}
+
+.errorCard {
+	border-color: var(--red);
+}
+
+.desc {
+	color: var(--subtext);
+}
+
+.tryAgain,
+.settlement {
+	margin-top: 1rem;
+}
+
+.spinner {
+	margin: 0;
+}
+
+.button {
+	width: fit-content;
+	padding: 0.5rem 2rem;
+	margin-top: 1rem;
+}

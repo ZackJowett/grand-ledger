@@ -38,7 +38,8 @@ export default function SelectUser({
 
 	let options = [];
 
-	if (!usersLoading) {
+	if (!usersLoading && !usersError && !userStatsLoading) {
+		// Create options
 		options = users
 			.map((user) => {
 				if (user._id == session.user.id) return;
@@ -49,8 +50,14 @@ export default function SelectUser({
 			})
 			.filter((item) => item);
 
+		// If selectedUser is null, set to user with id in query
 		if (selectedUser === null && router.query.id) {
-			handleSelectParty({ label: "", value: router.query.id });
+			handleSelectParty(
+				options.find((entry) => entry.value == router.query.id)
+			);
+		} else if (options.length > 0 && selectedUser === null) {
+			// If no options, set selectedUser to first user
+			handleSelectParty(options[0]);
 		}
 	}
 
@@ -61,7 +68,7 @@ export default function SelectUser({
 				className={styles.header}
 				align="left"
 			/>
-			{users && (
+			{users && selectedUser && (
 				<Select
 					options={options}
 					className={styles.select}
@@ -79,22 +86,6 @@ export default function SelectUser({
 				<div className={styles.stats} id="settlement-standings">
 					<div className={styles.debts}>
 						<Card
-							className={styles.unreceived}
-							action={
-								selectedUser
-									? `${selectedUser.name} owes you`
-									: " "
-							}
-							reverseAction
-							light
-							smallPadding>
-							{!debts || !stats ? (
-								<p className={styles.loading}>---</p>
-							) : (
-								<Money amount={stats.totalUnreceived} />
-							)}
-						</Card>
-						<Card
 							className={styles.debt}
 							action={
 								selectedUser
@@ -111,6 +102,22 @@ export default function SelectUser({
 									amount={stats.totalDebt}
 									className={styles.debtAmount}
 								/>
+							)}
+						</Card>
+						<Card
+							className={styles.unreceived}
+							action={
+								selectedUser
+									? `${selectedUser.name} owes you`
+									: " "
+							}
+							reverseAction
+							light
+							smallPadding>
+							{!debts || !stats ? (
+								<p className={styles.loading}>---</p>
+							) : (
+								<Money amount={stats.totalUnreceived} />
 							)}
 						</Card>
 					</div>
