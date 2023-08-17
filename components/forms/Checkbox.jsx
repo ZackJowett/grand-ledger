@@ -13,13 +13,15 @@ export default function Checkbox({
 		<div className={`${styles.wrapper} ${className ? className : ""}`}>
 			<CustomCheckbox
 				checked={checked}
-				icon={icon ? icon : <MdCheck />}
+				icon={icon ? icon : <MdCheck className={styles.svg} />}
 				className={styles.checkbox}
+				labelClassName={styles.label}
+				containerClassName={styles.container}
 				label={label}
-				borderRadius={5}
+				borderRadius={3}
 				borderWidth={1}
 				onChange={(checked, event) => onChange(checked, event)}
-				borderColor="#e0e0e0"
+				borderColor="transparent"
 			/>
 		</div>
 	);

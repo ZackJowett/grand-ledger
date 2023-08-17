@@ -9,21 +9,23 @@ export default function DebtsIncluded({
 	debts,
 	selectedDebts,
 	setSelectedDebts,
+	netPosition,
 }) {
 	if (debts && debts.length <= 0) {
-		return <section className={styles.wrapper}></section>;
+		return null;
 	}
-
-	console.log(selectedDebts);
 
 	return (
 		<section className={styles.wrapper}>
 			<Title
 				title="Debts Included"
 				text={
-					<p className={styles.descriptor}>
-						Click <IconCheck /> to exclude
-					</p>
+					netPosition &&
+					netPosition < 0 && (
+						<p className={styles.descriptor}>
+							Click <IconCheck /> to exclude
+						</p>
+					)
 				}
 				align="left"
 				className={styles.title}
@@ -42,6 +44,7 @@ export default function DebtsIncluded({
 							key={debt.id ? debt.id : debt._id}
 							selectedDebts={selectedDebts}
 							setSelectedDebts={setSelectedDebts}
+							netPosition={netPosition}
 						/>
 					);
 				})
@@ -50,7 +53,7 @@ export default function DebtsIncluded({
 	);
 }
 
-function DebtSelector({ debt, selectedDebts, setSelectedDebts }) {
+function DebtSelector({ debt, selectedDebts, setSelectedDebts, netPosition }) {
 	const selected = selectedDebts
 		? selectedDebts.find((selectedDebt) => selectedDebt._id === debt._id)
 		: null;
@@ -69,14 +72,25 @@ function DebtSelector({ debt, selectedDebts, setSelectedDebts }) {
 
 	return (
 		<div className={styles.debtWrapper}>
-			<Debt debt={debt} light className={styles.debt} />
-			<div
-				className={`${styles.debtSelector} ${
-					!selected ? styles.notSelected : ""
+			<Debt
+				debt={debt}
+				light
+				className={`${styles.debt} ${
+					netPosition && netPosition < 0
+						? styles.debtRoundCorners
+						: ""
 				}`}
-				onClick={handleSelect}>
-				{!selected ? <IconCross /> : <IconCheck />}
-			</div>
+			/>
+
+			{netPosition && netPosition < 0 && (
+				<div
+					className={`${styles.debtSelector} ${
+						!selected ? styles.notSelected : ""
+					}`}
+					onClick={handleSelect}>
+					{!selected ? <IconCross /> : <IconCheck />}
+				</div>
+			)}
 		</div>
 	);
 }

@@ -119,9 +119,9 @@ export default function SelectUser({
 						action={
 							selectedUser
 								? stats.net > 0
-									? `${selectedUser.name}
-										must pay you`
-									: `You must pay ${selectedUser.name}`
+									? `Total ${selectedUser.name}
+										owes you`
+									: `Total you owe ${selectedUser.name}`
 								: " "
 						}
 						reverseAction
@@ -138,6 +138,7 @@ export default function SelectUser({
 					debts={debts}
 					selectedDebts={selectedDebts}
 					setSelectedDebts={setSelectedDebts}
+					netPosition={stats ? stats.net : null}
 				/>
 			</Card>
 		</section>

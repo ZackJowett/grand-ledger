@@ -94,32 +94,41 @@ export default function ClickableCard({
 						light ? styles.light : ""
 					} ${smallPadding ? styles.smallPadding : ""}`}>
 					<div className={styles.content}>
-						<div className={styles.header}>
-							<div className={styles.titleWrapper}>
-								<p
-									className={`${styles.pretitle} ${
-										pretitleClassName
-											? pretitleClassName
-											: ""
-									}`}>
-									{pretitle}
-								</p>
-								<h3
-									className={`${styles.title} ${
-										titleClassName ? titleClassName : ""
-									}`}>
-									{title}
-								</h3>
-								<p className={styles.subtitle}>{subtitle}</p>
-							</div>
+						{pretitle ||
+							title ||
+							badge ||
+							(subtitle && (
+								<div className={styles.header}>
+									<div className={styles.titleWrapper}>
+										<p
+											className={`${styles.pretitle} ${
+												pretitleClassName
+													? pretitleClassName
+													: ""
+											}`}>
+											{pretitle}
+										</p>
+										<h3
+											className={`${styles.title} ${
+												titleClassName
+													? titleClassName
+													: ""
+											}`}>
+											{title}
+										</h3>
+										<p className={styles.subtitle}>
+											{subtitle}
+										</p>
+									</div>
 
-							{badge && (
-								<div
-									className={`${styles.badge} ${badgeColor}`}>
-									{badge}
+									{badge && (
+										<div
+											className={`${styles.badge} ${badgeColor}`}>
+											{badge}
+										</div>
+									)}
 								</div>
-							)}
-						</div>
+							))}
 						<div className={styles.children}>{children}</div>
 					</div>
 					{includeArrow && <IconArrow className={styles.arrow} />}

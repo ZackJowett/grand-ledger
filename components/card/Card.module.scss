@@ -1,5 +1,13 @@
 @use "public/styles/mixins.scss" as *;
 
+.card,
+.contentWrapper,
+.content,
+.header,
+.children {
+	height: 100%;
+}
+
 .card {
 	@include flex;
 

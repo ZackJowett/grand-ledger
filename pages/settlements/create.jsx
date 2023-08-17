@@ -31,7 +31,7 @@ export default function Create() {
 				4. Confirm
 			</p>
 			{/* <CurrentDebts /> */}
-			<hr className={styles.hr} />
+			{/* <hr className={styles.hr} /> */}
 			<CreateSettlement id="#createSettlement" />
 		</section>
 	);

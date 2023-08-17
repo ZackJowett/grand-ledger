@@ -99,6 +99,7 @@ export default function CreateSettlement() {
 					selectedUser={selectedUser}
 					handleSubmit={handleSubmit}
 					stats={stats}
+					debtsIncluded={selectedDebts}
 				/>
 			) : stats.net > 0 ? (
 				<>
