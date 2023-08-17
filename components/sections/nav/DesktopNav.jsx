@@ -21,7 +21,13 @@ import {
 // import Logo from "../../logo/Logo";
 // import SocialsList from "@/components/icons/socialsList";
 
-export default function HamburgerMenu({ currentRoute, className }) {
+export default function HamburgerMenu({
+	currentRoute,
+	className,
+	toggleMenu = () => {
+		return;
+	},
+}) {
 	return (
 		<>
 			<nav className={`${styles.wrapper} ${className ? className : ""}`}>
@@ -32,7 +38,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						href="/"
 						className={`${styles.link} ${styles.dashboard} ${
 							currentRoute === "/" ? styles.current : ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<IconDashboard
 							className={
 								currentRoute === "/"
@@ -49,7 +56,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							currentRoute === "/debts/create"
 								? styles.current
 								: ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<IconDebtCreate
 							className={
 								currentRoute === "/debts/create"
@@ -67,7 +75,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							currentRoute === "/settlements/create"
 								? styles.current
 								: ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<IconSettlementCreate
 							className={
 								currentRoute === "/settlements/create"
@@ -84,7 +93,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						href="/debts"
 						className={`${styles.link} ${styles.debts} ${
 							currentRoute === "/debts" ? styles.current : ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<IconDebt
 							className={
 								currentRoute === "/debts"
@@ -101,7 +111,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							currentRoute === "/unreceived-payments"
 								? styles.current
 								: ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<IconUnreceieved
 							className={
 								currentRoute === "/unreceived-payments"
@@ -118,7 +129,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							currentRoute === "/settlements"
 								? styles.current
 								: ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<IconSettlement
 							className={
 								currentRoute === "/settlements"
@@ -137,7 +149,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								currentRoute === "/profile/[[...user]]"
 									? styles.current
 									: ""
-							}`}>
+							}`}
+							onClick={toggleMenu}>
 							<IconProfile
 								className={
 									currentRoute === "/profile/[[...user]]"
@@ -151,7 +164,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 							href="/groups"
 							className={`${styles.bottomIcon} ${
 								currentRoute === "/groups" ? styles.current : ""
-							}`}>
+							}`}
+							onClick={toggleMenu}>
 							<IconGroup
 								className={
 									currentRoute === "/groups"
@@ -167,7 +181,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 								currentRoute === "/settings"
 									? styles.current
 									: ""
-							}`}>
+							}`}
+							onClick={toggleMenu}>
 							<IconSettings
 								className={
 									currentRoute === "/settings"
@@ -183,7 +198,8 @@ export default function HamburgerMenu({ currentRoute, className }) {
 						href="/updates"
 						className={`${styles.link} ${styles.updates} ${
 							currentRoute === "/updates" ? styles.current : ""
-						}`}>
+						}`}
+						onClick={toggleMenu}>
 						<h2 className={styles.updates}>Updates</h2>
 					</Link>
 
