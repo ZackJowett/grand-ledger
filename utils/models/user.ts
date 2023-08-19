@@ -7,6 +7,7 @@ const userSchema = new Schema({
 	name: String,
 	bsb: String,
 	accountNumber: String,
+	avatarURL: { type: String, default: null },
 	dateCreated: { type: Date, default: Date.now },
 });
 

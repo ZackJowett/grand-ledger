@@ -64,11 +64,7 @@ export default function UnreceivedPayments() {
 
 	// Loading
 	if (!debts || !users) {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
+		return <Spinner />;
 	}
 
 	const handleFilterSelect = (option) => {
@@ -101,104 +97,102 @@ export default function UnreceivedPayments() {
 
 	// Logged in
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<TextWithTitle
-					title="Unreceived Payments"
-					text="Debts someone owes you"
-					align="left"
-					className={styles.heading}
-				/>
+		<section className={styles.wrapper}>
+			<TextWithTitle
+				title="Unreceived Payments"
+				text="Debts someone owes you"
+				align="left"
+				className={styles.heading}
+			/>
 
-				<div className={styles.buttons}>
-					<Button
-						title="Pay Someone"
-						icon={<TiArrowForward />}
-						href="/settlements/create"
-						className={styles.create}
+			<div className={styles.buttons}>
+				<Button
+					title="Pay Someone"
+					icon={<TiArrowForward />}
+					href="/settlements/create"
+					className={styles.create}
+				/>
+				<Button
+					title="New Debt"
+					icon={<FiPlusSquare />}
+					href="/debts/create"
+					className={styles.create}
+				/>
+			</div>
+			<Card
+				dark
+				title="Unreceived Payments"
+				className={styles.debtsWrapper}>
+				{totalUnreceived ? (
+					<TextWithTitle
+						title={
+							<Money
+								amount={totalUnreceived}
+								background
+								backgroundFit
+								padding
+							/>
+						}
+						text={"Total Unreceived"}
+						small
+						reverse
+						align="left"
+						className={styles.totals}
 					/>
-					<Button
-						title="New Debt"
-						icon={<FiPlusSquare />}
-						href="/debts/create"
-						className={styles.create}
+				) : (
+					<Spinner title="Calculating totals..." />
+				)}
+				<hr className={styles.hr} />
+				<div className={styles.filters}>
+					<Select
+						options={options}
+						defaultValue={options[1]}
+						className={styles.select}
+						onChange={handleFilterSelect}
+					/>
+					<Select
+						options={userOptions}
+						defaultValue={userOptions[0]}
+						className={styles.select}
+						onChange={handleUserFilterSelect}
 					/>
 				</div>
-				<Card
-					dark
-					title="Unreceived Payments"
-					className={styles.debtsWrapper}>
-					{totalUnreceived ? (
-						<TextWithTitle
-							title={
-								<Money
-									amount={totalUnreceived}
-									background
-									backgroundFit
-									padding
-								/>
-							}
-							text={"Total Unreceived"}
-							small
-							reverse
-							align="left"
-							className={styles.totals}
-						/>
-					) : (
-						<Spinner title="Calculating totals..." />
+				<div className={styles.cards}>
+					{debts && debts.length == 0 && (
+						<p className={styles.noDebts}>
+							{`There are no ${
+								filter != "outstanding" && filter != "all"
+									? filter
+									: ""
+							} unreceived debts`}
+						</p>
 					)}
-					<hr className={styles.hr} />
-					<div className={styles.filters}>
-						<Select
-							options={options}
-							defaultValue={options[1]}
-							className={styles.select}
-							onChange={handleFilterSelect}
-						/>
-						<Select
-							options={userOptions}
-							defaultValue={userOptions[0]}
-							className={styles.select}
-							onChange={handleUserFilterSelect}
-						/>
-					</div>
-					<div className={styles.cards}>
-						{debts && debts.length == 0 && (
-							<p className={styles.noDebts}>
-								{`There are no ${
-									filter != "outstanding" && filter != "all"
-										? filter
-										: ""
-								} unreceived debts`}
-							</p>
-						)}
-						{debts ? (
-							debts.map((debt, index) => {
-								if (!filterDebts(debt, filter, userFilter))
-									return;
+					{debts ? (
+						debts.map((debt, index) => {
+							if (!filterDebts(debt, filter, userFilter)) return;
 
-								return (
-									<Debt
-										key={index}
-										debt={debt}
-										globals={{
-											session: session,
-											users: users,
-										}}
-										unreceived
-									/>
-								);
-							})
-						) : (
-							<>
-								<CardPlaceholder />
-								<CardPlaceholder />
-								<CardPlaceholder />
-							</>
-						)}
-					</div>
-				</Card>
-			</section>
-		</Layout>
+							return (
+								<Debt
+									key={index}
+									debt={debt}
+									globals={{
+										session: session,
+										users: users,
+									}}
+									unreceived
+									light
+								/>
+							);
+						})
+					) : (
+						<>
+							<CardPlaceholder />
+							<CardPlaceholder />
+							<CardPlaceholder />
+						</>
+					)}
+				</div>
+			</Card>
+		</section>
 	);
 }

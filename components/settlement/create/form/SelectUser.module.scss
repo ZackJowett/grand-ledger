@@ -6,21 +6,49 @@
 }
 
 .select {
-	max-width: 15rem;
+	min-width: 15rem;
+	max-width: 100%;
+}
+
+.selectDebt {
+	color: var(--debt);
+}
+
+.selectUnreceived {
+	color: var(--unreceived);
+}
+
+.settlementWrapper {
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
 }
 
 .stats {
-	@include flex(column, flex-start, center, $gap: 2rem);
-	margin-top: 1rem;
+	width: 100%;
+	@include flex(column, flex-start, center, $gap: 0.5rem);
+
+	.net {
+		@include flex(column, flex-start, center, $gap: 0.5rem);
+	}
 
 	.debts {
-		@include flex(row, space-between, center, $gap: 1rem);
+		@include flex(column, space-between, center, $gap: 0.5rem);
 		width: 100%;
 
 		.amount {
 			width: 100%;
+			@include flex(column, space-between, center, $gap: 0.5rem);
+		}
+
+		@include desktop-up {
+			flex-direction: row;
 		}
 	}
+
+	// @include;
+}
+
+.debtAmount {
+	color: var(--debt);
 }
 
 .info {
@@ -30,6 +58,12 @@
 }
 
 .hr {
-	width: 80%;
+	width: 100%;
 	margin: 0;
+}
+
+.loading {
+	width: 100%;
+	text-align: center;
+	color: var(--subtext);
 }

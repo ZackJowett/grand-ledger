@@ -33,6 +33,7 @@ export default function SelectUser({
 	// Reset amount when editingUser changes
 	useEffect(() => {
 		// if editingUser is not this user
+		if (!user) return;
 		if (editingUser !== user._id) {
 			// reset amount
 			if (userSelected) {
@@ -40,6 +41,8 @@ export default function SelectUser({
 			}
 		}
 	}, [editingUser]);
+
+	if (!user) return;
 
 	function handleEdit() {
 		if (editingUser === user._id) return;

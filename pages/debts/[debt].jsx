@@ -8,7 +8,6 @@ import styles from "public/styles/pages/Debt.module.scss";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import { getName } from "utils/helpers";
 import Badge from "components/text/badge/Badge";
-import { useStore } from "react-redux";
 import Money from "components/text/money/Money";
 import Button from "components/button/Button";
 import { formatDate } from "utils/helpers";
@@ -17,12 +16,14 @@ import { useEffect, useState } from "react";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { getDebtStatus } from "utils/helpers";
 import { deleteDebt } from "utils/data/debts";
+import { useSelector } from "react-redux";
 
 export default function Debt() {
 	const { data: session, status: sessionStatus } = useSession();
+	const userState = useSelector((state) => state.users);
+	const users = userState.list;
 	const router = useRouter(); // Dynamically get debt from route
 
-	const state = useStore().getState();
 	const [debt, setDebt] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [confirmDelete, setConfirmDelete] = useState(false);
@@ -52,6 +53,11 @@ export default function Debt() {
 		return <LoggedOut />;
 	}
 
+	// Users data not loaded
+	if (!userState.ready) {
+		<Spinner title="Loading..." />;
+	}
+
 	// Wait for debt to load
 	// useEffect refreshes component when debt is loaded
 	let isDebtor, isClosed, otherParty, otherPartyName, status, creatorName;
@@ -63,8 +69,8 @@ export default function Debt() {
 
 		// Get name of other party (not logged in user)
 		otherParty = isDebtor ? debt.creditor : debt.debtor;
-		otherPartyName = getName(otherParty, state.userList.users, session);
-		creatorName = getName(debt.creator, state.userList.users, session);
+		otherPartyName = getName(otherParty, users, session);
+		creatorName = getName(debt.creator, users, session);
 
 		// Get status of debt
 		status =
@@ -112,55 +118,39 @@ export default function Debt() {
 	}
 
 	if (loading) {
-		return (
-			<Layout>
-				<Spinner title="Fetching debt..." />
-			</Layout>
-		);
+		return <Spinner title="Fetching debt..." />;
 	}
 
 	if (deleteLoading) {
-		return (
-			<Layout>
-				<Spinner title="Deleting Debt..." />
-			</Layout>
-		);
+		return <Spinner title="Deleting Debt..." />;
 	}
 
 	if (deleteStatus !== null) {
 		return (
-			<Layout>
-				<section className={styles.deletedWrapper}>
-					{deleteStatus === "success" ? (
-						<>
-							<p>{"Successfully deleted"}</p>
-							<Button
-								title="Back"
-								onClick={() => router.back()}
-							/>
-						</>
-					) : (
-						<>
-							<p>Failed to delete debt</p>
-							<Button
-								title="Back"
-								onClick={() => router.reload()}
-							/>
-						</>
-					)}
-				</section>
-			</Layout>
+			<section className={styles.deletedWrapper}>
+				{deleteStatus === "success" ? (
+					<>
+						<p>{"Successfully deleted"}</p>
+						<Button title="Back" onClick={() => router.back()} />
+					</>
+				) : (
+					<>
+						<p>Failed to delete debt</p>
+						<Button title="Back" onClick={() => router.reload()} />
+					</>
+				)}
+			</section>
 		);
 	}
 
 	return (
-		<Layout includeBack>
+		<>
 			{debt ? (
 				<section className={styles.wrapper}>
 					<div className={styles.header}>
 						<TextWithTitle
 							title={getDebtTitle()}
-							text={`Identifier: ${debt._id}`}
+							text={`Identifier: ${debt.id ? debt.id : debt._id}`}
 							className={styles.title}
 							align="left"
 							large
@@ -183,7 +173,7 @@ export default function Debt() {
 					{debt.status == "outstanding" && (
 						<Button
 							title={`Settle debts with ${otherPartyName}`}
-							href="/settlements/create"
+							href={`/settlements/create?id=${otherParty}`}
 							className={styles.settleButton}
 						/>
 					)}
@@ -282,6 +272,6 @@ export default function Debt() {
 			) : (
 				<p>Could not find debt.</p>
 			)}
-		</Layout>
+		</>
 	);
 }

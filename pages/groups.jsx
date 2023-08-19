@@ -30,30 +30,28 @@ export default function Groups() {
 	}
 
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<TextWithTitle title="Groups" text="Coming Soon" />
-				{loading ? (
-					<Spinner />
-				) : (
-					<ul className={styles.list}>
-						<hr />
-						<TextWithTitle text="Friends" />
-						{users ? (
-							users.map((user) => (
-								<li key={user._id}>
-									<Button
-										href={`/profile/${user._id}`}
-										title={user.name}
-									/>
-								</li>
-							))
-						) : (
-							<p>Couldn&apos;t load users</p>
-						)}
-					</ul>
-				)}
-			</section>
-		</Layout>
+		<section className={styles.wrapper}>
+			<TextWithTitle title="Groups" text="Coming Soon" />
+			{loading ? (
+				<Spinner />
+			) : (
+				<ul className={styles.list}>
+					<hr />
+					<TextWithTitle text="Friends" />
+					{users ? (
+						users.map((user) => (
+							<li key={user._id}>
+								<Button
+									href={`/profile/${user._id}`}
+									title={user.name}
+								/>
+							</li>
+						))
+					) : (
+						<p>Couldn&apos;t load users</p>
+					)}
+				</ul>
+			)}
+		</section>
 	);
 }

@@ -1,5 +1,10 @@
 @use "public/styles/mixins.scss" as *;
 
+.content {
+	@include flex(row);
+	padding: 0.75rem 0.75rem;
+}
+
 .cardDebt {
 	&:hover {
 		border-color: var(--debt) !important;
@@ -21,13 +26,8 @@
 }
 
 .details {
-	@include flex(row, flex-start, flex-start, $gap: 3rem);
-}
-
-.amount,
-.descWrapper,
-.date {
-	margin-top: 0.5rem;
+	@include flex(row, flex-start, center, $gap: 3rem);
+	color: var(--subtext);
 }
 
 .descWrapper {
@@ -36,14 +36,23 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	.descTitle {
-		color: var(--subtext);
-		margin-bottom: 0.7rem;
+	.description {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		width: 100%;
 	}
 }
 
-.money {
-	min-width: 8rem;
+.typeUnreceived {
+	color: var(--green);
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.typeDebt {
+	color: var(--red);
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .date,

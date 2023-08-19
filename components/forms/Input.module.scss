@@ -11,6 +11,12 @@
 	// }
 }
 
+.invalid {
+	.title {
+		color: var(--red) !important;
+	}
+}
+
 .wrapperText {
 	width: 100%;
 }

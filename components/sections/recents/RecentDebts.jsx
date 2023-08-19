@@ -7,8 +7,7 @@ import Debt from "/components/debt/Debt";
 import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
-// import { useStore } from "react-redux";
-import { timeSince } from "/utils/helpers";
+import Title from "/components/text/title/TextWithTitle";
 
 export default function RecentDebts({ className }) {
 	const { data: session } = useSession();
@@ -16,7 +15,7 @@ export default function RecentDebts({ className }) {
 	const [debts, setDebts] = useState(null);
 	const [timeFetched, setTimeFetched] = useState(null); // [user
 	const [loading, setLoading] = useState(true); // [user
-	const [showAmount, setShowAmount] = useState(3); // Number to show
+	const [showAmount, setShowAmount] = useState(4); // Number to show
 
 	useEffect(() => {
 		if (!session) return;
@@ -59,17 +58,11 @@ export default function RecentDebts({ className }) {
 	}
 
 	return (
-		<Card
-			title="Recent Debts"
-			subtitle={`Updated: ${
-				timeFetched ? timeSince(timeFetched) : "..."
-			}`}
-			link="/debts"
-			dark
-			className={`${className} ${styles.wrapper}`}>
-			<div className={styles.refresh} onClick={handleRefresh}>
+		<section className={styles.wrapper}>
+			<Title title="Recent Debts" align="left" link="/debts" />
+			{/* <div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
-			</div>
+			</div> */}
 			{loading ? (
 				<>
 					<CardPlaceholder />
@@ -89,6 +82,7 @@ export default function RecentDebts({ className }) {
 							debt={debt}
 							session={session}
 							className={styles.debt}
+							dark
 						/>
 					);
 				})
@@ -96,7 +90,7 @@ export default function RecentDebts({ className }) {
 
 			{/* Show / Hide view more devts button */}
 			{/* Links to all deebts when max reached */}
-			{debts &&
+			{/* {debts &&
 			showAmount != debts.length &&
 			showAmount < debts.length ? (
 				<TextButton
@@ -110,7 +104,7 @@ export default function RecentDebts({ className }) {
 					link="/debts"
 					className={styles.viewMore}
 				/>
-			)}
-		</Card>
+			)} */}
+		</section>
 	);
 }

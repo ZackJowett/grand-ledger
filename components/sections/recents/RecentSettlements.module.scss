@@ -1,8 +1,10 @@
 @use "public/styles/mixins.scss" as *;
 
 .wrapper {
-	@include flex(column, flex-start, flex-start, $gap: 1rem);
-	position: relative;
+	width: 100%;
+	max-width: var(--maxWidth);
+	min-width: var(--minWidth);
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
 }
 
 .viewMore {
@@ -10,20 +12,20 @@
 	margin: 0.5rem 0 0 0;
 }
 
-.refresh {
-	$size: 30px;
+// .refresh {
+// 	$size: 30px;
 
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
+// 	position: absolute;
+// 	top: 1rem;
+// 	right: 1rem;
 
-	&:hover {
-		cursor: pointer;
-		color: var(--primary);
-	}
+// 	&:hover {
+// 		cursor: pointer;
+// 		color: var(--primary);
+// 	}
 
-	.icon {
-		width: $size;
-		height: $size;
-	}
-}
+// 	.icon {
+// 		width: $size;
+// 		height: $size;
+// 	}
+// }

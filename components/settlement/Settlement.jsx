@@ -1,33 +1,30 @@
 import styles from "./Settlement.module.scss";
-import ClickableCard from "/components/card/ClickableCard";
+import Card from "/components/card/Card";
 import TextWithTitle from "/components/text/title/TextWithTitle";
-import { getName, formatDate } from "/utils/helpers";
-import Link from "next/link";
-import Button from "/components/button/Button";
+import { getName } from "/utils/helpers";
 import Money from "/components/text/money/Money";
+import { useSession } from "next-auth/react";
+import { useSelector } from "react-redux";
 
-export default function Settlement({ settlement, globals, className }) {
+export default function Settlement({ settlement, className, light = false }) {
+	const { data: session } = useSession();
+	const userState = useSelector((state) => state.users);
+	const users = userState.list;
+	if (!userState.ready) return;
+
 	// Set who is settling with you
 	// It shows the name of the user who is not logged in
+	const isSettler = settlement.settler == session.user.id;
 	let settleWith = "";
-	if (settlement.settler == globals.session.user.id) {
-		settleWith = getName(
-			settlement.settlee,
-			globals.users,
-			globals.session
-		);
+	if (settlement.settler == session.user.id) {
+		settleWith = getName(settlement.settlee, users, session);
 	} else {
-		settleWith = getName(
-			settlement.settler,
-			globals.users,
-			globals.session
-		);
+		settleWith = getName(settlement.settler, users, session);
 	}
 
 	return (
-		<ClickableCard
+		<Card
 			href={`/settlements/${settlement._id}`}
-			pretitle="Settlement"
 			title={settleWith}
 			badge={
 				settlement.status == "reopened"
@@ -36,29 +33,41 @@ export default function Settlement({ settlement, globals, className }) {
 					? "Pending"
 					: "Closed"
 			}
-			className={`${styles.card} ${className}`}
-			pretitleClassName={styles.title}>
+			className={`${styles.card} ${
+				settlement.status != "closed" ? styles.showAction : ""
+			} ${className}`}
+			pretitleClassName={styles.title}
+			light={light}
+			includeArrow
+			action={settlementAction(settlement, session, users)}>
 			<div className={styles.details}>
+				<div className={styles.descWrapper}>
+					<div className={styles.type}>Settlement</div>
+					<div className={styles.description}>
+						{settlement.description}
+					</div>
+				</div>
 				<TextWithTitle
 					title={
 						<Money
 							amount={settlement.netAmount}
-							notColoured
-							backgroundDark
-							backgroundFit
+							notColoured={true}
+							background={
+								settlement.status == "outstanding" && !light
+							}
+							backgroundDark={
+								settlement.status == "outstanding" && light
+							}
+							className={styles.money}
 							padding
 							small
 						/>
 					}
-					text="Amount"
+					// text={"Amount"}
 					align="left"
 					reverse
 					className={styles.amount}
 				/>
-				<div className={styles.descWrapper}>
-					<p className={styles.descTitle}>Description</p>
-					{settlement.description}
-				</div>
 			</div>
 			{/* <p className={styles.date}>
 				{settlement.status == "closed"
@@ -67,9 +76,7 @@ export default function Settlement({ settlement, globals, className }) {
 					? `Reopened ${formatDate(settlement.dateReopened)}`
 					: `Opened ${formatDate(settlement.dateCreated)}`}
 			</p> */}
-
-			{settlementAction(settlement, globals.session, globals.users)}
-		</ClickableCard>
+		</Card>
 	);
 }
 
@@ -82,33 +89,22 @@ function settlementAction(settlement, session, users) {
 		if (settlement.settler != session.user.id) {
 			// Rejector was logged in user since only settlees can reject a settlement
 			return (
-				<>
-					<hr className={styles.hr} />
-					<Button
-						title={`WAITING FOR ${settlerName.toUpperCase()} TO RESUBMIT`}
-						link={`/settlements/${settlement._id}`}
-						className={styles.button}
-						disabled
-					/>
+				<div className={styles.action}>
+					<h5>Waiting for {settlerName} to Resubmit</h5>
 					<p className={styles.note}>
-						You previously rejected this settlement.
+						You previously rejected this settlement
 					</p>
-				</>
+				</div>
 			);
 		} else {
 			// Rejector was not logged in user
 			return (
-				<>
-					<hr className={styles.hr} />
-					<Button
-						title="SUBMIT SETTLEMENT AGAIN"
-						className={styles.button}
-						href={`/settlements/${settlement._id}`}
-					/>
+				<div className={styles.action}>
+					<h5>Submit Settlement again</h5>
 					<p className={styles.note}>
-						Settlement was rejected by {settleeName}.
+						Settlement was rejected by {settleeName}
 					</p>
-				</>
+				</div>
 			);
 		}
 	} else if (settlement.status == "pending") {
@@ -116,23 +112,20 @@ function settlementAction(settlement, session, users) {
 		if (settlement.settler == session.user.id) {
 			// Waiting review from not logged in user
 			return (
-				<>
-					<hr className={styles.hr} />
+				<div className={styles.action}>
 					<p className={styles.note}>
-						{`Waiting for ${settleeName} to review.`}
+						Waiting for {settleeName} to Review
 					</p>
-				</>
+				</div>
 			);
 		} else {
 			return (
-				<>
-					<hr className={styles.hr} />
-					<Button
-						title="REVIEW TO CLOSE"
-						link={`/settlements/${settlement._id}`}
-						className={styles.button}
-					/>
-				</>
+				<div className={styles.action}>
+					<h5>Review to Close</h5>
+					<p className={styles.note}>
+						{settlerName} is waiting for you
+					</p>
+				</div>
 			);
 		}
 	} else {

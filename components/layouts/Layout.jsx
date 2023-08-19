@@ -2,24 +2,33 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import styles from "./Layout.module.scss";
 import Header from "../sections/header/Header";
-import MobileNav from "../sections/nav/MobileNav";
 import DesktopNav from "../sections/nav/DesktopNav";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../store/actions/userAction";
 import { MdOutlineArrowBack } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { update } from "store/slices/usersSlice";
+import { useEffect } from "react";
+import { getAllUsers } from "utils/data/users";
 
-export default function Layout({ children, className, includeBack = false }) {
-	const router = useRouter();
-	const currentRoute = router.pathname;
-
-	// Load in Redux Store
+export default function Layout({
+	children,
+	className = "",
+	includeBack = false,
+}) {
+	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
-	useSelector((state) => state.userList);
+	const router = useRouter();
 
+	// Load in users to Redux store
 	useEffect(() => {
-		dispatch(getUsers());
+		// Only update the state if it has not been set yet
+		if (state.users.ready && state.users.list.length > 0) return;
+
+		getAllUsers().then((users) => {
+			dispatch(update(users));
+		});
 	}, [dispatch]);
+
+	const currentRoute = router.pathname;
 
 	return (
 		<>
@@ -47,7 +56,7 @@ export default function Layout({ children, className, includeBack = false }) {
 					sizes="16x16"
 					href="/favicon/favicon-16x16.png"
 				/>
-				<link rel="manifest" href="/favicon/site.webmanifest" />
+				<link rel="manifest" href="/favicon/manifest.webmanifest" />
 			</Head>
 
 			<main className={styles.main}>

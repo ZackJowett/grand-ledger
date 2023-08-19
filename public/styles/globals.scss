@@ -11,6 +11,7 @@
 
 	--background: #242424;
 	--backgroundDark: #1b1b1b;
+	--backgroundDarkHover: #1f1f1f;
 	--backgroundLight: #2a2a2a;
 	--backgroundMain: #000;
 
@@ -43,10 +44,37 @@
 	--color: #303030;
 	--headerHeight: 100px;
 	--floatingHeaderHeight: 65px;
-	--desktopNavWidth: 250px;
+	--desktopNavWidth: 12rem;
 
 	//Fonts
 	--moneyFont: "Lato", sans-serif;
+
+	// Light mode
+	// --primary: #2581b3;
+
+	// --background: #ebecf4;
+	// --backgroundDark: #dfe1ed;
+	// --backgroundDarkHover: #e8e8e8;
+	// --backgroundLight: #f6f6f6;
+	// --backgroundMain: #ffffff;
+
+	// --secondary: #171717;
+
+	// --heading: var(--secondary);
+	// --text: var(--secondary);
+	// --subtext: #777;
+	// --button: var(--primary);
+
+	// --red: #ca5555;
+	// --orange: #c57e22;
+	// --yellow: #cac855;
+	// --green: #61a767;
+	// --blue: #7f35b4;
+	// --teal: #55cac8;
+
+	// --settlement: var(--blue);
+	// --debt: var(--red);
+	// --unreceived: var(--green);
 }
 
 #__next {
@@ -122,7 +150,7 @@ hr {
 	border-color: var(--subtext);
 	color: var(--subtext);
 	// margin: 1rem 0;
-	width: 80%;
+	width: 100%;
 }
 
 // FORMS

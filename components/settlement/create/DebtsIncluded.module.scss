@@ -1,0 +1,67 @@
+@use "public/styles/mixins.scss" as *;
+
+.wrapper {
+	@include flex($gap: 0.5rem);
+	margin-top: 1rem;
+}
+
+.title,
+.debtWrapper {
+	width: 100%;
+}
+
+.debtWrapper {
+	@include flex(row, center, normal, $gap: 0.25rem);
+	height: 100%;
+}
+
+.debtRoundCorners {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.debtSelector {
+	@include flex;
+	width: 3rem;
+
+	background-color: var(--background);
+	@include border($color: transparent, $size: 1.5px);
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+
+	@include scale(1.05);
+
+	&:hover {
+		border-color: var(--red);
+		cursor: pointer;
+
+		&.notSelected {
+			border-color: var(--green);
+		}
+	}
+
+	&.notSelected {
+		svg {
+			color: var(--background);
+		}
+		background-color: var(--red);
+	}
+
+	svg {
+		$size: 20px;
+
+		height: $size;
+		width: $size;
+
+		color: var(--green);
+	}
+}
+
+.descriptor {
+	@include flex(row, flex-start);
+	color: var(--subtext);
+
+	svg {
+		margin: 0 0.25rem 0 0.25rem;
+	}
+}

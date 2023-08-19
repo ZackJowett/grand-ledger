@@ -50,14 +50,17 @@ export default function HamburgerMenu({ currentRoute }) {
 				</div>
 
 				<div className={styles.logoWrapper}>
-					<Link className={styles.logo} href="/">
+					<Link className={styles.logo} href="/" onClick={toggleMenu}>
 						<Logo />
 						<h1>Grand Ledger</h1>
 					</Link>
 				</div>
 
 				<div className={styles.nav}>
-					<DesktopNav currentRoute={currentRoute} />
+					<DesktopNav
+						currentRoute={currentRoute}
+						toggleMenu={toggleMenu}
+					/>
 				</div>
 			</div>
 			<div

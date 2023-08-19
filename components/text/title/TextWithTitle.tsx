@@ -1,4 +1,5 @@
 import styles from "./TextWithTitle.module.scss";
+import Link from "next/link";
 
 interface Props {
 	className?: string;
@@ -11,6 +12,7 @@ interface Props {
 	reverse?: boolean;
 	background?: boolean;
 	backgroundFit?: boolean;
+	link?: string;
 	onClick?: () => void;
 }
 
@@ -21,6 +23,7 @@ export default function TextWithTitle({
 	align = "center",
 	small,
 	tiny,
+	link,
 	large,
 	reverse,
 	background,
@@ -39,6 +42,24 @@ export default function TextWithTitle({
 	if (align === "left") classes += " " + styles.left;
 	if (align === "center") classes += " " + styles.center;
 	if (align === "right") classes += " " + styles.right;
+
+	if (link) {
+		return (
+			<Link className={classes} onClick={onClick} href={link}>
+				{small ? (
+					<h4 className={styles.title}>{title}</h4>
+				) : large ? (
+					<h1 className={styles.title}>{title}</h1>
+				) : tiny ? (
+					<p className={styles.title}>{title}</p>
+				) : (
+					<h2 className={styles.title}>{title}</h2>
+				)}
+
+				{text && <p className={styles.text}>{text}</p>}
+			</Link>
+		);
+	}
 
 	return (
 		<div className={classes} onClick={onClick}>

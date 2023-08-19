@@ -101,76 +101,74 @@ export default function Create() {
 	}
 
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<TextWithTitle
-					title={`New Debt`}
-					text="Open one or multiple debts with one or multiple people"
-					className={styles.header}
-					align="left"
-					large
-				/>
+		<section className={styles.wrapper}>
+			<TextWithTitle
+				title={`New Debt`}
+				text="Open one or multiple debts with one or multiple people"
+				className={styles.header}
+				align="left"
+				large
+			/>
 
-				{submitting ? (
-					<Spinner title="Creating debts..." />
-				) : (
-					<>
-						{submitError && (
-							<p className={styles.error}>
-								There was an error creating the debts. Please
-								try again or contact admin.
-							</p>
-						)}
-						{submitSuccess && (
-							<p className={styles.success}>
-								Successfully created debts.
-								<br />
-								<TextButton
-									title="View Debts"
-									link="/debts"
-									className={styles.link}
-								/>{" "}
-								<br />
-								<TextButton
-									title="View payments owed to you"
-									link="/unreceived-payments"
-									className={styles.link}
-								/>{" "}
-							</p>
-						)}
-						{!users ? (
-							<Spinner title="Loading..." />
-						) : (
-							<>
-								<AddDebt
-									numDebts={numDebts}
-									addSingle={addSingle}
-									addMulti={addMulti}
-								/>
+			{submitting ? (
+				<Spinner title="Creating debts..." />
+			) : (
+				<>
+					{submitError && (
+						<p className={styles.error}>
+							There was an error creating the debts. Please try
+							again or contact admin.
+						</p>
+					)}
+					{submitSuccess && (
+						<p className={styles.success}>
+							Successfully created debts.
+							<br />
+							<TextButton
+								title="View Debts"
+								link="/debts"
+								className={styles.link}
+							/>{" "}
+							<br />
+							<TextButton
+								title="View payments owed to you"
+								link="/unreceived-payments"
+								className={styles.link}
+							/>{" "}
+						</p>
+					)}
+					{!users ? (
+						<Spinner title="Loading..." />
+					) : (
+						<>
+							<AddDebt
+								numDebts={numDebts}
+								addSingle={addSingle}
+								addMulti={addMulti}
+							/>
 
-								<DebtList debts={debts} setDebts={setDebts} />
+							<DebtList debts={debts} setDebts={setDebts} />
 
-								{numDebts.total > 0 ? (
-									<>
-										<hr className={styles.hr} />
-										<SubmitDebts
-											debts={debts}
-											setDebts={setDebts}
-											setSubmitting={setSubmitting}
-											setSubmitError={setSubmitError}
-											setSubmitSuccess={setSubmitSuccess}
-										/>
-									</>
-								) : (
-									<p className={styles.startHint}>
-										Choose an option above to start
-									</p>
-								)}
-							</>
-						)}
-					</>
-				)}
-			</section>
-		</Layout>
+							{numDebts.total > 0 ? (
+								<>
+									<hr className={styles.hr} />
+									<SubmitDebts
+										debts={debts}
+										setDebts={setDebts}
+										setSubmitting={setSubmitting}
+										setSubmitError={setSubmitError}
+										setSubmitSuccess={setSubmitSuccess}
+									/>
+								</>
+							) : (
+								<p className={styles.startHint}>
+									Choose an option above to start
+								</p>
+							)}
+						</>
+					)}
+				</>
+			)}
+		</section>
 	);
 }

@@ -63,7 +63,7 @@ $globalRadius: 55px;
 }
 
 // Uniform scale amount
-@mixin scale($amount: 1.01, $speed: 0.1s) {
+@mixin scale($amount: 1.01, $speed: 0.1s, $color: var(--subtext)) {
 	transition: all $speed ease-in-out;
 	-webkit-transition: all $speed ease-in-out;
 	-moz-transition: all $speed ease-in-out;
@@ -77,7 +77,7 @@ $globalRadius: 55px;
 		-ms-transform: scale($amount);
 		-o-transform: scale($amount);
 
-		border-color: var(--subtext);
+		border-color: $color;
 	}
 }
 

@@ -1,5 +1,9 @@
 @use "public/styles/mixins.scss" as *;
 
+.wrapper {
+	width: 100%;
+}
+
 .card {
 	&:hover {
 		border-color: var(--settlement);
@@ -10,15 +14,14 @@
 	}
 
 	.details {
-		@include flex(row, flex-start, flex-start, $gap: 3rem);
+		@include flex(row, flex-start, center, $gap: 3rem);
 	}
 }
 
-.amount,
-.descWrapper,
-.date {
-	margin-top: 0.5rem;
-}
+// .amount,
+// .date {
+// 	margin-top: 0.5rem;
+// }
 
 .descWrapper {
 	flex: 1;
@@ -26,13 +29,23 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	.descTitle {
+	.type {
+		color: var(--settlement);
+	}
+
+	.description {
 		color: var(--subtext);
-		margin-bottom: 0.7rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 }
 
-.date,
+.action {
+	width: 100%;
+	@include flex(column);
+}
+
 .note {
 	color: var(--subtext);
 }
@@ -40,14 +53,4 @@
 	width: 100%;
 	text-align: left;
 	margin-top: 1rem;
-}
-
-.note {
-	width: 100%;
-	text-align: center;
-	margin-top: 1rem;
-}
-
-.hr {
-	margin: 1.5rem auto;
 }

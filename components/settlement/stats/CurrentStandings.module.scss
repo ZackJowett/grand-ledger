@@ -1,0 +1,23 @@
+@use "public/styles/mixins.scss" as *;
+
+.container,
+.section {
+	width: 100%;
+}
+
+.container {
+	@include flex(column, flex-start, flex-star, $gap: 1rem);
+}
+
+.user {
+	@include flex(row, space-between, center, $gap: 1rem);
+
+	&:hover {
+		background-color: var(--background);
+		cursor: pointer;
+	}
+
+	@include border($color: transparent, $radius: 10px);
+
+	padding: 0 0.5rem;
+}

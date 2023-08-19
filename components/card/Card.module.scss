@@ -1,19 +1,94 @@
 @use "public/styles/mixins.scss" as *;
 
-.card {
-	display: block;
+.card,
+.contentWrapper,
+.content,
+.header,
+.children {
+	height: 100%;
+}
 
-	padding: 1rem;
-	// margin: 1rem 1rem;
+.card {
+	@include flex;
+
+	&.reverseAction {
+		flex-direction: column-reverse;
+	}
+
+	&.includeAction {
+		padding: 0;
+	}
+
 	max-width: var(--maxWidth);
+	@include border($color: transparent, $size: 1px);
 	width: 100%;
 
-	background-color: var(--background);
+	&.clickable {
+		&:hover {
+			cursor: pointer;
+		}
 
+		@include scale($color: var(--settlement));
+	}
+}
+
+.clickable > .contentWrapper {
+	padding-right: 2rem;
+}
+
+.contentWrapper {
+	position: relative;
+	padding: 0.75rem;
+	// @include flex(row, space-between);
+	width: 100%;
+
+	background-color: var(--backgroundDark);
 	@include border($color: transparent, $size: 1px);
+
+	&.light {
+		background-color: var(--background);
+	}
+
+	&.smallPadding {
+		padding: 0.25rem;
+	}
+}
+
+.includeAction {
+	&.reverseAction > .contentWrapper {
+		@include border($color: transparent, $size: 1px);
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+
+	.contentWrapper {
+		@include border($color: transparent, $size: 1px);
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+}
+
+.reverseAction > .contentWrapper {
+	background-color: var(--backgroundDarkHover);
+
+	&.light {
+		background-color: var(--background);
+	}
+}
+
+.content {
+	width: 100%;
+	// flex: 1;
+
+	@include flex(column, flex-start, flex-start);
+}
+
+.content > * {
+	width: 100%;
 }
 
 .header {
+	// width: 100%;
 	@include flex(row, space-between);
 	align-items: flex-start;
 }
@@ -44,17 +119,40 @@
 	}
 }
 
-.dark {
-	max-width: var(--maxWidth);
-	background-color: var(--backgroundDark);
+.arrow {
+	$size: 0.5rem;
+
+	position: absolute;
+	top: 50%;
+	right: 0.75rem;
+
+	transform: translateY(-50%);
+
+	min-width: $size;
+	min-height: $size;
+	color: var(--subtext);
 }
 
-.clickable {
-	cursor: pointer;
-
-	@include scale;
-}
-
-.children {
+.action {
 	width: 100%;
+	background-color: var(--backgroundDarkHover);
+	padding: 0.5rem;
+	text-align: center;
+	color: var(--subtext);
+
+	@include border($color: transparent, $size: 1px);
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.reverseAction > .action {
+	background-color: var(--backgroundDark);
+
+	@include border($color: transparent, $size: 1px);
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+
+	&.actionLight {
+		background-color: var(--backgroundDarkHover);
+	}
 }

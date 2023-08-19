@@ -1,75 +1,43 @@
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { getAllBetweenTwoUsers } from "/utils/data/debts";
-import Layout from "components/layouts/Layout";
-import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
-import styles from "public/styles/pages/CreateSettlement.module.scss";
-import TextWithTitle from "/components/text/title/TextWithTitle";
-import { useStore } from "react-redux";
-import Spinner from "components/placeholders/spinner/Spinner";
-import CurrentDebts from "components/settlement/create/CurrentDebts";
+import { useState, useEffect } from "react";
 import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
-import Button from "components/button/Button";
 import { createSettlement } from "utils/data/settlements";
-import TextButton from "components/button/text/TextButton";
 import NudgeButton from "components/button/nudge/NudgeButton";
+import DebtsIncluded from "components/settlement/create/DebtsIncluded";
+import { useDebtsBetweenUsersOutstanding } from "utils/hooks";
+import Card from "components/card/Card";
+import Title from "components/text/title/TextWithTitle";
+import Spinner from "components/placeholders/spinner/Spinner";
+import styles from "./CreateSettlement.module.scss";
+import Settlement from "components/settlement/Settlement";
+import Button from "components/button/Button";
+import { useRouter } from "next/router";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
 
 	// States
-	const [createAs, setCreateAs] = useState("creditor");
-	const [debts, setDebts] = useState(null);
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [submitError, setSubmitError] = useState(null);
 	const [submitSuccess, setSubmitSuccess] = useState(null);
-	const [loading, setLoading] = useState(false); // String of loading state
+	const [loading, setLoading] = useState(false);
+	const [settlement, setSettlement] = useState(null); // Settlement object
 
-	// Redux
-	const state = useStore().getState();
-	const users = state.userList.users;
+	const {
+		data: debts,
+		isLoading: debtsLoading,
+		error: debtsError,
+	} = useDebtsBetweenUsersOutstanding(session.user.id, selectedUser?._id);
 
-	// Get all debts between two users
-	useEffect(() => {
-		if (sessionStatus !== "authenticated" || !users) return;
-
-		// Set default selected party that is not the user
-		if (selectedUser == null) {
-			if (users[0]._id != session.user.id) {
-				setSelectedUser(users[0]);
-			} else {
-				setSelectedUser(users[1]);
-			}
-		}
-
-		if (!selectedUser) return; // Verify selected party is set to a user
-
-		setDebts(null); // Reset debts
-		setLoading("Loading Debts...");
-
-		// Fetch all closed debts between user and selected party
-		// api endpoint with queries returns if user is creditor or debtor
-		getAllBetweenTwoUsers(session.user.id, selectedUser._id, false).then(
-			(data) => {
-				// Return only outstanding debts
-				data
-					? setDebts(
-							data.filter((debt) => {
-								return debt.status == "outstanding";
-							})
-					  )
-					: console.log("Error fetching data");
-				setLoading(null);
-			}
-		);
-	}, [sessionStatus, session, users, selectedUser]);
+	const [selectedDebts, setSelectedDebts] = useState(debts);
 
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
 	let stats = { totalDebt: 0, totalUnreceived: 0, net: 0 };
 
 	if (debts) {
+		if (selectedDebts === null) setSelectedDebts(debts);
 		debts.forEach((debt) => {
 			if (debt.creditor == session.user.id) {
 				// User is creditor
@@ -82,15 +50,21 @@ export default function CreateSettlement() {
 		});
 	}
 
+	useEffect(() => {
+		setSelectedDebts(debts);
+	}, [selectedUser, debts]);
+
 	// Create new debt
 	function handleSubmit(description) {
 		// Set submitting state
-		setLoading("Creating Settlement...");
+		setLoading(true);
 
 		// get debt ids
-		const debtIds = debts.map((debt) => {
+		const debtIds = selectedDebts.map((debt) => {
 			return debt._id;
 		});
+
+		console.log(debtIds);
 
 		// Create settlement object
 		const settlement = {
@@ -107,65 +81,126 @@ export default function CreateSettlement() {
 			if (!data.success) {
 				// Error submitting
 				setSubmitError(data.error);
-				setSubmitSuccess(false);
-				setLoading(null);
+				setSubmitSuccess(null);
+				setLoading(false);
 			} else {
 				// Success submitting
-				setDebts([]);
+				setSubmitError(null);
 				setSubmitSuccess(data.data);
-				setSubmitError(false);
-				setLoading(null);
+				setLoading(false);
 			}
 		});
 	}
 
 	return (
 		<>
-			{submitError && (
-				<p className={styles.error}>
-					There was an error creating the settlement. Please try again
-					or contact admin.
-				</p>
-			)}
-			{submitSuccess && (
-				<p className={styles.success}>
-					Successfully created the settlement:{" "}
-					<TextButton
-						title="Click to view"
-						link={`/settlements/${submitSuccess._id}`}
-						className={styles.link}
-					/>{" "}
-				</p>
-			)}
-			<hr className={styles.hr} />
-			<SelectUser
-				users={users}
-				debts={debts}
-				selectedUser={selectedUser}
-				setSelectedUser={setSelectedUser}
-				stats={stats}
+			<SubmissionStatus
+				loading={loading}
+				success={submitSuccess}
+				error={submitError}
+				user={selectedUser}
 			/>
-
-			{stats.net < 0 ? (
-				<SubmitSettlement
-					selectedUser={selectedUser}
-					handleSubmit={handleSubmit}
-					stats={stats}
-				/>
-			) : stats.net > 0 ? (
+			{!loading && !submitSuccess && !submitError && (
 				<>
-					<p>
-						Person in greater debt ({selectedUser.name}) must create
-						the settlement
-					</p>
-					<NudgeButton
-						user={selectedUser._id}
-						name={selectedUser.name}
+					<SelectUser
+						debts={debts}
+						selectedUser={selectedUser}
+						setSelectedUser={setSelectedUser}
+						selectedDebts={selectedDebts}
+						setSelectedDebts={setSelectedDebts}
+						stats={stats}
+						submitSuccess={submitSuccess}
 					/>
+
+					{stats.net < 0 ? (
+						<SubmitSettlement
+							selectedUser={selectedUser}
+							handleSubmit={handleSubmit}
+							stats={stats}
+							debtsIncluded={selectedDebts}
+							totalNumDebts={debts ? debts.length : null}
+						/>
+					) : stats.net > 0 ? (
+						<>
+							<p>
+								{selectedUser.name} owes you more and must
+								create the Settlement
+							</p>
+							<NudgeButton
+								user={selectedUser._id}
+								name={selectedUser.name}
+							/>
+						</>
+					) : (
+						<p>No action needed</p>
+					)}
 				</>
-			) : (
-				<p>No action needed</p>
 			)}
 		</>
 	);
+}
+
+function SubmissionStatus({ loading, success, error, user }) {
+	const router = useRouter();
+	if (success) {
+		return (
+			<Card>
+				<div className={styles.error}>
+					<Title
+						title="Success!"
+						align="left"
+						className={styles.title}
+					/>
+					<p className={styles.desc}>
+						Successfully created a settlement with{" "}
+						{user ? user.name : "--"}
+					</p>
+					<Settlement
+						settlement={success}
+						className={styles.settlement}
+						light
+					/>
+				</div>
+				<Button
+					title="New Settlement"
+					className={styles.button}
+					onClick={() => router.reload()}
+				/>
+			</Card>
+		);
+	}
+
+	if (error) {
+		return (
+			<Card className={styles.errorCard}>
+				<div className={styles.error}>
+					<Title
+						title="Error Creating Settlement"
+						align="left"
+						className={styles.title}
+					/>
+					<p className={styles.desc}>
+						There was an error creating a settlement with{" "}
+						{user ? user.name : "--"}
+					</p>
+					<p className={styles.tryAgain}>Please try again</p>
+				</div>
+			</Card>
+		);
+	}
+
+	if (loading) {
+		return (
+			<Card>
+				<div className={styles.loading}>
+					<Title
+						title="Submitting Settlement..."
+						align="left"
+						className={styles.title}
+					/>
+					<Spinner className={styles.spinner} />
+				</div>
+			</Card>
+		);
+	}
 }

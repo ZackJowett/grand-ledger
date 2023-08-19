@@ -7,22 +7,19 @@ import styles from "public/styles/pages/Settlements.module.scss";
 import Layout from "/components/layouts/Layout";
 import LoggedOut from "/components/sections/login/loggedOut/LoggedOut";
 import Card from "/components/card/Card";
-import { useStore } from "react-redux";
 import TextWithTitle from "components/text/title/TextWithTitle";
-import Link from "next/link";
 import { filterSettlements } from "/utils/helpers";
 import { CardPlaceholder } from "components/placeholders/Placeholders";
 import Select from "components/forms/Select";
-import Spinner from "components/placeholders/spinner/Spinner";
 import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
+import { useSelector } from "react-redux";
 
 export default function Settlements() {
 	// Session
 	const { data: session, status: sessionStatus } = useSession();
-
-	// Redux Store
-	const state = useStore().getState();
+	const userState = useSelector((state) => state.users);
+	const users = userState.list;
 
 	// User logged in
 	// States
@@ -57,102 +54,101 @@ export default function Settlements() {
 		{ value: "pending", label: "Pending" },
 		{ value: "closed", label: "Closed" },
 	];
-	const userOptions = [
-		{ value: null, label: "Everyone" },
-		...state.userList.users
-			.map((user) => {
-				// Don't include logged in user in filter
-				if (user._id == session.user.id) return;
-				return {
-					value: user._id,
-					label: user.name,
-				};
-			})
-			.filter((item) => item), // removes	undefined items
-	];
+	let userOptions = [];
+
+	if (userState.ready) {
+		userOptions = [
+			{ value: null, label: "Everyone" },
+			...users
+				.map((user) => {
+					// Don't include logged in user in filter
+					if (user._id == session.user.id) return;
+					return {
+						value: user._id,
+						label: user.name,
+					};
+				})
+				.filter((item) => item), // removes	undefined items
+		];
+	}
 
 	return (
-		<Layout>
-			<section className={styles.wrapper}>
-				<div className={styles.heading}>
-					<TextWithTitle
-						title="Settlements"
-						text="An offer to close multiple debts to the same person"
-						align="left"
+		<section className={styles.wrapper}>
+			<div className={styles.heading}>
+				<TextWithTitle
+					title="Settlements"
+					text="An offer to close multiple debts to the same person"
+					align="left"
+				/>
+			</div>
+			<div className={styles.buttons}>
+				<Button
+					title="New Settlement"
+					icon={<TiArrowForward />}
+					href="/settlements/create"
+					className={styles.create}
+				/>
+				<Button
+					title="New Debt"
+					icon={<FiPlusSquare />}
+					href="/debts/create"
+					className={styles.create}
+					secondary
+				/>
+			</div>
+			<Card dark title="Settlements">
+				<hr className={styles.hr} />
+				<div className={styles.filters}>
+					<Select
+						options={options}
+						defaultValue={options[0]}
+						className={styles.select}
+						onChange={handleFilterSelect}
+					/>
+					<Select
+						options={userOptions}
+						defaultValue={userOptions[0]}
+						className={styles.select}
+						onChange={handleUserFilterSelect}
 					/>
 				</div>
-				<div className={styles.buttons}>
-					<Button
-						title="New Settlement"
-						icon={<TiArrowForward />}
-						href="/settlements/create"
-						className={styles.create}
-					/>
-					<Button
-						title="New Debt"
-						icon={<FiPlusSquare />}
-						href="/debts/create"
-						className={styles.create}
-						secondary
-					/>
-				</div>
-				<Card dark title="Settlements">
-					<hr className={styles.hr} />
-					<div className={styles.filters}>
-						<Select
-							options={options}
-							defaultValue={options[0]}
-							className={styles.select}
-							onChange={handleFilterSelect}
-						/>
-						<Select
-							options={userOptions}
-							defaultValue={userOptions[0]}
-							className={styles.select}
-							onChange={handleUserFilterSelect}
-						/>
-					</div>
-					<div className={styles.cards}>
-						{settlements && settlements.length == 0 && (
-							<p className={styles.noSettlements}>
-								{`You have no ${
-									filter != "all" ? filter : ""
-								} settlements`}
-							</p>
-						)}
-						{settlements ? (
-							settlements.map((settlement, index) => {
-								if (
-									!filterSettlements(
-										settlement,
-										filter,
-										userFilter
-									)
+				<div className={styles.cards}>
+					{settlements && settlements.length == 0 && (
+						<p className={styles.noSettlements}>
+							{`You have no ${
+								filter != "all" ? filter : ""
+							} settlements`}
+						</p>
+					)}
+					{settlements ? (
+						settlements.map((settlement, index) => {
+							if (
+								!filterSettlements(
+									settlement,
+									filter,
+									userFilter
 								)
-									return;
+							)
+								return;
 
-								return (
-									<Settlement
-										key={index}
-										settlement={settlement}
-										globals={{
-											users: state.userList.users,
-											session: session,
-										}}
-										className={styles.settlement}
-									/>
-								);
-							})
-						) : (
-							<>
-								<CardPlaceholder />
-								<CardPlaceholder />
-								<CardPlaceholder />
-							</>
-						)}
-					</div>
-				</Card>
-			</section>
-		</Layout>
+							return (
+								<Settlement
+									key={index}
+									settlement={settlement}
+									className={styles.settlement}
+									light
+								/>
+							);
+						})
+					) : (
+						<>
+							<CardPlaceholder />
+							<CardPlaceholder />
+							<CardPlaceholder />
+						</>
+					)}
+				</div>
+			</Card>
+		</section>
 	);
 }

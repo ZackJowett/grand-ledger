@@ -13,15 +13,20 @@ export default async function handler(req, res) {
 			if (req.query.status == null) {
 				// Not getting closed debts
 				query = {
-					$or: [
+					$and: [
 						{
-							creditor: req.query.userId1,
-							debtor: req.query.userId2,
+							$or: [
+								{
+									creditor: req.query.userId1,
+									debtor: req.query.userId2,
+								},
+								{
+									creditor: req.query.userId2,
+									debtor: req.query.userId1,
+								},
+							],
 						},
-						{
-							creditor: req.query.userId2,
-							debtor: req.query.userId1,
-						},
+						{ status: { $ne: "closed" } },
 					],
 				};
 			} else {

@@ -9,6 +9,7 @@ import { get } from "http";
 import SelectUser from "./SelectUser";
 import { distributeAmount } from "utils/helpers";
 import Toggle from "components/button/toggle/Toggle";
+import { useUsers } from "utils/hooks";
 
 Number.prototype.countDecimals = function () {
 	if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
@@ -23,8 +24,12 @@ export default function MultiDebt({
 	className,
 }) {
 	const { data: session } = useSession();
-	const state = useStore().getState();
-	const users = state.userList.users;
+	const {
+		data: users,
+		isLoading: usersLoading,
+		isError: usersError,
+	} = useUsers();
+
 	const [usersSelected, setUsersSelected] = useState(debt.parties);
 	const [editingUser, setEditingUser] = useState(null);
 	const [splitEvenly, setSplitEvenly] = useState(true);
@@ -353,9 +358,14 @@ export default function MultiDebt({
 						<SelectUser
 							key={`${debt._id}-${session.user.id}`}
 							id={`${debt._id}-${session.user.id}`}
-							user={users.find(
-								(user) => user._id === session.user.id
-							)}
+							user={
+								!usersLoading && users
+									? users.find(
+											(user) =>
+												user._id === session.user.id
+									  )
+									: null
+							}
 							debt={debt}
 							total={total}
 							userSelected={userIsSelected(session.user.id)}
@@ -365,23 +375,27 @@ export default function MultiDebt({
 							recalculateTotal={recalculateTotal}
 						/>
 
-						{users.map((user, index) => {
-							if (user._id === session.user.id) return; // Don't show current user
-							return (
-								<SelectUser
-									key={`${debt._id}-${index}`}
-									id={`${debt._id}-${index}`}
-									user={user}
-									debt={debt}
-									total={total}
-									userSelected={userIsSelected(user._id)}
-									handleSelectUser={handleSelectUser}
-									editingUser={editingUser}
-									setEditingUser={setEditingUser}
-									recalculateTotal={recalculateTotal}
-								/>
-							);
-						})}
+						{!usersLoading && users
+							? users.map((user, index) => {
+									if (user._id === session.user.id) return; // Don't show current user
+									return (
+										<SelectUser
+											key={`${debt._id}-${index}`}
+											id={`${debt._id}-${index}`}
+											user={user}
+											debt={debt}
+											total={total}
+											userSelected={userIsSelected(
+												user._id
+											)}
+											handleSelectUser={handleSelectUser}
+											editingUser={editingUser}
+											setEditingUser={setEditingUser}
+											recalculateTotal={recalculateTotal}
+										/>
+									);
+							  })
+							: null}
 					</div>
 					<TextWithTitle
 						text="Hint: Click amounts to edit"

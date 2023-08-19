@@ -90,3 +90,22 @@ export async function updatePassword(email, newPassword) {
 		return null;
 	}
 }
+
+// Set Avatar: /api/users/setAvatar
+// Sets the url of a users' avatar
+export async function setAvatar(id, url) {
+	try {
+		const res = await fetch(`${getRootURL()}api/users/setAvatar`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ id, url }),
+		});
+
+		return await res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}
