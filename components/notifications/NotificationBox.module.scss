@@ -16,7 +16,7 @@
 	top: calc(var(--headerHeight) - 20px);
 	z-index: 3;
 	max-height: 82vh;
-	overflow: scroll;
+	overflow: auto;
 
 	padding: 0.5rem;
 	@include border($color: var(--background));
