@@ -18,14 +18,16 @@ export default function Updates() {
 			/>
 
 			<Card subtitle="In Development" dark>
-				<p>- Profile Photos</p>
+				<p>- Groups</p>
+				<p>- Light mode</p>
 				<p>- Email Notifications</p>
-				<p>- Create Settlement redesign</p>
+				<p>- Profile Photos</p>
+				<p>- Revamped Create Debt</p>
 			</Card>
 			<Card
 				title="Create Settlement & QOL"
 				subtitle="v1.2 - Current"
-				badge="---"
+				badge="Sat 19 Aug 2023"
 				dark>
 				<br />
 				<p>- Redesigned Create Settlement page</p>
@@ -37,12 +39,13 @@ export default function Updates() {
 				<p>- Direct link to settle with someone</p>
 				<p>- New debt identifier - DDMMYYXXXX (only with new debts)</p>
 				<p>- Simplified Debt & Settlement Cards</p>
-				<p>- Profile Photos!</p>
+				<p>- Profile photos pushed to later release</p>
 				<p>- Styling changes</p>
+				<p>- Responsiveness improvements</p>
 			</Card>
 			<Card
 				title="Notifications & Logo"
-				subtitle="v1.1 - Current"
+				subtitle="v1.1"
 				badge="Thu 6 July 2023"
 				dark>
 				<br />
