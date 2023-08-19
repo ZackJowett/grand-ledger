@@ -23,6 +23,24 @@ export default function Updates() {
 				<p>- Create Settlement redesign</p>
 			</Card>
 			<Card
+				title="Create Settlement & QOL"
+				subtitle="v1.2 - Current"
+				badge="---"
+				dark>
+				<br />
+				<p>- Redesigned Create Settlement page</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;- Current standings in dropdown</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;- Shows existing settlements (if
+					any)
+				</p>
+				<p>- Direct link to settle with someone</p>
+				<p>- New debt identifier - DDMMYYXXXX (only with new debts)</p>
+				<p>- Simplified Debt & Settlement Cards</p>
+				<p>- Profile Photos!</p>
+				<p>- Styling changes</p>
+			</Card>
+			<Card
 				title="Notifications & Logo"
 				subtitle="v1.1 - Current"
 				badge="Thu 6 July 2023"
