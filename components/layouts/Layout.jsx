@@ -8,11 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { update } from "store/slices/usersSlice";
 import { useEffect } from "react";
 import { getAllUsers } from "utils/data/users";
+import { useSession } from "next-auth/react";
+import { useSelectedGroup } from "utils/hooks";
+import Spinner from "components/placeholders/spinner/Spinner";
 
 export default function Layout({ children, className = "" }) {
 	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const router = useRouter();
+	const { data: session } = useSession();
+	const selectedGroup = useSelectedGroup(session.user.id);
 
 	// Load in users to Redux store
 	useEffect(() => {
@@ -67,19 +72,15 @@ export default function Layout({ children, className = "" }) {
 						className={`${styles.children} ${
 							className ? className : ""
 						} `}>
-						{showStatusBar(router) && (
-							<div className={styles.statusBar}>
-								<div
-									className={styles.button}
-									onClick={() => {
-										router.back();
-									}}>
-									<MdOutlineArrowBack /> <p>Back</p>
-								</div>
-							</div>
-						)}
+						<StatusBar router={router} />
 
-						{children}
+						{/* {selectedGroup.isLoading ? (
+							<Spinner className={styles.error} />
+						) : !selectedGroup.exists ? (
+							<p className={styles.error}>Something went wrong</p>
+						) : ( */}
+						<>{children}</>
+						{/* )} */}
 					</section>
 				</div>
 			</main>
@@ -88,8 +89,27 @@ export default function Layout({ children, className = "" }) {
 	);
 }
 
-function showStatusBar(router) {
-	const routes = ["/", "/login", "/register", "/forgot-password"];
+function StatusBar({ router }) {
+	const dontIncludeInRoutes = [
+		"/",
+		"/login",
+		"/register",
+		"/forgot-password",
+	];
 
-	return !routes.includes(router.pathname);
+	if (dontIncludeInRoutes.includes(router.pathname)) {
+		return;
+	}
+
+	return (
+		<div className={styles.statusBar}>
+			<div
+				className={styles.button}
+				onClick={() => {
+					router.back();
+				}}>
+				<MdOutlineArrowBack /> <p>Back</p>
+			</div>
+		</div>
+	);
 }

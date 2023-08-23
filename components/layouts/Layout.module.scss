@@ -68,6 +68,10 @@
 	}
 }
 
+.error {
+	margin: auto;
+}
+
 @include mobile-only {
 	.mobileNav {
 		display: block;
