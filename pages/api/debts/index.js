@@ -1,5 +1,6 @@
 import dbConnect from "/utils/mongodb";
 import Debt from "/utils/models/debt";
+import User from "/utils/models/user";
 
 export default async function handler(req, res) {
 	await dbConnect();
@@ -8,65 +9,28 @@ export default async function handler(req, res) {
 		let query = {};
 		let sortedDebts = null;
 
-		if (req.query.userId1 && req.query.userId2) {
-			// get all debts between two parties
-			if (req.query.status == null) {
-				// Not getting closed debts
-				query = {
-					$and: [
-						{
-							$or: [
-								{
-									creditor: req.query.userId1,
-									debtor: req.query.userId2,
-								},
-								{
-									creditor: req.query.userId2,
-									debtor: req.query.userId1,
-								},
-							],
-						},
-						{ status: { $ne: "closed" } },
-					],
-				};
-			} else {
-				// Getting debt with specified status
-				query = {
-					$and: [
-						{
-							$or: [
-								{
-									creditor: req.query.userId1,
-									debtor: req.query.userId2,
-								},
-								{
-									creditor: req.query.userId2,
-									debtor: req.query.userId1,
-								},
-							],
-						},
-						{ status: req.query.status },
-					],
-				};
-			}
-		} else if (req.query.debtor && req.query.creditor) {
+		if (req.query.debtor && req.query.creditor) {
 			// get specific creditor and debtor debt between two parties
-			query = { debtor: req.query.debtor, creditor: req.query.creditor };
+			query = {
+				debtor: req.query.debtor,
+				creditor: req.query.creditor,
+				group: req.query.group,
+			};
 		} else if (req.query.debtor) {
 			// Get all debts with debtor as the requested id
 			// Sort by date created in descending order
-			query = { debtor: req.query.debtor };
+			query = { debtor: req.query.debtor, group: req.query.group };
 		} else if (req.query.creditor) {
 			// Get all debts with creditor as the requested id
 			// Sort by date created in descending order
-			query = { creditor: req.query.creditor };
+			query = { creditor: req.query.creditor, group: req.query.group };
 		} else if (req.query.id) {
 			// Get specific debt with id
 
 			query = { _id: req.query.id };
 		} else {
-			// get all debts
-			query = {};
+			// get all debts in group
+			query = { group: req.query.group };
 		}
 
 		// Add status to query if it exists

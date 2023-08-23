@@ -8,20 +8,29 @@ import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
 import Title from "/components/text/title/TextWithTitle";
+import { useSelectedGroup, useDebtorDebts } from "/utils/hooks";
 
 export default function RecentDebts({ className }) {
 	const { data: session } = useSession();
+	const {
+		data: selectedGroup,
+		isLoading: groupLoading,
+		isError: groupError,
+		mutate: mutateGroup,
+	} = useSelectedGroup(session.user.id);
 
-	const [debts, setDebts] = useState(null);
+	const {
+		data: debts,
+		isLoading: debtsLoading,
+		isError: debtsError,
+		mutate: mutateDebts,
+	} = useDebtorDebts(
+		session.user.id,
+		selectedGroup ? selectedGroup._id : null
+	);
+
 	const [timeFetched, setTimeFetched] = useState(null); // [user
-	const [loading, setLoading] = useState(true); // [user
 	const [showAmount, setShowAmount] = useState(4); // Number to show
-
-	useEffect(() => {
-		if (!session) return;
-
-		getData();
-	}, [session]);
 
 	useEffect(() => {
 		// Set time fetched
@@ -30,19 +39,6 @@ export default function RecentDebts({ className }) {
 
 	// No session data yet
 	if (!session) return;
-
-	function getData() {
-		if (!session) return;
-		setLoading(true);
-		getAllForDebtor(session.user.id).then((data) => {
-			if (data) {
-				setDebts(data);
-			} else {
-				console.log("Error fetching debts");
-			}
-			setLoading(false);
-		});
-	}
 
 	const handleViewMore = () => {
 		if (debts.length - showAmount < 3) {
@@ -53,24 +49,23 @@ export default function RecentDebts({ className }) {
 	};
 
 	function handleRefresh() {
-		setDebts(null);
-		getData();
+		mutateDebts(true);
 	}
 
 	return (
 		<section className={styles.wrapper}>
 			<Title title="Recent Debts" align="left" link="/debts" />
-			{/* <div className={styles.refresh} onClick={handleRefresh}>
+			<div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
-			</div> */}
-			{loading ? (
+			</div>
+			{debtsLoading || groupLoading ? (
 				<>
 					<CardPlaceholder />
 					<CardPlaceholder />
 					<CardPlaceholder />
 				</>
-			) : !debts ? (
-				<p>Debts could not be loaded</p>
+			) : !debts || debtsError ? (
+				<p>Debts failed to load</p>
 			) : debts.length <= 0 ? (
 				<p>No debts</p>
 			) : (

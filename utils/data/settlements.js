@@ -110,7 +110,10 @@ export async function createSettlement(settlement, creator) {
 			debts: settlement.debts,
 			netAmount: settlement.netAmount,
 			description: settlement.description,
+			group: settlement.group,
 		};
+
+		console.log(newSettlement);
 
 		const response = await fetch(`${getRootURL()}api/settlements/create`, {
 			method: "POST",

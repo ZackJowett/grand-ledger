@@ -21,6 +21,7 @@ export default function SelectUser({
 	selectedDebts,
 	setSelectedDebts,
 	stats,
+	group,
 }) {
 	const { data: session } = useSession();
 	const router = useRouter();
@@ -32,11 +33,11 @@ export default function SelectUser({
 	const { data: userStats, isLoading: userStatsLoading } = useUserDebtStats(
 		session.user.id
 	);
-	const {
-		data: existingSettlements,
-		isLoading: existingSettlementsLoading,
-		error: existingSettlementsError,
-	} = useSettlementsBetweenUsers(session.user.id, selectedUser?._id);
+	const existingSettlements = useSettlementsBetweenUsers(
+		session.user.id,
+		selectedUser?._id,
+		group.data ? group.data._id : null
+	);
 
 	function handleSelectParty(selectedOption) {
 		const selectedUser = users.find(
@@ -46,11 +47,9 @@ export default function SelectUser({
 		setSelectedUser(selectedUser);
 	}
 
-	console.log(existingSettlements);
-
 	let options = [];
 
-	if (!usersLoading && !usersError && !userStatsLoading) {
+	if (!usersLoading && !usersError && !userStatsLoading && users) {
 		// Create options
 		options = users
 			.map((user) => {
@@ -64,9 +63,22 @@ export default function SelectUser({
 
 		// If selectedUser is null, set to user with id in query
 		if (selectedUser === null && router.query.id) {
-			handleSelectParty(
-				options.find((entry) => entry.value == router.query.id)
+			// find user
+			const newSelectedUser = options.find(
+				(entry) => entry.value == router.query.id
 			);
+			if (newSelectedUser) {
+				handleSelectParty(newSelectedUser);
+			} else if (options.length <= 0) {
+				// If no users, set selectedUser to null
+				setSelectedUser(null);
+			} else if (options.length > 0 && selectedUser === null) {
+				// If no options, set selectedUser to first user
+				handleSelectParty(options[0]);
+			}
+		} else if (options.length <= 0) {
+			// If no users, set selectedUser to null
+			setSelectedUser(null);
 		} else if (options.length > 0 && selectedUser === null) {
 			// If no options, set selectedUser to first user
 			handleSelectParty(options[0]);
@@ -95,29 +107,11 @@ export default function SelectUser({
 				/>
 			)}
 
-			{!existingSettlementsLoading &&
-				existingSettlements &&
-				existingSettlements.length > 0 && (
-					<Card className={styles.debt}>
-						<div className={styles.settlementWrapper}>
-							<TextWithTitle
-								title={`Existing Settlements`}
-								className={styles.header}
-								align="left"
-							/>
-
-							{existingSettlements.map((settlement) => {
-								return (
-									<Settlement
-										settlement={settlement}
-										key={settlement.id}
-										light
-									/>
-								);
-							})}
-						</div>
-					</Card>
-				)}
+			{!group.isLoading && group.data && (
+				<ExistingSettlements
+					existingSettlements={existingSettlements}
+				/>
+			)}
 			<Card dark>
 				<div className={styles.stats} id="settlement-standings">
 					<div className={styles.debts}>
@@ -131,7 +125,9 @@ export default function SelectUser({
 							reverseAction
 							light
 							smallPadding>
-							{!debts || !stats ? (
+							{debts.isLoading || !stats ? (
+								<Spinner />
+							) : debts.isError || !debts ? (
 								<p className={styles.loading}>---</p>
 							) : (
 								<Money
@@ -150,7 +146,9 @@ export default function SelectUser({
 							reverseAction
 							light
 							smallPadding>
-							{!debts || !stats ? (
+							{debts.isLoading || !stats ? (
+								<Spinner />
+							) : debts.isError || !debts ? (
 								<p className={styles.loading}>---</p>
 							) : (
 								<Money amount={stats.totalUnreceived} />
@@ -170,7 +168,9 @@ export default function SelectUser({
 						reverseAction
 						light
 						smallPadding>
-						{!debts || !stats ? (
+						{debts.isLoading || !stats ? (
+							<Spinner />
+						) : debts.isError || !debts ? (
 							<p className={styles.loading}>---</p>
 						) : (
 							<Money amount={stats.net} notColoured />
@@ -213,4 +213,37 @@ function getUserLabel(user, stats, loading) {
 	{
 		/* // </> */
 	}
+}
+
+function ExistingSettlements({ existingSettlements }) {
+	console.log(existingSettlements);
+	if (
+		existingSettlements.isLoading ||
+		!existingSettlements.data ||
+		existingSettlements.data.length <= 0
+	) {
+		return;
+	}
+
+	return (
+		<Card className={styles.debt}>
+			<div className={styles.settlementWrapper}>
+				<TextWithTitle
+					title={`Existing Settlements`}
+					className={styles.header}
+					align="left"
+				/>
+
+				{existingSettlements.map((settlement) => {
+					return (
+						<Settlement
+							settlement={settlement}
+							key={settlement.id}
+							light
+						/>
+					);
+				})}
+			</div>
+		</Card>
+	);
 }

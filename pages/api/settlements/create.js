@@ -17,6 +17,7 @@ export default async function handler(req, res) {
 			debts: req.body.debts,
 			netAmount: req.body.netAmount,
 			description: req.body.description ? req.body.description : "",
+			group: req.body.group,
 		});
 
 		// Change status of debts to pending

@@ -33,10 +33,38 @@ export function useUsers() {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
+export function useSelectedGroup(user) {
+	const { data, error, isLoading, mutate } = useSWR(
+		`api/users/getSelectedGroup?user=${user}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+		mutate: mutate,
 	};
 }
 
 // ------------------------------- DEBTS -------------------------------- \\
+export function useDebt(id) {
+	const { data, error, isLoading } = useSWR(`api/debts?id=${id}`, fetcher);
+
+	// returns array of length 1
+	return {
+		data: data ? data[0] : null,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
 export function useDebts() {
 	const { data, error, isLoading } = useSWR(`api/debts`, fetcher);
 
@@ -47,9 +75,9 @@ export function useDebts() {
 	};
 }
 
-export function useDebtsBetweenUsers(id1, id2) {
+export function useDebtsBetweenUsers(id1, id2, group, status = null) {
 	const { data, error, isLoading } = useSWR(
-		`api/debts?userId1=${id1}&userId2=${id2}`,
+		`api/debts/betweenUsers?userId1=${id1}&userId2=${id2}&group=${group}&status=${status}`,
 		fetcher
 	);
 
@@ -60,9 +88,9 @@ export function useDebtsBetweenUsers(id1, id2) {
 	};
 }
 
-export function useDebtsBetweenUsersOutstanding(id1, id2) {
-	const { data, error, isLoading } = useSWR(
-		`api/debts?userId1=${id1}&userId2=${id2}&status=outstanding`,
+export function useDebtorDebts(debtor, group) {
+	const { data, error, isLoading, mutate } = useSWR(
+		`api/debts?debtor=${debtor}&group=${group}`,
 		fetcher
 	);
 
@@ -70,13 +98,81 @@ export function useDebtsBetweenUsersOutstanding(id1, id2) {
 		data: data,
 		isLoading,
 		isError: error,
+		mutate: mutate,
 	};
 }
 
 // ------------------------------- SETTLEMENTS -------------------------------- \\
-export function useSettlementsBetweenUsers(id1, id2) {
+export function useSettlement(id) {
 	const { data, error, isLoading } = useSWR(
-		`api/settlements/getBetweenUsers?userId1=${id1}&userId2=${id2}`,
+		`api/settlements?id=${id}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
+export function useSettlementDebts(id) {
+	const { data, error, isLoading } = useSWR(
+		`api/settlements/getDebts?id=${id}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
+export function useSettlementsBetweenUsers(id1, id2, group) {
+	const { data, error, isLoading } = useSWR(
+		`api/settlements/getBetweenUsers?userId1=${id1}&userId2=${id2}&group=${group}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+	};
+}
+
+export function useSettlementsWithUser(id, group) {
+	const { data, error, isLoading } = useSWR(
+		`api/settlements/getByUsers?id=${id}&group=${group}`,
+		fetcher
+	);
+
+	return {
+		data: data ? data : [],
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
+// ------------------------------ GROUPS ------------------------------- \\
+export function useGroup(id) {
+	const { data, error, isLoading } = useSWR(`api/groups/${id}`, fetcher);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
+export function useGroupsWithUser(user) {
+	const { data, error, isLoading } = useSWR(
+		`api/groups/getAllWithUser?user=${user}`,
 		fetcher
 	);
 

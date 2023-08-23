@@ -17,31 +17,32 @@ import Select from "components/forms/Select";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
+import { useSelectedGroup, useDebtorDebts, useUsers } from "utils/hooks";
 
 export default function Debts() {
 	const { data: session, status: sessionStatus } = useSession();
+	const users = useUsers();
+	const {
+		data: selectedGroup,
+		isLoading: selectedGroupLoading,
+		isError: selectedGroupError,
+	} = useSelectedGroup(session.user.id);
 
 	// Get debts from database
-	const [debts, setDebts] = useState(null);
+	const {
+		data: debts,
+		isLoading: debtsLoading,
+		isError: debtsError,
+	} = useDebtorDebts(
+		session.user.id,
+		selectedGroup ? selectedGroup._id : null
+	);
 	// const [openDebts, setOpenDebts] = useState(null); // debts.filter(debt => !debt.closed)
 	// const [closedDebts, setClosedDebts] = useState(null);
-	const [users, setUsers] = useState(null);
+
 	const [filter, setFilter] = useState("outstanding"); // "all" || "open" || "closed"
 	const [userFilter, setUserFilter] = useState(null);
 	const [totalDebt, setTotalDebt] = useState(null);
-
-	// Get all debts associated with logged in user
-	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-
-		getAllForDebtor(session.user.id).then((data) => {
-			data ? setDebts(data) : console.log("Error fetching data");
-		});
-
-		getAllUsers().then((data) => {
-			data ? setUsers(data) : console.log("Error fetching data");
-		});
-	}, [session, sessionStatus]);
 
 	// Calculate total debt amount (excluding closed debts)
 	useEffect(() => {
@@ -68,7 +69,7 @@ export default function Debts() {
 	}
 
 	// Loading
-	if (!debts || !users) {
+	if (debtsLoading || users.isLoading || selectedGroupLoading) {
 		return <Spinner />;
 	}
 
@@ -87,19 +88,13 @@ export default function Debts() {
 		{ value: "closed", label: "Closed" },
 	];
 
-	const userOptions = [
-		{ value: null, label: "Everyone" },
-		...users
-			.map((user) => {
-				// Don't include logged in user in filter
-				if (user._id == session.user.id) return;
-				return {
-					value: user._id,
-					label: user.name,
-				};
-			})
-			.filter((item) => item), // removes	undefined items
-	];
+	const userOptions = [{ value: null, label: "Everyone" }];
+
+	if (users.exists && users.data) {
+		userOptions.push(
+			...users.data.map((user) => ({ value: user._id, label: user.name }))
+		);
+	}
 
 	// Logged in
 	return (
@@ -134,72 +129,79 @@ export default function Debts() {
 			</div>
 
 			<Card dark title="Debts" className={styles.debtsWrapper}>
-				{totalDebt ? (
-					<TextWithTitle
-						title={
-							<Money
-								amount={-totalDebt}
-								background
-								backgroundFit
-								padding
-							/>
-						}
-						text={"Total Outstanding"}
-						small
-						reverse
-						align="left"
-						className={styles.totals}
-					/>
+				{debtsError || users.isError || selectedGroupError ? (
+					<p>Error loading Debts</p>
 				) : (
-					<Spinner title="Calculating totals..." />
-				)}
-				<hr className={styles.hr} />
-				<div className={styles.filters}>
-					<Select
-						options={options}
-						defaultValue={options[1]}
-						className={styles.select}
-						onChange={handleFilterSelect}
-					/>
-					<Select
-						options={userOptions}
-						defaultValue={userOptions[0]}
-						className={styles.select}
-						onChange={handleUserFilterSelect}
-					/>
-				</div>
-				<div className={styles.cards}>
-					{debts && debts.length == 0 && (
-						<p className={styles.noDebts}>
-							{`You have no ${
-								filter != "all" ? filter : ""
-							} debts. Well done!`}
-						</p>
-					)}
-					{debts ? (
-						debts.map((debt, index) => {
-							if (!filterDebts(debt, filter, userFilter)) return;
+					<>
+						{totalDebt ? (
+							<TextWithTitle
+								title={
+									<Money
+										amount={-totalDebt}
+										background
+										backgroundFit
+										padding
+									/>
+								}
+								text={"Total Outstanding"}
+								small
+								reverse
+								align="left"
+								className={styles.totals}
+							/>
+						) : (
+							<Spinner title="Calculating totals..." />
+						)}
+						<hr className={styles.hr} />
+						<div className={styles.filters}>
+							<Select
+								options={options}
+								defaultValue={options[1]}
+								className={styles.select}
+								onChange={handleFilterSelect}
+							/>
+							<Select
+								options={userOptions}
+								defaultValue={userOptions[0]}
+								className={styles.select}
+								onChange={handleUserFilterSelect}
+							/>
+						</div>
+						<div className={styles.cards}>
+							{debts && debts.length == 0 && (
+								<p className={styles.noDebts}>
+									{`You have no ${
+										filter != "all" ? filter : ""
+									} debts. Well done!`}
+								</p>
+							)}
+							{debts ? (
+								debts.map((debt, index) => {
+									if (!filterDebts(debt, filter, userFilter))
+										return;
 
-							return (
-								<Debt
-									key={index}
-									debt={debt}
-									globals={{
-										session: session,
-										users: users,
-									}}
-									light
-								/>
-							);
-						})
-					) : (
-						<>
-							<CardPlaceholder />
-							<CardPlaceholder />
-							<CardPlaceholder />
-						</>
-					)}
-				</div>
+									return (
+										<Debt
+											key={index}
+											debt={debt}
+											globals={{
+												session: session,
+												users: users,
+											}}
+											light
+										/>
+									);
+								})
+							) : (
+								<>
+									<CardPlaceholder />
+									<CardPlaceholder />
+									<CardPlaceholder />
+								</>
+							)}
+						</div>
+					</>
+				)}
 			</Card>
 		</section>
 	);

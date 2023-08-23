@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./Button.module.scss";
 import Spinner from "../placeholders/spinner/Spinner";
+import { useState } from "react";
 
 interface Props {
 	className?: string;
@@ -14,6 +15,7 @@ interface Props {
 	secondary?: boolean;
 	loading?: boolean;
 	alignIcon?: "center" | "left" | "right";
+	includeConfirm?: boolean;
 }
 
 export default function Button({
@@ -28,7 +30,10 @@ export default function Button({
 	secondary = false,
 	loading = false,
 	alignIcon = "center",
+	includeConfirm = false,
 }: Props) {
+	const [confirm, setConfirm] = useState(false);
+
 	let classes = className ? className : "";
 	classes += dark ? " " + styles.dark : "";
 	classes += disabled ? " " + styles.disabled : "";
@@ -38,6 +43,64 @@ export default function Button({
 	classes += alignIcon === "center" ? " " + styles.iconCenter : "";
 	classes += alignIcon === "left" ? " " + styles.iconLeft : "";
 	classes += alignIcon === "right" ? " " + styles.iconRight : "";
+
+	if (includeConfirm) {
+		return (
+			<>
+				{confirm ? (
+					<div className={`${styles.buttonWrapper} ${classes} `}>
+						<button
+							type="button"
+							className={`${styles.cancel}`}
+							onClick={() => setConfirm(false)}>
+							Cancel
+						</button>
+						<button
+							type="button"
+							className={`${styles.confirm}`}
+							onClick={() => {
+								setConfirm(false);
+								onClick ? onClick() : () => {};
+							}}>
+							{loading ? (
+								<Spinner
+									spinnerClassName={styles.spinnerBlocks}
+								/>
+							) : (
+								<>
+									{icon && (
+										<div className={styles.icon}>
+											{icon}
+										</div>
+									)}
+									<p className={styles.title}>
+										Confirm {title}
+									</p>
+								</>
+							)}
+						</button>
+					</div>
+				) : (
+					<button
+						type="button"
+						className={`${classes} ${styles.submit} `}
+						disabled={disabled}
+						onClick={() => setConfirm(true)}>
+						{loading ? (
+							<Spinner spinnerClassName={styles.spinnerBlocks} />
+						) : (
+							<>
+								{icon && (
+									<div className={styles.icon}>{icon}</div>
+								)}
+								<p className={styles.title}>{title}</p>
+							</>
+						)}
+					</button>
+				)}
+			</>
+		);
+	}
 
 	return (
 		<>

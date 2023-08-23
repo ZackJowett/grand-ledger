@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import LoggedOut from "../components/sections/login/loggedOut/LoggedOut";
 import Spinner from "../components/placeholders/spinner/Spinner";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({
 	Component,
@@ -23,6 +25,7 @@ export default function App({
 						Component={Component}
 						pageProps={pageProps}
 					/>
+					<ToastContainer />
 				</SessionProvider>
 			</Provider>
 			<Script

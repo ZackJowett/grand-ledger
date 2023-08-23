@@ -19,44 +19,34 @@ import { useRouter } from "next/router";
 import Spinner from "components/placeholders/spinner/Spinner";
 import Button from "components/button/Button";
 import { useSelector } from "react-redux";
+import {
+	useSettlement,
+	useSelectedGroup,
+	useUsers,
+	useSettlementDebts,
+	useGroup,
+} from "utils/hooks";
 
 export default function Settlement() {
-	const { data: session, status: sessionStatus } = useSession();
-	const userState = useSelector((state) => state.users);
-	const users = userState.list;
 	const router = useRouter();
+	const { data: session, status: sessionStatus } = useSession();
+	const users = useUsers();
+	const group = useSelectedGroup(session.user.id);
+	const settlement = useSettlement(router.query.settlement);
+	const debts = useSettlementDebts(router.query.settlement);
+	const settlementGroup = useGroup(
+		settlement.data ? settlement.data.group : null
+	);
 
 	// --------- States --------- \\
-	const [settlement, setSettlement] = useState();
-	const [debts, setDebts] = useState([]);
-	const [loading, setLoading] = useState(true);
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [deleteStatus, setDeleteStatus] = useState(null); // ["success", "error"]
 
-	// Get debt from database
-	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-		setLoading(true);
-		getSettlementByID(router.query.settlement).then((data) => {
-			if (data) {
-				setSettlement(data);
-			}
-			setLoading(false);
-		});
-	}, [sessionStatus]);
-
-	// --------- Effects --------- \\
-
-	useEffect(() => {
-		if (!settlement) return;
-		getSettlementDebts(settlement._id).then((res) => setDebts(res));
-	}, [settlement]);
-
 	function handleDeleteSettlement() {
 		setDeleteLoading(true);
 
-		deleteSettlement(settlement._id).then((data) => {
+		deleteSettlement(settlement.data._id).then((data) => {
 			console.log(data);
 			if (data.success) {
 				// Settlement was deleted
@@ -74,44 +64,69 @@ export default function Settlement() {
 		return <LoggedOut />;
 	}
 
-	if (!userState.ready) {
-		return <Spinner title="Loading..." />;
-	}
-
 	// --------- Functions --------- \\
 
 	// --------- Variables --------- \\
 
 	let otherParty, otherPartyName, status, stats;
 
-	if (settlement) {
+	if (settlement.exists && users.exists) {
 		// Get name of other party (not logged in user)
 		otherParty =
-			settlement.settler == session.user.id
-				? settlement.settlee
-				: settlement.settler;
+			settlement.data.settler == session.user.id
+				? settlement.data.settlee
+				: settlement.data.settler;
 
-		otherPartyName = getName(otherParty, users, session);
+		otherPartyName = getName(otherParty, users.data, session);
 		status =
-			settlement.status == "pending"
+			settlement.data.status == "pending"
 				? "Pending"
-				: settlement.status == "closed"
+				: settlement.data.status == "closed"
 				? "Closed"
 				: "Reopened";
 
 		stats = null;
 	}
 
-	if (debts) {
-		stats = calculateDebtStats(debts, session);
+	if (debts.exists) {
+		stats = calculateDebtStats(debts.data, session);
 	}
 
-	if (loading) {
+	if (settlement.isLoading || debts.isLoading) {
 		return <Spinner title="Fetching settlement..." />;
 	}
 
 	if (deleteLoading) {
 		return <Spinner title="Deleting Settlement..." />;
+	}
+
+	if (!settlement.exists || !debts.exists) {
+		return (
+			<section className={styles.deletedWrapper}>
+				<p>{"Error fetching settlement"}</p>
+			</section>
+		);
+	}
+
+	// User is not debtor or creditor
+	if (
+		settlement.data.settler != session.user.id &&
+		settlement.data.settlee != session.user.id
+	) {
+		return (
+			<section className={styles.deletedWrapper}>
+				<p>Could not find settlement</p>
+			</section>
+		);
+	}
+
+	// Incorrect group selected
+	if (group.exists && settlement.data.group != group.data._id) {
+		return (
+			<section className={styles.deletedWrapper}>
+				<p>Debt not included in selected group ({group.data.name})</p>
+			</section>
+		);
 	}
 
 	if (deleteStatus !== null) {
@@ -137,19 +152,31 @@ export default function Settlement() {
 			<div className={styles.header}>
 				<TextWithTitle
 					title={`Settlement with ${otherPartyName}`}
-					text={`Identifier: ${settlement._id}`}
+					text={`Identifier: ${settlement.data._id}`}
 					className={styles.title}
 					align="left"
 					large
 				/>
-				<Badge
-					title={status}
-					color={settlement.status}
-					className={styles.badge}
-				/>
+				<div className={styles.badges}>
+					<Badge
+						title={status}
+						color={settlement.data.status}
+						className={styles.badge}
+					/>
+					{settlementGroup.exists && (
+						<Badge
+							title={settlementGroup.data.name}
+							color={"group"}
+							className={styles.badge}
+						/>
+					)}
+				</div>
 			</div>
 
-			<Status settlement={settlement} otherPartyName={otherPartyName} />
+			<Status
+				settlement={settlement.data}
+				otherPartyName={otherPartyName}
+			/>
 
 			<TextWithTitle
 				title="Overview"
@@ -163,18 +190,21 @@ export default function Settlement() {
 				className={styles.title}
 				align="left"
 			/>
-			<Details settlement={settlement} otherPartyName={otherPartyName} />
+			<Details
+				settlement={settlement.data}
+				otherPartyName={otherPartyName}
+			/>
 
 			<TextWithTitle
 				title="Debts Included"
 				className={styles.title}
 				align="left"
 			/>
-			<DebtsIncluded debts={debts} stats={stats} />
+			<DebtsIncluded debts={debts.data} stats={stats} />
 
 			{/* Delete Settlement */}
-			{settlement.status != "closed" &&
-				settlement.creator == session.user.id && (
+			{settlement.data.status != "closed" &&
+				settlement.data.creator == session.user.id && (
 					<div className={styles.deleteWrapper}>
 						{confirmDelete ? (
 							<>

@@ -1,0 +1,7 @@
+@use "public/styles/mixins" as *;
+
+.wrapper {
+	width: 100%;
+
+	@include flex(column, $gap: 0.5rem);
+}

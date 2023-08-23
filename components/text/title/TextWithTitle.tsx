@@ -14,6 +14,7 @@ interface Props {
 	backgroundFit?: boolean;
 	link?: string;
 	onClick?: () => void;
+	titleClassName?: string;
 }
 
 export default function TextWithTitle({
@@ -29,6 +30,7 @@ export default function TextWithTitle({
 	background,
 	backgroundFit,
 	onClick,
+	titleClassName,
 }: Props) {
 	// Add classes to class prop
 	let classes = styles.wrapper;
@@ -47,13 +49,33 @@ export default function TextWithTitle({
 		return (
 			<Link className={classes} onClick={onClick} href={link}>
 				{small ? (
-					<h4 className={styles.title}>{title}</h4>
+					<h4
+						className={`${styles.title} ${
+							titleClassName ? titleClassName : ""
+						}`}>
+						{title}
+					</h4>
 				) : large ? (
-					<h1 className={styles.title}>{title}</h1>
+					<h1
+						className={`${styles.title} ${
+							titleClassName ? titleClassName : ""
+						}`}>
+						{title}
+					</h1>
 				) : tiny ? (
-					<p className={styles.title}>{title}</p>
+					<p
+						className={`${styles.title} ${
+							titleClassName ? titleClassName : ""
+						}`}>
+						{title}
+					</p>
 				) : (
-					<h2 className={styles.title}>{title}</h2>
+					<h2
+						className={`${styles.title} ${
+							titleClassName ? titleClassName : ""
+						}`}>
+						{title}
+					</h2>
 				)}
 
 				{text && <p className={styles.text}>{text}</p>}
@@ -64,13 +86,33 @@ export default function TextWithTitle({
 	return (
 		<div className={classes} onClick={onClick}>
 			{small ? (
-				<h4 className={styles.title}>{title}</h4>
+				<h4
+					className={`${styles.title} ${
+						titleClassName ? titleClassName : ""
+					}`}>
+					{title}
+				</h4>
 			) : large ? (
-				<h1 className={styles.title}>{title}</h1>
+				<h1
+					className={`${styles.title} ${
+						titleClassName ? titleClassName : ""
+					}`}>
+					{title}
+				</h1>
 			) : tiny ? (
-				<p className={styles.title}>{title}</p>
+				<p
+					className={`${styles.title} ${
+						titleClassName ? titleClassName : ""
+					}`}>
+					{title}
+				</p>
 			) : (
-				<h2 className={styles.title}>{title}</h2>
+				<h2
+					className={`${styles.title} ${
+						titleClassName ? titleClassName : ""
+					}`}>
+					{title}
+				</h2>
 			)}
 
 			{text && <p className={styles.text}>{text}</p>}

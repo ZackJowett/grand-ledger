@@ -14,27 +14,27 @@ import Select from "components/forms/Select";
 import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
 import { useSelector } from "react-redux";
+import { useSelectedGroup, useSettlementsWithUser } from "utils/hooks";
 
 export default function Settlements() {
 	// Session
 	const { data: session, status: sessionStatus } = useSession();
 	const userState = useSelector((state) => state.users);
 	const users = userState.list;
+	const selectedGroup = useSelectedGroup(session.user.id);
 
 	// User logged in
 	// States
-	const [settlements, setSettlements] = useState(null);
+	const {
+		data: settlements,
+		isLoading: settlementsLoading,
+		isError: settlementsError,
+	} = useSettlementsWithUser(
+		session.user.id,
+		selectedGroup.data ? selectedGroup.data._id : null
+	);
 	const [filter, setFilter] = useState("all"); // "all" || "open" || "closed"
 	const [userFilter, setUserFilter] = useState(null);
-
-	// Get settlements
-	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-
-		getAllSettlements(session.user.id).then((data) => {
-			data ? setSettlements(data) : console.log("Error fetching data");
-		});
-	}, [session, sessionStatus]);
 
 	// User not logged in
 	if (sessionStatus !== "authenticated") {
@@ -113,14 +113,25 @@ export default function Settlements() {
 					/>
 				</div>
 				<div className={styles.cards}>
-					{settlements && settlements.length == 0 && (
+					{settlementsLoading || selectedGroup.isLoading ? (
+						// Loading
+						<>
+							<CardPlaceholder />
+							<CardPlaceholder />
+							<CardPlaceholder />
+						</>
+					) : settlementsError || selectedGroup.isError ? (
+						// Erorr occurred
+						<p>Erorr loading settlements</p>
+					) : settlements && settlements.length <= 0 ? (
+						// No settlements
 						<p className={styles.noSettlements}>
 							{`You have no ${
 								filter != "all" ? filter : ""
 							} settlements`}
 						</p>
-					)}
-					{settlements ? (
+					) : (
+						// Map Settlements
 						settlements.map((settlement, index) => {
 							if (
 								!filterSettlements(
@@ -140,12 +151,6 @@ export default function Settlements() {
 								/>
 							);
 						})
-					) : (
-						<>
-							<CardPlaceholder />
-							<CardPlaceholder />
-							<CardPlaceholder />
-						</>
 					)}
 				</div>
 			</Card>

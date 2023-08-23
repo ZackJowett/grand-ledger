@@ -11,6 +11,7 @@ const settlementSchema = new Schema({
 	number: { type: Number, default: 0, incrementing: true },
 	settler: mongoose.Types.ObjectId,
 	settlee: mongoose.Types.ObjectId,
+	group: { type: mongoose.Types.ObjectId, default: null },
 	creator: mongoose.Types.ObjectId,
 	debts: [mongoose.Types.ObjectId],
 	netAmount: Number,

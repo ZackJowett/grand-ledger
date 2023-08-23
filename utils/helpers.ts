@@ -4,14 +4,26 @@ import { useEffect } from "react";
 // returns a formatted date string
 // Input | date: string
 // Output | string
-function formatDate(date) {
+export function formatDate(date, onlyDate = false) {
 	const dateObject = new Date(date);
-	const formattedDate = new Intl.DateTimeFormat("en-GB", {
-		dateStyle: "medium",
-		timeStyle: "short",
-		timeZone: "Australia/Sydney",
-		hourCycle: "h12",
-	}).format(dateObject);
+
+	let formattedDate = null;
+	if (onlyDate) {
+		formattedDate = new Intl.DateTimeFormat("en-GB", {
+			weekday: "short",
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		}).format(dateObject);
+	} else {
+		formattedDate = new Intl.DateTimeFormat("en-GB", {
+			dateStyle: "medium",
+			timeStyle: "short",
+			timeZone: "Australia/Sydney",
+			hourCycle: "h12",
+		}).format(dateObject);
+	}
+
 	return formattedDate;
 }
 

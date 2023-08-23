@@ -14,8 +14,9 @@ export function InputText({
 	title,
 	dark,
 	invalid,
+	maxLength,
 }) {
-	const maxLength = 100;
+	const max = maxLength ? maxLength : 100;
 
 	return (
 		<div

@@ -17,66 +17,45 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import { getDebtStatus } from "utils/helpers";
 import { deleteDebt } from "utils/data/debts";
 import { useSelector } from "react-redux";
+import { useGroup, useDebt, useSelectedGroup, useUsers } from "utils/hooks";
 
 export default function Debt() {
-	const { data: session, status: sessionStatus } = useSession();
-	const userState = useSelector((state) => state.users);
-	const users = userState.list;
 	const router = useRouter(); // Dynamically get debt from route
+	const { data: session, status: sessionStatus } = useSession();
+	const selectedGroup = useSelectedGroup(session.user.id);
+	const users = useUsers();
+	const debt = useDebt(router.query.debt ? router.query.debt : null);
+	const group = useGroup(debt.exists ? debt.data.group : null);
 
-	const [debt, setDebt] = useState(null);
-	const [loading, setLoading] = useState(true);
+	// States
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [deleteStatus, setDeleteStatus] = useState(null); // ["success", "error"]
-
-	// Get debt from database
-	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-
-		setLoading(true);
-
-		if (!router.isReady) return;
-
-		getOneDebt(router.query.debt).then((data) => {
-			if (data) {
-				setDebt(data);
-			} else {
-				console.log("Error fetching debt");
-			}
-			setLoading(false);
-		});
-	}, [sessionStatus, router.isReady, router.query.debt]);
 
 	// User not logged in
 	if (sessionStatus !== "authenticated") {
 		return <LoggedOut />;
 	}
 
-	// Users data not loaded
-	if (!userState.ready) {
-		<Spinner title="Loading..." />;
-	}
-
 	// Wait for debt to load
 	// useEffect refreshes component when debt is loaded
 	let isDebtor, isClosed, otherParty, otherPartyName, status, creatorName;
 
-	if (debt) {
+	if (debt.exists && users.exists) {
 		// Get if user is debtor or creditor
-		isDebtor = debt.debtor == session.user.id;
-		isClosed = debt.status == "closed";
+		isDebtor = debt.data.debtor == session.user.id;
+		isClosed = debt.data.status == "closed";
 
 		// Get name of other party (not logged in user)
-		otherParty = isDebtor ? debt.creditor : debt.debtor;
-		otherPartyName = getName(otherParty, users, session);
-		creatorName = getName(debt.creator, users, session);
+		otherParty = isDebtor ? debt.data.creditor : debt.data.debtor;
+		otherPartyName = getName(otherParty, users.data, session);
+		creatorName = getName(debt.data.creator, users.data, session);
 
 		// Get status of debt
 		status =
-			debt.status == "pending"
+			debt.data.status == "pending"
 				? "Pending"
-				: debt.status == "closed"
+				: debt.data.status == "closed"
 				? "Closed"
 				: "Outstanding";
 	}
@@ -104,7 +83,7 @@ export default function Debt() {
 	function handleDeleteDebt() {
 		setDeleteLoading(true);
 
-		deleteDebt(debt._id).then((data) => {
+		deleteDebt(debt.data._id).then((data) => {
 			console.log(data);
 			if (data.success) {
 				// Debt was deleted
@@ -117,8 +96,40 @@ export default function Debt() {
 		});
 	}
 
-	if (loading) {
-		return <Spinner title="Fetching debt..." />;
+	if (
+		debt.isLoading ||
+		group.isLoading ||
+		selectedGroup.isLoading ||
+		users.isLoading
+	) {
+		return <Spinner title="Loading..." />;
+	}
+
+	if (
+		debt.isError ||
+		group.isError ||
+		selectedGroup.isError ||
+		users.isError ||
+		!debt.exists
+	) {
+		return <p>Failed to load debt</p>;
+	}
+
+	// User is not debtor or creditor
+	if (
+		debt.data.creditor != session.user.id &&
+		debt.data.debtor != session.user.id
+	) {
+		return <p>Could not find debt</p>;
+	}
+
+	// Incorrect group selected
+	if (selectedGroup.data && debt.data.group != selectedGroup.data._id) {
+		return (
+			<p>
+				Debt not included in selected group ({selectedGroup.data.name})
+			</p>
+		);
 	}
 
 	if (deleteLoading) {
@@ -145,32 +156,46 @@ export default function Debt() {
 
 	return (
 		<>
-			{debt ? (
+			{debt.exists ? (
 				<section className={styles.wrapper}>
 					<div className={styles.header}>
 						<TextWithTitle
 							title={getDebtTitle()}
-							text={`Identifier: ${debt.id ? debt.id : debt._id}`}
+							text={`Identifier: ${
+								debt.data.id ? debt.data.id : debt._id
+							}`}
 							className={styles.title}
 							align="left"
 							large
 						/>
-						<Badge
-							title={getDebtStatus(debt.status, !isDebtor)}
-							color={debt.status}
-							className={styles.badge}
-						/>
+						<div className={styles.badges}>
+							<Badge
+								title={getDebtStatus(
+									debt.data.status,
+									!isDebtor
+								)}
+								color={debt.data.status}
+								className={styles.badge}
+							/>
+							{group.exists && (
+								<Badge
+									title={group.data.name}
+									color={"group"}
+									className={styles.badge}
+								/>
+							)}
+						</div>
 					</div>
 
-					{debt.status == "closed" ||
-						(debt.status == "pending" && (
+					{debt.data.status == "closed" ||
+						(debt.data.status == "pending" && (
 							<Button
 								title="View Settlement Details"
-								href={`/settlements/${debt.settlement}`}
+								href={`/settlements/${debt.data.settlement}`}
 							/>
 						))}
 
-					{debt.status == "outstanding" && (
+					{debt.data.status == "outstanding" && (
 						<Button
 							title={`Settle debts with ${otherPartyName}`}
 							href={`/settlements/create?id=${otherParty}`}
@@ -190,7 +215,9 @@ export default function Debt() {
 							text={
 								<Money
 									amount={
-										isDebtor ? -debt.amount : debt.amount
+										isDebtor
+											? -debt.data.amount
+											: debt.data.amount
 									}
 									className={styles.debt}
 									background
@@ -213,7 +240,7 @@ export default function Debt() {
 						<div className={styles.details}>
 							<TextWithTitle
 								text="Description"
-								title={debt.description}
+								title={debt.data.description}
 								align="left"
 								reverse
 								tiny
@@ -221,16 +248,16 @@ export default function Debt() {
 							<hr className={styles.hrLong} />
 							<TextWithTitle
 								text={`Opened by ${creatorName}`}
-								title={formatDate(debt.dateCreated)}
+								title={formatDate(debt.data.dateCreated)}
 								align="left"
 								reverse
 								tiny
 							/>
 
-							{debt.dateClosed && (
+							{debt.data.dateClosed && (
 								<TextWithTitle
 									text="Closed"
-									title={formatDate(debt.dateClosed)}
+									title={formatDate(debt.data.dateClosed)}
 									align="left"
 									reverse
 									tiny
@@ -239,8 +266,8 @@ export default function Debt() {
 						</div>
 					</Card>
 
-					{debt.status == "outstanding" &&
-						debt.creator == session.user.id && (
+					{debt.data.status == "outstanding" &&
+						debt.data.creator == session.user.id && (
 							<div className={styles.deleteWrapper}>
 								{confirmDelete ? (
 									<>

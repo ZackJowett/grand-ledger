@@ -35,6 +35,14 @@ $width: 200px;
 	margin: auto;
 }
 
+.groupSelect {
+	width: 90%;
+}
+
+.selectedGroup {
+	color: var(--group);
+}
+
 .link {
 	$size: 1rem;
 
@@ -173,6 +181,13 @@ $width: 200px;
 	.icon,
 	.iconCurrent {
 		color: var(--settlement);
+	}
+}
+
+.groups {
+	.icon,
+	.iconCurrent {
+		color: var(--group);
 	}
 }
 

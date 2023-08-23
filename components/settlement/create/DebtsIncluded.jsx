@@ -11,7 +11,7 @@ export default function DebtsIncluded({
 	setSelectedDebts,
 	netPosition,
 }) {
-	if (debts && debts.length <= 0) {
+	if (debts.data && debts.data.length <= 0) {
 		return null;
 	}
 
@@ -20,28 +20,29 @@ export default function DebtsIncluded({
 			<Title
 				title="Debts Included"
 				text={
-					netPosition &&
-					netPosition < 0 && (
+					netPosition && netPosition < 0 ? (
 						<p className={styles.descriptor}>
 							Click <IconCheck /> to exclude
 						</p>
-					)
+					) : null
 				}
 				align="left"
 				className={styles.title}
 			/>
-			{!debts ? (
+			{debts.isLoading ? (
 				<>
 					<CardPlaceholder />
 					<CardPlaceholder />
 					<CardPlaceholder />
 				</>
+			) : debts.isError || !debts.data ? (
+				<p>Error loading debts</p>
 			) : (
-				debts.map((debt) => {
+				debts.data.map((debt, index) => {
 					return (
 						<DebtSelector
 							debt={debt}
-							key={debt.id ? debt.id : debt._id}
+							key={index}
 							selectedDebts={selectedDebts}
 							setSelectedDebts={setSelectedDebts}
 							netPosition={netPosition}

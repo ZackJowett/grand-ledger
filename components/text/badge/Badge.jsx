@@ -11,6 +11,8 @@ export default function Badge({ title = "", color = "open", className }) {
 					? styles.open
 					: color == "pending"
 					? styles.pending
+					: color == "group"
+					? styles.group
 					: styles.closed
 			} ${className ? className : ""}`}>
 			{title}

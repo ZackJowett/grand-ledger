@@ -15,6 +15,7 @@ const debtSchema = new Schema({
 		default: "outstanding",
 	},
 	settlement: { type: mongoose.Types.ObjectId, default: null },
+	group: { type: mongoose.Types.ObjectId, default: null },
 	dateCreated: { type: Date, default: Date.now },
 	dateClosed: { type: Date, default: null },
 });

@@ -6,9 +6,10 @@ export default async function handler(req, res) {
 
 	try {
 		let query = {};
-		let sortedSettlements = null;
 
-		if (req.query.userId1 && req.query.userId2) {
+		console.log("--------------------", req.query, "--------------------");
+
+		if (req.query.userId1 && req.query.userId2 && req.query.group) {
 			// get all debts between two parties
 			if (req.query.status == null) {
 				// Not getting closed debts
@@ -27,6 +28,7 @@ export default async function handler(req, res) {
 							],
 						},
 						{ status: { $ne: "closed" } },
+						{ group: req.query.group },
 					],
 				};
 			} else {
@@ -46,23 +48,24 @@ export default async function handler(req, res) {
 							],
 						},
 						{ status: req.query.status },
+						{ group: req.query.group },
 					],
 				};
 			}
 		}
 
+		console.log(query.$and[0].$or);
+
 		// Find debts with query
 		// then sort by date created in descending order
-		await Settlement.find(query)
-			.sort({ dateCreated: "descending" })
-			.then((res) => {
-				sortedSettlements = res;
-				console.log(res);
-			})
-			.catch((err) => console.log(err));
+		const settlements = await Settlement.find(query).sort({
+			dateCreated: "descending",
+		});
+
+		console.log(settlements);
 
 		// Return sorted debts
-		res.status(200).json({ success: true, data: sortedSettlements });
+		res.status(200).json({ success: true, data: settlements });
 	} catch (error) {
 		console.log("ERROR", error);
 		res.status(400).json({ success: false });

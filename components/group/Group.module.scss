@@ -1,0 +1,20 @@
+@use "public/styles/mixins" as *;
+
+.wrapper {
+	&:hover {
+		border-color: var(--group) !important;
+	}
+}
+
+.selected {
+	color: var(--group);
+}
+
+.badge {
+	color: var(--group);
+}
+
+.members {
+	text-align: center;
+	width: 10rem;
+}

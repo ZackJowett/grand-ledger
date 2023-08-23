@@ -109,3 +109,22 @@ export async function setAvatar(id, url) {
 		return null;
 	}
 }
+
+// Set Selected Group: /api/users/setSelectedGroup
+// Sets the selected group of a user
+export async function setSelectedGroup(user, group) {
+	try {
+		const res = await fetch(`${getRootURL()}api/users/setSelectedGroup`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ user, group }),
+		});
+
+		return await res.json();
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+}

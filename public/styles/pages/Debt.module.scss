@@ -14,6 +14,10 @@
 	width: 100%;
 }
 
+.badges {
+	@include flex(row, flex-start, $gap: 0.5rem);
+}
+
 .badge {
 	margin-top: 0.5rem;
 }

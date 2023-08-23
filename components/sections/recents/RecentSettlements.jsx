@@ -9,57 +9,23 @@ import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
 import TextWithTitle from "/components/text/title/TextWithTitle";
+import {
+	useSettlementsWithUser,
+	useUsers,
+	useSelectedGroup,
+} from "/utils/hooks";
 
 export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
+	const users = useUsers();
+	const group = useSelectedGroup(session.user.id);
+	const settlements = useSettlementsWithUser(
+		session.user.id,
+		group.exists ? group.data._id : null
+	);
 
-	const [settlements, setSettlements] = useState(null);
-	const [users, setUsers] = useState(null); // [user
 	const [showAmount, setShowAmount] = useState(4); // Number to show
-	const [timeFetched, setTimeFetched] = useState(null);
 	const [loading, setLoading] = useState(true); // [user
-
-	useEffect(() => {
-		if (!session) return;
-
-		getData();
-	}, [session]);
-
-	if (!session) return;
-
-	function handleViewMore() {
-		if (settlements.length - showAmount < 3) {
-			setShowAmount(settlements.length);
-		} else {
-			setShowAmount(showAmount + 3);
-		}
-	}
-
-	function getData() {
-		if (!session) return;
-		setLoading(true);
-
-		getAllSettlements(session.user.id)
-			.then((data) => {
-				data
-					? setSettlements(data)
-					: console.log("Error fetching settlements");
-			})
-			.then(() => {
-				setTimeFetched(new Date().toLocaleTimeString());
-				setLoading(false);
-			});
-
-		getAllUsers(session.user.id).then((data) => {
-			data ? setUsers(data) : console.log("Error fetching users");
-		});
-	}
-
-	function handleRefresh() {
-		setSettlements(null);
-		setUsers(null);
-		getData();
-	}
 
 	return (
 		<section className={styles.wrapper}>
@@ -71,18 +37,18 @@ export default function RecentSettlements({ className }) {
 			{/* <div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
 			</div> */}
-			{loading ? (
+			{settlements.isLoading || users.isLoading || group.isLoading ? (
 				<>
 					<CardPlaceholder />
 					<CardPlaceholder />
 					<CardPlaceholder />
 				</>
-			) : !settlements ? (
+			) : !settlements.exists || !users.exists || !group.exists ? (
 				<p>Settlements could not be loaded</p>
-			) : settlements.length <= 0 ? (
+			) : settlements.data.length <= 0 ? (
 				<p>No settlements</p>
 			) : (
-				settlements.map((settlement, index) => {
+				settlements.data.map((settlement, index) => {
 					if (index >= showAmount) return;
 					return (
 						<Settlement

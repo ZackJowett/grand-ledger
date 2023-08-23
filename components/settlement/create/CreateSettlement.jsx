@@ -4,8 +4,6 @@ import SelectUser from "components/settlement/create/form/SelectUser";
 import SubmitSettlement from "components/settlement/create/form/SubmitSettlement";
 import { createSettlement } from "utils/data/settlements";
 import NudgeButton from "components/button/nudge/NudgeButton";
-import DebtsIncluded from "components/settlement/create/DebtsIncluded";
-import { useDebtsBetweenUsersOutstanding } from "utils/hooks";
 import Card from "components/card/Card";
 import Title from "components/text/title/TextWithTitle";
 import Spinner from "components/placeholders/spinner/Spinner";
@@ -13,32 +11,37 @@ import styles from "./CreateSettlement.module.scss";
 import Settlement from "components/settlement/Settlement";
 import Button from "components/button/Button";
 import { useRouter } from "next/router";
+import { useDebtsBetweenUsers, useSelectedGroup } from "utils/hooks";
 
 export default function CreateSettlement() {
 	const { data: session, status: sessionStatus } = useSession();
+	const group = useSelectedGroup(session.user.id);
 
 	// States
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [submitError, setSubmitError] = useState(null);
 	const [submitSuccess, setSubmitSuccess] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [settlement, setSettlement] = useState(null); // Settlement object
 
-	const {
-		data: debts,
-		isLoading: debtsLoading,
-		error: debtsError,
-	} = useDebtsBetweenUsersOutstanding(session.user.id, selectedUser?._id);
+	const debtsBetweenUsers = useDebtsBetweenUsers(
+		session.user.id,
+		selectedUser ? selectedUser._id : null,
+		group.data ? group.data._id : null,
+		"outstanding"
+	);
 
-	const [selectedDebts, setSelectedDebts] = useState(debts);
+	const [selectedDebts, setSelectedDebts] = useState(null);
 
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
 	let stats = { totalDebt: 0, totalUnreceived: 0, net: 0 };
 
-	if (debts) {
-		if (selectedDebts === null) setSelectedDebts(debts);
-		debts.forEach((debt) => {
+	if (
+		!debtsBetweenUsers.isLoading &&
+		!debtsBetweenUsers.isError &&
+		debtsBetweenUsers.data
+	) {
+		debtsBetweenUsers.data.forEach((debt) => {
 			if (debt.creditor == session.user.id) {
 				// User is creditor
 				stats.totalUnreceived += debt.amount;
@@ -51,20 +54,34 @@ export default function CreateSettlement() {
 	}
 
 	useEffect(() => {
-		setSelectedDebts(debts);
-	}, [selectedUser, debts]);
+		if (debtsBetweenUsers.isLoading || debtsBetweenUsers.isError) {
+			setSelectedDebts(null);
+		} else if (debtsBetweenUsers.data) {
+			setSelectedDebts(debtsBetweenUsers.data);
+		} else {
+			setSelectedDebts(null);
+		}
+	}, [group.data, debtsBetweenUsers.data]);
 
 	// Create new debt
 	function handleSubmit(description) {
 		// Set submitting state
 		setLoading(true);
 
+		// Check selectedGroup
+		if (group.isLoading || group.isError || !group.data) {
+			setSubmitError(
+				"Error creating settlements. Group Error - Contact Admin"
+			);
+			setSubmitSuccess(null);
+			setLoading(false);
+			return;
+		}
+
 		// get debt ids
 		const debtIds = selectedDebts.map((debt) => {
 			return debt._id;
 		});
-
-		console.log(debtIds);
 
 		// Create settlement object
 		const settlement = {
@@ -73,6 +90,7 @@ export default function CreateSettlement() {
 			debts: debtIds,
 			netAmount: stats.net,
 			description: description,
+			group: group.data._id,
 		};
 
 		// Post data
@@ -103,22 +121,27 @@ export default function CreateSettlement() {
 			{!loading && !submitSuccess && !submitError && (
 				<>
 					<SelectUser
-						debts={debts}
+						debts={debtsBetweenUsers}
 						selectedUser={selectedUser}
 						setSelectedUser={setSelectedUser}
 						selectedDebts={selectedDebts}
 						setSelectedDebts={setSelectedDebts}
 						stats={stats}
 						submitSuccess={submitSuccess}
+						group={group}
 					/>
 
-					{stats.net < 0 ? (
+					{stats.net < 0 && !group.isLoading ? (
 						<SubmitSettlement
 							selectedUser={selectedUser}
 							handleSubmit={handleSubmit}
 							stats={stats}
 							debtsIncluded={selectedDebts}
-							totalNumDebts={debts ? debts.length : null}
+							totalNumDebts={
+								debtsBetweenUsers.data
+									? debtsBetweenUsers.data.length
+									: null
+							}
 						/>
 					) : stats.net > 0 ? (
 						<>

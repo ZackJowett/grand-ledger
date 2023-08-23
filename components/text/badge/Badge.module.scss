@@ -16,6 +16,11 @@
 		background-color: var(--orange);
 	}
 
+	&.group {
+		background-color: var(--group);
+		color: black;
+	}
+
 	&.closed {
 		background-color: var(--backgroundDark);
 		color: var(--subtext);

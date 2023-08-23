@@ -45,6 +45,7 @@ async function createDebt(req) {
 		creator: req.body.creator,
 		amount: req.body.amount,
 		description: req.body.description,
+		group: req.body.group,
 	});
 }
 

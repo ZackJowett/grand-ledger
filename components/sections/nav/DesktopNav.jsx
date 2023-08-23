@@ -1,12 +1,5 @@
 import Link from "next/link";
-import { FaHandshake } from "react-icons/fa";
-import { IoWarning } from "react-icons/io5";
-import { TiArrowForward } from "react-icons/ti";
-import { MdMoneyOff, MdGroups, MdSettings } from "react-icons/md";
-import { BsPersonFill } from "react-icons/bs";
-import { FiPlusSquare } from "react-icons/fi";
 import styles from "./DesktopNav.module.scss";
-
 import {
 	IconDashboard,
 	IconDebt,
@@ -18,8 +11,9 @@ import {
 	IconGroup,
 	IconSettings,
 } from "/components/icons";
-// import Logo from "../../logo/Logo";
-// import SocialsList from "@/components/icons/socialsList";
+import { useSession } from "next-auth/react";
+import SelectGroup from "components/group/select/SelectGroup";
+import { useSelectedGroup } from "/utils/hooks";
 
 export default function HamburgerMenu({
 	currentRoute,
@@ -28,12 +22,28 @@ export default function HamburgerMenu({
 		return;
 	},
 }) {
+	const { data: session, status: sessionStatus } = useSession();
+	const { data: selectedGroup, isLoading: selectedGroupLoading } =
+		useSelectedGroup(session.user.id);
+
 	return (
 		<>
 			<nav className={`${styles.wrapper} ${className ? className : ""}`}>
 				{/* <Logo className={styles.logo} /> */}
 
 				<div className={styles.linksWrapper}>
+					<SelectGroup />
+					{selectedGroupLoading ? (
+						"Loading..."
+					) : selectedGroup ? (
+						<Link
+							className={styles.selectedGroup}
+							href={`/groups/${selectedGroup._id}`}>
+							{selectedGroup.name}
+						</Link>
+					) : (
+						"No Group Found"
+					)}
 					<Link
 						href="/"
 						className={`${styles.link} ${styles.dashboard} ${
@@ -162,7 +172,7 @@ export default function HamburgerMenu({
 
 						<Link
 							href="/groups"
-							className={`${styles.bottomIcon} ${
+							className={`${styles.bottomIcon} ${styles.groups} ${
 								currentRoute === "/groups" ? styles.current : ""
 							}`}
 							onClick={toggleMenu}>

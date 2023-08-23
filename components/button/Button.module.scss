@@ -1,7 +1,9 @@
 @use "public/styles/mixins.scss" as *;
 
 .link,
-.submit {
+.submit,
+.confirm,
+.cancel {
 	@include flex(row, $gap: 1rem);
 	width: 100%;
 	height: 2.5rem;
@@ -37,6 +39,27 @@
 		// background-color: var(--primary);
 		color: var(--button);
 	}
+}
+
+.buttonWrapper {
+	width: 100%;
+	@include flex(column, flex-start, center, $gap: 1rem);
+
+	@include desktop-up() {
+		flex-direction: row;
+	}
+}
+
+.confirm {
+	flex: 1;
+	background-color: var(--green);
+	border-color: var(--green);
+}
+
+.cancel {
+	flex: 3;
+	background-color: var(--red);
+	border-color: var(--red);
 }
 
 // With Icons

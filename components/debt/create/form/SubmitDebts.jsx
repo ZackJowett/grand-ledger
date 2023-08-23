@@ -3,6 +3,7 @@ import { postDebts } from "utils/data/debts";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styles from "./SubmitDebts.module.scss";
+import { useSelectedGroup } from "utils/hooks";
 
 export default function SubmitDebts({
 	debts,
@@ -12,6 +13,9 @@ export default function SubmitDebts({
 	setDebts,
 }) {
 	const { data: session } = useSession();
+	const { data: group, isLoading: groupLoading } = useSelectedGroup(
+		session.user.id
+	);
 
 	const [confirmSubmission, setConfirmSubmission] = useState(false);
 
@@ -20,7 +24,7 @@ export default function SubmitDebts({
 		setSubmitting(true);
 
 		// Submit debts
-		postDebts(debts, session.user.id).then((data) => {
+		postDebts(debts, session.user.id, group._id).then((data) => {
 			// Check if error
 			if (!data.success) {
 				// Error submitting
@@ -38,6 +42,8 @@ export default function SubmitDebts({
 			}
 		});
 	}
+
+	if (groupLoading) return null;
 
 	if (confirmSubmission) {
 		return (
