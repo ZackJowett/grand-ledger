@@ -6,7 +6,11 @@ import { setSelectedGroup } from "/utils/data/users";
 import { toastPromise } from "/utils/toasts";
 import { useSWRConfig } from "swr";
 
-export default function SelectGroup() {
+export default function SelectGroup({
+	onSelect = () => {
+		return;
+	},
+}) {
 	const { data: session } = useSession();
 	const { mutate } = useSWRConfig();
 	const {
@@ -21,18 +25,21 @@ export default function SelectGroup() {
 	} = useSelectedGroup(session.user.id);
 
 	async function handleChangeGroup(selectedOption) {
+		if (selectedGroup && selectedGroup._id == selectedOption.value) return;
+
 		await toastPromise(
 			setSelectedGroup(session.user.id, selectedOption.value),
 			false,
 			{
 				loading: "Changing group...",
-				success: "Successfully changed group!",
+				success: `Successfully changed to ${selectedOption.label}`,
 				error: "Failed to change group",
 			}
 		);
 
 		// Revalidate all
 		mutate(() => true, undefined, { revalidate: true });
+		onSelect();
 	}
 
 	let options = [];

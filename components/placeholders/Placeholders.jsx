@@ -21,14 +21,14 @@ export function NetPositionPlaceholder() {
 	);
 }
 
-export function CardPlaceholder() {
+export function CardPlaceholder({ dark = false }) {
 	return (
 		<ContentLoader
 			speed={2}
 			width="100%"
 			height="100%"
 			viewBox="0 0 400 70"
-			backgroundColor="#242424"
+			backgroundColor={dark ? "#1b1b1b" : "#242424"}
 			foregroundColor="#333">
 			<rect x="0" y="0" rx="15" ry="15" width="100%" height="70" />
 		</ContentLoader>

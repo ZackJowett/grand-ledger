@@ -34,13 +34,10 @@ export default function CreateSettlement() {
 
 	// Get Totals
 	// Is recalculated when useEffect changes (debts, selectedUser)
+
 	let stats = { totalDebt: 0, totalUnreceived: 0, net: 0 };
 
-	if (
-		!debtsBetweenUsers.isLoading &&
-		!debtsBetweenUsers.isError &&
-		debtsBetweenUsers.data
-	) {
+	if (debtsBetweenUsers.exists) {
 		debtsBetweenUsers.data.forEach((debt) => {
 			if (debt.creditor == session.user.id) {
 				// User is creditor
@@ -83,12 +80,18 @@ export default function CreateSettlement() {
 			return debt._id;
 		});
 
+		// calculate total amount of selected ebts
+		let totalAmount = 0;
+		selectedDebts.forEach((debt) => {
+			totalAmount += debt.amount;
+		});
+
 		// Create settlement object
 		const settlement = {
 			settler: session.user.id,
 			settlee: selectedUser._id,
 			debts: debtIds,
-			netAmount: stats.net,
+			netAmount: totalAmount,
 			description: description,
 			group: group.data._id,
 		};
@@ -131,7 +134,7 @@ export default function CreateSettlement() {
 						group={group}
 					/>
 
-					{stats.net < 0 && !group.isLoading ? (
+					{!stats ? null : stats.net < 0 && !group.isLoading ? (
 						<SubmitSettlement
 							selectedUser={selectedUser}
 							handleSubmit={handleSubmit}

@@ -1,75 +1,71 @@
 import styles from "./RecentDebts.module.scss";
-import Card from "/components/card/Card";
 import { useSession } from "next-auth/react";
-import { getAllForDebtor } from "/utils/data/debts";
 import { useEffect, useState } from "react";
 import Debt from "/components/debt/Debt";
-import TextButton from "/components/button/text/TextButton";
 import { CardPlaceholder } from "/components/placeholders/Placeholders";
 import { MdRefresh } from "react-icons/md";
 import Title from "/components/text/title/TextWithTitle";
 import { useSelectedGroup, useDebtorDebts } from "/utils/hooks";
+import { formatDate } from "/utils/helpers";
 
 export default function RecentDebts({ className }) {
-	const { data: session } = useSession();
-	const {
-		data: selectedGroup,
-		isLoading: groupLoading,
-		isError: groupError,
-		mutate: mutateGroup,
-	} = useSelectedGroup(session.user.id);
+	const { data: session, status: sessionStatus } = useSession();
+	const group = useSelectedGroup(session.user.id);
 
-	const {
-		data: debts,
-		isLoading: debtsLoading,
-		isError: debtsError,
-		mutate: mutateDebts,
-	} = useDebtorDebts(
+	const debts = useDebtorDebts(
 		session.user.id,
-		selectedGroup ? selectedGroup._id : null
+		group.exists ? group.data._id : null
 	);
 
-	const [timeFetched, setTimeFetched] = useState(null); // [user
+	// const [timeFetched, setTimeFetched] = useState(null); // [user
 	const [showAmount, setShowAmount] = useState(4); // Number to show
 
-	useEffect(() => {
-		// Set time fetched
-		setTimeFetched(new Date());
-	}, [debts]);
+	// useEffect(() => {
+	// 	// Set time fetched
+	// 	setTimeFetched(new Date());
+	// }, [debts.data]);
 
 	// No session data yet
-	if (!session) return;
+	if (sessionStatus === "loading") return;
 
-	const handleViewMore = () => {
-		if (debts.length - showAmount < 3) {
-			setShowAmount(debts.length);
-		} else {
-			setShowAmount(showAmount + 3);
-		}
-	};
+	// const handleViewMore = () => {
+	// 	if (debts.data.length - showAmount < 3) {
+	// 		setShowAmount(debts.length);
+	// 	} else {
+	// 		setShowAmount(showAmount + 3);
+	// 	}
+	// };
 
-	function handleRefresh() {
-		mutateDebts(true);
-	}
+	// function handleRefresh() {
+	// 	debts.mutate(() => true, undefined, { revalidate: true });
+	// 	setTimeFetched(new Date());
+	// }
+
+	// console.log(debts);
 
 	return (
 		<section className={styles.wrapper}>
-			<Title title="Recent Debts" align="left" link="/debts" />
-			<div className={styles.refresh} onClick={handleRefresh}>
+			<Title
+				title="Recent Debts"
+				// text={formatDate(timeFetched)}
+				align="left"
+				link="/debts"
+			/>
+			{/* <div className={styles.refresh} onClick={handleRefresh}>
 				<MdRefresh className={styles.icon} />
-			</div>
-			{debtsLoading || groupLoading ? (
+			</div> */}
+			{debts.isLoading || group.isLoading ? (
 				<>
-					<CardPlaceholder />
-					<CardPlaceholder />
-					<CardPlaceholder />
+					<CardPlaceholder dark />
+					<CardPlaceholder dark />
+					<CardPlaceholder dark />
 				</>
-			) : !debts || debtsError ? (
-				<p>Debts failed to load</p>
-			) : debts.length <= 0 ? (
+			) : !debts.exists ? (
+				<p>Could not load Debts</p>
+			) : debts.data.length <= 0 ? (
 				<p>No debts</p>
 			) : (
-				debts.map((debt, index) => {
+				debts.data.map((debt, index) => {
 					if (index >= showAmount) return;
 					return (
 						<Debt

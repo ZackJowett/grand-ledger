@@ -106,11 +106,10 @@ export default function Debt() {
 	}
 
 	if (
-		debt.isError ||
-		group.isError ||
-		selectedGroup.isError ||
-		users.isError ||
-		!debt.exists
+		!debt.exists ||
+		!group.exists ||
+		!selectedGroup.exists ||
+		!users.exists
 	) {
 		return <p>Failed to load debt</p>;
 	}

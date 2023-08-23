@@ -32,7 +32,7 @@ export default function HamburgerMenu({
 				{/* <Logo className={styles.logo} /> */}
 
 				<div className={styles.linksWrapper}>
-					<SelectGroup />
+					<SelectGroup onSelect={toggleMenu} />
 					{selectedGroupLoading ? (
 						"Loading..."
 					) : selectedGroup ? (

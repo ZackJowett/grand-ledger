@@ -25,11 +25,7 @@ export default function SelectUser({
 }) {
 	const { data: session } = useSession();
 	const router = useRouter();
-	const {
-		data: users,
-		isLoading: usersLoading,
-		error: usersError,
-	} = useUsers();
+	const users = useUsers();
 	const { data: userStats, isLoading: userStatsLoading } = useUserDebtStats(
 		session.user.id
 	);
@@ -40,7 +36,7 @@ export default function SelectUser({
 	);
 
 	function handleSelectParty(selectedOption) {
-		const selectedUser = users.find(
+		const selectedUser = users.data.find(
 			(user) => user._id == selectedOption.value
 		);
 
@@ -49,9 +45,9 @@ export default function SelectUser({
 
 	let options = [];
 
-	if (!usersLoading && !usersError && !userStatsLoading && users) {
+	if (users.exists) {
 		// Create options
-		options = users
+		options = users.data
 			.map((user) => {
 				if (user._id == session.user.id) return;
 				return {
@@ -92,7 +88,7 @@ export default function SelectUser({
 				className={styles.header}
 				align="left"
 			/>
-			{users && selectedUser && (
+			{users.exists && selectedUser && (
 				<Select
 					options={options}
 					className={styles.select}
@@ -107,11 +103,12 @@ export default function SelectUser({
 				/>
 			)}
 
-			{!group.isLoading && group.data && (
-				<ExistingSettlements
-					existingSettlements={existingSettlements}
-				/>
-			)}
+			{existingSettlements.exists &&
+				existingSettlements.data.length > 0 && (
+					<ExistingSettlements
+						existingSettlements={existingSettlements}
+					/>
+				)}
 			<Card dark>
 				<div className={styles.stats} id="settlement-standings">
 					<div className={styles.debts}>
@@ -158,7 +155,7 @@ export default function SelectUser({
 					<Card
 						className={styles.netWrapper}
 						action={
-							selectedUser
+							selectedUser && stats
 								? stats.net > 0
 									? `Total ${selectedUser.name}
 										owes you`
@@ -190,6 +187,9 @@ export default function SelectUser({
 
 function getUserLabel(user, stats, loading) {
 	// Statistics not loaded yet
+	if (!stats) {
+		return;
+	}
 	if (loading) {
 		return `${user.name} - ...`;
 	}
@@ -216,15 +216,6 @@ function getUserLabel(user, stats, loading) {
 }
 
 function ExistingSettlements({ existingSettlements }) {
-	console.log(existingSettlements);
-	if (
-		existingSettlements.isLoading ||
-		!existingSettlements.data ||
-		existingSettlements.data.length <= 0
-	) {
-		return;
-	}
-
 	return (
 		<Card className={styles.debt}>
 			<div className={styles.settlementWrapper}>
@@ -234,7 +225,7 @@ function ExistingSettlements({ existingSettlements }) {
 					align="left"
 				/>
 
-				{existingSettlements.map((settlement) => {
+				{existingSettlements.data.map((settlement) => {
 					return (
 						<Settlement
 							settlement={settlement}

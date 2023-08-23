@@ -39,9 +39,9 @@ export default function RecentSettlements({ className }) {
 			</div> */}
 			{settlements.isLoading || users.isLoading || group.isLoading ? (
 				<>
-					<CardPlaceholder />
-					<CardPlaceholder />
-					<CardPlaceholder />
+					<CardPlaceholder dark />
+					<CardPlaceholder dark />
+					<CardPlaceholder dark />
 				</>
 			) : !settlements.exists || !users.exists || !group.exists ? (
 				<p>Settlements could not be loaded</p>

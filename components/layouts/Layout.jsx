@@ -9,11 +9,7 @@ import { update } from "store/slices/usersSlice";
 import { useEffect } from "react";
 import { getAllUsers } from "utils/data/users";
 
-export default function Layout({
-	children,
-	className = "",
-	includeBack = false,
-}) {
+export default function Layout({ children, className = "" }) {
 	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -66,19 +62,23 @@ export default function Layout({
 						currentRoute={currentRoute}
 						className={styles.desktopNav}
 					/>
+
 					<section
 						className={`${styles.children} ${
 							className ? className : ""
-						} ${includeBack ? styles.back : ""}`}>
-						{includeBack && (
-							<div
-								className={styles.backButton}
-								onClick={() => {
-									router.back();
-								}}>
-								<MdOutlineArrowBack /> Back
+						} `}>
+						{showStatusBar(router) && (
+							<div className={styles.statusBar}>
+								<div
+									className={styles.button}
+									onClick={() => {
+										router.back();
+									}}>
+									<MdOutlineArrowBack /> <p>Back</p>
+								</div>
 							</div>
 						)}
+
 						{children}
 					</section>
 				</div>
@@ -86,4 +86,10 @@ export default function Layout({
 			{/* <Footer /> */}
 		</>
 	);
+}
+
+function showStatusBar(router) {
+	const routes = ["/", "/login", "/register", "/forgot-password"];
+
+	return !routes.includes(router.pathname);
 }

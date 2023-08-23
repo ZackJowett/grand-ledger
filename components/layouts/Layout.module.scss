@@ -15,14 +15,14 @@
 }
 
 .children {
-	@include flex(row, center, flex-start);
+	@include flex(column, flex-start, flex-start);
 	width: 100%;
 
 	min-height: calc(100lvh - var(--headerHeight));
 	// height: calc(100vh - var(--headerHeight));
-	position: relative;
+	// position: relative;
 
-	@include border($color: transparent);
+	@include border($size: 0px, $color: transparent);
 	border-radius: 10px 0 0 0;
 
 	background-color: var(--background);
@@ -39,21 +39,32 @@
 	}
 }
 
-.backButton {
-	@include flex(row, $gap: 0.25rem);
-	position: absolute;
-	left: 0.25rem;
-	top: 0.25rem;
+.statusBar {
+	width: 100%;
 
-	padding: 0.2rem;
+	background-color: var(--backgroundLight);
+	@include border($size: 0px, $color: var(--backgroundDark), $radius: 0px);
+	border-top-left-radius: 10px;
 
-	background-color: var(--backgroundDark);
-	@include border($color: var(--backgroundDark), $radius: 5px);
+	padding: 0.5 + rem;
 
-	&:hover {
-		cursor: pointer;
-		background-color: var(--backgroundLight);
-		border-color: var(--backgroundLight);
+	.button {
+		@include flex(row, center, center, $gap: 0.25rem);
+		@include border($size: 0, $color: transparent, $radius: 5px);
+		padding: 0.4rem 0.5rem;
+		width: fit-content;
+		background-color: var(--backgroundDark);
+
+		&:hover {
+			cursor: pointer;
+			background-color: var(--backgroundDarkHover);
+			border-color: var(--backgroundDarkHover);
+		}
+
+		&:active {
+			background-color: var(--backgroundLightHover);
+			border-color: var(--backgroundLightHover);
+		}
 	}
 }
 

@@ -34,6 +34,8 @@
 	--unreceived: var(--green);
 	--group: var(--yellow);
 
+	--error: var(--red);
+
 	// --grey: #2a2a2a;
 	// --darkgrey: #333;
 
@@ -76,6 +78,57 @@
 	// --settlement: var(--blue);
 	// --debt: var(--red);
 	// --unreceived: var(--green);
+
+	// REACT TOASTIFY OVERRIDES
+	// --toastify-color-light: var(--background);
+	--toastify-color-dark: var(--backgroundLight);
+	--toastify-color-info: var(--primary);
+	--toastify-color-success: var(--green);
+	--toastify-color-warning: var(--error);
+	--toastify-color-error: var(--error);
+	--toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+	--toastify-icon-color-info: var(--toastify-color-info);
+	--toastify-icon-color-success: var(--toastify-color-success);
+	--toastify-icon-color-warning: var(--toastify-color-warning);
+	--toastify-icon-color-error: var(--toastify-color-error);
+
+	--toastify-toast-width: 320px;
+	--toastify-toast-background: var(--backgroundLight);
+	--toastify-toast-min-height: 64px;
+	--toastify-toast-max-height: 800px;
+	--toastify-font-family: sans-serif;
+	--toastify-z-index: 9999;
+
+	--toastify-text-color-light: var(--text);
+	--toastify-text-color-dark: var(--text);
+
+	//Used only for colored theme
+	--toastify-text-color-info: #fff;
+	--toastify-text-color-success: #fff;
+	--toastify-text-color-warning: #fff;
+	--toastify-text-color-error: #fff;
+
+	--toastify-spinner-color: #616161;
+	--toastify-spinner-color-empty-area: #e0e0e0;
+
+	// Used when no type is provided
+	// toast("**hello**")
+	--toastify-color-progress-light: linear-gradient(
+		to right,
+		var(-green),
+		#5ac8fa,
+		#007aff,
+		#34aadc,
+		#5856d6,
+		#ff2d55
+	);
+	// Used when no type is provided
+	--toastify-color-progress-dark: #bb86fc;
+	--toastify-color-progress-info: var(--toastify-color-info);
+	--toastify-color-progress-success: var(--toastify-color-success);
+	--toastify-color-progress-warning: var(--toastify-color-warning);
+	--toastify-color-progress-error: var(--toastify-color-error);
 }
 
 #__next {
@@ -138,6 +191,16 @@ h6 {
 p {
 	font-size: 1rem;
 	color: var(--text);
+}
+
+// Custom Toast
+.Toastify__toast {
+	border-radius: 10px;
+	@include shadow;
+}
+
+.Toastify__close-button {
+	display: none;
 }
 
 img {

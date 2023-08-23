@@ -110,7 +110,7 @@ export async function toastPromise(promise, refresh = true, params) {
 			},
 			error: params && params.error ? params.error : "Error",
 		},
-		{ position: reactToast.POSITION.BOTTOM_CENTER }
+		{ position: "bottom-center", theme: "dark", borderRadius: "100px" }
 	);
 
 	return response;

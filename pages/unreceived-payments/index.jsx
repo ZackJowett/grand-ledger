@@ -16,39 +16,30 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
 import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
+import { useUsers, useCreditorDebts, useSelectedGroup } from "utils/hooks";
 
 export default function UnreceivedPayments() {
 	const { data: session, status: sessionStatus } = useSession();
+	const users = useUsers();
+	const group = useSelectedGroup(session.user.id);
+	const debts = useCreditorDebts(
+		session.user.id,
+		group.exists ? group.data._id : null
+	);
 
-	// Get debts from database
-	const [debts, setDebts] = useState(null);
-	const [users, setUsers] = useState(null);
 	const [totalUnreceived, setTotalUnreceived] = useState(null);
 	const [filter, setFilter] = useState("outstanding"); // "all" || "open" || "closed"
 	const [userFilter, setUserFilter] = useState(null);
 
-	// Get all debts associated with logged in user
 	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-
-		getAllForCreditor(session.user.id).then((data) => {
-			data ? setDebts(data) : console.log("Error fetching data");
-		});
-
-		getAllUsers().then((data) => {
-			data ? setUsers(data) : console.log("Error fetching data");
-		});
-	}, [sessionStatus, session]);
-
-	useEffect(() => {
-		if (!debts) return;
+		if (!debts.exists) return;
 
 		let totalOpen = 0;
 		let totalPending = 0;
 		let totalClosed = 0;
 
 		// Get total amount unreceived
-		debts.forEach((debt) => {
+		debts.data.forEach((debt) => {
 			if (debt.status == "outstanding") {
 				totalOpen += debt.amount;
 			}
@@ -63,7 +54,7 @@ export default function UnreceivedPayments() {
 	}
 
 	// Loading
-	if (!debts || !users) {
+	if (debts.isLoading || users.isLoading) {
 		return <Spinner />;
 	}
 
@@ -81,19 +72,18 @@ export default function UnreceivedPayments() {
 		{ value: "closed", label: "Closed" },
 	];
 
-	const userOptions = [
-		{ value: null, label: "Everyone" },
-		...users
-			.map((user) => {
-				// Don't include logged in user in filter
-				if (user._id == session.user.id) return;
+	const userOptions = [{ value: null, label: "Everyone" }];
+
+	if (users.exists) {
+		userOptions.push(
+			...users.data.map((user) => {
 				return {
 					value: user._id,
 					label: user.name,
 				};
 			})
-			.filter((item) => item), // removes	undefined items
-	];
+		);
+	}
 
 	// Logged in
 	return (
@@ -158,7 +148,7 @@ export default function UnreceivedPayments() {
 					/>
 				</div>
 				<div className={styles.cards}>
-					{debts && debts.length == 0 && (
+					{debts.exists && debts.data.length == 0 && (
 						<p className={styles.noDebts}>
 							{`There are no ${
 								filter != "outstanding" && filter != "all"
@@ -167,8 +157,14 @@ export default function UnreceivedPayments() {
 							} unreceived debts`}
 						</p>
 					)}
-					{debts ? (
-						debts.map((debt, index) => {
+					{debts.isLoading ? (
+						<>
+							<CardPlaceholder />
+							<CardPlaceholder />
+							<CardPlaceholder />
+						</>
+					) : debts.exists ? (
+						debts.data.map((debt, index) => {
 							if (!filterDebts(debt, filter, userFilter)) return;
 
 							return (
@@ -185,11 +181,7 @@ export default function UnreceivedPayments() {
 							);
 						})
 					) : (
-						<>
-							<CardPlaceholder />
-							<CardPlaceholder />
-							<CardPlaceholder />
-						</>
+						<p>Failed to load Unreceived Payments</p>
 					)}
 				</div>
 			</Card>

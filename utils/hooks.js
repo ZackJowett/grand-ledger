@@ -72,6 +72,7 @@ export function useDebts() {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
 	};
 }
 
@@ -85,6 +86,7 @@ export function useDebtsBetweenUsers(id1, id2, group, status = null) {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
 	};
 }
 
@@ -98,6 +100,22 @@ export function useDebtorDebts(debtor, group) {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data,
+		mutate: mutate,
+	};
+}
+
+export function useCreditorDebts(creditor, group) {
+	const { data, error, isLoading, mutate } = useSWR(
+		`api/debts?creditor=${creditor}&group=${group}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
 		mutate: mutate,
 	};
 }
@@ -141,6 +159,7 @@ export function useSettlementsBetweenUsers(id1, id2, group) {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
 	};
 }
 
@@ -180,6 +199,7 @@ export function useGroupsWithUser(user) {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
 	};
 }
 
@@ -194,6 +214,7 @@ export function useUserDebtStats(id) {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
 	};
 }
 
@@ -207,5 +228,6 @@ export function useUserStats(id) {
 		data: data,
 		isLoading,
 		isError: error,
+		exists: !isLoading && !error && data != null,
 	};
 }
