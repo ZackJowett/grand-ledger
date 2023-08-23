@@ -17,7 +17,7 @@ export async function toast(promise, refresh = true, params) {
 		} else {
 			// custom toast promise
 			reactToast(
-				params && params.loading ? params.loading : "Loading...",
+				params && params.pending ? params.pending : "Loading...",
 				{
 					position: "bottom-center",
 					autoClose: 1000,

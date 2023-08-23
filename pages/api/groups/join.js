@@ -12,7 +12,10 @@ export default async function handler(req, res) {
 			throw new Error("Group not found");
 		}
 
-		console.log(group);
+		// check user is not already in group
+		if (group.members.includes(req.body.user)) {
+			throw new Error("Already in Group");
+		}
 
 		await group.members.push(req.body.user);
 		await group.save();

@@ -15,12 +15,8 @@ import GroupJoin from "components/group/join/GroupJoin";
 
 export default function Groups() {
 	const { data: session, status: sessionStatus } = useSession();
-	const { data: selectedGroup, isLoading: selectedGroupLoading } =
-		useSelectedGroup(session.user.id);
-	const { data: groups, isLoading: groupsLoading } = useGroupsWithUser(
-		session.user.id
-	);
-	const { data: users, isLoading: usersLoading } = useUsers();
+	const groups = useGroupsWithUser(session.user.id);
+	const users = useUsers();
 
 	function newGroup() {
 		createGroup(
@@ -35,10 +31,12 @@ export default function Groups() {
 		<section className={styles.wrapper}>
 			<TextWithTitle title="Groups" />
 			<GroupJoin user={session.user} />
-			{selectedGroupLoading || groupsLoading || usersLoading ? (
+			{groups.isLoading || users.isLoading ? (
 				<Spinner />
-			) : groups && groups.length > 0 ? (
-				<GroupList groups={groups} />
+			) : !groups.exists || !users.exists ? (
+				<p>Something went wrong</p>
+			) : groups.data && groups.data.length > 0 ? (
+				<GroupList groups={groups.data} />
 			) : (
 				<p>You are not in any groups</p>
 			)}
