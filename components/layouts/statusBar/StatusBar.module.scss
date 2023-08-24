@@ -20,7 +20,10 @@ $screenTiny: 450px;
 .leftArray {
 	@include flex(row, center, center);
 	gap: 0.5rem;
-	margin-right: 0.5rem;
+
+	@include desktop-up {
+		margin-right: 0.5rem;
+	}
 }
 
 .button,
@@ -74,6 +77,12 @@ $screenTiny: 450px;
 
 	@include mobile-only {
 		width: 100%;
+	}
+}
+
+.back {
+	@include mobile-only {
+		margin-right: 0.5rem;
 	}
 }
 
