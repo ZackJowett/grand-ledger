@@ -93,7 +93,12 @@ function Children({ children }) {
 	const groups = useGroupsWithUser(session.user.id);
 	const router = useRouter();
 
-	if (selectedGroup.isLoading || groups.isLoading) return;
+	if (selectedGroup.isLoading || groups.isLoading)
+		return (
+			<>
+				<StatusBar /> {children}
+			</>
+		);
 
 	if (selectedGroup.isError || groups.isError) {
 		// Something went wrong
