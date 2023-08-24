@@ -5,6 +5,7 @@ import { useGroupsWithUser, useSelectedGroup } from "/utils/hooks";
 import { setSelectedGroup } from "/utils/data/users";
 import { toastPromise } from "/utils/toasts";
 import { globalRevalidate } from "utils/helpers";
+import Spinner from "components/placeholders/spinner/Spinner";
 
 export default function SelectGroup({
 	onSelect = () => {
@@ -53,6 +54,8 @@ export default function SelectGroup({
 			};
 		});
 	}
+
+	if (selectedGroupLoading) return;
 
 	return (
 		<Select
