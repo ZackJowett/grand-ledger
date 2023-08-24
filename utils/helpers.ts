@@ -62,12 +62,10 @@ async function quickFetch(url) {
 }
 
 function getRootURL() {
-	if (process.env.VERCEL_ENV == "development") {
-		return `https://${process.env.VERCEL_BRANCH_URL}/`;
-	} else if (process.env.NODE_ENV === "development") {
+	if (process.env.NODE_ENV === "development") {
 		return "http://localhost:3000/";
 	} else if (process.env.NODE_ENV === "production") {
-		return "https://www.grandledger.app/";
+		return `https://${process.env.VERCEL_BRANCH_URL}/`;
 	} else {
 		return "http://localhost:3000/";
 	}
