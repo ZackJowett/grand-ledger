@@ -19,6 +19,7 @@ export default function RecentSettlements({ className }) {
 	const { data: session } = useSession();
 	const users = useUsers();
 	const group = useSelectedGroup(session.user.id);
+	// console.log(group);
 	const settlements = useSettlementsWithUser(
 		session.user.id,
 		group.exists ? group.data._id : null

@@ -26,15 +26,13 @@ export default function StatusBar() {
 			<div className={styles.leftArray}>
 				{includeItems.includes("back") && (
 					<div
-						className={styles.button}
+						className={`${styles.button} ${styles.back}`}
 						onClick={() => {
 							router.back();
 						}}>
 						<IconBack /> <p>Back</p>
 					</div>
 				)}
-
-				<SelectGroup className={styles.selectGroup} />
 
 				{includeItems.includes("createDebt") && (
 					<Link

@@ -3,9 +3,8 @@ import { useSession } from "next-auth/react";
 import Select from "components/forms/Select";
 import { useGroupsWithUser, useSelectedGroup } from "/utils/hooks";
 import { setSelectedGroup } from "/utils/data/users";
-import { toastPromise } from "/utils/toasts";
-import { globalRevalidate } from "utils/helpers";
-import Spinner from "components/placeholders/spinner/Spinner";
+import { getGroup } from "/utils/data/groups";
+import { toast } from "react-toastify";
 
 export default function SelectGroup({
 	onSelect = () => {
@@ -19,28 +18,50 @@ export default function SelectGroup({
 		isLoading: groupsLoading,
 		isError: groupsError,
 	} = useGroupsWithUser(session.user.id);
-	const {
-		data: selectedGroup,
-		isLoading: selectedGroupLoading,
-		mutate: mutateSelectedGroup,
-	} = useSelectedGroup(session.user.id);
+	const selectedGroup = useSelectedGroup(session.user.id);
+
+	// Middleware for setting group
+	// Sets the selected group, then fetches the group information
+	// that was returned by the new user (that now has the new group),
+	// then returns the new group
+	async function handleSetGroup(user, selectedOption) {
+		const newUser = await setSelectedGroup(user, selectedOption);
+		if (!newUser.success) throw new Error("Failed to set group");
+		const newGroup = await getGroup(newUser.data.selectedGroup);
+		if (!newGroup.success) throw new Error("Failed to set group");
+
+		return newGroup.data;
+	}
 
 	async function handleChangeGroup(selectedOption) {
-		if (selectedGroup && selectedGroup._id == selectedOption.value) return;
-
-		await toastPromise(
-			setSelectedGroup(session.user.id, selectedOption.value),
-			false,
-			{
-				loading: "Changing group...",
-				success: `Successfully changed to ${selectedOption.label}`,
-				error: "Failed to change group",
-			}
-		);
+		if (
+			selectedGroup.exists &&
+			selectedGroup.data._id == selectedOption.value
+		)
+			return;
 
 		// Revalidate all
-		globalRevalidate();
-		onSelect();
+		try {
+			const newData = groups.find(
+				(group) => group._id == selectedOption.value
+			);
+			console.log(newData);
+			await selectedGroup.mutate(
+				handleSetGroup(session.user.id, selectedOption.value),
+				{
+					optimisticData: newData,
+					populateCache: true,
+					revalidate: false,
+					rollbackOnError: true,
+				}
+			);
+			toast.success("Successfully changed groups");
+
+			console.lo;
+			onSelect();
+		} catch {
+			toast.error("Failed to change groups");
+		}
 	}
 
 	let options = [];
@@ -55,15 +76,17 @@ export default function SelectGroup({
 		});
 	}
 
-	if (selectedGroupLoading) return;
+	if (!selectedGroup.exists) return;
 
 	return (
 		<Select
 			options={options}
 			className={`${styles.select} ${className}`}
 			defaultValue={
-				selectedGroup
-					? options.find((entry) => entry.value == selectedGroup._id)
+				selectedGroup.exists
+					? options.find(
+							(entry) => entry.value == selectedGroup.data._id
+					  )
 					: null
 			}
 			onChange={handleChangeGroup}

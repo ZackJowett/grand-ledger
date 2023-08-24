@@ -16,12 +16,13 @@ import Spinner from "components/placeholders/spinner/Spinner";
 import Money from "components/text/money/Money";
 import { FiPlusSquare } from "react-icons/fi";
 import { TiArrowForward } from "react-icons/ti";
-import { useUsers, useCreditorDebts, useSelectedGroup } from "utils/hooks";
+import { useGroupUsers, useCreditorDebts, useSelectedGroup } from "utils/hooks";
 
 export default function UnreceivedPayments() {
 	const { data: session, status: sessionStatus } = useSession();
-	const users = useUsers();
+
 	const group = useSelectedGroup(session.user.id);
+	const users = useGroupUsers(group.exists ? group.data._id : null);
 	const debts = useCreditorDebts(
 		session.user.id,
 		group.exists ? group.data._id : null

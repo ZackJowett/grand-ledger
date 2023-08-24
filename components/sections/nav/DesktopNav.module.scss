@@ -155,17 +155,28 @@ $width: 250px;
 
 // Create debt link
 .createDebt {
+	border-color: var(--debt);
+
+	&.current {
+		border-color: transparent;
+	}
+
 	.icon,
 	.iconCurrent {
-		color: var(--primary);
+		color: var(--debt);
 	}
 }
 
 // Create settlements link
 .createSettlement {
+	border-color: var(--settlement);
+
+	&.current {
+		border-color: transparent;
+	}
 	.icon,
 	.iconCurrent {
-		color: var(--primary);
+		color: var(--settlement);
 	}
 }
 

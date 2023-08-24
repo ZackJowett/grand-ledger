@@ -13,30 +13,13 @@ $screenTiny: 450px;
 	padding: 0.5 + rem;
 
 	@include screen($screenTiny) {
-		flex-direction: column;
-		gap: 0.5rem;
+		// gap: 0.5rem;
 	}
 }
 
 .leftArray {
 	@include flex(row, center, center);
 	gap: 0.5rem;
-
-	@include screen($screenTiny) {
-		width: 100%;
-	}
-}
-
-.selectGroup {
-	width: 10rem;
-	@include desktop-up {
-		display: none;
-	}
-
-	@include screen($screenTiny) {
-		width: fit-content;
-		max-width: 100%;
-	}
 }
 
 .button,
@@ -44,11 +27,6 @@ $screenTiny: 450px;
 	padding: 0.4rem 0.5rem;
 	@include border($size: 0, $color: transparent, $radius: 8px);
 	@include flex(row, center, center, $gap: 0.25rem);
-}
-
-.button {
-	width: fit-content;
-	background-color: var(--backgroundDark);
 
 	&:hover {
 		cursor: pointer;
@@ -60,6 +38,11 @@ $screenTiny: 450px;
 		background-color: var(--backgroundLightHover);
 		border-color: var(--backgroundLightHover);
 	}
+}
+
+.button {
+	width: fit-content;
+	background-color: var(--backgroundDark);
 }
 
 .currentGroup {
@@ -80,13 +63,18 @@ $screenTiny: 450px;
 		}
 	}
 
-	&:hover {
-		cursor: pointer;
-		background-color: var(--background);
-	}
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 
 	@include screen($screenTiny) {
 		width: 100%;
+	}
+}
+
+.back {
+	@include mobile-only {
+		margin-right: 0.5rem;
 	}
 }
 

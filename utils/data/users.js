@@ -122,7 +122,7 @@ export async function setSelectedGroup(user, group) {
 			body: JSON.stringify({ user, group }),
 		});
 
-		return await res.json();
+		return res.json();
 	} catch (error) {
 		console.log(error);
 		return null;

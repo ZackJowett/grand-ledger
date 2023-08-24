@@ -25,6 +25,23 @@ export async function createGroup(name, members, admins, creator) {
 	}
 }
 
+// Create new group
+export async function getGroup(id) {
+	try {
+		const res = await fetch(`${getRootURL()}api/groups/${id}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
+		return res.json();
+	} catch (error) {
+		console.log("ERROR", error);
+		res.status(400).json({ success: false, message: error.message });
+	}
+}
+
 // Leave group
 export async function leaveGroup(user, group) {
 	try {

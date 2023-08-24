@@ -217,6 +217,11 @@ export function globalRevalidate() {
 	mutate(() => true, undefined, { revalidate: true });
 }
 
+export async function optimisticUpdate(mutate, newData, fetcher) {
+	try {
+	} catch {}
+}
+
 module.exports = {
 	formatDate,
 	getName,
@@ -227,5 +232,5 @@ module.exports = {
 	distributeAmount,
 	getDebtStatus,
 	timeSince,
-	globalRevalidate,
+	// globalRevalidate,
 };

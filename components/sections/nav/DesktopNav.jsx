@@ -97,7 +97,7 @@ export default function HamburgerMenu({
 						<h2>Pay Someone</h2>
 					</Link>
 
-					<br className={styles.break} />
+					{/* <br className={styles.break} /> */}
 
 					<Link
 						href="/debts"
@@ -151,7 +151,6 @@ export default function HamburgerMenu({
 						<h2 className={styles.settlements}>Settlements</h2>
 					</Link>
 
-					<br />
 					<div className={styles.bottomIcons}>
 						<Link
 							href="/profile"

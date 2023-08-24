@@ -37,24 +37,12 @@ export function useUsers() {
 	};
 }
 
-export function useSelectedGroup(user) {
-	const { data, error, isLoading, mutate } = useSWR(
-		`api/users/getSelectedGroup?user=${user}`,
-		fetcher
-	);
-
-	return {
-		data: data,
-		isLoading,
-		isError: error,
-		exists: !isLoading && !error && data != null,
-		mutate: mutate,
-	};
-}
-
 // ------------------------------- DEBTS -------------------------------- \\
 export function useDebt(id) {
-	const { data, error, isLoading } = useSWR(`api/debts?id=${id}`, fetcher);
+	const { data, error, isLoading } = useSWR(
+		id ? `api/debts?id=${id}` : null,
+		fetcher
+	);
 
 	// returns array of length 1
 	return {
@@ -78,7 +66,9 @@ export function useDebts() {
 
 export function useDebtsBetweenUsers(id1, id2, group, status = null) {
 	const { data, error, isLoading } = useSWR(
-		`api/debts/betweenUsers?userId1=${id1}&userId2=${id2}&group=${group}&status=${status}`,
+		id1 && id2 && group
+			? `api/debts/betweenUsers?userId1=${id1}&userId2=${id2}&group=${group}&status=${status}`
+			: null,
 		fetcher
 	);
 
@@ -92,7 +82,7 @@ export function useDebtsBetweenUsers(id1, id2, group, status = null) {
 
 export function useDebtorDebts(debtor, group) {
 	const { data, error, isLoading, mutate } = useSWR(
-		`api/debts?debtor=${debtor}&group=${group}`,
+		debtor && group ? `api/debts?debtor=${debtor}&group=${group}` : null,
 		fetcher
 	);
 
@@ -107,7 +97,9 @@ export function useDebtorDebts(debtor, group) {
 
 export function useCreditorDebts(creditor, group) {
 	const { data, error, isLoading, mutate } = useSWR(
-		`api/debts?creditor=${creditor}&group=${group}`,
+		creditor && group
+			? `api/debts?creditor=${creditor}&group=${group}`
+			: null,
 		fetcher
 	);
 
@@ -123,7 +115,7 @@ export function useCreditorDebts(creditor, group) {
 // ------------------------------- SETTLEMENTS -------------------------------- \\
 export function useSettlement(id) {
 	const { data, error, isLoading } = useSWR(
-		`api/settlements?id=${id}`,
+		id ? `api/settlements?id=${id}` : null,
 		fetcher
 	);
 
@@ -137,7 +129,7 @@ export function useSettlement(id) {
 
 export function useSettlementDebts(id) {
 	const { data, error, isLoading } = useSWR(
-		`api/settlements/getDebts?id=${id}`,
+		id ? `api/settlements/getDebts?id=${id}` : null,
 		fetcher
 	);
 
@@ -151,7 +143,9 @@ export function useSettlementDebts(id) {
 
 export function useSettlementsBetweenUsers(id1, id2, group) {
 	const { data, error, isLoading } = useSWR(
-		`api/settlements/getBetweenUsers?userId1=${id1}&userId2=${id2}&group=${group}`,
+		id1 && id2 && group
+			? `api/settlements/getBetweenUsers?userId1=${id1}&userId2=${id2}&group=${group}`
+			: null,
 		fetcher
 	);
 
@@ -165,7 +159,9 @@ export function useSettlementsBetweenUsers(id1, id2, group) {
 
 export function useSettlementsWithUser(id, group) {
 	const { data, error, isLoading } = useSWR(
-		`api/settlements/getByUsers?id=${id}&group=${group}`,
+		id && group
+			? `api/settlements/getByUsers?id=${id}&group=${group}`
+			: null,
 		fetcher
 	);
 
@@ -179,7 +175,10 @@ export function useSettlementsWithUser(id, group) {
 
 // ------------------------------ GROUPS ------------------------------- \\
 export function useGroup(id) {
-	const { data, error, isLoading } = useSWR(`api/groups/${id}`, fetcher);
+	const { data, error, isLoading } = useSWR(
+		id ? `api/groups/${id}` : null,
+		fetcher
+	);
 
 	return {
 		data: data,
@@ -189,9 +188,25 @@ export function useGroup(id) {
 	};
 }
 
+export function useSelectedGroup(user) {
+	const { data, error, isLoading, mutate } = useSWR(
+		user ? `api/users/getSelectedGroup?user=${user}` : null,
+		fetcher
+	);
+	console.log("DATA", data, "ERROR", error, "ISLOADING", isLoading);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+		mutate: mutate,
+	};
+}
+
 export function useGroupsWithUser(user) {
 	const { data, error, isLoading } = useSWR(
-		`api/groups/getAllWithUser?user=${user}`,
+		user ? `api/groups/getAllWithUser?user=${user}` : null,
 		fetcher
 	);
 
@@ -205,7 +220,7 @@ export function useGroupsWithUser(user) {
 
 export function useGroupUsers(id) {
 	const { data, error, isLoading } = useSWR(
-		`api/groups/users?id=${id}`,
+		id ? `api/groups/users?id=${id}` : null,
 		fetcher
 	);
 
@@ -220,7 +235,7 @@ export function useGroupUsers(id) {
 // ------------------------------ STATISTICS ------------------------------- \\
 export function useUserDebtStats(id, group) {
 	const { data, error, isLoading } = useSWR(
-		`api/debts/stats?id=${id}&group=${group}`,
+		id && group ? `api/debts/stats?id=${id}&group=${group}` : null,
 		fetcher
 	);
 
@@ -234,7 +249,7 @@ export function useUserDebtStats(id, group) {
 
 export function useUserStats(id, group) {
 	const { data, error, isLoading } = useSWR(
-		`api/users/stats?id=${id}&group=${group}`,
+		id && group ? `api/users/stats?id=${id}&group=${group}` : null,
 		fetcher
 	);
 
