@@ -54,6 +54,7 @@ export default function Updates() {
 					helpful shortcuts
 				</p>
 				<p>&nbsp;&nbsp;&nbsp;&nbsp;- See currently selected group</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;- Full action bar on desktop only</p>
 			</Card>
 			<Card
 				title="Create Settlement & QOL"

@@ -54,8 +54,6 @@ export default function SelectGroup({
 		});
 	}
 
-	if (selectedGroupLoading) return;
-
 	return (
 		<Select
 			options={options}
