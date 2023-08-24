@@ -20,6 +20,7 @@ $screenTiny: 450px;
 .leftArray {
 	@include flex(row, center, center);
 	gap: 0.5rem;
+	margin-right: 0.5rem;
 }
 
 .button,
@@ -48,7 +49,6 @@ $screenTiny: 450px;
 .currentGroup {
 	gap: 0.5rem;
 	color: var(--group);
-	margin-left: 0.5rem;
 
 	p {
 		max-width: 10rem;
