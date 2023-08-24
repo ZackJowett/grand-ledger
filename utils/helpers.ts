@@ -65,7 +65,7 @@ function getRootURL() {
 	if (process.env.NODE_ENV === "development") {
 		return "http://localhost:3000/";
 	} else if (process.env.NODE_ENV === "production") {
-		return `https://${process.env.VERCEL_BRANCH_URL}/`;
+		return "https://grand-ledger-git-development-zackjowett.vercel.app/";
 	} else {
 		return "http://localhost:3000/";
 	}
