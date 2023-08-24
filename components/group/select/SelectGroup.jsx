@@ -10,6 +10,7 @@ export default function SelectGroup({
 	onSelect = () => {
 		return;
 	},
+	className,
 }) {
 	const { data: session } = useSession();
 	const { mutate } = useSWRConfig();
@@ -59,7 +60,7 @@ export default function SelectGroup({
 	return (
 		<Select
 			options={options}
-			className={styles.select}
+			className={`${styles.select} ${className}`}
 			defaultValue={
 				selectedGroup
 					? options.find((entry) => entry.value == selectedGroup._id)

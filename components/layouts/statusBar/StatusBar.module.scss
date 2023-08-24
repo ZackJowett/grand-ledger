@@ -1,0 +1,86 @@
+@use "public/styles/mixins.scss" as *;
+
+.statusBar {
+	@include flex(row, space-between, center);
+	width: 100%;
+
+	background-color: var(--backgroundLight);
+	@include border($size: 0px, $color: var(--backgroundDark), $radius: 0px);
+	border-top-left-radius: 10px;
+
+	padding: 0.5 + rem;
+}
+
+.leftArray {
+	@include flex(row, center, center);
+	gap: 0.5rem;
+}
+
+.selectGroup {
+	width: 10rem;
+	@include desktop-up {
+		display: none;
+	}
+}
+
+.button,
+.currentGroup {
+	padding: 0.4rem 0.5rem;
+	@include border($size: 0, $color: transparent, $radius: 8px);
+	@include flex(row, center, center, $gap: 0.25rem);
+}
+
+.button {
+	width: fit-content;
+	background-color: var(--backgroundDark);
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--backgroundDarkHover);
+		border-color: var(--backgroundDarkHover);
+	}
+
+	&:active {
+		background-color: var(--backgroundLightHover);
+		border-color: var(--backgroundLightHover);
+	}
+}
+
+.currentGroup {
+	gap: 0.5rem;
+	color: var(--group);
+
+	p {
+		max-width: 10rem;
+
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		color: var(--group);
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--background);
+	}
+}
+
+.debt {
+	color: var(--debt);
+}
+
+.settlement {
+	color: var(--settlement);
+}
+
+// Hide all buttons but back and group on mobile
+@include mobile-only {
+	.debt {
+		display: none !important;
+	}
+
+	.settlement {
+		display: none !important;
+	}
+}

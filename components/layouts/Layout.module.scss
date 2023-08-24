@@ -39,35 +39,6 @@
 	}
 }
 
-.statusBar {
-	width: 100%;
-
-	background-color: var(--backgroundLight);
-	@include border($size: 0px, $color: var(--backgroundDark), $radius: 0px);
-	border-top-left-radius: 10px;
-
-	padding: 0.5 + rem;
-
-	.button {
-		@include flex(row, center, center, $gap: 0.25rem);
-		@include border($size: 0, $color: transparent, $radius: 5px);
-		padding: 0.4rem 0.5rem;
-		width: fit-content;
-		background-color: var(--backgroundDark);
-
-		&:hover {
-			cursor: pointer;
-			background-color: var(--backgroundDarkHover);
-			border-color: var(--backgroundDarkHover);
-		}
-
-		&:active {
-			background-color: var(--backgroundLightHover);
-			border-color: var(--backgroundLightHover);
-		}
-	}
-}
-
 .error {
 	margin: auto;
 }

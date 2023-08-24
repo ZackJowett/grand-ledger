@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { getAllUsers } from "utils/data/users";
 import { useSession } from "next-auth/react";
 import { useSelectedGroup } from "utils/hooks";
-import Spinner from "components/placeholders/spinner/Spinner";
+import StatusBar from "./statusBar/StatusBar";
 
 export default function Layout({ children, className = "" }) {
 	const state = useSelector((state) => state);
@@ -72,7 +72,7 @@ export default function Layout({ children, className = "" }) {
 						className={`${styles.children} ${
 							className ? className : ""
 						} `}>
-						<StatusBar router={router} />
+						<StatusBar />
 
 						{/* {selectedGroup.isLoading ? (
 							<Spinner className={styles.error} />
@@ -86,30 +86,5 @@ export default function Layout({ children, className = "" }) {
 			</main>
 			{/* <Footer /> */}
 		</>
-	);
-}
-
-function StatusBar({ router }) {
-	const dontIncludeInRoutes = [
-		"/",
-		"/login",
-		"/register",
-		"/forgot-password",
-	];
-
-	if (dontIncludeInRoutes.includes(router.pathname)) {
-		return;
-	}
-
-	return (
-		<div className={styles.statusBar}>
-			<div
-				className={styles.button}
-				onClick={() => {
-					router.back();
-				}}>
-				<MdOutlineArrowBack /> <p>Back</p>
-			</div>
-		</div>
 	);
 }

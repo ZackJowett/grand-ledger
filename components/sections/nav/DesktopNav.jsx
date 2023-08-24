@@ -33,7 +33,7 @@ export default function HamburgerMenu({
 
 				<div className={styles.linksWrapper}>
 					<SelectGroup onSelect={toggleMenu} />
-					{selectedGroupLoading ? (
+					{/* {selectedGroupLoading ? (
 						"Loading..."
 					) : selectedGroup ? (
 						<Link
@@ -43,7 +43,7 @@ export default function HamburgerMenu({
 						</Link>
 					) : (
 						"No Group Found"
-					)}
+					)} */}
 					<Link
 						href="/"
 						className={`${styles.link} ${styles.dashboard} ${

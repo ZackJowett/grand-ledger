@@ -25,6 +25,11 @@ export function IconCross({ className = null }) {
 	return <MdClose className={className} />;
 }
 
+import { MdOutlineArrowBack } from "react-icons/md";
+export function IconBack({ className = null }) {
+	return <MdOutlineArrowBack className={className} />;
+}
+
 // ----------- DEBTS ----------- \\
 import { MdOutlineAttachMoney } from "react-icons/md";
 export function IconDebt({ className = null }) {
