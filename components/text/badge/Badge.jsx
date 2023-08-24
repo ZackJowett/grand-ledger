@@ -13,6 +13,8 @@ export default function Badge({ title = "", color = "open", className }) {
 					? styles.pending
 					: color == "group"
 					? styles.group
+					: color == "primary"
+					? styles.primary
 					: styles.closed
 			} ${className ? className : ""}`}>
 			{title}

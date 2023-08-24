@@ -11,3 +11,19 @@
 .ul {
 	margin-top: 1rem;
 }
+
+.newTitle {
+	@include flex(row, flex-start, center, $gap: 0.75rem);
+}
+
+.badge {
+	font-size: 1rem;
+}
+
+.current {
+	color: var(--primary);
+}
+
+.currentCard {
+	border-color: var(--primary);
+}

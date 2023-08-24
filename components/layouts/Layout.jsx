@@ -74,7 +74,7 @@ export default function Layout({ children, className = "" }) {
 						className={`${styles.children} ${
 							className ? className : ""
 						} `}>
-						<Children children={children} />
+						<Children>{children}</Children>
 					</section>
 				</div>
 			</main>

@@ -21,6 +21,10 @@
 		color: black;
 	}
 
+	&.primary {
+		background-color: var(--primary);
+	}
+
 	&.closed {
 		background-color: var(--backgroundDark);
 		color: var(--subtext);

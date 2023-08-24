@@ -4,6 +4,7 @@ import LoggedOut from "components/sections/login/loggedOut/LoggedOut";
 import TextWithTitle from "components/text/title/TextWithTitle";
 import Card from "components/card/Card";
 import styles from "public/styles/pages/Updates.module.scss";
+import Badge from "components/text/badge/Badge";
 
 export default function Updates() {
 	const { data: session, status: sessionStatus } = useSession();
@@ -18,15 +19,45 @@ export default function Updates() {
 			/>
 
 			<Card subtitle="In Development" dark>
-				<p>- Groups</p>
+				<p>- Group Statistics</p>
 				<p>- Light mode</p>
 				<p>- Email Notifications</p>
 				<p>- Profile Photos</p>
 				<p>- Revamped Create Debt</p>
 			</Card>
 			<Card
+				title={
+					<div className={styles.newTitle}>
+						<h3 className={styles.current}>Groups</h3>
+						<Badge
+							title="Current"
+							color="primary"
+							className={styles.badge}
+						/>
+					</div>
+				}
+				className={styles.currentCard}
+				subtitle="v1.3"
+				badge={<p className={styles.current}>Thu 24 Aug 2023</p>}
+				dark>
+				<br />
+				<p>- Groups!</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;- Create and join multiple groups</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;- Select which group to view</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;- Only see debts/settlements in
+					selected group
+				</p>
+				<p>- Action Bar</p>
+				<p>
+					&nbsp;&nbsp;&nbsp;&nbsp;- Dynamically changes, showing most
+					helpful shortcuts
+				</p>
+				<p>&nbsp;&nbsp;&nbsp;&nbsp;- See currently selected group</p>
+			</Card>
+			<Card
 				title="Create Settlement & QOL"
-				subtitle="v1.2 - Current"
+				subtitle="v1.2"
 				badge="Sat 19 Aug 2023"
 				dark>
 				<br />
