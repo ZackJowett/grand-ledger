@@ -1,5 +1,7 @@
 @use "public/styles/mixins.scss" as *;
 
+$screenTiny: 450px;
+
 .statusBar {
 	@include flex(row, space-between, center);
 	width: 100%;
@@ -9,17 +11,31 @@
 	border-top-left-radius: 10px;
 
 	padding: 0.5 + rem;
+
+	@include screen($screenTiny) {
+		flex-direction: column;
+		gap: 0.5rem;
+	}
 }
 
 .leftArray {
 	@include flex(row, center, center);
 	gap: 0.5rem;
+
+	@include screen($screenTiny) {
+		width: 100%;
+	}
 }
 
 .selectGroup {
 	width: 10rem;
 	@include desktop-up {
 		display: none;
+	}
+
+	@include screen($screenTiny) {
+		width: fit-content;
+		max-width: 100%;
 	}
 }
 
@@ -58,11 +74,19 @@
 		text-overflow: ellipsis;
 
 		color: var(--group);
+
+		@include screen($screenTiny) {
+			max-width: none;
+		}
 	}
 
 	&:hover {
 		cursor: pointer;
 		background-color: var(--background);
+	}
+
+	@include screen($screenTiny) {
+		width: 100%;
 	}
 }
 
