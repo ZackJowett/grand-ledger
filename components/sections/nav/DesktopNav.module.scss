@@ -1,6 +1,6 @@
 @use "public/styles/mixins.scss" as *;
 
-$width: 200px;
+$width: 250px;
 
 @mixin currentlySelected {
 	&.current {
@@ -134,6 +134,15 @@ $width: 200px;
 	width: 60%;
 	border-color: rgba(85, 85, 85, 0.5);
 	margin: 0.25rem;
+}
+
+.createDebt,
+.createSettlement,
+.break {
+	// Hide on desktop
+	@include desktop-up {
+		display: none;
+	}
 }
 
 // Dashboard link

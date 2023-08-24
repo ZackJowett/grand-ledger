@@ -214,6 +214,11 @@ function timeSince(date) {
 	return interval + " " + intervalType;
 }
 
+import { mutate } from "swr";
+export function globalRevalidate() {
+	mutate(() => true, undefined, { revalidate: true });
+}
+
 module.exports = {
 	formatDate,
 	getName,
@@ -224,4 +229,5 @@ module.exports = {
 	distributeAmount,
 	getDebtStatus,
 	timeSince,
+	globalRevalidate,
 };

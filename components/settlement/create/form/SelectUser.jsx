@@ -7,9 +7,10 @@ import Money from "components/text/money/Money";
 import Select from "components/forms/Select";
 import { useRouter } from "next/router";
 import {
-	useUsers,
+	useGroupUsers,
 	useUserDebtStats,
 	useSettlementsBetweenUsers,
+	useSelectedGroup,
 } from "utils/hooks";
 import DebtsIncluded from "components/settlement/create/DebtsIncluded";
 import Settlement from "components/settlement/Settlement";
@@ -25,20 +26,23 @@ export default function SelectUser({
 }) {
 	const { data: session } = useSession();
 	const router = useRouter();
-	const users = useUsers();
+	const users = useGroupUsers(group.exists ? group.data._id : null);
 	const { data: userStats, isLoading: userStatsLoading } = useUserDebtStats(
-		session.user.id
+		session.user.id,
+		group.exists ? group.data._id : null
 	);
 	const existingSettlements = useSettlementsBetweenUsers(
 		session.user.id,
 		selectedUser?._id,
-		group.data ? group.data._id : null
+		group.exists ? group.data._id : null
 	);
 
 	function handleSelectParty(selectedOption) {
 		const selectedUser = users.data.find(
 			(user) => user._id == selectedOption.value
 		);
+
+		console.log(selectedUser);
 
 		setSelectedUser(selectedUser);
 	}
@@ -59,6 +63,7 @@ export default function SelectUser({
 
 		// If selectedUser is null, set to user with id in query
 		if (selectedUser === null && router.query.id) {
+			console.log("setting selected user");
 			// find user
 			const newSelectedUser = options.find(
 				(entry) => entry.value == router.query.id
@@ -73,9 +78,11 @@ export default function SelectUser({
 				handleSelectParty(options[0]);
 			}
 		} else if (options.length <= 0) {
+			console.log("setting selected user null");
 			// If no users, set selectedUser to null
 			setSelectedUser(null);
 		} else if (options.length > 0 && selectedUser === null) {
+			console.log("setting selected user first");
 			// If no options, set selectedUser to first user
 			handleSelectParty(options[0]);
 		}
@@ -92,13 +99,7 @@ export default function SelectUser({
 				<Select
 					options={options}
 					className={styles.select}
-					defaultValue={
-						router.query.id
-							? options.find(
-									(entry) => entry.value == router.query.id
-							  )
-							: options[0]
-					}
+					value={selectedUser}
 					onChange={handleSelectParty}
 				/>
 			)}

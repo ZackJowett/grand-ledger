@@ -12,6 +12,7 @@ import { createGroup } from "utils/data/groups";
 import { useGroupsWithUser, useSelectedGroup, useUsers } from "utils/hooks";
 import GroupList from "components/group/list/GroupList";
 import GroupJoin from "components/group/join/GroupJoin";
+import GroupCreate from "components/group/create/GroupCreate";
 
 export default function Groups() {
 	const { data: session, status: sessionStatus } = useSession();
@@ -40,6 +41,7 @@ export default function Groups() {
 			) : (
 				<p>You are not in any groups</p>
 			)}
+			<GroupCreate user={session.user} />
 			{/* <button onClick={newGroup}>Create Group</button> */}
 		</section>
 	);

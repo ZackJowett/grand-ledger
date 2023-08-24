@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Select from "components/forms/Select";
 import { InputNumber, InputText } from "components/forms/Input";
+import { useSelectedGroup, useGroupUsers } from "utils/hooks";
 
 export default function SingularDebt({
 	debt,
@@ -16,9 +17,8 @@ export default function SingularDebt({
 	className,
 }) {
 	const { data: session } = useSession();
-	const state = useSelector((state) => state);
-	const users = state.users.list;
-
+	const group = useSelectedGroup(session.user.id);
+	const users = useGroupUsers(group.exists ? group.data._id : null);
 	const [amount, setAmount] = useState({ id: debt.id, value: debt.amount });
 
 	useEffect(() => {
@@ -76,7 +76,6 @@ export default function SingularDebt({
 		setDebts(
 			debts.filter((currentDebt) => {
 				if (currentDebt.id === debt.id) {
-					console.log(debt.id);
 					currentDebt.description = e.target.value;
 					return currentDebt;
 				}
@@ -92,13 +91,15 @@ export default function SingularDebt({
 
 	let optionOtherParty = null;
 
-	if (state.users.ready) {
-		optionOtherParty = users
+	if (users.exists) {
+		optionOtherParty = users.data
 			.map((user) => {
 				if (user._id === session.user.id) return;
 				return { value: user._id, label: user.name };
 			})
 			.filter((item) => item);
+	} else {
+		optionOtherParty = null;
 	}
 
 	return (
@@ -143,12 +144,23 @@ export default function SingularDebt({
 				{/* Other party */}
 				<div className={styles.inputSection}>
 					<TextWithTitle title="With" align="left" small />
-					<Select
-						options={optionOtherParty}
-						defaultValue={optionOtherParty[0]}
-						className={styles.select}
-						onChange={updateOtherParty}
-					/>
+					{users.isLoading ? (
+						<p>Loading...</p>
+					) : users.isError ? (
+						<p>Failed to load users</p>
+					) : users.exists && optionOtherParty.length > 0 ? (
+						<>
+							{console.log(optionOtherParty)}
+							<Select
+								options={optionOtherParty}
+								defaultValue={optionOtherParty[0]}
+								className={styles.select}
+								onChange={updateOtherParty}
+							/>
+						</>
+					) : (
+						<p>You are the only member of this group</p>
+					)}
 				</div>
 
 				{/* Amount */}

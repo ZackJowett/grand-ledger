@@ -4,7 +4,7 @@ import Select from "components/forms/Select";
 import { useGroupsWithUser, useSelectedGroup } from "/utils/hooks";
 import { setSelectedGroup } from "/utils/data/users";
 import { toastPromise } from "/utils/toasts";
-import { useSWRConfig } from "swr";
+import { globalRevalidate } from "utils/helpers";
 
 export default function SelectGroup({
 	onSelect = () => {
@@ -13,7 +13,6 @@ export default function SelectGroup({
 	className,
 }) {
 	const { data: session } = useSession();
-	const { mutate } = useSWRConfig();
 	const {
 		data: groups,
 		isLoading: groupsLoading,
@@ -39,7 +38,7 @@ export default function SelectGroup({
 		);
 
 		// Revalidate all
-		mutate(() => true, undefined, { revalidate: true });
+		globalRevalidate();
 		onSelect();
 	}
 
@@ -55,7 +54,7 @@ export default function SelectGroup({
 		});
 	}
 
-	if (selectedGroupLoading) return "Loading...";
+	if (selectedGroupLoading) return;
 
 	return (
 		<Select

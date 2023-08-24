@@ -48,7 +48,10 @@ export default function Button({
 		return (
 			<>
 				{confirm ? (
-					<div className={`${styles.buttonWrapper} ${classes} `}>
+					<div
+						className={`${styles.buttonWrapper} ${
+							confirm ? styles.open : ""
+						} ${classes} `}>
 						<button
 							type="button"
 							className={`${styles.cancel}`}

@@ -10,6 +10,7 @@ import SubmitDebts from "components/debt/create/form/SubmitDebts";
 import DebtList from "components/debt/create/DebtList";
 import Spinner from "components/placeholders/spinner/Spinner";
 import TextButton from "components/button/text/TextButton";
+import { useSelectedGroup, useGroupUsers } from "utils/hooks";
 
 // Classes
 function SingleDebt(
@@ -40,23 +41,14 @@ export default function Create() {
 
 	// States
 	const [createAs, setCreateAs] = useState("creditor");
-	const [users, setUsers] = useState(null);
+	const group = useSelectedGroup(session.user.id);
+	const users = useGroupUsers(group.exists ? group.data._id : null);
 	const [debts, setDebts] = useState([]);
 	const [submitting, setSubmitting] = useState(false);
 	const [submitError, setSubmitError] = useState(null);
 	const [submitSuccess, setSubmitSuccess] = useState(null);
 	const [idCount, setIdCount] = useState(0);
 	const [numDebts, setNumDebts] = useState({ total: 0, single: 0, multi: 0 });
-
-	// User logged in
-	// Get user options in same group
-	useEffect(() => {
-		if (sessionStatus !== "authenticated") return;
-
-		getAllUsers().then((data) => {
-			data ? setUsers(data) : console.log("Error fetching data");
-		});
-	}, [sessionStatus]);
 
 	// Update number of debts counter
 	useEffect(() => {
@@ -85,7 +77,9 @@ export default function Create() {
 	function addSingle() {
 		// Get default other party that is not the user
 		let otherParty =
-			users[0]._id == session.user.id ? users[1]._id : users[0]._id;
+			users.data[0]._id == session.user.id
+				? users.data[1]._id
+				: users.data[0]._id;
 
 		let newDebt = new SingleDebt(idCount);
 		newDebt.otherParty = otherParty;
@@ -137,8 +131,10 @@ export default function Create() {
 							/>{" "}
 						</p>
 					)}
-					{!users ? (
+					{users.loading || group.isLoading ? (
 						<Spinner title="Loading..." />
+					) : users.isError || group.isError ? (
+						<p>A problem has occurred</p>
 					) : (
 						<>
 							<AddDebt

@@ -67,9 +67,8 @@ export default function StatusBar() {
 					) : (
 						<Link
 							href={`/groups/${group.data._id}`}
-							className={styles.currentGroup}>
-							<IconGroup />{" "}
-							<p>{group.data.name}eshsehsehsehsehseh</p>
+							className={`${styles.button} ${styles.currentGroup}`}>
+							<IconGroup /> <p>{group.data.name}</p>
 						</Link>
 					)}
 				</>

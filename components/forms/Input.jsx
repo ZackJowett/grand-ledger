@@ -36,7 +36,7 @@ export function InputText({
 				onChange={onChange}
 				required={required}
 				disabled={disabled}
-				maxLength={maxLength}
+				maxLength={max}
 			/>
 		</div>
 	);

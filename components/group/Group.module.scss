@@ -14,7 +14,15 @@
 	color: var(--group);
 }
 
-.members {
+.stats {
+	@include flex(row, flex-start, normal);
+	gap: 0.5rem;
+	height: 6rem;
+	width: 100%;
+	margin-top: 0.5rem;
+}
+
+.actionCard {
 	text-align: center;
 	width: 10rem;
 }

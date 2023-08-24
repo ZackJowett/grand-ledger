@@ -97,7 +97,7 @@ export default function HamburgerMenu({
 						<h2>Pay Someone</h2>
 					</Link>
 
-					<br />
+					<br className={styles.break} />
 
 					<Link
 						href="/debts"

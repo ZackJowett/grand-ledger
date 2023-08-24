@@ -63,7 +63,7 @@ function DebtSelector({ debt, selectedDebts, setSelectedDebts, netPosition }) {
 		if (selected) {
 			setSelectedDebts(
 				selectedDebts.filter((selectedDebt) => {
-					return selectedDebt._id !== debt._id;
+					return selectedDebt._id != debt._id;
 				})
 			);
 		} else {

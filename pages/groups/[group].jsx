@@ -3,58 +3,86 @@ import Card from "components/card/Card";
 import Title from "components/text/title/TextWithTitle";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useGroup } from "utils/hooks";
+import { useGroup, useSelectedGroup } from "utils/hooks";
 import Spinner from "components/placeholders/spinner/Spinner";
 import { useUsers } from "utils/hooks";
 import { formatDate } from "utils/helpers";
 import Link from "next/link";
 import Button from "components/button/Button";
-import { leaveGroup } from "utils/data/groups";
+import { leaveGroup, deleteGroup } from "utils/data/groups";
 import { toast } from "utils/toasts";
 import { useState } from "react";
+import { globalRevalidate } from "utils/helpers";
+import Badge from "components/text/badge/Badge";
 
 export default function Group() {
 	const router = useRouter();
 	const { data: session } = useSession();
-	const { data: group, isLoading: groupLoading } = useGroup(
-		router.query.group
-	);
+	const group = useGroup(router.query.group);
+	const selectedGroup = useSelectedGroup(session.user.id);
 	const [loading, setLoading] = useState(false);
 
 	function handleLeave() {
 		setLoading(true);
-		toast(leaveGroup(session.user.id, group._id), false, {
+		toast(leaveGroup(session.user.id, group.data._id), false, {
 			loading: "Leaving...",
-			success: "Successfully left Group! Refreshing...",
-			error: "Failed to leave group",
+			success: "Successfully left Group!",
+			error: "Failed to leave Group",
 		}).then((res) => {
 			setLoading(false);
 			if (res && res.success) {
-				setTimeout(() => {
-					router.push("/groups");
-				}, 2000);
+				globalRevalidate();
+				// setTimeout(() => {
+				router.push("/groups");
+				// 	mutate(() => true, undefined, { revalidate: true });
+				// }, 2000);
+			}
+		});
+	}
+
+	function handleDelete() {
+		setLoading(true);
+		toast(deleteGroup(group.data._id), false, {
+			loading: "Deleting Group...",
+			success: "Successfully deleted Group!",
+			error: "Failed to delete Group",
+		}).then((res) => {
+			setLoading(false);
+			if (res && res.success) {
+				globalRevalidate();
+				router.push("/groups");
 			}
 		});
 	}
 
 	return (
 		<section className={styles.wrapper}>
-			{groupLoading ? (
+			{group.isLoading ? (
 				<Spinner />
-			) : group ? (
-				group.members.includes(session.user.id) ? (
+			) : group.exists ? (
+				group.data.members.includes(session.user.id) ? (
 					<>
 						<Title
-							title={group.name}
+							title={group.data.name}
 							align="left"
-							text={`Join code: ${group.code}`}
+							text={`Join code: ${group.data.code}`}
 						/>
+						{selectedGroup.exists &&
+							group.exists &&
+							selectedGroup.data._id == group.data._id && (
+								<Badge
+									title={"Currently Selected"}
+									color="group"
+								/>
+							)}
 
-						<Members group={group} />
+						<Members group={group.data} />
 
 						<Card action="Created" className={styles.created}>
-							{formatDate(group.dateCreated, true)}
+							{formatDate(group.data.dateCreated, true)}
 						</Card>
+
+						{/* Leave Group */}
 						<Button
 							title="Leave"
 							onClick={handleLeave}
@@ -62,6 +90,17 @@ export default function Group() {
 							includeConfirm
 							disabled={loading}
 						/>
+
+						{/* Delete Group */}
+						{group.data.creator == session.user.id && (
+							<Button
+								title="Delete Group"
+								onClick={handleDelete}
+								className={styles.leave}
+								includeConfirm
+								disabled={loading}
+							/>
+						)}
 					</>
 				) : (
 					<div>You are not in this group</div>
@@ -74,7 +113,7 @@ export default function Group() {
 }
 
 function Members({ group }) {
-	const { data: users, isLoading: usersLoading } = useUsers();
+	const users = useUsers();
 
 	// Get names of
 
@@ -82,9 +121,10 @@ function Members({ group }) {
 		<div className={styles.membersWrapper}>
 			<Title title="Members" align="left" />
 			<Card className={styles.membersCard}>
-				{usersLoading ? (
+				{users.isLoading ? (
 					<Spinner />
 				) : (
+					users.exists &&
 					group.members.map((member) => {
 						// Check if admin and creator
 						const isAdmin = group.admins.includes(member);
@@ -92,11 +132,12 @@ function Members({ group }) {
 
 						return (
 							<Link
+								key={member._id}
 								className={styles.member}
 								href={`/profile/${member}`}>
 								<p>
 									{
-										users.find((user) => {
+										users.data.find((user) => {
 											console.log(user._id == member);
 											return user._id == member;
 										}).name
@@ -105,9 +146,9 @@ function Members({ group }) {
 								<p className={styles.memberStatus}>
 									{isAdmin ? "Admin" : null}
 								</p>
-								<p className={styles.memberStatus}>
+								{/* <p className={styles.memberStatus}>
 									{isCreator ? "Creator" : null}
-								</p>
+								</p> */}
 							</Link>
 						);
 					})

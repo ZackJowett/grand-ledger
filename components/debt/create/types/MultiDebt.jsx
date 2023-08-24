@@ -9,7 +9,7 @@ import { get } from "http";
 import SelectUser from "./SelectUser";
 import { distributeAmount } from "utils/helpers";
 import Toggle from "components/button/toggle/Toggle";
-import { useUsers } from "utils/hooks";
+import { useSelectedGroup, useGroupUsers } from "utils/hooks";
 
 Number.prototype.countDecimals = function () {
 	if (Math.floor(this.valueOf()) === this.valueOf()) return 0;
@@ -24,11 +24,8 @@ export default function MultiDebt({
 	className,
 }) {
 	const { data: session } = useSession();
-	const {
-		data: users,
-		isLoading: usersLoading,
-		isError: usersError,
-	} = useUsers();
+	const group = useSelectedGroup(session.user.id);
+	const users = useGroupUsers(group.exists ? group.data._id : null);
 
 	const [usersSelected, setUsersSelected] = useState(debt.parties);
 	const [editingUser, setEditingUser] = useState(null);
@@ -359,8 +356,8 @@ export default function MultiDebt({
 							key={`${debt._id}-${session.user.id}`}
 							id={`${debt._id}-${session.user.id}`}
 							user={
-								!usersLoading && users
-									? users.find(
+								users.exists
+									? users.data.find(
 											(user) =>
 												user._id === session.user.id
 									  )
@@ -375,8 +372,8 @@ export default function MultiDebt({
 							recalculateTotal={recalculateTotal}
 						/>
 
-						{!usersLoading && users
-							? users.map((user, index) => {
+						{users.exists
+							? users.data.map((user, index) => {
 									if (user._id === session.user.id) return; // Don't show current user
 									return (
 										<SelectUser

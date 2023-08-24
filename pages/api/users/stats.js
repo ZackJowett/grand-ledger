@@ -43,10 +43,18 @@ export default async function handler(req, res) {
 
 		// ----- SETTLEMENTS ----- \\
 		const settlements = await Settlement.find({
-			$or: [{ settler: req.query.id }, { settlee: req.query.id }],
+			$and: [
+				{ $or: [{ settler: req.query.id }, { settlee: req.query.id }] },
+				{ group: req.query.group },
+			],
 		});
 		const debts = await Debt.find({
-			$or: [{ creditor: req.query.id }, { debtor: req.query.id }],
+			$and: [
+				{
+					$or: [{ creditor: req.query.id }, { debtor: req.query.id }],
+				},
+				{ group: req.query.group },
+			],
 		});
 
 		settlements.forEach((settlement) => {

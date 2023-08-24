@@ -25,7 +25,7 @@ export default function Debt() {
 	const selectedGroup = useSelectedGroup(session.user.id);
 	const users = useUsers();
 	const debt = useDebt(router.query.debt ? router.query.debt : null);
-	const group = useGroup(debt.exists ? debt.data.group : null);
+	const group = useGroup(debt.exists && debt.data ? debt.data.group : null);
 
 	// States
 	const [confirmDelete, setConfirmDelete] = useState(false);

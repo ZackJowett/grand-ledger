@@ -45,6 +45,10 @@
 	width: 100%;
 	@include flex(column, flex-start, center, $gap: 1rem);
 
+	&.open {
+		width: 100% !important;
+	}
+
 	@include desktop-up() {
 		flex-direction: row;
 	}
@@ -52,14 +56,14 @@
 
 .confirm {
 	flex: 1;
-	background-color: var(--green);
-	border-color: var(--green);
+	background-color: transparent;
+	border-color: var(--red);
 }
 
 .cancel {
 	flex: 3;
-	background-color: var(--red);
-	border-color: var(--red);
+	background-color: var(--green);
+	border-color: var(--green);
 }
 
 // With Icons

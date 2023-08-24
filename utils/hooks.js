@@ -203,10 +203,9 @@ export function useGroupsWithUser(user) {
 	};
 }
 
-// ------------------------------ STATISTICS ------------------------------- \\
-export function useUserDebtStats(id) {
+export function useGroupUsers(id) {
 	const { data, error, isLoading } = useSWR(
-		`api/debts/stats?id=${id}`,
+		`api/groups/users?id=${id}`,
 		fetcher
 	);
 
@@ -218,9 +217,24 @@ export function useUserDebtStats(id) {
 	};
 }
 
-export function useUserStats(id) {
+// ------------------------------ STATISTICS ------------------------------- \\
+export function useUserDebtStats(id, group) {
 	const { data, error, isLoading } = useSWR(
-		`api/users/stats?id=${id}`,
+		`api/debts/stats?id=${id}&group=${group}`,
+		fetcher
+	);
+
+	return {
+		data: data,
+		isLoading,
+		isError: error,
+		exists: !isLoading && !error && data != null,
+	};
+}
+
+export function useUserStats(id, group) {
+	const { data, error, isLoading } = useSWR(
+		`api/users/stats?id=${id}&group=${group}`,
 		fetcher
 	);
 

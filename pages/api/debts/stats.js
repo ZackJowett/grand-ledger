@@ -28,6 +28,7 @@ export default async function handler(req, res) {
 		const debts = await Debt.find({
 			$or: [{ creditor: req.query.id }, { debtor: req.query.id }],
 			status: "outstanding",
+			group: req.query.group,
 		});
 
 		// ----- DEBTS ----- \\

@@ -9,8 +9,10 @@ import { update } from "store/slices/usersSlice";
 import { useEffect } from "react";
 import { getAllUsers } from "utils/data/users";
 import { useSession } from "next-auth/react";
-import { useSelectedGroup } from "utils/hooks";
-import StatusBar from "./statusBar/StatusBar";
+import { useSelectedGroup, useGroupsWithUser } from "utils/hooks";
+import GroupJoin from "components/group/join/GroupJoin";
+import SelectGroup from "components/group/select/SelectGroup";
+import StatusBar from "components/layouts/statusBar/StatusBar";
 
 export default function Layout({ children, className = "" }) {
 	const state = useSelector((state) => state);
@@ -72,19 +74,67 @@ export default function Layout({ children, className = "" }) {
 						className={`${styles.children} ${
 							className ? className : ""
 						} `}>
-						<StatusBar />
-
-						{/* {selectedGroup.isLoading ? (
-							<Spinner className={styles.error} />
-						) : !selectedGroup.exists ? (
-							<p className={styles.error}>Something went wrong</p>
-						) : ( */}
-						<>{children}</>
-						{/* )} */}
+						<Children children={children} />
 					</section>
 				</div>
 			</main>
 			{/* <Footer /> */}
+		</>
+	);
+}
+
+// Handle what to do when group is not selected or not in any groups
+function Children({ children }) {
+	// Check if user is in any groups
+	// If not, redirect to join group page
+	// If yes, show select group dropdown menu
+	const { data: session } = useSession();
+	const selectedGroup = useSelectedGroup(session.user.id);
+	const groups = useGroupsWithUser(session.user.id);
+	const router = useRouter();
+
+	if (selectedGroup.isLoading || groups.isLoading) return;
+
+	if (selectedGroup.isError || groups.isError) {
+		// Something went wrong
+		return (
+			<p className={styles.error}>
+				Something went wrong. If message persists, contact Admin
+			</p>
+		);
+	}
+
+	// Check if user is in any groups
+	if (groups.data.length <= 0) {
+		// User is not in any groups
+		return (
+			<div className={styles.errorWrapper}>
+				<p className={styles.error}>
+					You are not in any groups. Join a group to get started
+				</p>
+				<GroupJoin user={session.user} />
+			</div>
+		);
+	}
+
+	if (selectedGroup.data === null) {
+		// No group selected
+		return (
+			<div className={styles.errorWrapper}>
+				<p className={styles.error}>
+					No Group selected. Please select a group to view ledger
+				</p>
+				<SelectGroup
+					onSelect={() => router.push("/")}
+					className={styles.select}
+				/>
+			</div>
+		);
+	}
+
+	return (
+		<>
+			<StatusBar /> {children}
 		</>
 	);
 }

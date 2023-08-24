@@ -60,3 +60,21 @@ export async function joinGroup(user, code) {
 		res.status(400).json({ success: false, message: error.message });
 	}
 }
+
+// Join group
+export async function deleteGroup(group) {
+	try {
+		console.log("joining...");
+		const res = await fetch(`${getRootURL()}api/groups/delete`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ group }),
+		});
+
+		return res.json();
+	} catch (error) {
+		res.status(400).json({ success: false, message: error.message });
+	}
+}

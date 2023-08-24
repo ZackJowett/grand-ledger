@@ -10,6 +10,13 @@
 
 .membersWrapper {
 	width: 100%;
+	@include flex(column, flex-start, flex-start, $gap: 0.5rem);
+
+	.membersCard {
+		max-width: fit-content;
+		min-width: 15rem;
+		overflow: hidden;
+	}
 
 	.member {
 		@include flex(row, flex-start, center, $gap: 0.5rem);
@@ -34,4 +41,7 @@
 
 .leave {
 	max-width: var(--maxWidth);
+	background-color: var(--transparent);
+	border-color: var(--red);
+	width: 10rem;
 }

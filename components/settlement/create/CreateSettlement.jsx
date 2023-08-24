@@ -83,8 +83,17 @@ export default function CreateSettlement() {
 		// calculate total amount of selected ebts
 		let totalAmount = 0;
 		selectedDebts.forEach((debt) => {
-			totalAmount += debt.amount;
+			if (debt.creditor == session.user.id) {
+				// User is creditor
+
+				totalAmount += debt.amount;
+			} else {
+				totalAmount -= debt.amount;
+			}
 		});
+
+		console.log(totalAmount);
+		console.log(selectedDebts);
 
 		// Create settlement object
 		const settlement = {
