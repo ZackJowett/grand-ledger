@@ -57,7 +57,6 @@ export default function SelectGroup({
 			);
 			toast.success("Successfully changed groups");
 
-			console.lo;
 			onSelect();
 		} catch {
 			toast.error("Failed to change groups");

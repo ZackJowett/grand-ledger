@@ -48,6 +48,7 @@ $screenTiny: 450px;
 .currentGroup {
 	gap: 0.5rem;
 	color: var(--group);
+	margin-left: 0.5rem;
 
 	p {
 		max-width: 10rem;
@@ -61,21 +62,26 @@ $screenTiny: 450px;
 		@include screen($screenTiny) {
 			max-width: none;
 		}
+
+		@include mobile-only {
+			max-width: none;
+		}
 	}
 
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 
-	@include screen($screenTiny) {
+	@include mobile-only {
 		width: 100%;
 	}
 }
 
-.back {
-	@include mobile-only {
-		margin-right: 0.5rem;
-	}
+.debt,
+.settlement {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .debt {
